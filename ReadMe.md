@@ -1,8 +1,8 @@
-# Functor 
+# Endofunctor 
 
 Faster router in Deno (Working in the benchmarks)
 
-Functor was designed to be:
+Endofunctor  was designed to be:
 
 - Independent 
 - Fast 
@@ -10,16 +10,16 @@ Functor was designed to be:
 - Predictable
 
 Get started in 10 Minutes!
-## Get Functor and a server
+## Get Endofunctor  and a server
 
 ```typescript
-//Functor is just a router, so a server that give a Request and expect  Response is needed
+//Endofunctor is just a router, so a server that give a Request and expect  Response is needed
 
 import { serve } from "https://deno.land/std@0.159.0/http/server.ts";
 
 // import fun
 
-import fun from "https://deno.land/x/functor/fun.ts";
+import fun from "https://deno.land/x/endofunctor/fun.ts";
 ```
 ## Give a path and a function
 
@@ -114,7 +114,7 @@ await serve(
   { port: 8080, hostname: "127.0.0.1" },
 );
 ```
-## Static file is natively build in functor!
+## Static file is natively build in Endofunctor !
 
 ```typescript
 // "path" is relative to terminal
