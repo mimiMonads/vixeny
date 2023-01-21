@@ -1,16 +1,19 @@
 # Endofunctor 
 
-Faster router in Deno (Working in the benchmarks)
-
-Endofunctor  was designed to be:
+was designed to be:
 
 - Independent 
 - Fast 
 - Scalable 
 - Predictable
+- Functional
 
-Get started in 10 Minutes!
-## Get Endofunctor  and a server
+## Benchmark
+Faster than Hono / [Endofunctor vs Hono](https://github.com/mimiMonads/hono-functor-benchmark)
+
+
+## Get started in 10 Minutes!
+### Get Endofunctor  and a server
 
 ```typescript
 //Endofunctor is just a router, so a server that give a Request and expect  Response is needed
