@@ -67,7 +67,6 @@ await serve(
       path: "/test/:id",
       status: 201,
       header:  ".html", // { 'Content-Type' : 'text/html'}
-      f:  _ => "<p> hello </p>" 
       r: (f) => f.param.id + " " + (f.query?.hello || ""),
     },
   ]),
