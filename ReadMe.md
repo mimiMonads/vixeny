@@ -67,7 +67,7 @@ await serve(
       path: "/test/:id",
       status: 201,
       header:  ".html", // { 'Content-Type' : 'text/html'}
-      r: (f) => f.param.id + " " + (f.query?.hello || ""),
+      f: (f) => f.param.id + " " + (f.query?.hello || ""),
     },
   ]),
   { port: 8080, hostname: "127.0.0.1" },
