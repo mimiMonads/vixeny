@@ -29,8 +29,7 @@ export type ObjectRawResponseCommon = {
   dev?: "test";
   method?: ParamsMethod;
   status?: number;
-  header?: Headers;
-  // mime?: defaultMime;
+  header?: Record<string, string>  | defaultMime;
 };
 
 export type ObjectRawCommonRequest = {
