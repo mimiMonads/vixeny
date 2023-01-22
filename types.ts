@@ -3,10 +3,7 @@ export type ParamsMethod = "GET" | "HEAD" | "POST" | "DELETE";
 
 export type funRouterOptions = {
   hasName?: string;
-/**
- * @deprecated The method should not be used
- */
-  globalNotFound?: true;
+
   paramsStartsWith?: string;
   notFound?: { (x: Request): Response };
   badMethod?: { (x: Request): Response };

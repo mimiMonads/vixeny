@@ -45,17 +45,17 @@ Deno.test(
     assertEquals(
       arraySwap(o)(optimize(o)(paths))[0].map((x) => [x[0], x[1], x[2]]),
       [
-        [0, "", "GET"],
+        [1, "", "GET"],
         [1, "test", "GET"],
         [2, "test/", "GET"],
         [4, "test/", "GET"],
-        [0, "", "POST"],
-        [0, "", "HEAD"],
-        [0, "", "DELETE"],
+        [1, "", "POST"],
+        [1, "", "HEAD"],
+        [1, "", "DELETE"],
       ],
     ))(
       {
-        globalNotFound: true,
+        
       },
     ),
 );
@@ -65,16 +65,15 @@ Deno.test(
     assertEquals(
       arraySwap({
         paramsStartsWith: "!",
-        globalNotFound: true,
       })(optimize()(paths))[0].map((x) => [x[0], x[1], x[2]]),
       [
-        [0, "", "GET"],
+        [1, "", "GET"],
         [1, "test", "GET"],
         [2, "test/", "GET"],
         [4, "test/:id/:name/", "GET"],
-        [0, "", "POST"],
-        [0, "", "HEAD"],
-        [0, "", "DELETE"],
+        [1, "", "POST"],
+        [1, "", "HEAD"],
+        [1, "", "DELETE"],
       ],
     ),
 );

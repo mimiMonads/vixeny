@@ -23,7 +23,7 @@ export default (o?: funRouterOptions) => (a: RouteTypes[]): ArrayFiler =>
             )
             .map((x) =>
               [
-                x[3] === "/" && o?.globalNotFound === true ? 0 : x[0],
+                 x[0],
                 ((y) =>
                   ((a) =>
                     a.length <= 1 ? a.join("") : a[0] + a.slice(1).join("/"))(

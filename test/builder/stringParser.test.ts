@@ -28,13 +28,13 @@ Deno.test(
           (r) =>
             assertEquals(
               stringParser(o)(r[1])("http://localhost:8080/"),
-              [0, ""],
+              [1, ""],
             )
         )(
           atlas(o)(arraySwap(o)(optimize(o)(paths))),
         )
     )(
-      { globalNotFound: true },
+      {}
     ),
 );
 Deno.test(
@@ -46,13 +46,13 @@ Deno.test(
           (r) =>
             assertEquals(
               stringParser(o)(r[1])("http://localhost:8080/"),
-              [0, ""],
+              [1, ""],
             )
         )(
           atlas(o)(arraySwap(o)(optimize(o)(paths))),
         )
     )(
-      { globalNotFound: true, hasName: "http://localhost:8080/" },
+      {  hasName: "http://localhost:8080/" },
     ),
 );
 Deno.test(
@@ -70,7 +70,7 @@ Deno.test(
           atlas(o)(arraySwap(o)(optimize(o)(paths))),
         )
     )(
-      { globalNotFound: true },
+      {},
     ),
 );
 Deno.test(
@@ -88,7 +88,7 @@ Deno.test(
           atlas(o)(arraySwap(o)(optimize(o)(paths))),
         )
     )(
-      { globalNotFound: true, hasName: "http://localhost:8080/hello" },
+      { hasName: "http://localhost:8080/hello" },
     ),
 );
 Deno.test(
@@ -142,7 +142,7 @@ Deno.test(
           atlas(o)(arraySwap(o)(optimize(o)(paths))),
         )
     )(
-      { globalNotFound: true },
+      {},
     ),
 );
 
@@ -161,6 +161,6 @@ Deno.test(
           atlas(o)(arraySwap(o)(optimize(o)(paths))),
         )
     )(
-      { globalNotFound: true, hasName: "http://localhost:8080/" },
+      {  hasName: "http://localhost:8080/" },
     ),
 );

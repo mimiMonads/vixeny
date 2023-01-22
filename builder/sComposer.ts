@@ -13,7 +13,6 @@ export default (o?: funRouterOptions) => (an: number[][]) =>
             i,
           ) => [
             `(a${i}=>(a${i}<1?${
-              typeof o?.globalNotFound === "boolean" ||
                 typeof o?.hasName === "string"
                 ? i + 1
                 : i

@@ -60,7 +60,6 @@ Deno.test(
   async (_) =>
     assertEquals(
       await fun({
-        globalNotFound: true,
       })(paths)(new Request("http://localhost:8080/notFound")).status,
       404,
     ),
@@ -99,7 +98,6 @@ Deno.test(
   async (_) =>
     assertEquals(
       await fun({
-        globalNotFound: true,
       })(paths)(new Request("http://localhost:8080/", { method: "DELETE" }))
         .text(),
       "DELETE:main",
@@ -118,7 +116,6 @@ Deno.test(
   async (_) =>
     assertEquals(
       await fun({
-        globalNotFound: true,
       })(paths)(new Request("http://localhost:8080/test/1/2/")).text(),
       "GET:test/:id/:name/",
     ),

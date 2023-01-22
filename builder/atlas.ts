@@ -91,7 +91,7 @@ export default (_o?: funRouterOptions) => (a: ArrayFiler): Atlas =>
                                   ? [...acc, [z[1], z[3]]] as InnerObjEmpty[]
                                   : acc,
                               [] as InnerObjEmpty[],
-                            ).sort((a, b) => b[0].length - a[0].length),
+                            ),
                         ),
                       ],
                     ),
