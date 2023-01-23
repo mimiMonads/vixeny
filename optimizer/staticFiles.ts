@@ -12,13 +12,9 @@ export default (o?: funRouterOptions) =>
   ((p) =>
     ((re) =>
       (
-        (s) => (r: Request) => (
-          ((p) => re[3][p](r))(
-            s(0)(r.url),
-          )
-        )
+        (s) => (r: Request) => re[3][s(r)](r) 
       )(
-        resolver(o)(re[3].length)(re[1])(re[2])([]),
+        resolver(o)(re),
       ))(
         atlas(o)(
           arraySwap(o)(

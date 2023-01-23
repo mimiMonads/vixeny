@@ -6,107 +6,27 @@ import arraySwap from "../../builder/arraySwap.ts";
 import optimize from "../../optimizer/optimize.ts";
 
 Deno.test(
-  "Resolver",
-  (_) =>
+  "resolver",
+  _ =>
     (
-      (a) =>
-        assertEquals(
-          resolver()(a[3].length)(a[1])(a[2])(a[4])(0)("notFound/"),
-          1,
-        )
-    )(
-      atlas()(arraySwap()(optimize()(paths))),
-    ),
-);
-Deno.test(
-  "Resolver",
-  (_) =>
-    (
-      (a) =>
-        assertEquals(
-          resolver()(a[3].length)(a[1])(a[2])(a[4])(-1)("notFound/"),
-          8,
-        )
-    )(
-      atlas()(arraySwap()(optimize()(paths))),
-    ),
-);
-
-Deno.test(
-  "Resolver",
-  (_) =>
-    (
-      (a) =>
-        assertEquals(
-          resolver()(a[3].length)(a[1])(a[2])(a[4])(0)(
-            "http://localhost:8080/test",
-          ),
+      a =>
+      assertEquals(
+        [
+          a(new Request("http://localhost:8080/notFound/")),
+          a(new Request("http://localhost:8080/test")),
+          a(new Request("http://localhost:8080/")),
+          a(new Request("http://localhost:8080/test/2"))
+        ],
+        [
+          7,
           0,
-        )
-    )(
-      atlas()(arraySwap()(optimize()(paths))),
-    ),
-);
-
-
-Deno.test(
-  "Resolver",
-  (_) =>
-    (
-      (a) =>
-        assertEquals(
-          resolver()(a[3].length)(a[1])(a[2])(a[4])(0)(
-            "http://localhost:8080/",
-          ),
           1,
-        )
-    )(
-      atlas()(arraySwap()(optimize()(paths))),
-    ),
-);
-Deno.test(
-  "Resolver",
-  (_) =>
-    (
-      (a) =>
-        assertEquals(
-          resolver()(a[3].length)(a[1])(a[2])(a[4])(0)(
-            "http://localhost:8080/test/",
-          ),
-          2,
-        )
-    )(
-      atlas()(arraySwap()(optimize()(paths))),
-    ),
-);
+          2
+        ],
+      )  
 
-Deno.test(
-  "Resolver",
-  (_) =>
-    (
-      (a) =>
-        assertEquals(
-          resolver()(a[3].length)(a[1])(a[2])(a[4])(0)(
-            "http://localhost:8080/test/id/num/",
-          ),
-          3,
-        )
     )(
-      atlas()(arraySwap()(optimize()(paths))),
-    ),
-);
-Deno.test(
-  "Resolver",
-  (_) =>
-    (
-      (a) =>
-        assertEquals(
-          resolver()(a[3].length)(a[1])(a[2])(a[4])(3)(
-            "http://localhost:8080/",
-          ),
-          6,
-        )
-    )(
-      atlas()(arraySwap()(optimize()(paths))),
-    ),
-);
+      resolver()(atlas()(arraySwap()(optimize()(paths)))),
+    )
+)
+

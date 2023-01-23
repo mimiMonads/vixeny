@@ -21,3 +21,10 @@ export type RouteTypes = [
 ];
 export type SearchIn = [number, string[], RequestFunction];
 export type OptimizeList = [ParamsMethod[], SearchIn[][]];
+export type Atlas = [
+  ParamsMethod[],
+  number[][],
+  string[][][],
+  RequestFunction[],
+  RouteTypes[],
+];

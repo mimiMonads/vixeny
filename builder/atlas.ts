@@ -11,7 +11,7 @@ type InnerObj = [string, RequestFunction] | [];
 type InnerObjEmpty = [string, RequestFunction];
 type Map = Record<number, Record<number, InnerObj[]>>;
 
-type Atlas = [
+ export type Atlas = [
   ParamsMethod[],
   number[][],
   string[][][],
