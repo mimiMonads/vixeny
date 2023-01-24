@@ -4,12 +4,13 @@ import sComposer from "./sComposer.ts";
 export default (o?: funRouterOptions) => (an: number[][]) =>
   ((re) =>
     typeof o?.hasName === "string"
-      ?  ((b) => (n: number) => (s: string): [number, string] =>
-          ((ar) => ar === "" ? b : [re(ar), ar])(s.slice(n)))(
-            [1, ""] as [number, string],
-          )(
-            o.hasName.length,
-          )
+      ?  (
+        new Function(
+          `return  s => s.length === ${o.hasName.length} ? [1, ""] : [(${re.toString()})(s.slice(${o.hasName.length})), s.slice(${o.hasName.length})] `
+        )
+      )(
+
+      )
       : ((n: number) => (s: string): [number, string] =>
         ((ar) => [re(ar) + 1, ar])(
           n !== -1 ? s.slice(n) : s.slice(
@@ -18,6 +19,8 @@ export default (o?: funRouterOptions) => (an: number[][]) =>
               .filter((x) => x !== "")
               .reduce((acc, x, u) => u <= 1 ? acc + x.length : acc, 3),
           ),
-        ))(-1))(
+        ))(-1))
+        (
       sComposer(o)(an) as (s: string) => number,
     );
+

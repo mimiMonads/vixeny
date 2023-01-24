@@ -5,8 +5,8 @@ Do you have any ideas? Go to discussions and tell me what you need
 
 | in-progress  | next  |
 |---------- |---------- |
-| Coverage | Session  |
-| Debugging | Signer| 
+| Coverage | Documentation  |
+| Debugging | | 
 
 
 

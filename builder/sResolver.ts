@@ -13,7 +13,7 @@ export default (ar: string[][][])  => (
               ? `s === "" ? ${i}  : `
               : (
                   (x.reduce(
-                    (acc, y) =>  y[0] === ""  ? 's === ""' : `&& s.slice(${y[1]},${y[2]}) === "${y[0]}"` + acc,
+                    (acc, y) =>  y[0] === ""  ? 's.length === 0' : `&& s.slice(${y[1]},${y[2]}) === "${y[0]}"` + acc,
                     ""
                   ) as string) + `? ${i} :`
                 ).slice(2)
