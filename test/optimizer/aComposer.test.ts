@@ -52,18 +52,8 @@ Deno.test(
       "1",
     ),
 );
-Deno.test(
-  "Params",
-  (_) =>
-    assertEquals(
-      aComposer({ hasName: "http://localhost:8080/" })({
-        path: "/test/:id/",
-        param: { elements: ["id"] },
-        f: (r) => r.param.id,
-      })(["param"])(new Request("http://localhost:8080/test/1/")).param.id,
-      "1",
-    ),
-);
+
+
 Deno.test(
   "Params",
   (_) =>

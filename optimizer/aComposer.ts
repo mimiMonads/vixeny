@@ -1,4 +1,4 @@
-import params from "./params1.ts";
+import params from "./parameters/main.ts";
 import query from "./query1.ts";
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
