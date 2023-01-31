@@ -6,7 +6,7 @@ export default (o?: funRouterOptions) => (an: number[][]) =>
     typeof o?.hasName === "string"
       ?  (
         new Function(
-          `return  s => s.length === ${o.hasName.length} ? [1, ""] : [(${re.toString()})(s.slice(${o.hasName.length})), s.slice(${o.hasName.length})] `
+          `return  s => s.length === ${o.hasName.length} ? [1, "/"] : [(${re.toString()})(s.slice(${o.hasName.length})), s.slice(${o.hasName.length})] `
         )
       )(
 

@@ -10,7 +10,7 @@ export default (ar: string[][][])  => (
         a
           .map((x, i) =>
             x.length === 0
-              ? `s.length === 0? ${i}  : `
+              ? `s === "/"? ${i}  : `
               : (
                   (x.reduce(
                     (acc, y) =>  y[0] === ""  ? 's.length === 0' : `&& s.slice(${y[1]},${y[2]}) === "${y[0]}"` + acc,
