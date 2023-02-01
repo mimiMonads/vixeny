@@ -1,6 +1,6 @@
 import finder from "../../../optimizer/parameters/finder.ts"
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
-import options from "../../../optimizer/parameters/options.ts"
+import options from "../../../optimizer/parameters/map.ts"
 
 
 Deno.test(
