@@ -22,7 +22,7 @@ export default(info : info) =>
         ? `s.slice(0, a0 - 1)`
           :  id===(info.elements.length -1) 
             ?  `s.slice(a${id-1})` 
-            : `s.slice(a${id-1}, a${id} - 1)`
+          : `s.slice(a${id-1}, a${id} - 1)`
  
           )
   }]` )}`

@@ -2,7 +2,7 @@ import { ObjectRawResponseCommon } from "./../types.ts";
 import { funRouterOptions } from "../../types.ts";
 import multi from "./multi.ts";
 import one from "./one.ts"
-import infoOptions from "./options.ts"
+import map from "./map.ts"
 
 
 type ParamsResult = { (s: string): Record<string, string> };
@@ -18,6 +18,6 @@ export default
               ? one(info)
               : multi(info)
     )(
-      infoOptions(options)(f)
+      map(options)(f)
     )
  
