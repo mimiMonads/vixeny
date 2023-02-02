@@ -7,6 +7,9 @@ import resolver from "../builder/resolver.ts";
 import staticPaths from "./staticPaths.ts";
 import mime from "../components/util/mime.ts";
 
+import solver from "../builder/solver.ts";
+import split from "../builder/atlas/split.ts";
+
 export default (o?: funRouterOptions) =>
 (f: ObjectRawResponseStatic): (r: Request) => Response | Promise<Response> =>
   ((p) =>
@@ -14,10 +17,10 @@ export default (o?: funRouterOptions) =>
       (
         (s) => (r: Request) => re[3][s(r)](r) 
       )(
-        resolver(o)(re),
+        solver(o)(re),
       ))(
         atlas(o)(
-          arraySwap(o)(
+          split(o)(
             staticPaths( "mime" in  f  && f.mime === false ? [] : "extra" in f ? mime.concat(f.extra): mime )(p)(f.name),
           ),
         ),

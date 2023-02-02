@@ -3,16 +3,18 @@ import { ObjectRawResponse } from "./optimizer/types.ts";
 import optimizer from "./optimizer/optimize.ts";
 import atlas from "./builder/atlas.ts";
 import arraySwap from "./builder/arraySwap.ts";
-import resolver from "./builder/resolver.ts";
+
+import solver from "./builder/solver.ts";
+import split from "./builder/atlas/split.ts";
 
 export default (o?: funRouterOptions) => (routes: ObjectRawResponse[]) =>
   ((re) =>
       ((s) => (r: Request) => re[3][s(r)](r)
       )(
-        resolver(o)(re),
+        solver(o)(re),
       ))(
       atlas(o)(
-        arraySwap(o)(
+        split(o)(
           optimizer(o)(routes),
         ),
       ),

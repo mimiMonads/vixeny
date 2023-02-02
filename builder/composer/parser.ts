@@ -22,7 +22,7 @@ export default (o?: funRouterOptions) => (sa:string[][]) =>(position: number[]) 
           ],
         ).reverse().reduce((acc, v) => v[0] + acc + v[1], "")
       }
-)`)()
+)`)() as (s:string) => number
   )(
     an.reduce((acc, y) => y > acc ? y : acc, 0)
 )
