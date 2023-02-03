@@ -2,7 +2,7 @@ import { funRouterOptions } from "./types.ts";
 import { ObjectRawResponse } from "./optimizer/types.ts";
 import optimizer from "./optimizer/optimize.ts";
 import atlas from "./builder/atlas.ts";
-import arraySwap from "./builder/arraySwap.ts";
+
 
 import solver from "./builder/solver.ts";
 import split from "./builder/atlas/split.ts";

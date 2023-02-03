@@ -2,8 +2,6 @@ import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseStatic } from "./types.ts";
 import syncCheckDir from "./syncCheckDir.ts";
 import atlas from "../builder/atlas.ts";
-import arraySwap from "../builder/arraySwap.ts";
-import resolver from "../builder/resolver.ts";
 import staticPaths from "./staticPaths.ts";
 import mime from "../components/util/mime.ts";
 

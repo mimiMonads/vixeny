@@ -1,14 +1,6 @@
 # Endofunctor 
 
-Do you have any ideas? Go to discussions and tell me what you need
-
-
-| in-progress  | next  |
-|---------- |---------- |
-| Coverage | Documentation  |
-| Debugging | | 
-
-
+Alpha
 
 ## About
 
@@ -21,6 +13,7 @@ Endofunctor is:
 - Functional
 
 ## Benchmark
+
 Faster than Hono / [Endofunctor vs. Hono](https://github.com/mimiMonads/hono-functor-benchmark)
 
 
@@ -54,7 +47,7 @@ await serve(
 ## Add parameters, a query, a status, or a header!
 
 ```typescript
-// the router auto-detect if you are using (parameters,  querries, or Request ) unless you send the arguments out of the scope
+// the router auto-detect if you are using (parameters,  queries, or Request ) unless you send the arguments out of the scope
 // r: (arguments) => outOfScope(arguments),
 // you can add or remove them with "add", "delete"
 
@@ -76,19 +69,13 @@ await serve(
 
 ## Parameters
 
-Parameters must be chained, without gaps.
-
 ```typescript
-// valid (It is important to note that the following routes are different)
+
  "/hello/:id"
  "/hello/:id/"
  "/hello/:id/:page/:time"
  "/hello/:id/:page/:time/"
-
-// invalid
- "/hello/:id/page/:time"
- "/hello/:id/page/:time/"
-
+ "/hi/:id/page/:time"
 
 ```
 

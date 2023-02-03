@@ -9,6 +9,6 @@ Deno.test(
         specialString({hasName: "http://localhost:8080/"})(12)([
             ["GET","/",_ => new Response(),false]
         ])("http://localhost:8080/"),
-        null
+        10
     )
 )
