@@ -1,9 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
 import methods from "../../../builder/composer/methods.ts"
-import split from "../../../builder/atlas/split.ts"
-import paths from "../../util/paths.ts";
-import optimize from "../../../optimizer/optimize.ts";
-import atlas from "../../../builder/atlas.ts";
 
 
 

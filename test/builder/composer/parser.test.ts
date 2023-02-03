@@ -60,6 +60,21 @@ Deno.test(
     )
 )
 
+Deno.test(
+    "composer",
+    _ => 
+    (
+        f =>
+        assertEquals(
+            [f("/"),f("/hello"),f("/test"),f("/hello/"),f("/test/hello"),f("/hello/1/test/"),f("/test/2/hello/"),f("/notFound"),f("/outOfTheScope/1/2/3/4/5/")],
+            [0,1,2,3,4,5,6,50,50]
+        )
+    )(
+        parser({})([["/","/hello", "/test"],["/hello/", "/test/hello"],["/hello/:id/test/", "/test/:id/hello/"]])([0,3,5])([1,2,4])(50)
+    )
+)
+
+
 
 
 

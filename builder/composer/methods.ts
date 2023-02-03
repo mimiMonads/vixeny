@@ -1,7 +1,7 @@
 import { funRouterOptions } from "../../types.ts";
-import { Atlas } from "../atlas.ts"
+import { Atlas } from "../atlas/main.ts"
 import parser from "./parser.ts"
-import position from "../position.ts"
+import map from "../atlas/map.ts"
 
 
 export default (o?:funRouterOptions) =>  (atlas:Atlas) =>
@@ -28,5 +28,5 @@ export default (o?:funRouterOptions) =>  (atlas:Atlas) =>
                         )
                 ) as [(s:string) => number]
     )(
-        position(o) (atlas[1])(atlas[2])
+        map(atlas[2])
     )

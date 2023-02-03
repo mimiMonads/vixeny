@@ -1,4 +1,4 @@
-import { funRouterOptions } from "../types.ts";
+import { funRouterOptions } from "../../types.ts";
 
 export default (_o?: funRouterOptions) =>
 (m: number[][]) =>

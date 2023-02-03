@@ -50,7 +50,7 @@ Deno.test(
         await f(new Request("http://localhost:8080/", { method: "POST" }),).text(),
         await f(new Request("http://localhost:8080/", { method: "HEAD" }),).text(),
         await f(new Request("http://localhost:8080/", { method: "DELETE" }), ).text(),
-        await fun()(paths)(new Request("http://localhost:8080/test/1/2/")).text(),
+        await f(new Request("http://localhost:8080/test/1/2/")).text(),
         f(new Request("http://localhost:8080/notFound")).status,
         f(new Request("http://localhost:8080/notFound", { method: "BAD_METHOD" })).status,
       ],

@@ -1,7 +1,7 @@
 import { funRouterOptions } from "./types.ts";
 import { ObjectRawResponse } from "./optimizer/types.ts";
 import optimizer from "./optimizer/optimize.ts";
-import atlas from "./builder/atlas.ts";
+import atlas from "./builder/atlas/main.ts";
 
 
 import solver from "./builder/solver.ts";
