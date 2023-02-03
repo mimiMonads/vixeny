@@ -10,7 +10,7 @@ export type AddOption = "req" | "query" | "param";
 export type AddOptions = AddOption[];
 export type RequestArguments = {
   req: Request;
-  query: Record<string, string | undefined>;
+  query: Record<string, string | null | undefined>;
   param: Record<string, string>;
 };
 export type ObjectRawResponse =

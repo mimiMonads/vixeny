@@ -1,10 +1,9 @@
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseStatic } from "./types.ts";
 import syncCheckDir from "./syncCheckDir.ts";
-import atlas from "../builder/atlas.ts";
+import atlas from "../builder/atlas/main.ts";
 import staticPaths from "./staticPaths.ts";
 import mime from "../components/util/mime.ts";
-
 import solver from "../builder/solver.ts";
 import split from "../builder/atlas/split.ts";
 
