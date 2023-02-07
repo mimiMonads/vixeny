@@ -1,7 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
 import response from "../../optimizer/response1.ts";
 
-
 Deno.test(
   "Response response",
   async (_) =>
@@ -13,4 +12,3 @@ Deno.test(
       `{"id":"hello"}`,
     ),
 );
-

@@ -1,17 +1,14 @@
-import {
-    ArrayFiler,
-    funRouterOptions,
-    RouteTypes,
-  } from "../../types.ts";
-  
-  export default (o?: funRouterOptions) => (a: RouteTypes[]): ArrayFiler =>
+import { ArrayFiler, funRouterOptions, RouteTypes } from "../../types.ts";
+
+export default (o?: funRouterOptions) =>
+  (a: RouteTypes[]): ArrayFiler =>
     (
       (fl) =>
         (
           (sp) => [
-            fl.map (
-              x => [x[1].split("/").length - 1,x[1],x[0],x[2]]
-              ) ,
+            fl.map(
+              (x) => [x[1].split("/").length - 1, x[1], x[0], x[2]],
+            ),
             sp,
           ]
         )(
@@ -20,4 +17,3 @@ import {
     )(
       a.filter((x) => x[3] === false),
     );
-  

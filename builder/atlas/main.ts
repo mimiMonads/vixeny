@@ -1,24 +1,25 @@
 import {
-    ArrayFiler,
-    funRouterOptions,
-    ParamsMethod,
-    RequestFunction,
-  } from "../../types.ts";
-  import badMethod from "../../components/util/badMethod.ts";
-  import notFound from "../../components/util/notFound.ts";
-  
-  type InnerObj = [string, RequestFunction] | [];
-  type InnerObjEmpty = [string, RequestFunction];
-  type Map = Record<number, Record<number, InnerObj[]>>;
-  
-   export type Atlas = [
-    ParamsMethod[],
-    number[][],
-    string[][][],
-    RequestFunction[],
-    ArrayFiler[1],
-  ];
-  export default (_o?: funRouterOptions) => (a: ArrayFiler): Atlas =>
+  ArrayFiler,
+  funRouterOptions,
+  ParamsMethod,
+  RequestFunction,
+} from "../../types.ts";
+import badMethod from "../../components/util/badMethod.ts";
+import notFound from "../../components/util/notFound.ts";
+
+type InnerObj = [string, RequestFunction] | [];
+type InnerObjEmpty = [string, RequestFunction];
+type Map = Record<number, Record<number, InnerObj[]>>;
+
+export type Atlas = [
+  ParamsMethod[],
+  number[][],
+  string[][][],
+  RequestFunction[],
+  ArrayFiler[1],
+];
+export default (_o?: funRouterOptions) =>
+  (a: ArrayFiler): Atlas =>
     (
       (am) =>
         (
@@ -116,4 +117,3 @@ import {
             ? acc
             : [...acc, am[2]], []) as ParamsMethod[],
     );
-  

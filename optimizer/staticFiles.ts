@@ -8,19 +8,25 @@ import solver from "../builder/solver.ts";
 import split from "../builder/atlas/split.ts";
 
 export default (o?: funRouterOptions) =>
-(f: ObjectRawResponseStatic): (r: Request) => Response | Promise<Response> =>
-  ((p) =>
-    ((re) =>
-      (
-        (s) => (r: Request) => re[3][s(r)](r) 
-      )(
-        solver(o)(re),
-      ))(
-        atlas(o)(
-          split(o)(
-            staticPaths( "mime" in  f  && f.mime === false ? [] : "extra" in f ? mime.concat(f.extra): mime )(p)(f.name),
+  (f: ObjectRawResponseStatic): (r: Request) => Response | Promise<Response> =>
+    ((p) =>
+      ((re) =>
+        (
+          (s) => (r: Request) => re[3][s(r)](r)
+        )(
+          solver(o)(re),
+        ))(
+          atlas(o)(
+            split(o)(
+              staticPaths(
+                "mime" in f && f.mime === false
+                  ? []
+                  : "extra" in f
+                  ? mime.concat(f.extra)
+                  : mime,
+              )(p)(f.name),
+            ),
           ),
-        ),
-      ))(
-      syncCheckDir(f.path).map((y) => y[0]).flat(),
-    );
+        ))(
+        syncCheckDir(f.path).map((y) => y[0]).flat(),
+      );

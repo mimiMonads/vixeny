@@ -1,13 +1,15 @@
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
 import paths from "../../util/paths.ts";
 import optimize from "../../../optimizer/optimize.ts";
-import split from "../../../builder/atlas/split.ts"
+import split from "../../../builder/atlas/split.ts";
 
 Deno.test(
   "arraySwap",
   (_) =>
     assertEquals(
-        split({hasName: "http://localhost:8080/"})(optimize({hasName: "http://localhost:8080/"})(paths))[0].map((x) => [x[0], x[1], x[2]]),
+      split({ hasName: "http://localhost:8080/" })(
+        optimize({ hasName: "http://localhost:8080/" })(paths),
+      )[0].map((x) => [x[0], x[1], x[2]]),
       [
         [1, "/", "GET"],
         [1, "/test", "GET"],
@@ -24,7 +26,7 @@ Deno.test(
   "arraySwap",
   (_) =>
     assertEquals(
-        split()(optimize()(paths))[0].map((x) => [x[0], x[1], x[2]]),
+      split()(optimize()(paths))[0].map((x) => [x[0], x[1], x[2]]),
       [
         [1, "/", "GET"],
         [1, "/test", "GET"],

@@ -29,7 +29,7 @@ export type ObjectRawResponseCommon = {
   dev?: "test";
   method?: ParamsMethod;
   status?: number;
-  header?: Record<string, string>  | defaultMime;
+  header?: Record<string, string> | defaultMime;
 };
 
 export type ObjectRawCommonRequest = {
@@ -66,7 +66,7 @@ export type ObjectRawResponseStatic = {
   name: string;
   path: string;
   mime: false;
-} ;
+};
 
 export type defaultMime =
   | ".aac"
