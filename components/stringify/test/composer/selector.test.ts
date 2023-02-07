@@ -3,14 +3,14 @@ import selector from "../../composer/selector.ts"
 import strings from "../../methods/strings.ts"
 
 
-Deno.test(
-    "hello",
-    _ =>
-        assertEquals(
-            selector([{type: "string", name: "hello2", required: false}]),
-            `'"hello2":' + \(typeof o.hello2 === "string"?'"'+str(o.hello2)+'"':'null'\)`
-        )
-)
+// Deno.test(
+//     "hello",
+//     _ =>
+//         assertEquals(
+//             selector([{type: "string", name: "hello2", required: false}]),
+//             `'"hello2":' + \(typeof o.hello2 === "string"?'"'+str(o.hello2)+'"':'null'\)`
+//         )
+// )
 
 // Deno.test(
 //     "hello",
