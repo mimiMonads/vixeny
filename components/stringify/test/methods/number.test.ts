@@ -8,7 +8,7 @@ Deno.test(
     _ => 
         assertEquals(
             number({ type: "number", name: "hello", required: true , const:1}),
-            `'"hello":' + hello`
+            `'"hello":' + 1`
         )
 )
 
