@@ -1,4 +1,4 @@
-import { JsonMap, JsonOptionsType } from "../types.ts";
+import {  JsonOptionsType } from "../types.ts";
 
 export default (element: JsonOptionsType[]) =>
   (

@@ -14,10 +14,10 @@ export type JsonStringType = JsonString & { name: string; required: boolean };
 type JsonBoolean = {
   type: "boolean";
 } | {
-  type: "string";
+  type: "boolean";
   const: boolean;
 } | {
-  type: "string";
+  type: "boolean";
   default: boolean;
 };
 
