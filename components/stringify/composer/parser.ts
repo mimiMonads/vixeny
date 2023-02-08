@@ -1,4 +1,4 @@
-import strings from "../methods/strings.ts";
+import strings from "../composer/sanitizer.ts";
 
 export default (s: string) =>
   (

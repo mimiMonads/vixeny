@@ -33,21 +33,6 @@ type JsonNumber = {
   default: number;
 };
 
-export type JsonNumberType = JsonNumber & { name: string; required: boolean };
-
-export type JsonOptionsType = JsonStringType | JsonBooleanType | JsonNumberType;
-
-export type JsonElements = JsonString | JsonBoolean | JsonNumber;
-
-export type JsonMap = { name: string; type: JsonTypes; required: boolean };
-
-type JsonArray = {
-  type: "array";
-  items?: JsonElements;
-  prefixItems?: [JsonElements];
-  maxContains?: number;
-};
-
 export type JsonStringify = {
   type: "object";
   properties: {
@@ -56,5 +41,30 @@ export type JsonStringify = {
   required?: string[];
 };
 
-// oneOf?: JsonElements[];
-// | {or: [JsonElements,JsonElements]} | {oneOf: JsonElements[]}
+type JsonArray = {
+  type: "array";
+  items?: JsonElements;
+  prefixItems?: [JsonElements];
+  maxContains?: number;
+};
+
+export type JsonNumberType = JsonNumber & { name: string; required: boolean };
+
+export type JsonOptionsType = JsonStringType | JsonBooleanType | JsonNumberType;
+
+export type JsonElements = JsonString | JsonBoolean | JsonNumber;
+
+export type JsonMap = { name: string; type: JsonTypes; required: boolean };
+
+ 
+
+// export type JsonOptionsSanitizer = {
+//   disable?: "I know what I do and I have read the documentation",
+//   searcher?: "strict" | "basic"
+// }
+
+export type JsonOptions = {
+  scheme: JsonStringify;
+  null?: "add" | "removeKey";
+}
+
