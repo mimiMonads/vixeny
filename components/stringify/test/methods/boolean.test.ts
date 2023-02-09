@@ -17,7 +17,7 @@ Deno.test(
     _ => 
         assertEquals(
             boolean({ type: "boolean", name: "hello", required: true}),
-            `'"hello":'+( o.{x.name} === true?o.hello:'null')`
+            `'"hello":'+( typeof o.hello === "boolean"?o.hello:'null')`
         )
 )
 
@@ -26,7 +26,7 @@ Deno.test(
     _ => 
         assertEquals(
             boolean({ type: "boolean", name: "hello", required: true, default: true}),
-            `'"hello":'+( o.{x.name} === true?o.hello:'true')`
+            `'"hello":'+( typeof o.hello === "boolean"?o.hello:'true')`
         )
 )
 
