@@ -6,14 +6,14 @@ export default (o: JsonStringify) =>
     ((x) => x(x))((x: (arg0: any) => { (arg0: any): any; new (): any }) =>
       f((y: any) => x(x)(y))
     ))((f) =>
-      (o: JsonStringify) =>
+      (o: JsonStringify) => (s:string)=>
         Object.keys(o.properties)
           .map((x) =>
             o.properties[x].type !== "object"
               ? {
                 ...o.properties[x],
-                ...{ name: x, required: o.required?.includes(x) ?? false },
+                ...{ name: s+x, required: o.required?.includes(x) ?? false },
               }
-              : [{ name: x }, ...f(o.properties[x])]
+              : [{ name: x }, ...f(o.properties[x])(x+"."+s)]
           )
-    )(o);
+    )(o)("");
