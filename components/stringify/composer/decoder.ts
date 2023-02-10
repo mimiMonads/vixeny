@@ -8,6 +8,6 @@ export default (j: JsonStringify) =>
           type: j.properties[x].type,
           required: j.required?.includes(x) === true ? true : false,
           name: x,
-          const: "const" in j.properties[x] ? j.properties.const : undefined
+          const: "const" in j.properties[x] ? j.properties.const : undefined,
         }) as JsonMap,
     );

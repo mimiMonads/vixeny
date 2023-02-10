@@ -3,13 +3,18 @@ import selector from "../../composer/selector.ts";
 import strings from "../../composer/sanitizer.ts";
 
 Deno.test(
-    "hello",
-    _ =>
-        assertEquals(
-            selector([{type: "string", name: "hello2", required: false, const: "world"}]),
-            `'"hello2":"world"'`
-        )
-)
+  "hello",
+  (_) =>
+    assertEquals(
+      selector([{
+        type: "string",
+        name: "hello2",
+        required: false,
+        const: "world",
+      }]),
+      `'"hello2":"world"'`,
+    ),
+);
 
 // Deno.test(
 //     "hello",

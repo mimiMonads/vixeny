@@ -42,6 +42,7 @@ export type JsonStringify = {
 };
 
 export type JsonArray = {
+  name: "string";
   type: "array";
 };
 
@@ -49,13 +50,16 @@ export type JsonNumberType = JsonNumber & { name: string; required: boolean };
 
 export type JsonOptionsType = JsonStringType | JsonBooleanType | JsonNumberType;
 
-export type JsonElements = JsonString | JsonBoolean | JsonNumber | JsonArray;
+export type JsonElements =
+  | JsonString
+  | JsonBoolean
+  | JsonNumber
+  | JsonArray
+  | JsonStringify;
 
 export type JsonMap = { name: string; type: JsonTypes; required: boolean };
 
- 
 export type JsonOptions = {
   scheme: JsonStringify;
   null?: "add" | "removeKey";
-}
-
+};
