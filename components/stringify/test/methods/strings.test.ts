@@ -5,7 +5,7 @@ Deno.test(
   "string",
   (_) =>
     assertEquals(
-      string({ type: "string", name: "hello", required: true }),
+      string({ type: "string", name: "hello", required: true , path:".hello"}),
       `'"hello":' + str(o.hello)`,
     ),
 );
@@ -14,7 +14,7 @@ Deno.test(
   "string",
   (_) =>
     assertEquals(
-      string({ type: "string", name: "hello", required: false }),
+      string({ type: "string", name: "hello", required: false , path:".hello"}),
       `'"hello":' + (typeof o.hello === "string"?str(o.hello):'null')`,
     ),
 );

@@ -1,5 +1,6 @@
 export type JsonTypes = "string" | "boolean" | "number";
 
+type Extra = { name: string; required: boolean, path?: string}
 type JsonString = {
   type: "string";
 } | {
@@ -9,7 +10,7 @@ type JsonString = {
   type: "string";
   default: string;
 };
-export type JsonStringType = JsonString & { name: string; required: boolean };
+export type JsonStringType = JsonString & Extra;
 
 type JsonBoolean = {
   type: "boolean";
@@ -21,7 +22,7 @@ type JsonBoolean = {
   default: boolean;
 };
 
-export type JsonBooleanType = JsonBoolean & { name: string; required: boolean };
+export type JsonBooleanType = JsonBoolean & Extra;
 
 type JsonNumber = {
   type: "number";
@@ -33,6 +34,14 @@ type JsonNumber = {
   default: number;
 };
 
+export type JsonNumberType = JsonNumber & Extra;
+
+export type JsonArray = {
+  type: "array";
+};
+
+export type JsonArrayType = JsonBoolean & Extra;
+
 export type JsonStringify = {
   type: "object";
   properties: {
@@ -41,14 +50,11 @@ export type JsonStringify = {
   required?: string[];
 };
 
-export type JsonArray = {
-  name: "string";
-  type: "array";
-};
 
-export type JsonNumberType = JsonNumber & { name: string; required: boolean };
 
-export type JsonOptionsType = JsonStringType | JsonBooleanType | JsonNumberType;
+
+
+export type JsonOptionsType = JsonStringType | JsonBooleanType | JsonNumberType | JsonArrayType;
 
 export type JsonElements =
   | JsonString

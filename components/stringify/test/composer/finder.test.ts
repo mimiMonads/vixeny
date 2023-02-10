@@ -10,14 +10,14 @@ Deno.test(
         properties: {
           hello: {
             type: "object",
-            properties: {
-              hello: { type: "string" },
-            },
+            properties:{
+                hello: {type: "string"}
+            }
           },
-          day: { type: "string" },
         },
         required: ["hello"],
       }),
-      null,
+      `"{" +'"hello":{' + '"hello":' + (typeof o.hello.hello === "string"?str(o.hello.hello):'null') + "}" + "}"`,
     ),
 );
+

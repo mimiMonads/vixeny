@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
 import selector from "../../composer/selector.ts";
-import strings from "../../composer/sanitizer.ts";
+
 
 Deno.test(
   "hello",
