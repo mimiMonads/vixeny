@@ -1,4 +1,7 @@
-import {  JsonOptionsType } from "../types.ts";
+import { JsonOptionsType } from "../types.ts";
+import string from "../methods/string.ts";
+import boolean from "../methods/boolean.ts";
+import number from "../methods/number.ts";
 
 export default (element: JsonOptionsType[]) =>
   (
@@ -6,11 +9,9 @@ export default (element: JsonOptionsType[]) =>
       element.map(
         (x) =>
           x.type === "string"
-            ? x.required
-              ? `'"${x.name}":' + str(o.${x.name})`
-              : `'"${x.name}":' + (typeof o.${x.name} === "string"?str(o.${x.name}):'null')`
+            ? string(x)
             : x.type === "boolean"
-            ? `'"${x.name}":'+(o.${x.name} === true ?"true":"false")`
-            : `'"${x.name}":'+( typeof o.${x.name} === "number"?o.${x.name} :null)`,
+            ? boolean(x)
+            : number(x),
       ).join(" + ',' +")
   )(element.length - 1);

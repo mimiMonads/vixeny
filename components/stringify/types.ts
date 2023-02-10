@@ -41,30 +41,25 @@ export type JsonStringify = {
   required?: string[];
 };
 
-type JsonArray = {
+export type JsonArray = {
+  name: "string";
   type: "array";
-  items?: JsonElements;
-  prefixItems?: [JsonElements];
-  maxContains?: number;
 };
 
 export type JsonNumberType = JsonNumber & { name: string; required: boolean };
 
 export type JsonOptionsType = JsonStringType | JsonBooleanType | JsonNumberType;
 
-export type JsonElements = JsonString | JsonBoolean | JsonNumber;
+export type JsonElements =
+  | JsonString
+  | JsonBoolean
+  | JsonNumber
+  | JsonArray
+  | JsonStringify;
 
 export type JsonMap = { name: string; type: JsonTypes; required: boolean };
-
- 
-
-// export type JsonOptionsSanitizer = {
-//   disable?: "I know what I do and I have read the documentation",
-//   searcher?: "strict" | "basic"
-// }
 
 export type JsonOptions = {
   scheme: JsonStringify;
   null?: "add" | "removeKey";
-}
-
+};
