@@ -43,7 +43,7 @@ export default (o: JsonStringify) =>
                       {
                         ...o.properties[x],
                         ...{ name: x, required: o.required?.includes(x) ?? false },
-                        ...s === "" ? {} : {path:s + "." + x } 
+                        ...{path: s + "." + x } 
                       } as JsonArrayType
                     )
               :  `'"${ x }":{' + ` + (f(o.properties[x])(s + "." + x ).join(" + ',' +") )  + ' + "}"'
