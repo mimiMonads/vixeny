@@ -12,3 +12,47 @@ Deno.test(
       `{"id":"hello"}`,
     ),
 );
+
+Deno.test(
+  "Response response",
+  async (_) =>
+    assertEquals(
+      await (await (response()({
+        path: "/",
+        json: {
+          scheme: {
+            type: "object",
+            properties: {
+              hello: {
+                type: "string",
+              },
+            },
+          },
+        },
+        f: () => ({ hello: "world" }),
+      })(new Request("http://localhost:8080/")))).text(),
+      `{"hello":"world"}`,
+    ),
+);
+
+Deno.test(
+  "Response response",
+  async (_) =>
+    assertEquals(
+      await (await (response()({
+        path: "/",
+        json: {
+          scheme: {
+            type: "object",
+            properties: {
+              hello: {
+                type: "number",
+              },
+            },
+          },
+        },
+        f: () => ({ hello: 1 }),
+      })(new Request("http://localhost:8080/")))).text(),
+      `{"hello":1}`,
+    ),
+);

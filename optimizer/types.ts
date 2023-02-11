@@ -1,4 +1,5 @@
 import { ParamsMethod } from "../types.ts";
+import { JsonOptions, JsonType } from "../components/stringify/types.ts";
 
 export type ParamsOptions = {
   elements: string[];
@@ -19,9 +20,8 @@ export type ObjectRawResponse =
   | ObjectRawCommonRequest
   | ObjectRawResponseStatic;
 
-export type ObjectRawResponseCommon = {
+export type RawResponseCommon = {
   path: string;
-  f: (r: RequestArguments) => BodyInit | Promise<BodyInit>;
   param?: ParamsOptions;
   query?: QueryOptions;
   add?: AddOptions;
@@ -31,6 +31,15 @@ export type ObjectRawResponseCommon = {
   status?: number;
   header?: Record<string, string> | defaultMime;
 };
+
+export type ObjectRawResponseCommon =
+  | (RawResponseCommon & {
+    f: (r: RequestArguments) => BodyInit | Promise<BodyInit>;
+  })
+  | (RawResponseCommon & {
+    f: (r: RequestArguments) => JsonType | Promise<JsonType>;
+    json: JsonOptions;
+  });
 
 export type ObjectRawCommonRequest = {
   type: "request";
