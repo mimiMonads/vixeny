@@ -3,6 +3,7 @@ import { RouteTypes } from "../types.ts";
 export default (mine: [string, string][]) =>
   (arr: string[]) =>
     (name: string) =>
+    (path: string) =>
       arr.map(
         (x) =>
           (
@@ -12,7 +13,7 @@ export default (mine: [string, string][]) =>
                   el
                     ? [
                       "GET",
-                      name + x.slice(1),
+                      name + x.slice(path.length),
                       (new Function(
                         `return async _=> new Response( await Deno.readTextFile("${x}"), 
                       {headers:  {'Content-Type': '${el[1]}'}}
@@ -22,7 +23,7 @@ export default (mine: [string, string][]) =>
                     ]
                     : [
                       "GET",
-                      name + x.slice(1),
+                      name + x.slice(path.length),
                       (new Function(
                         `return async _=> new Response(await Deno.readTextFile("${x}"))`,
                       ))(),
