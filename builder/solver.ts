@@ -35,6 +35,7 @@ export default (o?: funRouterOptions) =>
           solver(o)(atlas),
         )
     )(
-      ((a: string[]) =>
-        ((o) => (s: string) => o.indexOf(s[0]))(a.map((x) => x[0])))(atlas[0]),
+      ((a: string[]) => ((o) => (s: string) => o.indexOf(s))(a.map((x) => x)))(
+        atlas[0],
+      ),
     );

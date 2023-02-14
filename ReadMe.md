@@ -128,8 +128,8 @@ await serve(
   )([
     {
       type: "static",
-      name: "/s",
-      path: "./",
+      name: "/s/",
+      path: "./static/",
     },
     ,
   ]),

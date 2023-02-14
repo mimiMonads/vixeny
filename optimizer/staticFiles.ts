@@ -24,7 +24,7 @@ export default (o?: funRouterOptions) =>
                   : "extra" in f
                   ? mime.concat(f.extra)
                   : mime,
-              )(p)(f.name),
+              )(p)(f.name)(f.path),
             ),
           ),
         ))(
