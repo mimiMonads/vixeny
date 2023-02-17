@@ -1,14 +1,13 @@
 import crcTable from "./crcTable.ts";
 import table from "./table.ts";
+import { SignVerifyOptions } from "./types.ts"
 
-export default async (seed?: string) =>
+export default (txt:string) => async (seed: SignVerifyOptions) =>
   (
     (
       new Function(`
          return a=> ar => ${
-        typeof seed === "string"
-          ? await table(seed).then((x) => x)
-          : await table(seed)
+          await table(seed)(txt).then((x) => x)
       }
         `)
     )()

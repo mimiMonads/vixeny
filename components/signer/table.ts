@@ -1,6 +1,7 @@
 import hash from "./hash.ts";
+import { SignVerifyOptions } from "./types.ts"
 
-export default async (seed?: string) =>
+export default (o:SignVerifyOptions) => async (key: string) =>
   (
     (s) =>
       (
@@ -21,39 +22,25 @@ export default async (seed?: string) =>
                   }]] )`,
               ).join("+") + ") >>> 0) % 65)"
           )(
-            "01234567".repeat(4).split(""),
+           (typeof o.size === "number" ? Array.from({length:o.size}, (_,i) => i).join("") : "01234567").repeat(4).split(""),
           )
       )(
         Array.from(
-          { length: 32 },
+          { length: typeof o.size === "number" ? o.size  * 8 : 32 },
           (_, i) => "0x" + s.slice(i === 0 ? 0 : i * 3, i * 3 + 8),
         ),
       )
   )(
-    typeof seed === "string"
-      ? await (
+await (
         async (s1) =>
-          (
-            async (s2) =>
-              (
-                async (s3) =>
-                  (
-                    (s4) => s1 + s2 + s3 + s4
-                  )(
-                    await hash(s3).then((x) => x),
-                  )
-              )(
-                await hash(s2).then((x) => x),
-              )
-          )(
-            await hash(s1).then((x) => x),
-          )
+        (await Promise.all(  Array.from(
+          {length: typeof o.size === "number" ? o.size  / 2 : 4},
+          async (_,i) => await hash(s1 + i).then( x => x)
+          ))).join("")
       )(
-        await hash(seed).then((x) => x),
+        await hash(key).then((x) => x),
       )
-      : Array.from(
-        { length: 4 },
-        (_, _i) =>
-          crypto.randomUUID().split("-").filter((x) => x != "").join(""),
-      ).join(""),
+
   );
+
+

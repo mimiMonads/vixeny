@@ -1,7 +1,8 @@
-import short from "./short.ts";
+import solver from "./solver.ts";
 import validChar from "../util/validChar.ts";
+import { SignVerifyOptions } from "./types.ts"
 
-export default async (seed?: string) =>
+export default async (seed: SignVerifyOptions) =>
   (
     (arp) =>
       (
@@ -31,5 +32,7 @@ export default async (seed?: string) =>
         [...validChar],
       )
   )(
-    await short(seed),
+    await solver(seed),
   );
+
+  
