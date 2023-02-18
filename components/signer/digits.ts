@@ -1,14 +1,13 @@
 import crcTable from "./crcTable.ts";
 import table from "./table.ts";
-import { SignVerifyOptions } from "./types.ts"
+import { SignVerifyOptions } from "./types.ts";
 
-export default (txt:string) => async (seed: SignVerifyOptions) =>
-  (
+export default (txt: string) =>
+  async (seed: SignVerifyOptions) =>
     (
-      new Function(`
-         return a=> ar => ${
-          await table(seed)(txt).then((x) => x)
-      }
+      (
+        new Function(`
+         return a=> ar => ${await table(seed)(txt).then((x) => x)}
         `)
-    )()
-  )(crcTable()) as (ar: number[]) => number;
+      )()
+    )(crcTable(seed.crcStart)) as (ar: number[]) => number;

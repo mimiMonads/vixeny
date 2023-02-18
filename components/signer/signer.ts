@@ -1,38 +1,31 @@
 import solver from "./solver.ts";
 import validChar from "../util/validChar.ts";
-import { SignVerifyOptions } from "./types.ts"
+import { SignVerifyOptions } from "./types.ts";
 
 export default async (seed: SignVerifyOptions) =>
-  (
-    (arp) =>
-      (
-        (v) => (s: string) =>
-          (
-            (p) =>
-              (s.length === 8
-                ? s
-                : p.map((x) => String.fromCharCode(x)).join("")) +
-              "." +
-              v[arp[0](p)] + v[arp[1](p)] + v[arp[2](p)] +
-              v[arp[3](p)] + v[arp[4](p)] + v[arp[5](p)] +
-              v[arp[6](p)] + v[arp[7](p)]
-          )(
-            [
-              s[0] ? s.charCodeAt(0) : 59,
-              s[1] ? s.charCodeAt(1) : 59,
-              s[2] ? s.charCodeAt(2) : 59,
-              s[3] ? s.charCodeAt(3) : 59,
-              s[4] ? s.charCodeAt(4) : 59,
-              s[5] ? s.charCodeAt(5) : 59,
-              s[6] ? s.charCodeAt(6) : 59,
-              s[7] ? s.charCodeAt(7) : 59,
-            ],
-          )
-      )(
-        [...validChar],
-      )
-  )(
-    await solver(seed),
-  );
-
-  
+  (new Function(
+    `return arp => 
+  v => 
+  s =>
+   (
+    p => 
+        (s.length === ${typeof seed.size === "number" ? seed.size : 8}
+            ? s
+            : p.map((x) => String.fromCharCode(x)).join("")) + "." +
+           ${
+      Array.from(
+        { length: typeof seed.size === "number" ? seed.size : 8 },
+        (_, i) => `v[arp[${i}](p)]`,
+      ).join("+")
+    }
+    )(
+        [
+        ${
+      Array.from(
+        { length: typeof seed.size === "number" ? seed.size : 8 },
+        (_, i) => `s[${i}] ? s.charCodeAt(${i}) : 59`,
+      ).join(",")
+    }
+        ]
+    ) `,
+  )())(await solver(seed))([...validChar]);
