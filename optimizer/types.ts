@@ -1,5 +1,6 @@
 import { ParamsMethod } from "../types.ts";
-import { JsonOptions, JsonType } from "../components/stringify/types.ts";
+import { JsonOptions, JsonType } from "../components/stringify/types.ts"
+import { SignVerifyOptions } from "../components/signer/types.ts"
 
 export type ParamsOptions = {
   elements: string[];
@@ -25,6 +26,7 @@ export type RawResponseCommon = {
   param?: ParamsOptions;
   query?: QueryOptions;
   add?: AddOptions;
+  signer?: SignVerifyOptions;
   delete?: AddOptions;
   dev?: "test";
   method?: ParamsMethod;

@@ -3,5 +3,5 @@ export type SignVerifyOptions = {
   size?: 8 | 16 | 24 | 32 | 40 | 48 | 56 | 64;
   plotter?: "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512";
   crcStart?: number;
-  barrel?: 2 | 1 | .5 | .25;
+  sequence?: 2 | 1 | .5 | .25;
 };
