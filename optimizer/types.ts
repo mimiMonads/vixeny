@@ -14,6 +14,7 @@ export type RequestArguments = {
   req: Request;
   query: Record<string, string | null | undefined>;
   param: Record<string, string>;
+  signer: (s:string) => string;
 };
 export type ObjectRawResponse =
   | ObjectRawResponseCommon
@@ -48,6 +49,7 @@ export type ObjectRawCommonRequest = {
   path: string;
   f: (r: RequestArguments) => Response | Promise<Response>;
   param?: ParamsOptions;
+  signer?: SignVerifyOptions;
   query?: QueryOptions;
   add?: AddOptions;
   delete?: AddOptions;

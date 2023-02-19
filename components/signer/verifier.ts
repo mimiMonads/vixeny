@@ -43,5 +43,5 @@ export default async (seed: SignVerifyOptions) =>
   ))()(
     await solver(seed),
   )(
-    [...validChar, ...[";"]],
+    [...validChar],
   ) as (s: string) => -1 | 1;

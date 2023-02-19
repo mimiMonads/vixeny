@@ -23,7 +23,7 @@ export default async (seed: SignVerifyOptions) =>
         ${
       Array.from(
         { length: typeof seed.size === "number" ? seed.size : 8 },
-        (_, i) => `s[${i}] ? s.charCodeAt(${i}) : 59`,
+        (_, i) => `s[${i}] ? s.charCodeAt(${i}) :64`,
       ).join(",")
     }
         ]

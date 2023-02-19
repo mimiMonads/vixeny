@@ -15,15 +15,15 @@ export default (
               : x.type === "static"
               ? ["GET", x.path, staticFiles(o)(x), x.name] as RouteTypes
               : [
-                x?.method ? x.method : "GET",
-                x.path,
-                response(o)(x),
-                false,
-              ] as RouteTypes
+x?.method? x.method:"GET",
+x.path,
+response(o)(x),
+false,
+] as unknown as RouteTypes
             : [
-              x?.method ? x.method : "GET",
-              x.path,
-              response(o)(x),
-              false,
-            ] as RouteTypes,
+x?.method? x.method:"GET",
+x.path,
+response(o)(x),
+false,
+] as unknown as RouteTypes,
       );

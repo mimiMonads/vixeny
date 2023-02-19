@@ -1,5 +1,6 @@
 import params from "./parameters/main.ts";
 import query from "./queries/main.ts";
+import signer from "../components/signer/signer.ts"
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
 
@@ -8,11 +9,18 @@ export default (o?: funRouterOptions) =>
     (ar: string[]) =>
       ((el) =>
         (
-          endo => endo as (r: Request) => RequestArguments
+           async endo => f.signer
+            ?  ( 
+               sing=> endo(sing) as (r: Request) => RequestArguments
+            )(
+              (await  signer(f.signer))
+            )
+   
+            : endo as (r: Request) => RequestArguments
         )(
           (
             new Function(
-              `return ${
+              `return ${(f.signer !== undefined? "signer=>" : "")} ${
                 el.reduce(
                   (acc, y) =>
                     (y.type == 1 && ar.includes(y.name))
@@ -25,7 +33,7 @@ export default (o?: funRouterOptions) =>
                         ? (v.type === 0)
                           ? acc + `${v.name}:r,`
                           : acc + `${v.name}:${v.name}(r.url),`
-                        : acc, "")
+                        : acc,  (f.signer !== undefined ? "signer:signer," : ""))
                   }})`,
                 )
               }`,
