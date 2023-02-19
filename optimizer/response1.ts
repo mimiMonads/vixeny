@@ -19,7 +19,7 @@ export default (o?: funRouterOptions) =>
                   (j) =>
                     async (r: Request) =>
                       new Response(
-                         j(f.f((await c)(r))) as BodyInit,
+                        j(f.f((await c)(r))) as BodyInit,
                         h,
                       )
                 )(
@@ -46,7 +46,7 @@ export default (o?: funRouterOptions) =>
               (j) =>
                 async (r: Request) =>
                   new Response(
-                     j(f.f((await c)(r))) as BodyInit,
+                    j(f.f((await c)(r))) as BodyInit,
                   )
             )(
               jsonComposer(f.json.scheme),
@@ -59,11 +59,14 @@ export default (o?: funRouterOptions) =>
           ? ((h: ResponseInit) =>
             "json" in f
               ? (
-                (j) => async (r: Request) => new Response(j(f.f((await c)(r))) as BodyInit, h)
+                (j) =>
+                  async (r: Request) =>
+                    new Response(j(f.f((await c)(r))) as BodyInit, h)
               )(
                 jsonComposer(f.json.scheme),
               )
-              : async (r: Request) => new Response(f.f((await c)(r)) as BodyInit, h))({
+              : async (r: Request) =>
+                new Response(f.f((await c)(r)) as BodyInit, h))({
               headers: "header" in f
                 ? typeof f.header === "string"
                   ? { "Content-Type": mime.find((x) => x[0] === f.header)![1] }
@@ -73,7 +76,9 @@ export default (o?: funRouterOptions) =>
             })
           : "json" in f
           ? (
-            (j) => async (r: Request) => new Response(j(f.f((await c)(r))) as BodyInit)
+            (j) =>
+              async (r: Request) =>
+                new Response(j(f.f((await c)(r))) as BodyInit)
           )(
             jsonComposer(f.json.scheme),
           )

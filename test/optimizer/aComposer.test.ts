@@ -6,10 +6,10 @@ Deno.test(
   async (_) =>
     assertEquals(
       (await aComposer({ hasName: "http://localhost:8080/" })({
-param: { elements: ["id"] },
-path: "/test",
-f: (r) => r.query.hello||"nothing",
-})(["query"]))(new Request("http://localhost:8080/test?hello=hi")).query
+        param: { elements: ["id"] },
+        path: "/test",
+        f: (r) => r.query.hello || "nothing",
+      })(["query"]))(new Request("http://localhost:8080/test?hello=hi")).query
         .hello,
       "hi",
     ),
@@ -19,10 +19,10 @@ Deno.test(
   async (_) =>
     assertEquals(
       (await aComposer()({
-path: "/test",
-param: { elements: ["id"] },
-f: (r) => r.query.hello||"nothing",
-})(["query"]))(new Request("http://localhost:8080/test?hello=hi")).query
+        path: "/test",
+        param: { elements: ["id"] },
+        f: (r) => r.query.hello || "nothing",
+      })(["query"]))(new Request("http://localhost:8080/test?hello=hi")).query
         .hello,
       "hi",
     ),
@@ -32,10 +32,10 @@ Deno.test(
   async (_) =>
     assertEquals(
       (await aComposer({ hasName: "http://localhost:8080/" })({
-param: { elements: ["id"] },
-path: "/test",
-f: (r) => r.query.hello||"nothing",
-})(["query","req"]))(new Request("http://localhost:8080/test?hello=hi"))
+        param: { elements: ["id"] },
+        path: "/test",
+        f: (r) => r.query.hello || "nothing",
+      })(["query", "req"]))(new Request("http://localhost:8080/test?hello=hi"))
         .query.hello,
       "hi",
     ),
@@ -45,10 +45,10 @@ Deno.test(
   async (_) =>
     assertEquals(
       (await aComposer({ hasName: "http://localhost:8080/" })({
-path: "/test/:id",
-param: { elements: ["id"] },
-f: (r) => r.param.id,
-})(["param"]))(new Request("http://localhost:8080/test/1")).param.id,
+        path: "/test/:id",
+        param: { elements: ["id"] },
+        f: (r) => r.param.id,
+      })(["param"]))(new Request("http://localhost:8080/test/1")).param.id,
       "1",
     ),
 );
@@ -58,10 +58,10 @@ Deno.test(
   async (_) =>
     assertEquals(
       (await aComposer({ hasName: "http://localhost:8080/" })({
-path: "/test/:a/:b/:c/",
-param: { elements: ["a","b","c"] },
-f: (r) => r.param.id,
-})(["param"]))(new Request("http://localhost:8080/test/1/2/3/")).param.b,
+        path: "/test/:a/:b/:c/",
+        param: { elements: ["a", "b", "c"] },
+        f: (r) => r.param.id,
+      })(["param"]))(new Request("http://localhost:8080/test/1/2/3/")).param.b,
       "2",
     ),
 );
@@ -70,9 +70,9 @@ Deno.test(
   async (_) =>
     assertEquals(
       (await aComposer()({
-path: "/test/:a/:b/:c/",
-f: (r) => r.param.id.toString(),
-})(["param"]))(new Request("http://localhost:8080/test/1/2/3/")).param.b,
+        path: "/test/:a/:b/:c/",
+        f: (r) => r.param.id.toString(),
+      })(["param"]))(new Request("http://localhost:8080/test/1/2/3/")).param.b,
       "2",
     ),
 );
