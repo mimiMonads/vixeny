@@ -32,7 +32,7 @@ export default (o: SignVerifyOptions) =>
                 )
             )(
               Array.from(
-                { length: typeof o.size === "number" ? o.size / 2 : 4 },
+                { length: typeof o.size === "number" ? (o.size / 2) * 2 :8  },
                 () =>
                   Array.from(
                     { length: typeof o.size === "number" ? o.size : 8 },
@@ -62,3 +62,5 @@ export default (o: SignVerifyOptions) =>
         await hash(o)(key).then((x) => x),
       ),
     );
+
+    
