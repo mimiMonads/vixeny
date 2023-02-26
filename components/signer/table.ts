@@ -9,30 +9,21 @@ export default (o: SignVerifyOptions) =>
           (p) =>
             (
               (el) =>
-                (
-                  (fa) =>
+                
+
                     "(((" + Array.from(
                       {
-                        length: (typeof o.size === "number" ? o.size : 8) *
-                          (typeof o.sequence === "number" ? o.sequence : 1),
+                        length: (typeof o.size === "number" ? o.size : 8) * (typeof o.sequence === "number" ? o.sequence : 1) * 4,
                       },
                       (_, i) =>
-                        `( ${p[i === 0 ? 0 : i * fa]} ^ a[ar[${
-                          el[i === 0 ? 0 : i * fa]
-                        }]]  ^  ${p[i === 0 ? 1 : i * fa + 1]} ^ a[ar[${
-                          el[i === 0 ? 1 : i * fa + 1]
-                        }]]  ^  ${p[i === 0 ? 2 : i * fa + 2]} ^ a[ar[${
-                          el[i === 0 ? 2 : i * fa + 2]
-                        }]]  ^  ${p[i === 0 ? 3 : i * fa + 3]} ^ a[ar[${
-                          el[i === 0 ? 3 : i * fa + 3]
-                        }]] )`,
+                        `( ${p[i ]} ^ a[ar[${
+                          el[i]
+                        }]])`,
                     ).join("+") + ") >>> 0) % 65)"
-                )(
-                  typeof o.size === "number" ? (o.size / (o.size / 4)) : 4,
-                )
+
             )(
               Array.from(
-                { length: typeof o.size === "number" ? (o.size / 2) * 2 :8  },
+                { length: typeof o.size === "number" ? (o.size) * 2 :16 },
                 () =>
                   Array.from(
                     { length: typeof o.size === "number" ? o.size : 8 },
