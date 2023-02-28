@@ -24,7 +24,7 @@ export default [
   [".gif", "image/gif"],
   [".htm", "text/html"],
   [".html", "text/html"],
-  [".ico", "image/vnd.microsoft.icon"],
+  [".ico", "image/x-icon"],
   [".ics", "text/calendar"],
   [".jar", "application/java-archive"],
   [".jpeg", "image/jpeg"],
