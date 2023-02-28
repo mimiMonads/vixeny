@@ -1,6 +1,19 @@
 # Endofunctor
 
-Alpha
+👨‍💻 Currently working on the beta, which will include :
+  - documentation 📚 
+  - examples 🧪 
+  - our own website 🌐
+  - and much more 🚀
+
+
+
+| Version | Native Features                   | Speed                                      |
+|---------|----------------------------------|--------------------------------------------|
+| v0.0.3.0 | Static Files      | (.9% overhead)  |
+|         | Signer    |  (2-8x faster than JWT)       |
+|         | JSON String      |      (2-30x faster)                                       |
+
 
 ## About
 
