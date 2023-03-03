@@ -8,7 +8,7 @@ export default (o?: funRouterOptions) =>
         (
           (sp) => [
             fl.map(
-              (x) => [x[1].split("/").length - 1, x[1], x[0], x[2]],
+              (x) => [x[1].split("/").length - 1, x[1], x[0], x[2]],            
             ),
             sp,
           ]
