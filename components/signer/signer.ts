@@ -4,7 +4,7 @@
 
 export default async (seed: SignVerifyOptions) => (
  ar => (
-    p => (s:string) =>  s + "." + s.split("").map( x => x.charCodeAt(0)).map( (x,i,a) => 
+    p => (s:string) =>  s + "." + [...s].map( x => x.charCodeAt(0)).map( (x,i,a) => 
      i < 7 
      ? p[ar[i%8]([a[0],a[1],a[2],a[3],a[4],a[5],a[6],a[7]])]
      : p[
@@ -17,7 +17,8 @@ export default async (seed: SignVerifyOptions) => (
         a[(i-2)],
         a[(i-1)],
         x,
-    ])]
+    ]
+    )]
     ).join("")
  )(
     [...validChar]
