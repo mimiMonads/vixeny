@@ -1,5 +1,5 @@
 export default (start = 0xEDB88320) =>
-  new Uint32Array(
+  new Int32Array(
     (() =>
       Array.from(
         { length: 256 },

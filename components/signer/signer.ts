@@ -17,9 +17,8 @@ export default async (seed: SignVerifyOptions) => (
         a[(i-2)],
         a[(i-1)],
         x,
-    ]
-    )]
-    ).join("")
+    ])]
+    ).reduce( (acc,x) => acc + x)
  )(
     [...validChar]
  )

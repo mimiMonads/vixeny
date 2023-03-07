@@ -15,10 +15,9 @@ export default async (seed: SignVerifyOptions) => (
        s.length >= 17
         ? (
             m => 
-            [
-                ...s
-                .slice(0, m -1 )
-            ]
+            s
+        .slice(0, m -1 )
+        .split("")
         .map( x => x.charCodeAt(0))
         .every( (_,i,a)  => 
         i < 7 
