@@ -11,17 +11,20 @@ import {
   type InnerObjEmpty = [string, RequestFunction];
   type Map = Record<number, Record<number, InnerObj[]>>;
   
-  export type Atlas = ([
+export type PartialAtlas = (Atlas | [])
+
+  export type Atlas = [
     ParamsMethod[],
     number[][],
     string[][][],
     RequestFunction[],
     (Atlas | []),
-  ] | [] );
+  ] ;
+
   export default (_o?: funRouterOptions) =>
-    (a:  [ArraySwap[], Atlas]): Atlas =>
+    (a:  [ArraySwap[], PartialAtlas]): Atlas =>
       (
-        (am) =>
+        (ParamsMethod) =>
           (
             (ob) =>
               (
@@ -29,7 +32,7 @@ import {
                   (
                     (al) =>
                       (
-                        (ul) => [am, il, al, ul, a[1]]
+                        (ul) => [ParamsMethod, il, al, ul, a[1]]
                       )(
                         il.map(
                           (x, i) =>
@@ -65,7 +68,7 @@ import {
               )
           )(
             Object.fromEntries(
-              am.map((x) => a[0].filter((y) => x === y[2]))
+              ParamsMethod.map((x) => a[0].filter((y) => x === y[2]))
                 .map(
                   (x) =>
                     ((p) =>
