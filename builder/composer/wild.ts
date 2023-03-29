@@ -6,5 +6,5 @@ import { funRouterOptions, RouteTypes } from "../../types.ts";
 //     )
 
 export default 
- (_o?: funRouterOptions) => (max: number) => (ar: RouteTypes[]) =>
+ (_o?: funRouterOptions) => (max: number) => (ar: RouteTypes[]) => ar
 

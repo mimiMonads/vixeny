@@ -42,8 +42,52 @@ Deno.test(
     ),
 );
 
-// [
-//     [["/","/hello", "/test"],["/hello/", "/test/hello"],["/hello/:id/test/", "/test/:id/hello/"]],
-//     [["/","/hello", "/test"],["/hello/", "/test/hello"],["/hello/:id/test/", "/test/:id/hello/"]],
-//     [["/","/hello", "/test"],["/hello/", "/test/hello"],]
-// ]
+console.log(    map([
+  [
+    ["a", "b"],
+    ["c"],
+  ],
+  [
+    ["d"],
+    ["e", "f"],
+  ],
+]))
+
+Deno.test("functionName basic test", () => {
+  assertEquals(
+    map([
+      [
+        ["a", "b"],
+        ["c"],
+      ],
+      [
+        ["d"],
+        ["e", "f"],
+      ],
+    ]),
+    [
+      [0, 2],
+      [3, 4],
+    ]
+  );
+});
+
+Deno.test("functionName edge case test", () => {
+  assertEquals(
+    map([
+      [
+        ["a"],
+        ["b"],
+      ],
+      [
+        ["c"],
+        ["d"],
+      ],
+    ]),
+    [
+      [0, 1],
+      [2, 3],
+    ]
+  );
+});
+

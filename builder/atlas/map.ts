@@ -9,12 +9,12 @@ export default (c: string[][][]) =>
       )(
         el
           .map(
-            (x) => x.reduce((acc, y) => y + acc),
+            (x) => x[x.length - 1],
           )
           .map((x) => x + 1)
           .map(
             (_, i, a) =>
-              i === 0 ? 0 : a.slice(0, i).reduce((acc, x) => acc + x, -2),
+              i === 0 ? 0 : a.slice(0, i).reduce((acc, x) => acc + x),
           ),
       )
   )(
