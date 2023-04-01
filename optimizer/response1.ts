@@ -31,14 +31,15 @@ export default (o?: funRouterOptions) =>
                     h,
                   ))(
                 {
-                  headers: "header" in f
-                    ? typeof f.header === "string"
+                  headers:
+                   typeof f.headers === "string"
                       ? {
-                        "Content-Type": mime.find((x) => x[0] === f.header)![1],
+                        "Content-Type": mime.find((x) => x[0] === f.headers)![1],
                       }
-                      : f.header as Record<string, string>
-                    : { "Content-Type": "text/plain" },
-                  status: "status" in f ? f.status : 200,
+                      : f.headers ?? { "Content-Type": "text/plain" }
+              ,
+                    
+                  status: "status" in f ? f.status : 204,
                 },
               )
             : "json" in f
@@ -66,13 +67,15 @@ export default (o?: funRouterOptions) =>
                 jsonComposer(f.json.scheme),
               )
               : async (r: Request) =>
-                new Response(f.f((await c)(r)) as BodyInit, h))({
-              headers: "header" in f
-                ? typeof f.header === "string"
-                  ? { "Content-Type": mime.find((x) => x[0] === f.header)![1] }
-                  : f.header as Record<string, string>
-                : { "Content-Type": "text/plain" },
-              status: "status" in f ? f.status : 200,
+                new Response(f.f((await c)(r))  as BodyInit, h))({
+              headers: 
+              typeof f.headers === "string"
+              ? {
+                "Content-Type": mime.find((x) => x[0] === f.headers)![1],
+              }
+              : f.headers ?? { "Content-Type": "text/plain" },
+
+              status: "status" in f ? f.status : 204,
             })
           : "json" in f
           ? (

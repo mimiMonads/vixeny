@@ -34,7 +34,7 @@ export type RawResponseCommon = {
   dev?: "test";
   method?: ParamsMethod;
   status?: number;
-  header?: Record<string, string> | defaultMime;
+  headers?: Record<string, string> | defaultMime;
 };
 
 export type ObjectRawResponseCommon =
