@@ -15,9 +15,10 @@ export default (mine: [string, string][]) =>
                         "GET",
                         name + x.slice(path.length),
                         (new Function(
-                          `return async _=> new Response( await Deno.readTextFile("${x}"), 
-                      {headers:  {'Content-Type': '${el[1]}'}}
-                            )`,
+                          typeof Deno === "object" 
+                          ?`return async _=> new Response( await Deno.readTextFile("${x}"), {headers:  {'Content-Type': '${el[1]}'}})`
+                          :`return async _=> new Response( await ( Bun.file("${x}")).arrayBuffer(), {headers:  {'Content-Type': '${el[1]}'}})`
+                          ,
                         ))(),
                         false,
                       ]
@@ -25,7 +26,9 @@ export default (mine: [string, string][]) =>
                         "GET",
                         name + x.slice(path.length),
                         (new Function(
-                          `return async _=> new Response(await Deno.readTextFile("${x}"))`,
+                          typeof Deno === "object" ?
+                           `return (async _ => new Response( await Deno.readTextFile("${x}"))` :
+                            `return async _ => new Response( await ( Bun.file("${x}")).arrayBuffer())`
                         ))(),
                         false,
                       ]

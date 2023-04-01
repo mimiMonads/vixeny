@@ -1,9 +1,12 @@
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseStatic } from "./types.ts";
 import syncCheckDir from "./syncCheckDir.ts";
+import bunSyncCheckDir from "./bunSyncCheckDir.ts";
+import denoCheckRead from "./denoCheckRead.ts"
 import atlas from "../builder/atlas/main.ts";
 import staticPaths from "./staticPaths.ts";
 import mime from "../components/util/mime.ts";
+import joiner from "../components/util/joiner.ts";
 import solver from "../builder/solver.ts";
 import split from "../builder/atlas/split.ts";
 
@@ -28,5 +31,13 @@ export default (o?: funRouterOptions) =>
             ),
           ),
         ))(
-        syncCheckDir(f.path).map((y) => y[0]).flat(),
+          (
+             denoCheck =>
+            typeof denoCheck == "string"
+          ?   syncCheckDir(f.path).map((y) => y[0]).flat()
+          :  bunSyncCheckDir(joiner)(denoCheck.getFiles)(denoCheck.stats)(f.path).map((y) => y[0]).flat()
+          )(
+            denoCheckRead
+          )
+        
       );
