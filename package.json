@@ -1,0 +1,28 @@
+{
+  "name": "vixiny",
+  "version": "0.0.3",
+  "description": "A functional router for Deno and Bun",
+  "main": "fun.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "deno test ./test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mimiMonads/functor.git"
+  },
+  "keywords": [
+    "deno",
+    "bun",
+    "functional",
+    "fast"
+  ],
+  "author": "Antony Vladimir",
+  "license": "SEE LICENSE IN ReadMe.md",
+  "bugs": {
+    "url": "https://github.com/mimiMonads/functor/issues"
+  },
+  "homepage": "https://github.com/mimiMonads/functor#readme"
+}
