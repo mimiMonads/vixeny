@@ -1,6 +1,9 @@
 debbug
 
+.vscode
+
 cov_profile
 *.lcov
 
 
+node_modules
