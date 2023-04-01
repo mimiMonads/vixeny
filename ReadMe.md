@@ -1,4 +1,6 @@
-# Endofunctor
+#  Vixiny /EndorFunctor
+
+Bun / Deno
 
 👨‍💻 Currently working on the beta, which will include :
   - documentation 📚 
