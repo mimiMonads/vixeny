@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "description": "A functional router for Deno and Bun",
   "main": "fun.ts",
-  "types": "./types.d.ts",
+  "types": "types.d.ts",
   "directories": {
     "test": "test"
   },

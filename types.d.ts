@@ -2,7 +2,6 @@
 import { funRouterOptions}  from "./types.ts"
 import { ObjectRawResponse } from "./optimizer/types.ts";
 
-export type vixiny
- = (options:funRouterOptions) => (routes:ObjectRawResponse[]) => (req:Request) => Response
 
- export type ObjectResponse = ObjectRawResponse
+// Define the default exported function
+export default function (o?: funRouterOptions): (routes: ObjectRawResponse[]) => (r: Request) => Response;
