@@ -1,5 +1,5 @@
 {
-  "name": "vixiny",
+  "name": "vixeny",
   "version": "0.0.3",
   "description": "A functional router for Deno and Bun",
   "main": "fun.ts",
