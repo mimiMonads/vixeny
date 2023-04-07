@@ -4,4 +4,5 @@ import { ObjectRawResponse } from "./optimizer/types.ts";
 
 
 // Define the default exported function
-export default function (o?: funRouterOptions): (routes: ObjectRawResponse[]) => (r: Request) => Response;
+declare function vixeny (o?: funRouterOptions): (routes: ObjectRawResponse[]) => (r: Request) => Response;
+export default vixeny
