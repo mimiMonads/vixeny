@@ -1,3 +1,19 @@
+/*
+ * Antony @mimiMonads
+ * 
+ * Vixeny / Endorfunctor
+ * 
+ * 
+ *  All programming paradigms have strengths and weaknesses and while this middleware is functional,
+ *  it does not mean that it is better than other paradigms.
+ *
+ *  I highly recommend that you do not proceed unless you have a solid foundation in functional programming.
+ * 
+ * 
+ *  Thanks and have fun ~
+ */
+
+
 import { funRouterOptions } from "./types.ts";
 import { ObjectRawResponse } from "./optimizer/types.ts";
 import optimizer from "./optimizer/optimize.ts";
