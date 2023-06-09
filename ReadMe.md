@@ -1,55 +1,50 @@
-#  Vixiny /EndorFunctor
+#  Vixiny
+
+
+
+
+Unleash the functional beast!
+
+Topics
+ - Intro
+ - Get started
+ - Rules
+ - Experimental
+ - Q&A
+
+## Intro
+
+  Vixiny is the fastest functional middleware/handler that matches others typed programming languages like go and surprasing all other Javascript frameworks.
+  
+
+  Some examples:
+  [Endofunctor vs. Hono](https://github.com/mimiMonads/hono-functor-benchmark)
 
 Bun / Deno
 
-👨‍💻 Currently working on the beta, which will include :
-  - documentation 📚 
-  - examples 🧪 
-  - our own website 🌐
-  - and much more 🚀
-
-
-
-| Version | Native Features                   | Speed                                      |
-|---------|----------------------------------|--------------------------------------------|
-| v0.0.3.0 | Static Files      | (.9% overhead)  |
-|         | Signer    |  (2-8x faster than JWT)       |
-|         | JSON String      |      (2-30x faster)                                       |
-
-
-## About
-
-Endofunctor is:
-
-- Independent
-- Fast
-- Scalable
-- Predictable
-- Functional
-
-## Benchmark
-
-Faster than Hono /
-[Endofunctor vs. Hono](https://github.com/mimiMonads/hono-functor-benchmark)
 
 ## Get started in 10 Minutes!
 
 ### Get Endofunctor and a server
 
 ```typescript
-//Endofunctor is just a router, so a server that gives a Request and expects a Response is needed
+//Vixiny is just a handler,  a server that gives a Request and expects a Response is needed
 
 import { serve } from "https://deno.land/std@0.159.0/http/server.ts";
 
-// import fun
+//  Deno.serve()
+//  Bun.serve()
+
 
 import fun from "https://deno.land/x/endofunctor/fun.ts";
+
 ```
 
 ## Give a path and a function
 
 ```typescript
 // the function has to return a valid BodyInt or Promise<BodyInit>
+
 await serve(
   fun()([
     {
@@ -61,9 +56,10 @@ await serve(
 );
 ```
 
-## Add parameters, a query, a status, or a header!
+## Add parameters, a query, a status, or a header
 
 ```typescript
+
 // the router auto-detect if you are using (parameters,  queries, or Request ) unless you send the arguments out of the scope
 // r: (arguments) => outOfScope(arguments),
 // you can add or remove them with "add", "delete"
@@ -186,6 +182,39 @@ There are four methods
 ```typescript
 type ParamsMethod = "GET" | "HEAD" | "POST" | "DELETE";
 ```
+
+## Experimental
+
+### Stringifier
+
+A JSON Stringifier base on JSONSchema, it is import to notice that:
+
+ - It's does not verify the JSON
+ - It can not fail
+ - If a key is missing and it is required, it will be "null", otherwise, it will not be added to the final string
+
+ ```typescript
+{
+  schema:{
+    json:{
+      type: "object",
+      properties: {
+        hello: {
+          type: "object",
+          properties: {
+            hello: { type: "string" },
+          },
+      },
+      required: ["hello"],
+    }
+  }
+}
+
+ ```
+
+### Signer and Verifier
+
+
 
 ## License
 

@@ -1,7 +1,7 @@
 /*
  * Antony @mimiMonads
  * 
- * Vixeny / Endorfunctor
+ * Vixeny
  * 
  * 
  *  All programming paradigms have strengths and weaknesses and while this middleware is functional,
@@ -18,9 +18,9 @@ import { funRouterOptions } from "./types.ts";
 import { ObjectRawResponse } from "./optimizer/types.ts";
 import optimizer from "./optimizer/optimize.ts";
 import atlas from "./builder/atlas/main.ts";
-
-import solver from "./builder/solver.ts";
 import split from "./builder/atlas/split.ts";
+import solver from "./builder/solver.ts";
+
 
 export default (o?: funRouterOptions) =>
   (routes: ObjectRawResponse[]) =>
