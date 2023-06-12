@@ -22,7 +22,9 @@ import split from "./builder/atlas/split.ts";
 import solver from "./builder/solver.ts";
 
 
-export default (o?: funRouterOptions) =>
+type Vixeny = (o?: funRouterOptions) => (routes: ObjectRawResponse[]) => (r: Request) => Promise<Response> | Response
+
+export default ((o?: funRouterOptions) =>
   (routes: ObjectRawResponse[]) =>
     ((re) =>
       ((s) => (r: Request) => re[3][s(r)](r))(
@@ -33,4 +35,4 @@ export default (o?: funRouterOptions) =>
             optimizer(o)(routes),
           ),
         ),
-      );
+      )) as unknown as Vixeny;

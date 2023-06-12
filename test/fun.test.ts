@@ -4,28 +4,28 @@ import fun from "../fun.ts";
 
 Deno.test(
   "main",
-  (_) =>
+  () =>
     (
       async (f) =>
         assertEquals(
           [
-            await f(new Request("http://localhost:8080/")).text(),
-            await f(new Request("http://localhost:8080/test")).text(),
-            await f(new Request("http://localhost:8080/test/")).text(),
-            await f(new Request("http://localhost:8080/", { method: "POST" }))
+            await (f(new Request("http://localhost:8080/")) as Response).text(),
+            await (f(new Request("http://localhost:8080/test")) as Response).text(),
+            await (f(new Request("http://localhost:8080/test/")) as Response).text(),
+            await (f(new Request("http://localhost:8080/", { method: "POST" })) as Response)
               .text(),
-            await f(new Request("http://localhost:8080/", { method: "HEAD" }))
+            await (f(new Request("http://localhost:8080/", { method: "HEAD" })) as Response)
               .text(),
-            await f(new Request("http://localhost:8080/", { method: "DELETE" }))
+            await (f(new Request("http://localhost:8080/", { method: "DELETE" })) as Response)
               .text(),
-            await fun()(paths)(new Request("http://localhost:8080/test/1/2/"))
+            await (f(new Request("http://localhost:8080/test/1/2/")) as Response)
               .text(),
-            f(new Request("http://localhost:8080/notFound")).status,
-            f(
+            (f(new Request("http://localhost:8080/notFound")) as Response).status,
+            (f(
               new Request("http://localhost:8080/notFound", {
                 method: "BAD_METHOD",
               }),
-            ).status,
+            ) as Response).status
           ],
           [
             "GET:main",
@@ -37,52 +37,11 @@ Deno.test(
             "GET:test/:id/:name/",
             404,
             405,
-          ],
+          ]
         )
-    )(
-      fun()(paths),
-    ),
-);
 
-Deno.test(
-  "main",
-  (_) =>
-    (
-      async (f) =>
-        assertEquals(
-          [
-            await f(new Request("http://localhost:8080/")).text(),
-            await f(new Request("http://localhost:8080/test")).text(),
-            await f(new Request("http://localhost:8080/test/")).text(),
-            await f(new Request("http://localhost:8080/", { method: "POST" }))
-              .text(),
-            await f(new Request("http://localhost:8080/", { method: "HEAD" }))
-              .text(),
-            await f(new Request("http://localhost:8080/", { method: "DELETE" }))
-              .text(),
-            await f(new Request("http://localhost:8080/test/1/2/")).text(),
-            f(new Request("http://localhost:8080/notFound")).status,
-            f(
-              new Request("http://localhost:8080/notFound", {
-                method: "BAD_METHOD",
-              }),
-            ).status,
-          ],
-          [
-            "GET:main",
-            "GET:test",
-            "GET:test/",
-            "POST:main",
-            "HEAD:main",
-            "DELETE:main",
-            "GET:test/:id/:name/",
-            404,
-            405,
-          ],
-        )
     )(
-      fun({
-        hasName: "http://localhost:8080/",
-      })(paths),
-    ),
-);
+      fun()(paths)
+    )
+)
+

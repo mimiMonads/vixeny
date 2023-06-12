@@ -1,6 +1,6 @@
 import { ParamsMethod } from "../types.ts";
 import { JsonOptions, JsonType } from "../components/stringify/types.ts";
-import { SignVerifyOptions } from "../components/signer/types.ts";
+//import { SignVerifyOptions } from "../components/signer/types.ts";
 
 export type ParamsOptions = {
   elements: string[];
@@ -28,8 +28,8 @@ export type RawResponseCommon = {
   param?: ParamsOptions;
   query?: QueryOptions;
   add?: AddOptions;
-  signer?: SignVerifyOptions;
-  verifier?: SignVerifyOptions;
+  // signer?: SignVerifyOptions;
+  //  verifier?: SignVerifyOptions;
   delete?: AddOptions;
   dev?: "test";
   method?: ParamsMethod;
@@ -51,8 +51,8 @@ export type ObjectRawCommonRequest = {
   path: string;
   f: (r: RequestArguments) => Response | Promise<Response>;
   param?: ParamsOptions;
-  signer?: SignVerifyOptions;
-  verifier?: SignVerifyOptions;
+  //  signer?: SignVerifyOptions;
+  //  verifier?: SignVerifyOptions;
   query?: QueryOptions;
   add?: AddOptions;
   delete?: AddOptions;
