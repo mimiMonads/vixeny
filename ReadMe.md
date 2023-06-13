@@ -36,16 +36,28 @@ Topics
 
 ```typescript
 // Vixeny is just a handler, a server that gives a Request and expects a Response is needed
+
+//Deno
+
 import { serve } from "https://deno.land/std@0.159.0/http/server.ts";
 
-// Deno.serve()
-// Bun.serve()
+//Bun
+
+Bun.serve()
+
+export default {
+  fetch: fun()() ,
+}
 
 // Get Vixeny
-//Deno 
+
+//Deno
+
 import fun from ("npm:vixeny")
 import fun from "https://deno.land/x/endofunctor/fun.ts";
+
 //Bun 
+
 import fun from ("vixeny")
 ```
 
@@ -255,30 +267,31 @@ Example usage:
 
 Example usage:
 
-```typescript
-{
-  path: "/check",
-  verifier: {
-    seed: "hello",
-    sequence: 0.25,
-  },
-  f: (r) => {
-    // Check if there are cookies
-    const c = r.req.headers.get("Cookie");
-    return c !== null
-      ? (
-        // Check if there is a session
-        const p = c.indexOf("session=");
-        p !== -1
-
-
-          ? r.verify(c.slice(p + 8, c.length))
-          : "null"
-      )
-      // If not, return the string "null"
-      : "null";
-  },
-}
+``` typescript
+ {
+   path: "/check",
+   verifier: {
+     seed: "hello",
+     sequence: .25,
+   },
+   f: (r) =>  (
+   // check if there are cookies
+     c => c !== null
+       ? (
+       // check if there a session 
+         p => p !== -1
+          // slice the cookie , verifier only return true or false 
+           ? r.verify(c.slice(p+8,c.length))
+           : "null"
+       )(
+         c.indexOf("session=")
+       )
+       // if not it return the string null
+       : "null"
+   )(
+     r.req.headers.get("Cookie")
+   )
+ },
 ```
 
 ## Q&A
@@ -288,6 +301,7 @@ Example usage:
   - **Security:** Deno enhances the security of your applications.
   - **Maturity:** Deno brings a more mature ecosystem.
   - **Potential:** Deno's server implementation is more optimizable. With the future potential of exclusive server development, Vixeny can leverage even further.
+
 
 - **Why is Node.js not supported?**
   
@@ -299,13 +313,13 @@ Example usage:
 
  - ***Stack-Savvy Memory Management:*** By utilizing stack memory, exploiting symmetry, and restricting itself to primitives, Vixeny achieves optimized memory management. It mitigates heap usage, promoting swift stack operations and ensuring data immutability. This memory strategy further amplifies Vixeny's speed.
 
- - ***No Looping nor Named Recursion:*** Vixeny capitalizes on the symmetrical properties of sets and categories, negating the need for looping or recursion (inside of the return function and uses Y combinators (fix point) due the lack of context to set up some functions). By inferring results for equivalent paths (or the lack of them) in the code or data, it eradicates redundancy and unnecessary computation, contributing to its superior efficiency.
+ - ***No Looping nor Named Recursion:*** Vixeny capitalizes on the symmetrical properties of sets and categories, negating the need for looping or recursion (inside of the return function and uses Y combinator (fix point) due the lack of context to set up some functions). By inferring results for equivalent paths (or the lack of them) in the code or data, it eradicates redundancy and unnecessary computation, contributing to its superior efficiency.
 
  - ***JIT Compiler Optimizations:*** By resolving everything simultaneously without a context, Vixeny creates a unique environment that encourages the JIT compiler to compile the code in a particular manner (this is a simplification that does not do justice to what really happens). This strategy provides the JIT compiler with more opportunities to identify and (hopefully) apply optimizations. The primary motivation behind this technique is to manipulate the JIT compiler into parsing and compiling all elements concurrently. This approach is instrumental in further enhancing the performance and speed of Vixeny.
 
 and there are more things like the optimization of the funcions given from the user, but it will not be covered...
   
-Vixeny is not just a tool; it's a tribute to the power and potential of functional programming. It is the culmination of over 1,000 hours of research and meticulous design testing, dedicated to unraveling and exploiting the inherent strengths of functional programming. Vixeny showcases how the principles of function composition, immutability, and leveraging set and category theory can lead to a system with robust efficiency, speed, and remarkable memory management. It's an ode to the beauty of functional programming that pushes its boundaries, transforms theory into practice, and encourages us all to envision new possibilities. To every functional programmer out there, Vixeny is a testament to your craft, an embodiment of your work's potential. So, stand proud with Vixeny <3
+Vixeny is not just a tool; it's a tribute to the power and potential of functional programming. It is the culmination of over 1,000 hours of research and meticulous design testing, dedicated to unraveling and exploiting the inherent strengths of functional programming. Vixeny showcases how the principles of function composition, immutability, combnators and leveraging set and category theory can lead to a system with robust efficiency, speed, and remarkable memory management. It's an ode to the beauty of functional programming that pushes its boundaries, transforms theory into practice, and encourages us all to envision new possibilities. To every functional programmer out there, Vixeny is a testament to your craft, an embodiment of your work's potential. So, stand proud with Vixeny <3
 
 If you have any more questions, don't hesitate to ask!
 
