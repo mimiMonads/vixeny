@@ -1,45 +1,58 @@
-#  Vixeny
+# Vixeny
 
-
-
-
-Unleash the functional beast~
-
+<p align="center">
+  <img src="misc/logo.svg" alt="Vixeny Logo" width="33%">
+  <br>
+  <b style="font-size:1.2em; font-style:italic; color:darkcyan;">Unleash the functional beast~</b>
+</p>
 
 ## Intro
 
-  Vixeny is  a functional middleware/handler in Javascript that matches others typed programming languages like go or request, it works with Bun and Deno
+Vixeny is a functional middleware/handler in JavaScript that matches other typed programming languages like Go or Rust.
+
+## Vixeny's Advantages
+
+These key advantages make Vixeny an unmatched web framework choice in the JavaScript ecosystem.
+
+- **Unbeatable Speed:** Vixeny brings unparalleled speed to your JavaScript server, aiming to compete with typed languages.
+
+- **No External Dependencies:** Vixeny stands alone, free from external dependencies. Experience the power of true independence.
+
+- **Safety and Immutability:** Vixeny eradicates side effects and locks in data safety. Ensuring immutable data, always.
+
+- **Clean Global Context:** Vixeny operates without polluting your global context. Enjoy a clean, efficient workspace.
+
+- **Embracing Functional Paradigm:** Vixeny embodies the power of typed programming languages in JavaScript. Experience unmatched functional efficiency without speed penalties, while maintaining programming versatility. 
+
 
 Topics
- - Get started
- - Experimental
- - Q&A
+- Get started
+- Experimental
+- Q&A
 
 ## Get started in 10 Minutes!
 
 ### Get Endofunctor and a server
 
 ```typescript
-
-//Vixiny is just a handler,  a server that gives a Request and expects a Response is needed
-
+// Vixeny is just a handler, a server that gives a Request and expects a Response is needed
 import { serve } from "https://deno.land/std@0.159.0/http/server.ts";
 
-//  Deno.serve()
-//  Bun.serve()
+// Deno.serve()
+// Bun.serve()
 
-// Get Vixiny 
-
+// Get Vixeny
+//Deno 
+import fun from ("npm:vixeny")
 import fun from "https://deno.land/x/endofunctor/fun.ts";
-
-
+//Bun 
+import fun from ("vixeny")
 ```
 
 ## Give a path and a function
 
 ```typescript
-// the function has to return a valid BodyInt or Promise<BodyInit>
-
+// The function has to return a valid BodyInit or Promise<BodyInit>
 await serve(
   fun()([
     {
@@ -54,10 +67,9 @@ await serve(
 ## Add parameters, a query, a status, or a header
 
 ```typescript
-
-// the router auto-detect if you are using (parameters,  queries, or Request ) unless you send the arguments out of the scope
+// The router auto-detects if you are using parameters, queries, or Request unless you send the arguments out of the scope
 // r: (arguments) => outOfScope(arguments),
-// you can add or remove them with "add", "delete"
+// You can add or remove them with "add" or "delete"
 
 await serve(
   fun(
@@ -87,8 +99,8 @@ await serve(
 ## Do you need more control?
 
 ```typescript
-// use the type: "request" to return a Response or Promise<Response>
-// you can use params and query here too!
+// Use the type: "request" to return a Response or Promise<Response>
+// You can use params and query here too!
 
 await serve(
   fun(
@@ -107,7 +119,7 @@ await serve(
 ## Do you need Functor just to route your function? I've got you covered!
 
 ```typescript
-// use the type: "response" to return a Response or Promise<Response>
+// Use the type: "response" to return a Response or Promise<Response>
 await serve(
   fun(
     { hasName: "http://127.0.0.1:8080/" },
@@ -122,12 +134,12 @@ await serve(
 );
 ```
 
-## Static file is natively built in Endofunctor!
-
+## Static file is natively built-in Endofunctor!
+***It only supports one, this will be solved in the future***
 ```typescript
 // "path" is relative to the terminal
-// remove mime types with mime:false
-// add mime with extra: [ [header, extension]]
+// Remove mime types with mime: false
+// Add mime with extra: [ [header, extension]]
 await serve(
   fun(
     { hasName: "http://127.0.0.1:8080/" },
@@ -137,7 +149,6 @@ await serve(
       name: "/s/",
       path: "./static/",
     },
-    ,
   ]),
   { port: 8080, hostname: "127.0.0.1" },
 );
@@ -153,26 +164,22 @@ Thanks and have fun ~
 type funRouterOptions = {
   hasName?: string;
   paramsStartsWith?: string;
-  notFound?: { (x: Request): Response };
-  badMethod?: { (x: Request): Response };
+  notFound?: (x: Request) => Response;
+  badMethod?: (x: Request) => Response;
 };
 ```
 
-- **"hasName"**: is the name of the server, and it always has to finish with "/"
-  , example: "http://127.0.0.1:8080/", the router will be 5% faster if a name is
-  given.
+- **"hasName"**: It is the name of the server, and it always has to finish with "/", for example: "http://127.0.0.1:8080/". The router will be 5% faster if a name is given.
 
-- **"paramsStartsWith"**: by default, a parameter is defined by ":" next to a
-  "/", changing this value, will take the first character and check if it's
-  follow by "/" to start a new parameter.
+- **"paramsStartsWith"**: By default, a parameter is defined by ":" next to a "/". Changing this value will take the first character and check if it's followed by "/" to start a new parameter.
 
-- **"notFound"**: changes the default NOT_FOUND.
+- **"notFound"**: Changes the default NOT_FOUND.
 
-- **"badMethod"**: changes the default BAD_METHOD.
+- **"badMethod"**: Changes the default BAD_METHOD.
 
 ## Methods
 
-There are four methods
+There are four methods:
 
 ```typescript
 type ParamsMethod = "GET" | "HEAD" | "POST" | "DELETE";
@@ -180,17 +187,18 @@ type ParamsMethod = "GET" | "HEAD" | "POST" | "DELETE";
 
 ## Experimental
 
-***These methods can change over time and are not finished***
+***These methods can change over time and are not finished.***
 
 ### Stringifier
 
-A JSON Stringifier base on JSONSchema, it is import to notice that:
+A JSON Stringifier based on JSONSchema. It is important to notice that:
+- It does not verify the JSON.
+- It cannot fail.
+- If a key is missing and it is required, it will be "null". Otherwise, it will not be added to the final string.
 
- - It does not verify the JSON
- - It can not fail
- - If a key is missing and it is required, it will be "null", otherwise, it will not be added to the final string
+Example usage:
 
- ```typescript
+```typescript
 {
   schema:{
     json:{
@@ -201,112 +209,105 @@ A JSON Stringifier base on JSONSchema, it is import to notice that:
           properties: {
             hello: { type: "string" },
           },
+        },
       },
       required: ["hello"],
     }
   }
 }
-
- ```
- 
+```
 
 ### Signer and Verifier
 
-***Currently disable***
+***Currently disabled.***
 
 ### Signer
 
-A fast way to sign and verify session tokes, ***DO NOT USED TO STORE INFORMATION***
+A fast way to sign and verify session tokens. ***DO NOT USE TO STORE INFORMATION.***
 
-***"expires" it not well supported yet, do not use; It is important to consider:***
-  - checks the first 13 character to compare it to Date.now() if the Date.now is  > than the Number(string) it will  check the validity of the token
-  - Size of the token (min:8 , avg: 24, max 64)
-  - The signer has to be set with the same configuration
+***"expires" is not well supported yet; do not use it. It is important to consider:***
+- Checks the first 13 characters to compare it to Date.now(). If Date.now() is greater than the Number(string), it will check the validity of the token.
+- Size of the token (min: 8, avg: 24, max: 64).
+- The signer has to be set with the same configuration.
+
+Example usage:
 
 ```typescript
 {
-   path: "/get/:id",
-  // it also can be an untyped petition
-   type: "request",
-   signer: {
-     seed: "hello",
-     sequence: .25,
-   },
-   f: (f) =>
-    //This is just a typical response body where signer sings in the body and the cookie
-     new Response(f.sign(f.param.id), {
-       headers: new Headers({
-         "Set-Cookie": ("session=" + f.sign(f.param.id) +";SameSite=Strict;Path=/"),
-       }),
-     }),
- }
+  path: "/get/:id",
+  // It can also be an untyped petition
+  type: "request",
+  signer: {
+    seed: "hello",
+    sequence: 0.25,
+  },
+  f: (f) =>
+    // This is just a typical response body where signer signs in the body and the cookie
+    new Response(f.sign(f.param.id), {
+      headers: new Headers({
+        "Set-Cookie": "session=" + f.sign(f.param.id) + "; SameSite=Strict; Path=/",
+      }),
+    }),
+}
 ```
+
 ### Verifier
 
-``` typescript
- {
-   path: "/check",
-   verifier: {
-     seed: "hello",
-     sequence: .25,
-   },
-   f: (r) =>  (
-   // check if there are cookies
-     c => c !== null
-       ? (
-       // check if there a session 
-         p => p !== -1
-          // slice the cookie , verifier only return true or false 
-           ? r.verify(c.slice(p+8,c.length))
-           : "null"
-       )(
-         c.indexOf("session=")
-       )
-       // if not it return the string null
-       : "null"
-   )(
-     r.req.headers.get("Cookie")
-   )
- },
-
-```
-## Q&A
-
-
-Why Deno if Bun is faster?
- - It's more secured
- - More mature
- - The only reason why there is a considerable gap in performance is due its server implementation, yet, Deno has more potential for being optimized (In the future there is a chance that a exclusive server can be made to leverage Vixeny)
-
- Why nodejs is not supported?
-  - Response and Request are not supported by their server
-
-Why is so fast?
-
- - It uses the same context of the caller to execute a function called solver, the solver has NOT_FOUND and BAD_METHOD as part of its set, making that the Request always part of the universe and returning the position to an array of functions, these functions were arrange with help of the Atlas
-
- - It is import to understand that there is any object creation besides the strings returned by splice, and all other arguments are passed by value
+Example usage:
 
 ```typescript
-    //where "re" is the result of the Atlas
-    ((re) =>
-      // Re[3] is an array of all the petitions (functions) 
-      ((s) => (r: Request) => re[3][s(r)](r))(
-        // Compose a solver with the options and the Atlas
-        solver(o)(re),
-      ))
+{
+  path: "/check",
+  verifier: {
+    seed: "hello",
+    sequence: 0.25,
+  },
+  f: (r) => {
+    // Check if there are cookies
+    const c = r.req.headers.get("Cookie");
+    return c !== null
+      ? (
+        // Check if there is a session
+        const p = c.indexOf("session=");
+        p !== -1
 
+
+          ? r.verify(c.slice(p + 8, c.length))
+          : "null"
+      )
+      // If not, return the string "null"
+      : "null";
+  },
+}
 ```
- - The optimizer uses the petition to compose unique functions that are optional without any looping, indeed, the solver does not loop (thanks to symmetry) nor uses recursion
- 
-Confused?
 
-Same here, this project has more than 1,000 of research and DOE (design of experiments) in its creation, from understanding lambda calculus to checking the assembly, without counting the countless hours of testing to reach to the conclusion that it can not be significantly faster, the average overhead of Vixeny around .45% - .8% 
+## Q&A
 
-I must confess that there is a lot that it can be done to add more functionality, but it is time to get feedback and show what functional programming is capable of
+- **Why choose Deno when Bun is faster?**
 
-Antony(Mimi)
+  - **Security:** Deno enhances the security of your applications.
+  - **Maturity:** Deno brings a more mature ecosystem.
+  - **Potential:** Deno's server implementation is more optimizable. With the future potential of exclusive server development, Vixeny can leverage even further.
 
+- **Why is Node.js not supported?**
+  
+  - The Node.js server does not support the Response and Request utilized by Vixeny.
+
+- **Why is Vixeny so fast?**
+
+ - ***Efficient Function Resolution:*** Vixeny leverages unique tools, "Atlas" and "Solver," streamlining function execution. Using set and category theory principles, it smartly composes functions in the same execution context as the caller. This approach enhances function resolution speed significantly.
+
+ - ***Stack-Savvy Memory Management:*** By utilizing stack memory, exploiting symmetry, and restricting itself to primitives, Vixeny achieves optimized memory management. It mitigates heap usage, promoting swift stack operations and ensuring data immutability. This memory strategy further amplifies Vixeny's speed.
+
+ - ***No Looping nor Named Recursion:*** Vixeny capitalizes on the symmetrical properties of sets and categories, negating the need for looping or recursion (inside of the return function and uses Y combinators (fix point) due the lack of context to set up some functions). By inferring results for equivalent paths (or the lack of them) in the code or data, it eradicates redundancy and unnecessary computation, contributing to its superior efficiency.
+
+ - ***JIT Compiler Optimizations:*** By resolving everything simultaneously without a context, Vixeny creates a unique environment that encourages the JIT compiler to compile the code in a particular manner (this is a simplification that does not do justice to what really happens). This strategy provides the JIT compiler with more opportunities to identify and (hopefully) apply optimizations. The primary motivation behind this technique is to manipulate the JIT compiler into parsing and compiling all elements concurrently. This approach is instrumental in further enhancing the performance and speed of Vixeny.
+
+and there are more things like the optimization of the funcions given from the user, but it will not be covered...
+  
+Vixeny is not just a tool; it's a tribute to the power and potential of functional programming. It is the culmination of over 1,000 hours of research and meticulous design testing, dedicated to unraveling and exploiting the inherent strengths of functional programming. Vixeny showcases how the principles of function composition, immutability, and leveraging set and category theory can lead to a system with robust efficiency, speed, and remarkable memory management. It's an ode to the beauty of functional programming that pushes its boundaries, transforms theory into practice, and encourages us all to envision new possibilities. To every functional programmer out there, Vixeny is a testament to your craft, an embodiment of your work's potential. So, stand proud with Vixeny <3
+
+If you have any more questions, don't hesitate to ask!
 
 ## License
 
