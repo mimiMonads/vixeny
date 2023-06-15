@@ -36,8 +36,7 @@ export default (o?: funRouterOptions) =>
                             ? {
                               "Content-Type": mime.find((x) => x[0] === f.headers)![1],
                             }
-                            : f.headers ?? { "Content-Type": "text/plain" }
-                        ,
+                            : f.headers ? Object.entries({...f.headers}) : { "Content-Type": "text/plain" },
 
                         status: "status" in f ? f.status : 200,
                       },
@@ -73,8 +72,7 @@ export default (o?: funRouterOptions) =>
                           ? {
                             "Content-Type": mime.find((x) => x[0] === f.headers)![1],
                           }
-                          : f.headers ?? { "Content-Type": "text/plain" },
-
+                          : f.headers ? Object.entries({...f.headers}) : { "Content-Type": "text/plain" },
                       status: "status" in f ? f.status : 200,
                     })
               : "json" in f
