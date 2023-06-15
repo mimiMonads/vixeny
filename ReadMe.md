@@ -18,8 +18,6 @@ Vixeny is a purely functional middleware/handler in JavaScript that matches othe
 
 These key advantages make Vixeny an unmatched web framework choice in the JavaScript ecosystem.
 
-- **Unbeatable Speed:** Vixeny brings unparalleled speed to your JavaScript server, aiming to compete with typed languages.
-
 - **No External Dependencies:** Vixeny stands alone, free from external dependencies. Experience the power of true independence.
 
 - **Safety and Immutability:** Vixeny eradicates side effects and locks in data safety. Ensuring immutable data, always.
