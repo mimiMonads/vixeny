@@ -12,14 +12,14 @@ export default (o?: funRouterOptions) =>
         "type" in f
           ? (r: Request) => f.f((c)(r))
           : f.f.constructor.name === "AsyncFunction" || "signer" in f
-            ? "status" in f || "header" in f
+            ? "status" in f || "headers" in f
               ? ((h: ResponseInit) =>
                 "json" in f
                   ? (
                     (j) =>
                       async (r: Request) =>
                         new Response(
-                          j(f.f((c)(r))) as BodyInit,
+                          j(await f.f((c)(r))) as BodyInit,
                           h,
                         )
                   )(
@@ -36,10 +36,9 @@ export default (o?: funRouterOptions) =>
                             ? {
                               "Content-Type": mime.find((x) => x[0] === f.headers)![1],
                             }
-                            : f.headers ?? { "Content-Type": "text/plain" }
-                        ,
+                            : f.headers ? Object.entries({...f.headers}) : { "Content-Type": "text/plain" },
 
-                        status: "status" in f ? f.status : 204,
+                        status: "status" in f ? f.status : 200,
                       },
                     )
               : "json" in f
@@ -47,7 +46,7 @@ export default (o?: funRouterOptions) =>
                   (j) =>
                     async (r: Request) =>
                       new Response(
-                        j(f.f((c)(r))) as BodyInit,
+                        j(await f.f((c)(r))) as BodyInit,
                       )
                 )(
                   jsonComposer(f.json.scheme),
@@ -56,7 +55,7 @@ export default (o?: funRouterOptions) =>
                   new Response(
                     await (f.f((c)(r))) as BodyInit,
                   )
-            : "status" in f || "header" in f
+            : "status" in f || "headers" in f
               ? ((h: ResponseInit) =>
                 "json" in f
                   ? (
@@ -73,9 +72,8 @@ export default (o?: funRouterOptions) =>
                           ? {
                             "Content-Type": mime.find((x) => x[0] === f.headers)![1],
                           }
-                          : f.headers ?? { "Content-Type": "text/plain" },
-
-                      status: "status" in f ? f.status : 204,
+                          : f.headers ? Object.entries({...f.headers}) : { "Content-Type": "text/plain" },
+                      status: "status" in f ? f.status : 200,
                     })
               : "json" in f
                 ? (
