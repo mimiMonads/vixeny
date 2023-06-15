@@ -8,7 +8,11 @@
 
 ## Intro
 
-Vixeny is a functional middleware/handler in JavaScript that matches other typed programming languages like Go or Rust.
+Vixeny is a purely functional middleware/handler in JavaScript that matches other typed programming languages like Go or Rust.
+
+## Benchmarks
+
+  Coming soon...
 
 ## Vixeny's Advantages
 
@@ -22,12 +26,13 @@ These key advantages make Vixeny an unmatched web framework choice in the JavaSc
 
 - **Clean Global Context:** Vixeny operates without polluting your global context. Enjoy a clean, efficient workspace.
 
-- **Embracing Functional Paradigm:** Vixeny embodies the power of typed programming languages in JavaScript. Experience unmatched functional efficiency without speed penalties, while maintaining programming versatility. 
+- **Embracing Functional Paradigm:** Vixeny embodies the power of typed programming languages in JavaScript. Experience unmatched functional efficiency without speed penalties, while maintaining programming versatility (you can use other functional paradigms). 
 
 
 Topics
 - Get started
 - Experimental
+- Coming soon
 - Q&A
 
 ## Get started in 10 Minutes!
@@ -90,7 +95,7 @@ await serve(
     {
       path: "/test/:id",
       status: 201,
-      header: ".html", // { 'Content-Type' : 'text/html'}
+      headers: ".html", // { 'Content-Type' : 'text/html'}
       f: (f) => f.param.id + " " + (f.query?.hello || ""),
     },
   ]),
@@ -229,79 +234,12 @@ Example usage:
 }
 ```
 
-### Signer and Verifier
+## Coming soon
 
-***Currently disabled.***
-
-### Signer
-
-A fast way to sign and verify session tokens. ***DO NOT USE TO STORE INFORMATION.***
-
-***"expires" is not well supported yet; do not use it. It is important to consider:***
-- Checks the first 13 characters to compare it to Date.now(). If Date.now() is greater than the Number(string), it will check the validity of the token.
-- Size of the token (min: 8, avg: 24, max: 64).
-- The signer has to be set with the same configuration.
-
-Example usage:
-
-```typescript
-{
-  path: "/get/:id",
-  // It can also be an untyped petition
-  type: "request",
-  signer: {
-    seed: "hello",
-    sequence: 0.25,
-  },
-  f: (f) =>
-    // This is just a typical response body where signer signs in the body and the cookie
-    new Response(f.sign(f.param.id), {
-      headers: new Headers({
-        "Set-Cookie": "session=" + f.sign(f.param.id) + "; SameSite=Strict; Path=/",
-      }),
-    }),
-}
-```
-
-### Verifier
-
-Example usage:
-
-``` typescript
- {
-   path: "/check",
-   verifier: {
-     seed: "hello",
-     sequence: .25,
-   },
-   f: (r) =>  (
-   // check if there are cookies
-     c => c !== null
-       ? (
-       // check if there a session 
-         p => p !== -1
-          // slice the cookie , verifier only return true or false 
-           ? r.verify(c.slice(p+8,c.length))
-           : "null"
-       )(
-         c.indexOf("session=")
-       )
-       // if not it return the string null
-       : "null"
-   )(
-     r.req.headers.get("Cookie")
-   )
- },
-```
+- wild cards
+- signer and verifier 
 
 ## Q&A
-
-- **Why choose Deno when Bun is faster?**
-
-  - **Security:** Deno enhances the security of your applications.
-  - **Maturity:** Deno brings a more mature ecosystem.
-  - **Potential:** Deno's server implementation is more optimizable. With the future potential of exclusive server development, Vixeny can leverage even further.
-
 
 - **Why is Node.js not supported?**
   
@@ -317,11 +255,11 @@ Example usage:
 
  - ***JIT Compiler Optimizations:*** By resolving everything simultaneously without a context, Vixeny creates a unique environment that encourages the JIT compiler to compile the code in a particular manner (this is a simplification that does not do justice to what really happens). This strategy provides the JIT compiler with more opportunities to identify and (hopefully) apply optimizations. The primary motivation behind this technique is to manipulate the JIT compiler into parsing and compiling all elements concurrently. This approach is instrumental in further enhancing the performance and speed of Vixeny.
 
-and there are more things like the optimization of the funcions given from the user, but it will not be covered...
+and there are more things like the optimization of the functions given from the user, but it will not be covered...
   
-Vixeny is not just a tool; it's a tribute to the power and potential of functional programming. It is the culmination of over 1,000 hours of research and meticulous design testing, dedicated to unraveling and exploiting the inherent strengths of functional programming. Vixeny showcases how the principles of function composition, immutability, combnators and leveraging set and category theory can lead to a system with robust efficiency, speed, and remarkable memory management. It's an ode to the beauty of functional programming that pushes its boundaries, transforms theory into practice, and encourages us all to envision new possibilities. To every functional programmer out there, Vixeny is a testament to your craft, an embodiment of your work's potential. So, stand proud with Vixeny <3
+Vixeny is not just a tool; it's a tribute to the power and potential of functional programming. It is the culmination of over 1,000 hours of research and meticulous design testing, dedicated to unraveling and exploiting the inherent strengths of functional programming. Vixeny showcases how the principles of function composition, immutability, combinators and leveraging set and category theory can lead to a system with robust efficiency, speed, and remarkable memory management. It's an ode to the beauty of functional programming that pushes its boundaries, transforms theory into practice, and encourages us all to envision new possibilities. To every functional programmer out there, Vixeny is a testament to your craft, an embodiment of your work's potential.
 
-If you have any more questions, don't hesitate to ask!
+If you have any more questions, don't hesitate to ask and post a good issue!
 
 ## License
 

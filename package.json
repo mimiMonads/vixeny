@@ -1,6 +1,6 @@
 {
   "name": "vixeny",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A functional router for Deno and Bun",
   "main": "fun.ts",
   "types": "types.d.ts",
@@ -17,8 +17,7 @@
   "keywords": [
     "deno",
     "bun",
-    "functional",
-    "fast"
+    "functional"
   ],
   "author": "Antony Vladimir",
   "license": "SEE LICENSE IN ReadMe.md",

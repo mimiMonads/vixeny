@@ -14,8 +14,8 @@ export type RequestArguments = {
   req: Request;
   query: Record<string, string | null | undefined>;
   param: Record<string, string>;
-  sign: (s: string) => string;
-  verify: (s: string) => -1 | 1;
+//  sign: (s: string) => string;
+//  verify: (s: string) => -1 | 1;
 };
 export type ObjectRawResponse =
   | ObjectRawResponseCommon
