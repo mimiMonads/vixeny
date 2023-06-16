@@ -49,19 +49,25 @@ import { serve } from "https://deno.land/std@0.159.0/http/server.ts";
 Bun.serve()
 
 export default {
-  fetch: fun()() ,
+  fetch: fun(...options)([...routes]) ,
 }
 
 // Get Vixeny
 
+//Vixeny is a export default so you can choose her name 
+
 //Deno
 
-import fun from ("npm:vixeny")
+
+import fun from "npm:vixeny/fun"
+
 import fun from "https://deno.land/x/endofunctor/fun.ts";
 
 //Bun 
 
-import fun from ("vixeny")
+import fun from "vixeny/fun"
+
+
 ```
 
 ## Give a path and a function

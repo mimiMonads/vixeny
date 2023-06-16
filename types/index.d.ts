@@ -1,1 +1,0 @@
-export { Vixeny , RouterOptions} from "../types.d.ts"

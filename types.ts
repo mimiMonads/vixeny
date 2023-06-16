@@ -1,4 +1,7 @@
 ///
+
+import { ObjectRawResponse } from "./optimizer/types.ts";
+
 export type ParamsMethod = "GET" | "HEAD" | "POST" | "DELETE";
 
 export type funRouterOptions = {
@@ -8,6 +11,8 @@ export type funRouterOptions = {
   badMethod?: { (x: Request): Response };
 };
 
+export type Vixeny = (o?: funRouterOptions) => (routes: ObjectRawResponse[]) => (r: Request) => Promise<Response> | Response;
+export type RouterOptions = ObjectRawResponse[]
 
 
 export type ArrayFiler = [ArraySwap[], RouteTypes[]];
