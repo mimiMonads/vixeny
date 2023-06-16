@@ -5,6 +5,6 @@ import { ObjectRawResponse } from "./optimizer/types.ts";
 
 //TODO : NPM TYPES SUPPORT
 
-type Vixeny = (o?: funRouterOptions) => (routes: ObjectRawResponse[]) => (r: Request) => Promise<Response> | Response;
-export default Vixeny
+export type Vixeny = (o?: funRouterOptions) => (routes: ObjectRawResponse[]) => (r: Request) => Promise<Response> | Response;
+export type RouterOptions = ObjectRawResponse[]
 // Define the default exported function

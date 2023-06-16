@@ -25,11 +25,13 @@ export default (o?: funRouterOptions) =>
                   )(
                     jsonComposer(f.json.scheme),
                   )
-                  : async (r: Request) =>
+                  :  (h => async (r: Request) =>
                     new Response(
-                      await (f.f((c)(r))) as BodyInit,
+                      await f.f((c)(r)) as BodyInit,
                       h,
-                    ))(
+                    ))(h)
+                    
+                    )(
                       {
                         headers:
                           typeof f.headers === "string"
@@ -53,7 +55,7 @@ export default (o?: funRouterOptions) =>
                 )
                 : async (r: Request) =>
                   new Response(
-                    await (f.f((c)(r))) as BodyInit,
+                    await f.f((c)(r)) as BodyInit,
                   )
             : "status" in f || "headers" in f
               ? ((h: ResponseInit) =>
@@ -65,8 +67,9 @@ export default (o?: funRouterOptions) =>
                   )(
                     jsonComposer(f.json.scheme),
                   )
-                  : (r: Request) =>
-                    new Response(f.f((c)(r)) as BodyInit, h))({
+                  : (h => (r: Request) => new Response(f.f((c)(r)) as BodyInit, h))(h)
+                  
+                  )({
                       headers:
                         typeof f.headers === "string"
                           ? {
