@@ -1,9 +1,8 @@
 {
   "name": "vixeny",
-  "version": "0.0.51",
+  "version": "0.0.52",
   "description": "A functional router for Deno and Bun",
   "main": "fun.ts",
-  "types": "./types.d.ts",
   "directories": {
     "test": "test"
   },
