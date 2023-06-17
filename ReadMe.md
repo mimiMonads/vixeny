@@ -12,7 +12,8 @@ Vixeny is a purely functional middleware/handler in JavaScript that matches othe
 
 ## Benchmarks
 
-  Coming soon...
+## Deno
+[Vixeny Hono](https://github.com/mimiMonads/hono-functor-benchmark)
 
 ## Vixeny's Advantages
 
