@@ -6,7 +6,9 @@ import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
 export default (o?: funRouterOptions) =>
   (f: ObjectRawResponseCommon) =>
     (ar: string[]) =>
-      ((el) =>
+	ar.length === 0
+	? ((r:Request) => r) as unknown as (r: Request) => RequestArguments
+	:((el) =>
         (
           endo => endo as (r: Request) => RequestArguments
         )(
