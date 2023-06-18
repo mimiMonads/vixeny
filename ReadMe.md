@@ -90,6 +90,8 @@ Some programmers learn more with code, here is a repo with all the details of ho
 [Examples](https://github.com/mimiMonads/vixeny_examples)
 
 
+##  The basics
+
 ``` typescript
 /*
     The vixeny framework requires:
@@ -102,7 +104,7 @@ Some programmers learn more with code, here is a repo with all the details of ho
 */
 import { ObjectRawResponse } from "vixeny/optimizer/types";
 
-    //An example of a petition
+    //An example of a petition, and all the following examples are PETITIONS
     {
       path: "/",
       f: (_) => "hello world",
