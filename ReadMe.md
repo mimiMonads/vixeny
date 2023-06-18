@@ -1,48 +1,46 @@
 # Vixeny
 
 <p align="center">
-  <img src="misc/logo.svg" alt="Vixeny Logo" width="33%">
+  <img  src="misc/logo.png" alt="Vixeny Logo" max-width="33%">
   <br>
   <b style="font-size:1.2em; font-style:italic; color:darkcyan;">Unleash the functional beast~</b>
 </p>
 
-## Intro
+## Introduction
 
-Vixeny is a purely functional web framework in TypeScript that matches other typed programming languages like Go or Rust.
+Vixeny is a purely functional web framework in TypeScript that rivals other typed programming languages like Go or Rust.
 
 ## Benchmarks
 
-## Deno
+### Deno
 [Vixeny Hono](https://github.com/mimiMonads/hono-functor-benchmark)
 
-## Vixeny's AdvantagesParameters
+## Key Advantages of Vixeny
 
-These key advantages make Vixeny an unmatched web framework choice in the JavaScript ecosystem.
+These are the key benefits that position Vixeny as a standout web framework choice in the JavaScript ecosystem.
 
-- **No External Dependencies:** Vixeny stands alone, free from external dependencies. Experience the power of true independence.
+- **No External Dependencies:** Vixeny is self-sufficient, independent of external dependencies. 
 
-- **Safety and Immutability:** Vixeny eradicates side effects and locks in data safety. Ensuring immutable data, always.
+- **Safety and Immutability:** Vixeny eradicates side effects and assures data safety, always prioritizing immutable data.
 
-- **Clean Global Context:** Vixeny operates without polluting your global context. Enjoy a clean, efficient workspace.
+- **Clean Global Context:** Vixeny operates without corrupting your global context, maintaining a clean, efficient workspace.
 
-- **Embracing Functional Paradigm:** Vixeny embodies the power of typed programming languages in JavaScript. Experience unmatched functional efficiency without speed penalties, while maintaining programming versatility (you can use other functional paradigms). 
+- **Embracing Functional Paradigm:** Vixeny embodies the efficiency of typed programming languages in JavaScript without speed penalties, while maintaining programming versatility. Other functional paradigms can also be applied. 
 
-
-Topics
-- Get started
-- Experimental
-- Coming soon
+## Table of Contents
+- Get Started
+- Experimental Features
+- Upcoming Features
 - Q&A
 
-## Get started in 10 Minutes!
+## Get Started in 10 Minutes!
 
 ### Hello World in Deno!
 
 ```typescript
-
 import { serve } from "https://deno.land/std@0.159.0/http/server.ts";
-import vixeny from "npm:vixeny/fun"
-//Types
+import vixeny from "npm:vixeny/fun";
+// Types
 import { ObjectRawResponse } from "npm:vixeny/optimizer/types";
 
 await serve(
@@ -57,17 +55,14 @@ await serve(
   ]),
   { port: 8080, hostname: "127.0.0.1" },
 );
-
 ```
 ### Hello World in Bun!
 
-``` typescript
-
-//Bun
-import vixeny from "vixeny/fun"
-//Types 
+```typescript
+// Bun
+import vixeny from "vixeny/fun";
+// Types 
 import { ObjectRawResponse } from "vixeny/optimizer/types";
-
 
 export default {
   port: 8080,
@@ -85,14 +80,13 @@ export default {
 ```
 ## Examples
 
-Some programmers learn more with code, here is a repo with all the details of how it works, step by step and with a live server, with basic to advanced concepts.
+If you prefer learning with code, this repository details how it works, step by step, from basic to advanced concepts with a live server. It's highly recommended.
 
 [Examples](https://github.com/mimiMonads/vixeny_examples)
 
+## The Basics
 
-##  The basics
-
-``` typescript
+```typescript
 /*
     The vixeny framework requires:
 
@@ -104,21 +98,20 @@ Some programmers learn more with code, here is a repo with all the details of ho
 */
 import { ObjectRawResponse } from "vixeny/optimizer/types";
 
-    //An example of a petition, and all the following examples are PETITIONS
+    //An example of a petition, all the following examples are PETITIONS
     {
       path: "/",
       f: (_) => "hello world",
     } as ObjectRawResponse
-
-
 ```
 
-## Add parameters, a query, a status, or a header
+## Adding Parameters, Query, Status, or Header
 
 ```typescript
+// It auto-detects if you are using parameters, queries, or Request unless you send the arguments out of the scope
+// r:
 
-// The router auto-detects if you are using parameters, queries, or Request unless you send the arguments out of the scope
-// r: (arguments) => outOfScope(arguments),
+ (arguments) => outOfScope(arguments),
 // You can add or remove them with "add" or "delete"
 
     {
@@ -136,7 +129,7 @@ import { ObjectRawResponse } from "vixeny/optimizer/types";
 "/hi/:id/page/:time";
 ```
 
-## Do you need more control?
+## Need More Control?
 
 ```typescript
 // Use the type: "request" to return a Response or Promise<Response>
@@ -146,12 +139,10 @@ import { ObjectRawResponse } from "vixeny/optimizer/types";
       type: "request",
       path: "/abc",
       f: (f) => new Response(f.query?.hello || "abc"),
-    },
- 
-
+    }
 ```
 
-## Do you need Functor just to route your function? I've got you covered!
+## Just Need to Route Your Function? We've Got You Covered!
 
 ```typescript
 // Use the type: "response" to return a Response or Promise<Response>
@@ -161,11 +152,10 @@ import { ObjectRawResponse } from "vixeny/optimizer/types";
       path: "/",
       r: (_) => new Response("hello world"),
     }
-
 ```
 
-## Static file is natively built-in Vixeny!
-***It only supports one, this will be solved in the future***
+## Static File Support is Natively Built into Vixeny!
+***It currently only supports one; this will be enhanced in future releases.***
 ```typescript
 // "path" is relative to the terminal
 // Remove mime types with mime: false
@@ -176,14 +166,13 @@ import { ObjectRawResponse } from "vixeny/optimizer/types";
       name: "/s/",
       path: "./static/",
     }
-
 ```
 
-Thanks and have fun ~
+Thank you and enjoy using Vixeny!
 
 # Specifications
 
-## Route options
+## Route Options
 
 ```typescript
 type funRouterOptions = {
@@ -194,32 +183,32 @@ type funRouterOptions = {
 };
 ```
 
-- **"hasName"**: It is the name of the server, and it always has to finish with "/", for example: "http://127.0.0.1:8080/". The router will be 5% faster if a name is given.
+- **"hasName"**: This is the name of the server, and it must always end with "/", for example: "http://127.0.0.1:8080/". The router will operate 5% faster if a name is provided.
 
-- **"paramsStartsWith"**: By default, a parameter is defined by ":" next to a "/". Changing this value will take the first character and check if it's followed by "/" to start a new parameter.
+- **"paramsStartsWith"**: By default, a parameter is defined by ":" following a "/". Changing this value will take the first character and check if it's followed by "/" to start a new parameter.
 
-- **"notFound"**: Changes the default NOT_FOUND.
+- **"notFound"**: Modifies the default NOT_FOUND response.
 
-- **"badMethod"**: Changes the default BAD_METHOD.
+- **"badMethod"**: Modifies the default BAD_METHOD response.
 
 ## Methods
 
-There are four methods:
+There are four main methods:
 
 ```typescript
 type ParamsMethod = "GET" | "HEAD" | "POST" | "DELETE";
 ```
 
-## Experimental
+## Experimental Features
 
-***These methods can change over time and are not finished.***
+***These features are still under development and may change over time.***
 
 ### Stringifier
 
-A JSON Stringifier based on JSONSchema. It is important to notice that:
-- It does not verify the JSON.
+This feature is a JSON Stringifier based on JSONSchema. Noteworthy aspects are:
+- It doesn't verify the JSON.
 - It cannot fail.
-- If a key is missing and it is required, it will be "null". Otherwise, it will not be added to the final string.
+- If a required key is missing, it will be "null". Otherwise, it won't be added to the final string.
 
 Example usage:
 
@@ -241,32 +230,34 @@ Example usage:
     }
 ```
 
-## Coming soon
+## Upcoming Features
 
-- wild cards
-- signer and verifier 
+- Wild cards
+- Signer and Verifier 
 
 ## Q&A
 
-- **Why is Node.js not supported?**
-  
-  - The Node.js server does not support the Response and Request utilized by Vixeny.
+- **Why doesn't Vixeny support Node.js?**
 
-- **Why is Vixeny so fast?**
+  Node.js is not supported due to its incompatibility with the Response and Request methods used by Vix
 
- - ***Efficient Function Resolution:*** Vixeny leverages unique tools, "Atlas" and "Solver," streamlining function execution. Using set and category theory principles, it smartly composes functions in the same execution context as the caller. This approach enhances function resolution speed significantly.
+eny.
 
- - ***Stack-Savvy Memory Management:*** By utilizing stack memory, exploiting symmetry, and restricting itself to primitives, Vixeny achieves optimized memory management. It mitigates heap usage, promoting swift stack operations and ensuring data immutability. This memory strategy further amplifies Vixeny's speed.
+- **What makes Vixeny so fast?**
 
- - ***No Looping nor Named Recursion:*** Vixeny capitalizes on the symmetrical properties of sets and categories, negating the need for looping or recursion (inside of the return function and uses Y combinator (fix point) due the lack of context to set up some functions). By inferring results for equivalent paths (or the lack of them) in the code or data, it eradicates redundancy and unnecessary computation, contributing to its superior efficiency.
+  - **Efficient Function Resolution:** Vixeny uses proprietary tools "Atlas" and "Solver" to streamline function execution. By applying set and category theory, functions are smartly composed in the caller's execution context, enhancing speed.
 
- - ***JIT Compiler Optimizations:*** By resolving everything simultaneously without a context, Vixeny creates a unique environment that encourages the JIT compiler to compile the code in a particular manner (this is a simplification that does not do justice to what really happens). This strategy provides the JIT compiler with more opportunities to identify and (hopefully) apply optimizations. The primary motivation behind this technique is to manipulate the JIT compiler into parsing and compiling all elements concurrently. This approach is instrumental in further enhancing the performance and speed of Vixeny.
+  - **Optimized Memory Management:** Vixeny optimizes memory by using stack memory, symmetry, and primitives. This minimizes heap usage, ensures data immutability, and speeds up operations.
 
-and there are more things like the optimization of the functions given from the user, but it will not be covered...
-  
-Vixeny is not just a tool; it's a tribute to the power and potential of functional programming. It is the culmination of over 1,000 hours of research and meticulous design testing, dedicated to unraveling and exploiting the inherent strengths of functional programming. Vixeny showcases how the principles of function composition, immutability, combinators and leveraging set and category theory can lead to a system with robust efficiency, speed, and remarkable memory management. It's an ode to the beauty of functional programming that pushes its boundaries, transforms theory into practice, and encourages us all to envision new possibilities. To every functional programmer out there, Vixeny is a testament to your craft, an embodiment of your work's potential.
+  - **No Looping or Named Recursion:** Leveraging the symmetrical properties of sets and categories, Vixeny eliminates the need for looping or recursion in the return function. This reduces redundancy and unnecessary computation.
 
-If you have any more questions, don't hesitate to ask and post a good issue!
+  - **JIT Compiler Enhancements:** Vixeny encourages the JIT compiler to compile code in a specific way by resolving all elements simultaneously. This strategy allows the JIT compiler to identify and apply optimizations, thus enhancing performance.
+
+Additional optimizations such as user-provided function optimization are also applied but aren't detailed here.
+
+Vixeny is more than a tool; it's a testament to the power of functional programming. With over 1,000 hours of research and meticulous design testing, it showcases the efficiency, speed, and memory management that functional programming can provide. Vixeny pushes boundaries, transforms theory into practice, and opens up new possibilities. To all functional programmers, Vixeny salutes your craft.
+
+For further inquiries, please feel free to post an issue on our repository!
 
 ## License
 
