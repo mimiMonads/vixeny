@@ -27,9 +27,12 @@ type Vixeny = (o?: funRouterOptions) => (routes: ObjectRawResponse[]) => (r: Req
 export default ((o?: funRouterOptions) =>
   (routes: ObjectRawResponse[]) =>
     ((re) =>
-      ((s) => (r: Request) => re[3][s(r)](r))(
-        solver(o)(re),
-      ))(
+      (map =>
+      	 ((s) => (r: Request) => map[s(r)](r))(
+            solver(o)(re),
+          )
+      )([...re[3]])
+      )(
         atlas(o)(
           split(o)(
             optimizer(o)(routes),
