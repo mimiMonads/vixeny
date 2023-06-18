@@ -8,14 +8,14 @@
 
 ## Intro
 
-Vixeny is a purely functional middleware/handler in JavaScript that matches other typed programming languages like Go or Rust.
+Vixeny is a purely functional web framework in TypeScript that matches other typed programming languages like Go or Rust.
 
 ## Benchmarks
 
 ## Deno
 [Vixeny Hono](https://github.com/mimiMonads/hono-functor-benchmark)
 
-## Vixeny's Advantages
+## Vixeny's AdvantagesParameters
 
 These key advantages make Vixeny an unmatched web framework choice in the JavaScript ecosystem.
 
@@ -36,81 +36,97 @@ Topics
 
 ## Get started in 10 Minutes!
 
-### Get Endofunctor and a server
+### Hello World in Deno!
 
 ```typescript
-// Vixeny is just a handler, a server that gives a Request and expects a Response is needed
-
-//Deno
 
 import { serve } from "https://deno.land/std@0.159.0/http/server.ts";
+import vixeny from "npm:vixeny/fun"
+//Types
+import { ObjectRawResponse } from "npm:vixeny/optimizer/types";
 
-//Bun
-
-Bun.serve()
-
-export default {
-  fetch: fun(...options)([...routes]) ,
-}
-
-// Get Vixeny
-
-//Vixeny is a export default so you can choose her name 
-
-//Deno
-
-
-import fun from "npm:vixeny/fun"
-
-import fun from "https://deno.land/x/endofunctor/fun.ts";
-
-//Bun 
-
-import fun from "vixeny/fun"
-
-
-```
-
-## Give a path and a function
-
-```typescript
-// The function has to return a valid BodyInit or Promise<BodyInit>
 await serve(
-  fun()([
+  vixeny(
+    // optional
+    { hasName: "http://127.0.0.1:8080/" },
+  )([
     {
       path: "/",
       f: (_) => "hello world",
     },
   ]),
-  { port: 8080 },
+  { port: 8080, hostname: "127.0.0.1" },
 );
+
+```
+### Hello World in Bun!
+
+``` typescript
+
+//Bun
+import vixeny from "vixeny/fun"
+//Types 
+import { ObjectRawResponse } from "vixeny/optimizer/types";
+
+
+export default {
+  port: 8080,
+  hostname: "127.0.0.1",
+  fetch: vixeny(
+    // optional
+    { hasName: "http://127.0.0.1:8080/" },
+  )([
+    {
+      path: "/",
+      f: (_) => "hello world",
+    },
+  ]) ,
+}
+```
+## Examples
+
+Some programmers learn more with code, here is a repo with all the details of how it works, step by step and with a live server, with basic to advanced concepts.
+
+[Examples](https://github.com/mimiMonads/vixeny_examples)
+
+
+``` typescript
+/*
+    The vixeny framework requires:
+
+    vixeny(option)([...petitions])
+
+    option - Configuration options for the vixeny server.
+    petitions - An array of routes for the vixeny server to handle.
+
+*/
+import { ObjectRawResponse } from "vixeny/optimizer/types";
+
+    //An example of a petition
+    {
+      path: "/",
+      f: (_) => "hello world",
+    } as ObjectRawResponse
+
+
 ```
 
 ## Add parameters, a query, a status, or a header
 
 ```typescript
+
 // The router auto-detects if you are using parameters, queries, or Request unless you send the arguments out of the scope
 // r: (arguments) => outOfScope(arguments),
 // You can add or remove them with "add" or "delete"
 
-await serve(
-  fun(
-    { hasName: "http://127.0.0.1:8080/" },
-  )([
     {
       path: "/test/:id",
       status: 201,
       headers: ".html", // { 'Content-Type' : 'text/html'}
       f: (f) => f.param.id + " " + (f.query?.hello || ""),
-    },
-  ]),
-  { port: 8080, hostname: "127.0.0.1" },
-);
-```
+    }
 
-## Parameters
-
-```typescript
+// Parameters examples
 "/hello/:id";
 "/hello/:id/";
 "/hello/:id/:page/:time";
@@ -124,56 +140,41 @@ await serve(
 // Use the type: "request" to return a Response or Promise<Response>
 // You can use params and query here too!
 
-await serve(
-  fun(
-    { hasName: "http://127.0.0.1:8080/" },
-  )([
     {
       type: "request",
       path: "/abc",
       f: (f) => new Response(f.query?.hello || "abc"),
     },
-  ]),
-  { port: 8080, hostname: "127.0.0.1" },
-);
+ 
+
 ```
 
 ## Do you need Functor just to route your function? I've got you covered!
 
 ```typescript
 // Use the type: "response" to return a Response or Promise<Response>
-await serve(
-  fun(
-    { hasName: "http://127.0.0.1:8080/" },
-  )([
+
     {
       type: "response",
       path: "/",
       r: (_) => new Response("hello world"),
-    },
-  ]),
-  { port: 8080, hostname: "127.0.0.1" },
-);
+    }
+
 ```
 
-## Static file is natively built-in Endofunctor!
+## Static file is natively built-in Vixeny!
 ***It only supports one, this will be solved in the future***
 ```typescript
 // "path" is relative to the terminal
 // Remove mime types with mime: false
 // Add mime with extra: [ [header, extension]]
-await serve(
-  fun(
-    { hasName: "http://127.0.0.1:8080/" },
-  )([
+
     {
       type: "static",
       name: "/s/",
       path: "./static/",
-    },
-  ]),
-  { port: 8080, hostname: "127.0.0.1" },
-);
+    }
+
 ```
 
 Thanks and have fun ~
@@ -221,22 +222,21 @@ A JSON Stringifier based on JSONSchema. It is important to notice that:
 Example usage:
 
 ```typescript
-{
-  schema:{
-    json:{
-      type: "object",
-      properties: {
-        hello: {
-          type: "object",
-          properties: {
-            hello: { type: "string" },
-          },
-        },
-      },
-      required: ["hello"],
+    {
+        path: "/json/:name",
+        f: (req) => req.param,
+        json: {
+            scheme: {
+                type: "object",
+                properties:{
+                    name: {
+                        type: "string"
+                    }
+                },
+                required: ["name"]
+            }
+        }
     }
-  }
-}
 ```
 
 ## Coming soon
