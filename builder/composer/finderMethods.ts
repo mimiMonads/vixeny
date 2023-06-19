@@ -1,0 +1,1 @@
+export default ((ar)=> new Function("return s=>" +ar.map((x,i) =>  "s==='" + x +"'?"+i+":").reduceRight( (acc,v) => v+acc ,"-1"))()) as (ar:string[]) => (s:string) => number

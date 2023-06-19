@@ -1,6 +1,7 @@
 import { Atlas, funRouterOptions, RouteTypes } from "../types.ts";
 import solver from "./composer/methods.ts";
 import specialString from "./composer/specialString.ts";
+import finderMethods from "./composer/finderMethods.ts";
 
 export default (o?: funRouterOptions) =>
   (atlas: Atlas) =>
@@ -35,7 +36,7 @@ export default (o?: funRouterOptions) =>
           solver(o)(atlas),
         )
     )(
-      ((a: string[]) => ((o) => (s: string) => o.indexOf(s))(a.map((x) => x)))(
+      finderMethods(
         atlas[0],
       ),
     );
