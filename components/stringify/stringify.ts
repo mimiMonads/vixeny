@@ -1,6 +1,6 @@
-import sanitizer from "./composer/sanitizer.ts";
-import { JsonStringify, JsonType } from "./types.ts";
-import finder from "./composer/finder.ts";
+import sanitizer from "./composer/sanitizer.js";
+import { JsonStringify, JsonType } from "./types.js";
+import finder from "./composer/finder.js";
 
 export default (o: JsonStringify) =>
   (

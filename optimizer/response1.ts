@@ -3,7 +3,7 @@ import { ObjectRawCommonRequest, ObjectRawResponseCommon } from "./types.ts";
 import checker from "./checker.ts";
 import aComposer from "./aComposer.ts";
 import mime from "../components/util/mime.ts";
-import jsonComposer from "../components/stringify/main.ts";
+import jsonComposer from "../components/stringify/stringify.ts";
 
 export default (o?: funRouterOptions) =>
   (f: ObjectRawResponseCommon | ObjectRawCommonRequest) =>

@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
-import composer from "../../../components/stringify/main.ts";
+import composer from "../../../components/stringify/stringify.ts";
 
 Deno.test(
   "hello",
