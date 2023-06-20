@@ -1,4 +1,4 @@
-import { RouteTypes } from "../types.ts";
+import { RouteTypes } from "../builder/types.ts";
 
 export default (mine: [string, string][]) =>
   (arr: string[]) =>

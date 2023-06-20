@@ -1,8 +1,8 @@
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseStatic } from "./types.ts";
 import syncCheckDir from "./syncCheckDir.ts";
-import bunSyncCheckDir from "./bunSyncCheckDir.ts";
-import denoCheckRead from "./denoCheckRead.ts"
+import bunSyncCheckDir from "./syncCheckDir_Bun.ts";
+import denoCheckRead from "./checkRead_Deno.ts"
 import atlas from "../builder/atlas/main.ts";
 import staticPaths from "./staticPaths.ts";
 import mime from "../components/util/mime.ts";

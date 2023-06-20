@@ -1,4 +1,5 @@
-import { funRouterOptions, RouteTypes } from "../../types.ts";
+import { funRouterOptions } from "../../types.ts";
+import { RouteTypes } from "../types.ts"
 
 // (
 //     ((a: string[]) => ((o) => (s: string) => o.indexOf(s))(a.map((x) => x)))(

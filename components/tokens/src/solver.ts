@@ -1,5 +1,5 @@
 import digits from "./digits.ts";
-import { SignVerifyOptions } from "./types.ts";
+import { SignVerifyOptions } from "../types.ts";
 
 export default async (o: SignVerifyOptions) =>
   await Promise.all(Array.from(

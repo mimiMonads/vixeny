@@ -1,4 +1,4 @@
-import { SignVerifyOptions } from "./types.ts";
+import { SignVerifyOptions } from "../types.ts";
 
 export default (o: SignVerifyOptions) =>
   async (message: string) =>

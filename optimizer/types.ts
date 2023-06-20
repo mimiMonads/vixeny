@@ -1,4 +1,4 @@
-import { ParamsMethod } from "../types.ts";
+import { ParamsMethod } from "../builder/types.ts";
 import { JsonOptions, JsonType } from "../components/stringify/types.ts";
 //import { SignVerifyOptions } from "../components/signer/types.ts";
 

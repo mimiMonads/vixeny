@@ -1,4 +1,7 @@
-import { ArrayFiler, funRouterOptions, RouteTypes } from "../../types.ts";
+import { funRouterOptions } from "../../types.ts";
+import { ArrayFiler , RouteTypes} from "../types.ts";
+
+
 
 export default (o?: funRouterOptions) =>
   (a: RouteTypes[]): ArrayFiler =>

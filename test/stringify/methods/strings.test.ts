@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
-import string from "../../../components/stringify/methods/string.ts";
+import string from "../../../components/stringify/methods/json_string.ts";
 
 Deno.test(
   "string",

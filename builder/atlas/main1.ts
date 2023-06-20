@@ -1,15 +1,16 @@
 import {
-    ArraySwap,
-    funRouterOptions,
-    ParamsMethod,
-    RequestFunction,
-  } from "../../types.ts";
-  import badMethod from "../../components/util/badMethod.ts";
-  import notFound from "../../components/util/notFound.ts";
-  
-  type InnerObj = [string, RequestFunction] | [];
-  type InnerObjEmpty = [string, RequestFunction];
-  type Map = Record<number, Record<number, InnerObj[]>>;
+  ArraySwap,
+  ParamsMethod,
+  RequestFunction,
+} from "../types.ts";
+import funRouterOptions from "../../../types.ts"
+import badMethod from "../../components/util/badMethod.ts";
+import notFound from "../../components/util/notFound.ts";
+
+type InnerObj = [string, RequestFunction] | [];
+type InnerObjEmpty = [string, RequestFunction];
+type Map = Record<number, Record<number, InnerObj[]>>;
+
   
 export type PartialAtlas = (Atlas | [])
 

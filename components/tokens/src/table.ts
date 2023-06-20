@@ -1,5 +1,5 @@
 import hash from "./hash.ts";
-import { SignVerifyOptions } from "./types.ts";
+import { SignVerifyOptions } from "../types.ts";
 
 export default (o: SignVerifyOptions) =>
   async (key: string) =>

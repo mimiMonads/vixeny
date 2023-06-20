@@ -1,9 +1,11 @@
 import {
-  ArrayFiler,
-  funRouterOptions,
-  ParamsMethod,
-  RequestFunction,
+  funRouterOptions
 } from "../../types.ts";
+import {
+  ArrayFiler,
+  ParamsMethod,
+  RequestFunction
+} from "../types.ts"
 import badMethod from "../../components/util/badMethod.ts";
 import notFound from "../../components/util/notFound.ts";
 

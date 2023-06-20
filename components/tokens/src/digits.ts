@@ -1,6 +1,6 @@
 import crcTable from "./crcTable.ts";
 import table from "./table.ts";
-import { SignVerifyOptions } from "./types.ts";
+import { SignVerifyOptions } from "../types.ts";
 
 export default (txt: string) =>
   async (seed: SignVerifyOptions) =>

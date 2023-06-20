@@ -6,10 +6,10 @@ import {
   JsonStringify,
   JsonStringType,
 } from "../types.ts";
-import string from "../methods/string.ts";
-import boolean from "../methods/boolean.ts";
-import number from "../methods/number.ts";
-import array from "../methods/array.ts";
+import string from "../methods/json_string.ts";
+import boolean from "../methods/json_boolean.ts";
+import number from "../methods/json_number.ts";
+import array from "../methods/json_array.ts";
 
 export default (o: JsonStringify) =>
   '"{" +' + (((f: (arg0: (y: any) => any) => any) =>

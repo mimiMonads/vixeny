@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
-import boolean from "../../../components/stringify/methods/boolean.ts";
+import boolean from "../../../components/stringify/methods/json_boolean.ts";
 
 Deno.test(
   "hello",

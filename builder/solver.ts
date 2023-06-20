@@ -1,4 +1,5 @@
-import { Atlas, funRouterOptions, RouteTypes } from "../types.ts";
+import { Atlas, RouteTypes } from "./types.ts";
+import {  funRouterOptions } from "../types.ts";
 import solver from "./composer/methods.ts";
 import specialString from "./composer/specialString.ts";
 import finderMethods from "./composer/finderMethods.ts";

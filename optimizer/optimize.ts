@@ -1,4 +1,5 @@
-import { funRouterOptions, RouteTypes } from "../types.ts";
+import { funRouterOptions } from "../types.ts";
+import { RouteTypes } from "../builder/types.ts"
 import { ObjectRawResponse } from "./types.ts";
 import response from "./response1.ts";
 import staticFiles from "./staticFiles.ts";
