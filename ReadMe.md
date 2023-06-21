@@ -107,7 +107,8 @@ import { Petitions } from "vixeny/types";
     path: '/query/nameAndId',
     f: (req) => `Your name is : ${req.query?.name || 'default'} with the id : ${req.query?.id || "-1"}`
   },
-  // Only the 'name' field is parsed from the query, ignoring other fields, using "only" improves significantly the performance.
+  // Only the 'name' field is parsed from the query, ignoring other fields, 
+  // using "only" improves significantly the performance.
   {
     path: '/query/onlyName',
     query: {
@@ -123,19 +124,21 @@ import { Petitions } from "vixeny/types";
 
 ```typescript
 [
-    // This route has the pre-set ".html" header that sets the "Content-Type" header to "text/html".
+    // This route has the pre-set ".html" header that sets to "text/html".
     {
         path: "/headers/hello",
         headers: ".html",
         f:  () => "<p>Hello world!</p>" 
     },
-    // Headers can also be manually set using an object. Here, "Content-Type" is manually set to "text/html".
+    // Headers can also be manually set using an object. Here, 
+    // Here,  "Content-Type" is manually set to "text/html".
     {
         path: "/headers/again",
         headers: { "Content-Type": "text/html"},
         f:  () => "<p>Hello world!</p>" 
     },
-    // This route mirrors the body of the request. Here, the "POST" method is used.
+    // This route mirrors the body of the request.
+    // Here, the "POST" method is used.
     {
         path: "/headers/method",
         method: "POST",
@@ -155,13 +158,13 @@ import { Petitions } from "vixeny/types";
 [
     // The ":name" is a dynamic part of the route which will match any string.
     // The function 'f' checks if the 'name' parameter equals "Mimi". 
-    // If 'name' is "Mimi", it responds with a 200 status code and the message "Welcome back Mimi".
-    // If 'name' is anything else, it responds with a 400 status code and the message "Only devs here".
+    // If 'name' is "Mimi", it responds with a 200 status code.
+    // If 'name' is anything else, it responds with a 400.
     {
         path: "/response/who/:name",
         type: "request",
-        f: (req) => req.param.name === "Mimi"
-            ? new Response( "Welcome back Mimi", {status:200})
+        f: (req) => (req.param.name === "Bun" || req.param.name === "Bun")
+            ? new Response( "Welcome", {status:200})
             : new Response( "Only devs here", {status: 400})
     }
 ] 
@@ -179,7 +182,7 @@ import functionX from "outOfScope"
 [
   {
     //(f) will have the fields "req" and "param"
-    path:"/example/:id"
+    path:"/example/:id",
     add: ["req","param"],
     f: f => functionX(f)
   }
@@ -202,7 +205,8 @@ import functionX from "outOfScope"
 
 ```typescript
 /*
- * When the type is set to "response", the optimizer is bypassed. In such case, a Request is received and a Response is returned directly.
+ * When the type is set to "response", the optimizer is bypassed.
+ * In such case, a Request is received and a Response is returned directly.
  * Note that "r" is used instead of "f" 
 */
 
@@ -221,7 +225,8 @@ import functionX from "outOfScope"
 
 ```typescript
 /*
- * The "path" is relative to where the terminal is currently located. In this example, we're serving files from the "misc" directory.
+ * The "path" is relative to where the terminal is currently located.
+ * In this example, we're serving files from the "misc" directory.
  * MIME types are enabled by default but can be disabled by setting "mime: false".
  * At the moment, only one static file can be served at a time.
 */
