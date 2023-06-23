@@ -28,14 +28,14 @@ export default ((o?: funRouterOptions) =>
   (routes: ObjectRawResponse[]) =>
     ((re) =>
       (map =>
-      	 ((s) => (r: Request) => map[s(r)](r))(
-            solver(o)(re),
-          )
+        ((s) => (r: Request) => map[s(r)](r))(
+          solver(o)(re),
+        )
       )([...re[3]])
-      )(
-        atlas(o)(
-          split(o)(
-            optimizer(o)(routes),
-          ),
+    )(
+      atlas(o)(
+        split(o)(
+          optimizer(o)(routes),
         ),
-      )) as unknown as Vixeny;
+      ),
+    )) as unknown as Vixeny;

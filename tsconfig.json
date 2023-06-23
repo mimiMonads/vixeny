@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "skipDefaultLibCheck": true,
+    "moduleResolution": "node",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "types": [
+      "node",
+      "bun-types",
+      "bun"
+    ]
+  }
+}
