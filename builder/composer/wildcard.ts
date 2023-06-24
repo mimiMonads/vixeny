@@ -1,7 +1,13 @@
 import { funRouterOptions } from "../../types.ts";
 import { RouteTypes } from "../types.ts"
 
-export default (o?: funRouterOptions) =>
+
+
+
+
+
+
+const a = (o?: funRouterOptions) =>
   (max: number) =>
     (ar: RouteTypes[]) =>
       (
@@ -15,16 +21,15 @@ export default (o?: funRouterOptions) =>
                   )(
                     f(nar),
                   )
+              )(
+                (ar: string[]) =>
+                  (new Function(`return s=>${ar.reduceRight(
+                    (acc, v, i) =>
+                      `s.indexOf("${v}")===0?${i + max - 2}:` + acc,
+                    "-1",
+                  )
+                    }`))() as (s: string) => number,
               )
-                (
-                  (ar: string[]) =>
-                    (new Function(`return s=>${ar.reduceRight(
-                      (acc, v, i) =>
-                        `s.indexOf("${v}")===0?${i + max - 2}:` + acc,
-                      "-1",
-                    )
-                      }`))() as (s: string) => number,
-                )
           )(
             o && "hasName" in o && typeof o.hasName === "string"
               ? (s: string) => s.slice(o!.hasName!.length - 1)

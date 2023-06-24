@@ -16,19 +16,27 @@ Deno.test(
             a(new Request("http://localhost:8080/test")),
             a(new Request("http://localhost:8080/")),
             a(new Request("http://localhost:8080/test/2")),
+            a(new Request("http://localhost:8080/hello/***")),
+            a(new Request("http://localhost:8080/hi/hi/***"))
+
           ],
           [
-            8,
+            9,
             1,
             0,
             2,
+            9,
+            10
           ],
         )
     )(
       solver({ hasName: "http://localhost:8080/" })(
         atlas({ hasName: "http://localhost:8080/" })(
           split({ hasName: "http://localhost:8080/" })(
-            optimize({ hasName: "http://localhost:8080/" })([...paths, { path: "/hello/*", f: () => "hello" }]),
+            optimize({ hasName: "http://localhost:8080/" })([...paths,
+            { path: "/hello/*", f: () => "hello" },
+            { path: "/hi/hi/*", f: () => "hello2" }
+            ]),
           ),
         ),
       ),
