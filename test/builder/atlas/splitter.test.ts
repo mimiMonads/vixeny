@@ -55,3 +55,15 @@ Deno.test(
   }
 )
 
+Deno.test(
+  "cheksplit",
+  () => {
+    assertEquals(
+      split()(optimize()([{ path: '/', f: () => 'hello' }]))[1][2],
+      [
+      ]
+    )
+  }
+)
+
+

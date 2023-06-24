@@ -22,7 +22,7 @@ export type Atlas = [
   (Atlas | []),
 ];
 
-export default (_o?: funRouterOptions) =>
+export default (o?: funRouterOptions) =>
   (a: [ArraySwap[], PartialAtlas]): Atlas =>
     (
       (ParamsMethod) =>
@@ -46,8 +46,8 @@ export default (_o?: funRouterOptions) =>
                       )
                         .flat(3)
                         .concat(typeof a[1][3] == "undefined" ? [] : a[1][3].length < 1 ? [] : [...a[1][3]].slice(0, a[1][3].length - 2))
-                        .concat(notFound)
-                        .concat(badMethod),
+                        .concat(o?.notFound ?? notFound)
+                        .concat(o?.badMethod ?? badMethod),
                     )
                 )(
                   il.map(

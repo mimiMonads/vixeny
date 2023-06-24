@@ -53,13 +53,3 @@ Deno.test(
       ],
     ),
 );
-
-Deno.test(
-  "slitting elements in Atlas",
-  () =>
-    assertEquals(
-      atlas()(split()(optimize()([{ path: "/", f: () => "hello" }, { path: "/hello/*", f: () => "wild" }]))),
-      null
-
-    )
-)
