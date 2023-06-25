@@ -34,7 +34,9 @@ export default (o?: funRouterOptions) =>
                   )
 
               )(
-                solver(o)((atlas[4] as Atlas1))(atlas[3].length - 2)(-1)
+                solver(o)((atlas[4] as Atlas1))(
+                  atlas[3].length - (atlas[4][3] as Atlas1[3]).length
+                )(-1)
               )
             )(
               finderMethods(

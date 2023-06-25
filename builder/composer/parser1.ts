@@ -24,7 +24,7 @@ export default (o?: funRouterOptions) =>
 
                 (
                   routes.flatMap(x => x)
-                    .sort((a, b) => b.length - a.length),
+                  // .sort((a, b) => b.length - a.length),
                 )
               : ((n) =>
                 new Function(`return (s =>${Array.from(

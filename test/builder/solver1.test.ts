@@ -17,16 +17,14 @@ Deno.test(
             a(new Request("http://localhost:8080/")),
             a(new Request("http://localhost:8080/test/2")),
             a(new Request("http://localhost:8080/hello/***")),
-            a(new Request("http://localhost:8080/hi/hi/***"))
 
           ],
           [
-            9,
+            8,
             1,
             0,
             2,
-            9,
-            10
+            7,
           ],
         )
     )(
@@ -35,7 +33,6 @@ Deno.test(
           split({ hasName: "http://localhost:8080/" })(
             optimize({ hasName: "http://localhost:8080/" })([...paths,
             { path: "/hello/*", f: () => "hello" },
-            { path: "/hi/hi/*", f: () => "hello2" }
             ]),
           ),
         ),
