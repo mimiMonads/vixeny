@@ -1,4 +1,4 @@
-import { ObjectRawResponse } from "../../optimizer/types.ts";
+import { Petition } from "../../optimizer/types.ts";
 export default [
   { type: "response", path: "/", r: (_) => new Response("GET:main") },
   { type: "response", path: "/test", r: (_) => new Response("GET:test") },
@@ -26,4 +26,4 @@ export default [
     path: "/",
     r: (_) => new Response("DELETE:main"),
   },
-] as ObjectRawResponse[];
+] as Petition[];
