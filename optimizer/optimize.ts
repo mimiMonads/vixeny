@@ -1,11 +1,11 @@
 import { funRouterOptions } from "../types.ts";
 import { RouteTypes } from "../builder/types.ts"
-import { ObjectRawResponse } from "./types.ts";
+import { Petition } from "./types.ts";
 import response from "./response1.ts";
 import staticFiles from "./staticFiles.ts";
 export default (
   o?: funRouterOptions,
-): (ar: ObjectRawResponse[]) => RouteTypes[] =>
+): (ar: Petition[]) => RouteTypes[] =>
   (ar) =>
     ar
       .map(

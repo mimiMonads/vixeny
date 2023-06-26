@@ -10,22 +10,22 @@
  *  I highly recommend that you do not proceed unless you have a solid foundation in functional programming.
  * 
  * 
- *  Thanks and have fun ~
+ *  Thanks and have fun and remember that we are in alhpa
  */
 
 
 import { funRouterOptions } from "./types.ts";
-import { ObjectRawResponse } from "./optimizer/types.ts";
+import { Petition } from "./optimizer/types.ts";
 import optimizer from "./optimizer/optimize.ts";
 import atlas from "./builder/atlas/main1.ts";
 import split from "./builder/atlas/splitter.ts";
 import solver from "./builder/solver1.ts";
 
 
-type Vixeny = (o?: funRouterOptions) => (routes: ObjectRawResponse[]) => (r: Request) => Promise<Response> | Response
+type Vixeny = (o?: funRouterOptions) => (routes: Petition[]) => (r: Request) => Promise<Response> | Response
 
 export default ((o?: funRouterOptions) =>
-  (routes: ObjectRawResponse[]) =>
+  (routes: Petition[]) =>
     ((re) =>
       (map =>
         ((s) => (r: Request) => map[s(r)](r))(

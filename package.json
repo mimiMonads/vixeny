@@ -1,6 +1,6 @@
 {
   "name": "vixeny",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "description": "A functional router for Bun and Deno",
   "main": "fun.ts",
   "directories": {
@@ -23,8 +23,5 @@
   "bugs": {
     "url": "https://github.com/mimiMonads/functor/issues"
   },
-  "homepage": "https://github.com/mimiMonads/functor#readme",
-  "dependencies": {
-    "bun-types": "^0.6.9"
-  }
+  "homepage": "https://github.com/mimiMonads/functor#readme"
 }

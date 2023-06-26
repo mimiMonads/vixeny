@@ -17,7 +17,7 @@ export type RequestArguments = {
 //  sign: (s: string) => string;
 //  verify: (s: string) => -1 | 1;
 };
-export type ObjectRawResponse =
+export type Petition =
   | ObjectRawResponseCommon
   | ObjectRawResponseReturn
   | ObjectRawCommonRequest

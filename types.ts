@@ -1,6 +1,6 @@
 ///
 
-import { ObjectRawResponse } from "./optimizer/types.ts";
+import { Petition } from "./optimizer/types.ts";
 
 
 export type funRouterOptions = {
@@ -10,6 +10,6 @@ export type funRouterOptions = {
   badMethod?: { (x: Request): Response };
 };
 
-export type Vixeny = (o?: funRouterOptions) => (routes: ObjectRawResponse[]) => (r: Request) => Promise<Response> | Response;
-export type Petitions = ObjectRawResponse[]
+export type Vixeny = (o?: funRouterOptions) => (routes: Petition[]) => (r: Request) => Promise<Response> | Response;
+export type Petitions = Petition[]
 
