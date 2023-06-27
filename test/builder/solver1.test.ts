@@ -17,14 +17,18 @@ Deno.test(
             a(new Request("http://localhost:8080/")),
             a(new Request("http://localhost:8080/test/2")),
             a(new Request("http://localhost:8080/hello/***")),
-
+            a(new Request("http://localhost:8080/hello/nested/***")),
+            a(new Request("http://localhost:8080/static/fun.test.ts")),
           ],
           [
-            8,
+            10,
             1,
             0,
             2,
             7,
+            9,
+            8
+
           ],
         )
     )(
@@ -32,7 +36,9 @@ Deno.test(
         atlas({ hasName: "http://localhost:8080/" })(
           split({ hasName: "http://localhost:8080/" })(
             optimize({ hasName: "http://localhost:8080/" })([...paths,
-            { path: "/hello/*", f: () => "hello" },
+            { path: "/hello/*", f: () => "wild" },
+            { path: "/hello/nested/*", f: () => "card" },
+            { type: "static", path: "./test/", name: "/static/" },
             ]),
           ),
         ),

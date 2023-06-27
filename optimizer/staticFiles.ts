@@ -3,12 +3,12 @@ import { ObjectRawResponseStatic } from "./types.ts";
 import syncCheckDir from "./syncCheckDir.ts";
 import bunSyncCheckDir from "./syncCheckDir_Bun.ts";
 import denoCheckRead from "./checkRead_Deno.ts"
-import atlas from "../builder/atlas/main.ts";
+import atlas from "../builder/atlas/main1.ts";
 import staticPaths from "./staticPaths.ts";
 import mime from "../components/util/mime.ts";
 import joiner from "../components/util/joiner.ts";
-import solver from "../builder/solver.ts";
-import split from "../builder/atlas/split.ts";
+import solver from "../builder/solver1.ts";
+import split from "../builder/atlas/splitter.ts";
 
 export default (o?: funRouterOptions) =>
   (f: ObjectRawResponseStatic): (r: Request) => Response | Promise<Response> =>
@@ -25,19 +25,19 @@ export default (o?: funRouterOptions) =>
                 "mime" in f && f.mime === false
                   ? []
                   : "extra" in f
-                  ? mime.concat(f.extra)
-                  : mime,
+                    ? mime.concat(f.extra)
+                    : mime,
               )(p)(f.name)(f.path),
             ),
           ),
         ))(
           (
-             denoCheck =>
-            typeof denoCheck == "string"
-          ?   syncCheckDir(f.path).map((y) => y[0]).flat()
-          :  bunSyncCheckDir(joiner)(denoCheck.getFiles)(denoCheck.stats)(f.path).map((y) => y[0]).flat()
+            denoCheck =>
+              typeof denoCheck == "string"
+                ? syncCheckDir(f.path).map((y) => y[0]).flat()
+                : bunSyncCheckDir(joiner)(denoCheck.getFiles)(denoCheck.stats)(f.path).map((y) => y[0]).flat()
           )(
             denoCheckRead
           )
-        
-      );
+
+        );

@@ -47,14 +47,31 @@ Deno.test(
       split()(optimize()([{ path: '/', f: () => 'hello' }, { path: "/hello/*", f: () => "wild" }, { path: "/hello/hello/*", f: () => "wild" }]))[1][2],
       [
         [
-          ["/hello/*"],
-          ["/hello/hello/*"]
+          ["/hello/"],
+          ["/hello/hello/"]
         ]
       ]
     )
   }
 )
 
+
+Deno.test(
+  "cheksplit",
+  () => {
+    assertEquals(
+      split()(optimize()([{ path: '/', f: () => 'hello' }, { path: "/hello/*", f: () => "wild" }, { path: "/hello/hello/*", f: () => "wild" },
+      { type: "static", path: "./test/", name: "/static/" },
+      ]))[1][2],
+      [
+        [
+          ["/hello/", "/static/"],
+          ["/hello/hello/"]
+        ]
+      ]
+    )
+  }
+)
 Deno.test(
   "cheksplit",
   () => {

@@ -53,3 +53,32 @@ Deno.test(
       ],
     ),
 );
+Deno.test(
+  "Atlas",
+  (_) =>
+    assertEquals(
+      atlas()(split()(optimize()([...paths,
+      { path: "/hello/*", f: () => "wild" },
+      { path: "/hello/nested/*", f: () => "card" },
+      { type: "static", path: "./test/", name: "/static/" },
+      ])))[4].slice(0, -2) as unknown as null,
+
+      [
+        [
+          "GET",
+        ],
+        [
+          [
+            2,
+            3
+          ],
+        ],
+        [
+          [
+            ["/hello/", "/static/"],
+            ["/hello/nested/"],
+          ],
+        ],
+      ],
+    ),
+);

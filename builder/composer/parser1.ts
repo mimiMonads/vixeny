@@ -13,18 +13,20 @@ export default (o?: funRouterOptions) =>
               (
 
 
-                (nar: string[]) =>
+                (nar: [string, number][]) =>
                   (new Function(`return s=>${nar.reduceRight(
                     (acc, v, i) =>
-                      `s.indexOf("${v}")===0?${i + start}:` + acc,
+                      `s.indexOf("${(v[0] as string)}")===0?${(v[1] as number) + start}:` + acc,
                     "-1",
                   )
                     }`))() as (s: string) => number
               )
 
                 (
-                  routes.flatMap(x => x)
-                  // .sort((a, b) => b.length - a.length),
+                  routes
+                    .flatMap(x => x)
+                    .map((x, i) => [x, i] as [string, number])
+                    .sort((a, b) => b[0].length - a[0].length),
                 )
               : ((n) =>
                 new Function(`return (s =>${Array.from(

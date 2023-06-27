@@ -19,7 +19,7 @@ export default (o?: funRouterOptions) =>
           main1(o)(
             [
               (a.filter((x) => typeof x[3] === "string" || x[1].at(-1) === "*") as RouteTypes[]).map(
-                (x) => [x[1].slice(0, -1).split("/").length - 1, x[1], x[0], x[2]]
+                (x) => [x[1].slice(0, -1).split("/").length - 1, x[1].slice(0, -1), x[0], x[2]]
               ),
               []
             ]
