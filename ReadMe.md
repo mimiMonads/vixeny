@@ -313,6 +313,36 @@ In this configuration array, `urlParams`, `urlQueries`, `httpOptions`, `typeRequ
 
 ```
 
+## Vixeny's contexts
+
+``` typescript
+
+// http://127.0.0.1:3000/context/hello
+
+vixeny({
+	hasName: 'http://127.0.0.1:3000/'
+})([{
+		path: "/",
+		type: "response",
+		r: () => new Response("hi")
+	},
+	{
+		path: "/context/*",
+		type: "response",
+    //this vixeny context do not share anything with its caller
+		r: vixeny({
+			hasName: 'http://127.0.0.1:3000/context/'
+		})([{
+				path: "/hello",
+				f: () => "hello from this context"
+			}
+
+		])
+	}
+])
+
+```
+
 
 Thank you and enjoy using Vixeny!
 
