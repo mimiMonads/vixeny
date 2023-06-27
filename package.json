@@ -1,13 +1,13 @@
 {
   "name": "vixeny",
-  "version": "0.0.59",
+  "version": "0.0.6",
   "description": "A functional router for Bun and Deno",
   "main": "fun.ts",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "deno test ./test/"
+    "test": "deno test -A ./test/*"
   },
   "repository": {
     "type": "git",

@@ -13,12 +13,16 @@ Vixeny is a purely functional web framework in TypeScript that aims to rival oth
 - **Self-Sufficiency:** Operates independently, with no external dependencies.
 - **Immutable Data:** Prioritizes data safety and eliminates side effects.
 - **Scalability:** Ensures high performance even under heavy loads.
+- **Extensive Testing:** Over 100 different tests to ensure stability, reliability, and robustness in various scenarios and environments.
 - **User-Friendly:** Provides clear syntax and comprehensive documentation for developers at all levels.
 
 ## Benchmarks
 
+### Bun
+[By SaltyAom](https://github.com/SaltyAom/bun-http-framework-benchmark)
+
 ### Deno
-[Vixeny Hono](https://github.com/mimiMonads/hono-functor-benchmark)
+[By Denosaurs](https://github.com/denosaurs/bench)
 
 
 ## Get Started in 10 Minutes!
@@ -66,7 +70,7 @@ export default {
     vixeny(options)([...petitions])
 
     Options - Configuration options for the vixeny server.
-    Petitions - An array of routes for the vixeny server to handle.
+    Petitions - An array of Petition (routes).
 
 */
 import { Petitions } from "vixeny/types";
@@ -124,7 +128,7 @@ import { Petitions } from "vixeny/types";
 
 ```typescript
 [
-    // This route has the pre-set ".html" header that sets to "text/html".
+    // This petition has the pre-set ".html" header that sets to "text/html".
     {
         path: "/headers/hello",
         headers: ".html",
@@ -141,7 +145,7 @@ import { Petitions } from "vixeny/types";
     // Here, the "POST" method is used.
     {
         path: "/headers/method",
-        method: "POST",
+        method: "POST", // "GET" | "HEAD" | "POST" | "DELETE"
         status: 201,
         f: (request) => request.req.body
     }
@@ -152,27 +156,27 @@ import { Petitions } from "vixeny/types";
 
 ```typescript
 /*
- * By setting the type to "request", the return type is changed to Response. 
+ * By setting the type to "request", the return type is changed from BodyInit to Response. 
 */
 
 [
     // The ":name" is a dynamic part of the route which will match any string.
-    // The function 'f' checks if the 'name' parameter equals "Mimi". 
-    // If 'name' is "Mimi", it responds with a 200 status code.
+    // The function 'f' checks if the 'name' parameter equals "Bun" or "Deno". 
+    // If so , it responds with a 200 status code.
     // If 'name' is anything else, it responds with a 400.
     {
         path: "/response/who/:name",
         type: "request",
-        f: (req) => (req.param.name === "Bun" || req.param.name === "Bun")
+        f: (req) => (req.param.name === "Bun" || req.param.name === "Deno")
             ? new Response( "Welcome", {status:200})
             : new Response( "Only devs here", {status: 400})
     }
 ] 
 ```
 
-## The Optimizer
+## Vixeny
 
-The Optimizer offers the ability to manage different aspects of an HTTP request-response cycle in the arguments as response, including headers, response status, request methods, query , parameters an others.
+Offers the ability to manage different aspects of an HTTP request-response cycle in the arguments as response, including headers, response status, request methods, query , parameters an others.
 
 - add: allows you to add fields to the arguments, effectively enabling parsing for certain aspects of the request when your arguments go out of the scope
 
@@ -200,6 +204,7 @@ import functionX from "outOfScope"
   }
 ]
 ```
+**Vixeny will always try to give you only what is necessary, not only for optimization, but also for the sake of safety and to avoid side effects.**
 
 ## Type Response
 
@@ -247,7 +252,7 @@ The example you provided demonstrates the use of the spread operator in the main
 
 ```javascript
 [
-    // A simple "Hello World" route
+    // A simple "Hello World" petition
     {
         path: "/",
         f: () => "Hello world"
@@ -263,22 +268,9 @@ The example you provided demonstrates the use of the spread operator in the main
 ]
 ```
 
-In this configuration array, `urlParams`, `urlQueries`, `httpOptions`, `typeRequest`, `typeResponse`, `staticServer`, and `jsonStringifier` are presumably arrays of routes that are defined elsewhere in your application. By using the spread operator, these route definitions are unpacked and included directly in your main route configuration. 
+In this configuration array, `urlParams`, `urlQueries`, `httpOptions`, `typeRequest`, `typeResponse`, `staticServer`, and `jsonStringifier` are arrays of routes that are defined elsewhere in your application. By using the spread operator, these petitions definitions are unpacked and included directly.
 
-Thank you and enjoy using Vixeny!
-
-## More Examples
-
-If you prefer learning with code, this repository details how it works, step by step, from basic to advanced concepts with a live server. It's highly recommended.
-
-[Examples](https://github.com/mimiMonads/vixeny_examples)
-
-
-## Experimental Features
-
-***These features are still under development and may change over time.***
-
-### Stringifier
+## Stringifier
 
 ```typescript
 /*
@@ -306,6 +298,42 @@ If you prefer learning with code, this repository details how it works, step by 
   }
 ] 
 ```
+
+## Wildcard
+
+``` typescript
+//assuming we have these petitions
+[
+  {path: "/hello/*", f: () => "first"},
+  {path: "/hello/nested/*" , f: () => "second"}
+]
+
+// new Request("http://127.0.0.1:8080/hello/nested/hi")  -> "second"
+// new Request("http://127.0.0.1:8080/hello/hi") -> "first"
+
+```
+
+
+Thank you and enjoy using Vixeny!
+
+
+## Experimental Features
+
+***These features are still under development and may change over time.***
+
+## Modularity
+
+Compose and work as you want with components:
+
+``` typescript
+
+import stringify from "vixeny/components/stringify/stringify"
+//Experimental
+import signer from "vixeny/components/tokens/signer"
+import verifier from "vixeny/components/tokens/verifier"
+
+```
+
 
 
 ## Q&A
