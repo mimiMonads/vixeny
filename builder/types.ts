@@ -9,7 +9,7 @@ export type RouteTypes = [
   RequestFunction,
   string | false,
 ];
-export type ParamsMethod = "GET" | "HEAD" | "POST" | "DELETE";
+export type ParamsMethod = "GET" | "HEAD" | "POST" | "DELETE" | "PATCH" | "PUT" | "OPTIONS";
 export type SearchIn = [number, string[], RequestFunction];
 export type OptimizeList = [ParamsMethod[], SearchIn[][]];
 export type Atlas = [

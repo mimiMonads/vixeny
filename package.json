@@ -13,6 +13,12 @@
     "type": "git",
     "url": "git+https://github.com/mimiMonads/functor.git"
   },
+  "imports": {
+    ".":  {
+      "bun" : "./fun.ts",
+      "deno" : "./fun.ts"
+    }
+  },
   "keywords": [
     "deno",
     "bun",
