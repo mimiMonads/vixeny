@@ -16,9 +16,7 @@ export default (o?: funRouterOptions) =>
                 (_, i) =>
                   o && "hasName" in o && typeof o.hasName === "string"
                     ? ((p) => (s: string) => p(s.slice(o!.hasName!.length - 1)))(
-                      parser(o)(atlas[2][i])(position[i])(atlas[1][i])(start)(
-                        end
-                      ),
+                      parser(o)(atlas[2][i])(position[i])(atlas[1][i])(start)(end),
                     )
                     : ((p) =>
                       (
@@ -36,9 +34,7 @@ export default (o?: funRouterOptions) =>
                       )(
                         -1,
                       ))(
-                        parser(o)(atlas[2][i])(position[i])(atlas[1][i])(start)(
-                          end
-                        ),
+                        parser(o)(atlas[2][i])(position[i])(atlas[1][i])(start)(end),
                       ),
               ) as [(s: string) => number]
         )(

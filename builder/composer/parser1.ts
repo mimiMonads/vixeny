@@ -15,7 +15,7 @@ export default (o?: funRouterOptions) =>
 
                 (nar: [string, number][]) =>
                   (new Function(`return s=>${nar.reduceRight(
-                    (acc, v, i) =>
+                    (acc, v) =>
                       `s.indexOf("${(v[0] as string)}")===0?${(v[1] as number) + start}:` + acc,
                     "-1",
                   )

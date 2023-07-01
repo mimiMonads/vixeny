@@ -10,6 +10,12 @@ Deno.test(
         assertEquals(
           [
             await (f(new Request("http://localhost:8080/")) as Response).text(),
+            await (f(new Request("http://localhost:8080/one")) as Response).text(),
+            await (f(new Request("http://localhost:8080/two")) as Response).text(),
+            await (f(new Request("http://localhost:8080/three")) as Response).text(),
+            await (f(new Request("http://localhost:8080/four")) as Response).text(),
+            await (f(new Request("http://localhost:8080/five")) as Response).text(),
+            await (f(new Request("http://localhost:8080/six")) as Response).text(),
             await (f(new Request("http://localhost:8080/test")) as Response).text(),
             await (f(new Request("http://localhost:8080/test/")) as Response).text(),
             await (f(new Request("http://localhost:8080/", { method: "POST" })) as Response)
@@ -29,6 +35,12 @@ Deno.test(
           ],
           [
             "GET:main",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
             "GET:test",
             "GET:test/",
             "POST:main",
@@ -44,6 +56,54 @@ Deno.test(
       fun()(paths)
     )
 )
+
+
+Deno.test(
+  "main",
+  () =>
+    (
+      async (f) =>
+        assertEquals(
+          [
+  
+            await (f(new Request("http://localhost:8080/count")) as Response).text(),
+            await (f(new Request("http://localhost:8080/hello_world")) as Response).text(),
+            await (f(new Request("http://localhost:8080/random_number")) as Response).text(),
+            await (f(new Request("http://localhost:8080/plus_1", { method: "POST" } )) as Response).text(),
+            await (f(new Request("http://localhost:8080/minus_1", { method: "POST" } )) as Response).text(),
+          ],
+          ["1","2","3","4","5"]
+        )
+
+    )(
+      fun()([
+        {
+          path: "/count",
+          f: () => "1",
+        },
+        {
+          path: "/hello_world",
+          f: () => "2",
+        },
+        {
+          path: "/random_number",
+          f: () => "3",
+        },
+        {
+          path: "/plus_1",
+          f: () => "4",
+          method: "POST",
+        },
+        {
+          path: "/minus_1",
+          f: () => "5",
+          method: "POST",
+        },
+      ])
+    )
+)
+
+
 
 Deno.test(
   "main",

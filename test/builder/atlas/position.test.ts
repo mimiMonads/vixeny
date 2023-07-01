@@ -42,16 +42,6 @@ Deno.test(
     ),
 );
 
-console.log(    map([
-  [
-    ["a", "b"],
-    ["c"],
-  ],
-  [
-    ["d"],
-    ["e", "f"],
-  ],
-]))
 
 Deno.test("functionName basic test", () => {
   assertEquals(
@@ -90,4 +80,24 @@ Deno.test("functionName edge case test", () => {
     ]
   );
 });
+
+
+
+Deno.test("functionName edge case test", () => {
+  assertEquals(
+    map([
+      [
+        [ "/count", "/hello_world", "/random_number" ]
+      ],
+      [
+        [ "/plus_1", "/minus_1" ]
+      ]
+    ]),
+    [
+      [0],
+      [3],
+    ]
+  );
+});
+
 

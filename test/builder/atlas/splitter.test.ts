@@ -4,6 +4,10 @@ import paths from "../../util/paths.ts";
 import optimize from "../../../optimizer/optimize.ts";
 import split from "../../../builder/atlas/splitter.ts";
 
+
+
+
+
 Deno.test(
   "arraySwap",
   (_) =>
@@ -13,6 +17,12 @@ Deno.test(
       )[0].map((x) => [x[0], x[1], x[2]]),
       [
         [1, "/", "GET"],
+        [1, "/one", "GET"],
+        [1, "/two", "GET"],
+        [1, "/three", "GET"],
+        [1, "/four", "GET"],
+        [1, "/five", "GET"],
+        [1, "/six", "GET"],
         [1, "/test", "GET"],
         [2, "/test/", "GET"],
         [4, "/test/:id/:name/", "GET"],
@@ -30,6 +40,12 @@ Deno.test(
       split()(optimize()(paths))[0].map((x) => [x[0], x[1], x[2]]),
       [
         [1, "/", "GET"],
+        [1, "/one", "GET"],
+        [1, "/two", "GET"],
+        [1, "/three", "GET"],
+        [1, "/four", "GET"],
+        [1, "/five", "GET"],
+        [1, "/six", "GET"],
         [1, "/test", "GET"],
         [2, "/test/", "GET"],
         [4, "/test/:id/:name/", "GET"],

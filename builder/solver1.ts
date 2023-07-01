@@ -48,7 +48,7 @@ export default (o?: funRouterOptions) =>
 
           (atlas[4][0] as Atlas1[0]).length === 0
             ? atlas[3].length - 4 + (atlas[4][3] as Atlas1[3]).length
-            : atlas[3].length - 2
+            : atlas[3].length -2
         ),
       )
   )(
