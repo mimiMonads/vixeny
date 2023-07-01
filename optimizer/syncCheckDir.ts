@@ -40,7 +40,11 @@ export default ((start) =>
                 // It continues to concatenate the contents of all directories until there are no more directories.
                 s.done === true
                   ? []
-                  : [[p + s.value.name, s.value.isDirectory]].concat(f(o)))(
+                  : [[(p.at(-2) === "/"
+                    ? p.slice(0,-1) 
+                    : p.at(-1) === "/"
+                      ? p
+                      : p + "/")+ s.value.name, s.value.isDirectory]].concat(f(o)))(
                   o.next(),
                 ))(start)
         )(Deno.readDirSync(start) ),

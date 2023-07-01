@@ -3,10 +3,10 @@ import { ObjectRawResponseStatic } from "./types.ts";
 import syncCheckDir from "./syncCheckDir.ts";
 import bunSyncCheckDir from "./syncCheckDir_Bun.ts";
 import denoCheckRead from "./checkRead_Deno.ts"
-import atlas from "../builder/atlas/main1.ts";
 import staticPaths from "./staticPaths.ts";
 import mime from "../components/util/mime.ts";
 import joiner from "../components/util/joiner.ts";
+import atlas from "../builder/atlas/main1.ts";
 import solver from "../builder/solver1.ts";
 import split from "../builder/atlas/splitter.ts";
 
