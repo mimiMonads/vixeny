@@ -10,9 +10,9 @@ export default (start = 0xEDB88320) =>
             (acc: number) => ((acc & 1)
               ? (start ^ (acc >>> 1))
               : (acc >>> 1) === 0
-              ? 0xFFFFFFF
-              : (acc >>> 1)),
+                ? 0xFFFFFFF
+                : (acc >>> 1)),
             i,
           ),
-      ))(),
+      ))() as number[],
   );

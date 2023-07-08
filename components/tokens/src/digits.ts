@@ -1,5 +1,5 @@
-import crcTable from "./crcTable.ts";
 import table from "./table.ts";
+import shaTable from "./tableSha.ts";
 import { SignVerifyOptions } from "../types.ts";
 
 export default (txt: string) =>
@@ -10,4 +10,4 @@ export default (txt: string) =>
          return a=> ar => ${await table(seed)(txt).then((x) => x)}
         `)
       )()
-    )(crcTable(seed.crcStart)) as (ar: number[]) => number;
+    )(await shaTable(txt + seed.seed)) as (ar: number[]) => number;

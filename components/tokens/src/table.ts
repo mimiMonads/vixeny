@@ -9,21 +9,20 @@ export default (o: SignVerifyOptions) =>
           (p) =>
             (
               (el) =>
-                
+
 
                 "(((" + Array.from(
-                      {
-                        length: (typeof o.size === "number" ? o.size : 8) * (typeof o.sequence === "number" ? o.sequence : 1) * 4,
-                      },
-                      (_, i) =>
-                        `( ${p[i ]} ^ a[ar[${
-                          el[i]
-                        }]])`,
-                    ).join("+") + ") >>> 0) % 65)"
+                  {
+                    length: (typeof o.size === "number" ? o.size : 8) * (typeof o.sequence === "number" ? o.sequence : 1) * 4,
+                  },
+                  (_, i) =>
+                    `( ${p[i]} ^ a[ar[${el[i]
+                    }]])`,
+                ).join("+") + ") >>> 0) % 65)"
 
             )(
               Array.from(
-                { length: typeof o.size === "number" ? (o.size) * 2 :16 },
+                { length: typeof o.size === "number" ? (o.size) * 2 : 16 },
                 () =>
                   Array.from(
                     { length: typeof o.size === "number" ? o.size : 8 },
@@ -43,8 +42,8 @@ export default (o: SignVerifyOptions) =>
           (await Promise.all(Array.from(
             {
               length: 8 * (typeof o.plotter === "undefined" || o.plotter === "SHA-1"
-                  ? 2
-                  : 1),
+                ? 2
+                : 1),
             },
             async (_, i) => await hash(o)(s1 + " " + i).then((x) => x),
           ))).join("")
@@ -53,4 +52,4 @@ export default (o: SignVerifyOptions) =>
       ),
     );
 
-    
+
