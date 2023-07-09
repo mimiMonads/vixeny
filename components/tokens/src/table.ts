@@ -13,7 +13,7 @@ export default (o: SignVerifyOptions) =>
 
                 "(((" + Array.from(
                   {
-                    length: (typeof o.size === "number" ? o.size : 8) * (typeof o.sequence === "number" ? o.sequence : 1) * 4,
+                    length: (typeof o.size === "number" ? o.size : 8) * (typeof o.sequence === "number" ? o.sequence : 4),
                   },
                   (_, i) =>
                     `( ${p[i]} ^ a[ar[${el[i]

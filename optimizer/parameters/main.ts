@@ -10,11 +10,13 @@ export default (options?: funRouterOptions) =>
   (f: ObjectRawResponseCommon) =>
     (
       (info) =>
-        info.elements.length === 1 &&
-          (info.elements.at(-1) || "")[0] === info.startsWith &&
-          f.path.at(-1) !== "/"
-          ? one(info)
-          : multi(info)
+        info.firstParam === -1
+          ? (() => null).toString()
+          : info.elements.length === 1 &&
+            (info.elements.at(-1) || "")[0] === info.startsWith &&
+            f.path.at(-1) !== "/"
+            ? one(info)
+            : multi(info)
     )(
       map(options)(f),
     );
