@@ -31,7 +31,7 @@ Deno.test(
             a(new Request("http://localhost:8080/NOTFOUND")),
             a(new Request("http://localhost:8080/", { method: "BAD" })),
           ],
-          [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
         )
     )(
       solver({ hasName: "http://localhost:8080/" })(
@@ -71,7 +71,7 @@ Deno.test(
             a(new Request("http://localhost:8080/NOTFOUND")),
             a(new Request("http://localhost:8080/", { method: "BAD" })),
           ],
-          [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
         )
     )(
       solver()(atlas()(split()(optimize()(paths)))),
@@ -102,7 +102,7 @@ Deno.test(
             a(new Request("http://localhost:8080/NOTFOUND")),
             a(new Request("http://localhost:8080/", { method: "BAD" })),
           ],
-          [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
         )
     )(
       solver()(atlas()(split()(optimize()(paths)))),
@@ -119,12 +119,12 @@ Deno.test(
             f(new Request("http://localhost:8080/count")),
             f(new Request("http://localhost:8080/hello_world")),
             f(new Request("http://localhost:8080/random_number")),
-            f(new Request("http://localhost:8080/plus_1", { method: "POST" } )),
-            f(new Request("http://localhost:8080/minus_1", { method: "POST" } )),
+            f(new Request("http://localhost:8080/plus_1", { method: "POST" })),
+            f(new Request("http://localhost:8080/minus_1", { method: "POST" })),
             f(new Request("http://localhost:8080/NOTFOUND")),
             f(new Request("http://localhost:8080/", { method: "BAD" })),
           ],
-          [0,1,2,3,4,5,6]
+          [0, 1, 2, 3, 4, 5, 6]
         )
     )(
       solver()(atlas()(split()(optimize()([

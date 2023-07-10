@@ -1,6 +1,6 @@
 {
   "name": "vixeny",
-  "version": "0.0.63",
+  "version": "0.0.661",
   "description": "A functional router for Bun and Deno",
   "main": "fun.ts",
   "directories": {
@@ -14,9 +14,9 @@
     "url": "git+https://github.com/mimiMonads/vixeny.git"
   },
   "imports": {
-    ".":  {
-      "bun" : "./fun.ts",
-      "deno" : "./fun.ts"
+    ".": {
+      "bun": "./fun.ts",
+      "deno": "./fun.ts"
     }
   },
   "keywords": [
