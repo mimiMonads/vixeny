@@ -11,8 +11,8 @@ export default (options?: funRouterOptions) =>
             x === "/"
               ? acc + ` s === "/" ? ${i + base}  : `
               : x.indexOf("/" + (options?.paramsStartsWith?.at(0) || ":")) ===
-                  -1
-              ? acc + ` s.indexOf("${x.slice(1)}") === 1 ? ${(i + base)} : `
-              : acc + parameters(base + i)(map(options)(x)),
+                -1
+                ? acc + ` s.indexOf("${x.slice(1)}") === 1 ? ${(i + base)} : `
+                : acc + parameters(base + i)(map(options)(x)),
           "",
         ) + notFound).trim();

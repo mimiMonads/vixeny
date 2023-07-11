@@ -16,7 +16,7 @@ export default (o?: funRouterOptions) =>
                 .map(
                   (_, i) =>
                     o && "hasName" in o && typeof o.hasName === "string"
-                      ? ((p) => (s: string) => p(s.slice(o!.hasName!.length - 1)))(
+                      ? new Function(` return p => s => p(s.slice(${o!.hasName!.length - 1}))`)()(
                         parser(o)(atlas[2][i])(position[i])(atlas[1][i])(start)(end),
                       )
                       : ((p) =>
