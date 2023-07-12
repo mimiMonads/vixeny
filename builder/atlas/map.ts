@@ -1,15 +1,11 @@
-export default (c: string[][][]):number[][]  => {
+export default (c: string[][][]): number[][] => {
   let flattenArr: string[] = [];
-  let result: number[][] = [];
 
-  c.forEach(subArray => {
-    let indices: number[] = [];
-    subArray.forEach((arr) => {
-      indices.push(flattenArr.length);
+  return c.map(subArray =>
+    subArray.map(arr => {
+      let currentIndex = flattenArr.length;
       flattenArr = [...flattenArr, ...arr];
-    });
-    result.push(indices);
-  });
-
-  return result;
-}
+      return currentIndex;
+    })
+  );
+};

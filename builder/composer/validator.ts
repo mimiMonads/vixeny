@@ -12,7 +12,10 @@ export default (options?: funRouterOptions) =>
               ? acc + ` s === "/" ? ${i + base}  : `
               : x.indexOf("/" + (options?.paramsStartsWith?.at(0) || ":")) ===
                 -1
-                ? acc + ` s.indexOf("${x.slice(1)}") === 1 ? ${(i + base)} : `
+                ? acc + ((x.at(-1) === "/" )
+                  ? ` s.indexOf("${x.slice(1)}") === 1 ? ${(i + base)} : `
+                  : `s.length > ${x.length } &&  s.indexOf("${x.slice(1) + "?" }") === 1  || s.indexOf("${x.slice(1)}") === 1 ? ${(i + base)} :  `)
                 : acc + parameters(base + i)(map(options)(x)),
           "",
         ) + notFound).trim();
+// `(s.length > ${x.length - 1 } &&  s.indexOf("${x.slice(1) + "?" }") === 1  || s.indexOf("${x.slice(1)}") === 1 ? ${(i + base)} :  `

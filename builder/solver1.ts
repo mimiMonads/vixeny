@@ -17,31 +17,17 @@ export default (o?: funRouterOptions) =>
             (
               m1 => (
                 solve1 =>
-                  (r: Request) =>
-
-                    (
-                      w => w !== -1
-                        ? w
-                        :
-                        me(r.method) !== -1
-                          ? solve[me(r.method)](r.url)
-                          : atlas[3].length - 1
-
-                    )(
-                      m1(r.method) !== - 1
-                        ? solve1[m1(r.method)](r.url)
-                        : -1
-                    )
+                  (r: Request) =>  solve1[m1(r.method)](r.url) ?? solve[me(r.method)](r.url)
 
               )(
                 solver(o)((atlas[4] as Atlas1))(
                   atlas[3].length - (atlas[4][3] as Atlas1[3]).length
-                )(-1)(atlas[3].length - 1)
+                )(null as unknown as number)(null as unknown as number)
               )
             )(
               finderMethods(
                 (atlas[4][0] as Atlas1[0])
-              )(-1)
+              )(atlas[4][0]?.length as unknown as number)
             )
       )(
         solver(o)(atlas)(0)(
@@ -54,6 +40,6 @@ export default (o?: funRouterOptions) =>
   )(
     finderMethods(
       atlas[0]
-    )(atlas[0].length)
+    )(atlas[0].length )
   )
 

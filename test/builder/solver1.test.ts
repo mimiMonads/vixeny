@@ -116,13 +116,13 @@ Deno.test(
       (f) =>
         assertEquals(
           [
-            f(new Request("http://localhost:8080/count")),
-            f(new Request("http://localhost:8080/hello_world")),
-            f(new Request("http://localhost:8080/random_number")),
-            f(new Request("http://localhost:8080/plus_1", { method: "POST" })),
-            f(new Request("http://localhost:8080/minus_1", { method: "POST" })),
-            f(new Request("http://localhost:8080/NOTFOUND")),
-            f(new Request("http://localhost:8080/", { method: "BAD" })),
+            f(new Request("http://localhost:8000/count")),
+            f(new Request("http://localhost:8000/hello_world")),
+            f(new Request("http://localhost:8000/random_number")),
+            f(new Request("http://localhost:8000/plus_1", { method: "POST" })),
+            f(new Request("http://localhost:8000/minus_1", { method: "POST" })),
+            f(new Request("http://localhost:8000/NOTFOUND")),
+            f(new Request("http://localhost:8000/", { method: "BAD" })),
           ],
           [0, 1, 2, 3, 4, 5, 6]
         )
