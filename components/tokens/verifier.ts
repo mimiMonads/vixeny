@@ -1,10 +1,16 @@
 import solver from "./src/solver.ts";
 import validChar from "../util/validChar.ts";
 import { SignVerifyOptions } from "./types.ts";
+import verifyWithSize from "./src/verifyWithSize.ts";
 
 export default async (seed: SignVerifyOptions) => (
   ar => (
-    p => (
+    p =>
+       typeof seed.size == "number"
+       ? verifyWithSize(seed.size)(ar)(p)
+       :
+
+    (
       f =>
         seed.expires === true
           ? (s: string) =>
@@ -20,8 +26,10 @@ export default async (seed: SignVerifyOptions) => (
                 .map(x => x.charCodeAt(0))
                 .every((x, i, a) =>
                   i < 7
-                    ? p[ar[i % 8]([a.at(-7) as number, a.at(-6) as number, a.at(-5) as number, a.at(i - 4) as number, a.at(i - 3) as number, a.at(i - 2) as number, a.at(i - 1) as number, x])] === s[m + i]
-                    : p[
+                    ? 
+                    p[ar[i % 8]([a.at( i-7) as number, a.at(i -6) as number, a.at(i -5) as number, a.at(i - 4) as number, a.at(i - 3) as number, a.at(i - 2) as number, a.at(i - 1) as number, x])] === s[m + i]
+                    : 
+                    p[
                     ar[i % 8]([
                       a[(i - 7)],
                       a[(i - 6)],
@@ -31,7 +39,9 @@ export default async (seed: SignVerifyOptions) => (
                       a[(i - 2)],
                       a[(i - 1)],
                       x,
-                    ])] === s[m + i]
+                    ])]
+                    
+                    === s[m + i]
                 )
           )(
             (s.length / 2 >> 0) + 1
