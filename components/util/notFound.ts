@@ -1,2 +1,1 @@
-export default (_: Request) =>
-  ((re) => re)(new Response("Not found", { status: 404 }));
+export default (_: Request) => new Response("Not found", { status: 404 });
