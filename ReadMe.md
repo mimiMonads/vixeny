@@ -313,33 +313,56 @@ In this configuration array, `urlParams`, `urlQueries`, `httpOptions`, `typeRequ
 
 ```
 
-## Vixeny's contexts
+## Sign and verify
+
+//explication of how it works goes here
+
+there are two ways to use it:
+
+```ts
+vixeny({
+	hasName: 'http://127.0.0.1:3000/'
+})
+    ([
+        // -> http://127.0.0.1:3000/sign/01234567
+        // -> 01234567.k+1wEh9x
+        {
+            path: "/sign/:id",
+            signer: {
+                seed: "PUT_YOUR_SEED"
+            },
+            f: f => 
+            f.param.id.length > 7 
+                ? f.sign(f.param.id) 
+                : "null"
+        },
+        {
+        // -> http://127.0.0.1:3000/verify/01234567.k+1wEh9x
+        // -> valid
+            path: "/verify/:token",
+            verifier: {
+                seed: "PUT_YOUR_SEED"
+            }, 
+            f: f => f.verify(f.param.token) 
+                ? "valid"
+                : "inValid"
+        }
+    
+    ])
+
+```
 
 ``` typescript
 
-// http://127.0.0.1:3000/context/hello
 
-vixeny({
-	hasName: 'http://127.0.0.1:3000/'
-})([{
-		path: "/",
-		type: "response",
-		r: () => new Response("hi")
-	},
-	{
-		path: "/context/*",
-		type: "response",
-    //this vixeny context do not share anything with its caller
-		r: vixeny({
-			hasName: 'http://127.0.0.1:3000/context/'
-		})([{
-				path: "/hello",
-				f: () => "hello from this context"
-			}
+import signer from "./components/tokens/signer.ts"
+import verifier from "./components/tokens/verifier.ts"
 
-		])
-	}
-])
+const sign = signer({seed:"PUT_YOUR_SEED"})
+const verify = verifier({seed:"PUT_YOUR_SEED"})
+
+console.log(verify(sign("01234567")))
+
 
 ```
 
