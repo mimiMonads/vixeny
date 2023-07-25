@@ -11,7 +11,9 @@
     "types": [
       "node",
       "bun-types",
-      "bun"
+      "bun",
+      "deno",
+      "deno-types"
     ]
   }
 }

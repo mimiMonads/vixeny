@@ -1,12 +1,6 @@
 import { SignVerifyOptions } from "../types.ts";
+import crypto from 'node:crypto';
 
 export default (o?: SignVerifyOptions) =>
-  async (message: string) =>
-    Array.from(
-      new Uint8Array(
-        await crypto.subtle.digest(
-          o?.plotter ?? "SHA-256",
-          new TextEncoder().encode(message),
-        ),
-      ),
-    ).map((b) => b.toString(16).padStart(2, "0")).join("");
+  (message: string) =>
+    crypto.createHash("sha256").update(message).digest('hex')

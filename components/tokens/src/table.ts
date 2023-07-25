@@ -2,7 +2,7 @@ import hash from "./hash.ts";
 import { SignVerifyOptions } from "../types.ts";
 
 export default (o: SignVerifyOptions) =>
-  async (key: string) =>
+  (key: string) =>
     (
       (s) =>
         (
@@ -22,10 +22,10 @@ export default (o: SignVerifyOptions) =>
 
             )(
               Array.from(
-                { length:  16 },
+                { length: 16 },
                 () =>
                   Array.from(
-                    { length:  8 },
+                    { length: 8 },
                     (_, i) => "" + i,
                   ),
               ).flat(),
@@ -37,18 +37,16 @@ export default (o: SignVerifyOptions) =>
           ),
         )
     )(
-      await (
-        async (s1) =>
-          (await Promise.all(Array.from(
+      (
+        (s1) =>
+          (Array.from(
             {
-              length: 8 * (typeof o.plotter === "undefined" || o.plotter === "SHA-1"
-                ? 2
-                : 1),
+              length: 16,
             },
-            async (_, i) => await hash(o)(s1 + " " + i).then((x) => x),
-          ))).join("")
+            (_, i) => hash(o)(s1 + " " + i),
+          )).join("")
       )(
-        await hash(o)(key).then((x) => x),
+        hash(o)(key),
       ),
     );
 

@@ -1,11 +1,12 @@
+import signer from "../../components/tokens/signer.ts";
 import aComposer from "../../optimizer/aComposer.ts";
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
 
 Deno.test(
   "Query",
-  async (_) =>
+  (_) =>
     assertEquals(
-      (await aComposer({ hasName: "http://localhost:8080/" })({
+      (aComposer({ hasName: "http://localhost:8080/" })({
         param: { elements: ["id"] },
         path: "/test",
         f: (r) => r.query.hello || "nothing",
@@ -16,9 +17,9 @@ Deno.test(
 );
 Deno.test(
   "Query",
-  async (_) =>
+  (_) =>
     assertEquals(
-      (await aComposer()({
+      (aComposer()({
         path: "/test",
         param: { elements: ["id"] },
         f: (r) => r.query.hello || "nothing",
@@ -29,9 +30,9 @@ Deno.test(
 );
 Deno.test(
   "Query",
-  async (_) =>
+  (_) =>
     assertEquals(
-      (await aComposer({ hasName: "http://localhost:8080/" })({
+      (aComposer({ hasName: "http://localhost:8080/" })({
         param: { elements: ["id"] },
         path: "/test",
         f: (r) => r.query.hello || "nothing",
@@ -42,9 +43,9 @@ Deno.test(
 );
 Deno.test(
   "Params",
-  async (_) =>
+  (_) =>
     assertEquals(
-      (await aComposer({ hasName: "http://localhost:8080/" })({
+      (aComposer({ hasName: "http://localhost:8080/" })({
         path: "/test/:id",
         param: { elements: ["id"] },
         f: (r) => r.param.id,
@@ -55,9 +56,9 @@ Deno.test(
 
 Deno.test(
   "Params",
-  async (_) =>
+  (_) =>
     assertEquals(
-      (await aComposer({ hasName: "http://localhost:8080/" })({
+      (aComposer({ hasName: "http://localhost:8080/" })({
         path: "/test/:a/:b/:c/",
         param: { elements: ["a", "b", "c"] },
         f: (r) => r.param.id,
@@ -67,12 +68,24 @@ Deno.test(
 );
 Deno.test(
   "Params",
-  async (_) =>
+  (_) =>
     assertEquals(
-      (await aComposer()({
+      (aComposer()({
         path: "/test/:a/:b/:c/",
         f: (r) => r.param.id.toString(),
       })(["param"]))(new Request("http://localhost:8080/test/1/2/3/")).param.b,
       "2",
+    ),
+);
+Deno.test(
+  "Sign",
+  (_) =>
+    assertEquals(
+      (aComposer()({
+        path: "/test/",
+        signer: { seed: "test" },
+        f: (r) => r.sign("hello"),
+      })([]))(new Request("http://localhost:8080/test/")).sign("hello"),
+      signer({ seed: "test" })("hello"),
     ),
 );

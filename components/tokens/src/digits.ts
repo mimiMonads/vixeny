@@ -3,11 +3,11 @@ import shaTable from "./tableSha.ts";
 import { SignVerifyOptions } from "../types.ts";
 
 export default (txt: string) =>
-  async (seed: SignVerifyOptions) =>
+  (seed: SignVerifyOptions) =>
     (
       (
         new Function(`
-         return a=> ar => ${await table(seed)(txt).then((x) => x)}
+         return a=> ar => ${table(seed)(txt)}
         `)
       )()
-    )(await shaTable(txt + seed.seed)) as (ar: number[]) => number;
+    )(shaTable(txt + seed.seed)) as (ar: number[]) => number;
