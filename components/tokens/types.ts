@@ -18,5 +18,5 @@ export type SignVerifyOptions = {
   seed: string;
   size?: NumericRange<CreateArrayWithLengthX<8>, 40>;
   sequence?: 1 | 2 | 3 | 4;
-  expires?: true
+  expires?: number
 };

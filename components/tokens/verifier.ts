@@ -7,12 +7,20 @@ export default (seed: SignVerifyOptions) => (
   ar => (
     p =>
       typeof seed.size == "number"
-        ? verifyWithSize(seed.size)(ar)(p)
+        ? typeof seed.expires === "number"
+          ? (
+            f => (s: string) =>
+              Number(s.slice(0, 13)) > Date.now() && f(s)
+          )(
+            verifyWithSize(seed.size)(ar)(p)
+          )
+
+          : verifyWithSize(seed.size)(ar)(p)
         :
 
         (
           f =>
-            seed.expires === true
+            typeof seed.expires === "number"
               ? (s: string) =>
                 Number(s.slice(0, 13)) > Date.now() && f(s)
               : f
