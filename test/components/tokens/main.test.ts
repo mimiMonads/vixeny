@@ -2,6 +2,8 @@ import verifier from "../../../components/tokens/verifier.ts";
 import signer from "../../../components/tokens/signer.ts";
 
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import jSigner from "../../../components/tokens/jSigner.ts";
+import jVerify from "../../../components/tokens/jVerify.ts";
 
 
 
@@ -75,4 +77,29 @@ Deno.test(
   )(
     signer({ seed: "hello", expires: -1 })
   )
+)
+
+Deno.test(
+  'test',
+  () =>
+    assertEquals(
+      jVerify({ seed: "hello" })(jSigner({ seed: "hello" })({ hello: "world" })),
+      { hello: "world" }
+    )
+)
+Deno.test(
+  'test',
+  () =>
+    assertEquals(
+      jVerify({ seed: "hello", expires: 1000 })(jSigner({ seed: "hello", expires: 1000 })({ hello: "world" })),
+      { hello: "world" }
+    )
+)
+Deno.test(
+  'test',
+  () =>
+    assertEquals(
+      jVerify({ seed: "hello", expires: -1 })(jSigner({ seed: "hello", expires: -1 })({ hello: "world" })),
+      null
+    )
 )
