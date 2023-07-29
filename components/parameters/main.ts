@@ -1,4 +1,4 @@
-import { ObjectRawResponseCommon } from "./../types.ts";
+import { ObjectRawResponseCommon } from "../../optimizer/types.ts";
 import { funRouterOptions } from "../../types.ts";
 import multi from "./multi.ts";
 import one from "./one.ts";
@@ -11,12 +11,12 @@ export default (options?: funRouterOptions) =>
     (
       (info) =>
         info.firstParam === -1
-          ? (() => null).toString()
+          ? () => null
           : info.elements.length === 1 &&
             (info.elements.at(-1) || "")[0] === info.startsWith &&
             f.path.at(-1) !== "/"
-            ? one(info)
-            : multi(info)
+            ? new Function(`return ${one(info)}`)()
+            : new Function(`return ${multi(info)}`)()
     )(
       map(options)(f),
     );
