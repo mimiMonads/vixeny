@@ -315,9 +315,11 @@ In this configuration array, `urlParams`, `urlQueries`, `httpOptions`, `typeRequ
 
 ## Sign and verify
 
-//explication of how it works goes here
+Here a quick example, please give it a look to documents for more information
 
-there are two ways to use it:
+[Documents](./components/tokens/readme.md)
+
+
 
 ```ts
 vixeny({
@@ -368,24 +370,6 @@ console.log(verify(sign("01234567")))
 
 
 Thank you and enjoy using Vixeny!
-
-
-## Experimental Features
-
-***These features are still under development and may change over time.***
-
-## Modularity
-
-Compose and work as you want with components:
-
-``` typescript
-
-import stringify from "vixeny/components/stringify/stringify"
-//Experimental
-import signer from "vixeny/components/tokens/signer"
-import verifier from "vixeny/components/tokens/verifier"
-
-```
 
 
 
