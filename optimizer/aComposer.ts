@@ -1,7 +1,9 @@
-import params from "./parameters/main.ts";
-import query from "./queries/main.ts";
+import params from "../components/parameters/main.ts";
+import query from "../components/queries/main.ts";
 import signer from "../components/tokens/signer.ts";
 import verifier from "../components/tokens/verifier.ts";
+import jVerify from "../components/tokens/jVerify.ts";
+import jSigner from "../components/tokens/jSigner.ts";
 import { SignVerifyOptions } from "../components/tokens/types.ts";
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
@@ -11,69 +13,49 @@ import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
 export default (o?: funRouterOptions) =>
   (f: ObjectRawResponseCommon) =>
     (ar: string[]) =>
-      ar.length === 0 && !f.signer && f.verifier
+      ar.length === 0
         ? ((r: Request) => r) as unknown as (r: Request) => RequestArguments
-        : ((el) =>
+        : (
+          el => el
+        )(
           (
-            endo =>
-              f.signer || f.verifier
-                ? f.verifier && f.signer
-                  ? (
-                    (sign) =>
-                      (
-                        (verify) =>
-                          endo(sign)(verify) as (r: Request) => RequestArguments
-                      )(
-                        verifier(f.verifier as SignVerifyOptions),
-                      )
-                  )(
-                    signer(f.signer),
-                  )
-                  : f.verifier
-                    ? (
-                      (verify) => endo(verify) as (r: Request) => RequestArguments
-                    )(
-                      verifier(f.verifier),
-                    )
-                    : f.signer
-                      ? (
-                        (sign) => endo(sign) as (r: Request) => RequestArguments
-                      )(
-                        signer(f!.signer),
-                      )
-                      : endo as (r: Request) => RequestArguments
-                : endo as (r: Request) => RequestArguments
-          )
-            (
-              (
-                new Function(
-                  `return ${(f.signer !== undefined
-                    ? "sign=>"
-                    : "")}${(f.verifier !== undefined ? "verify=>" : "")} ${el.reduce(
-                      (acc, y) =>
-                        (y.type == 1 && ar.includes(y.name))
-                          ? "(" + y.name + "=>" + acc + ")(" + y.f(o)(f) +
-                          ")"
-                          : acc,
-                      `r=>({${el.reduce(
-                        (acc, v) =>
-                          ar.includes(v.name)
-                            ? (v.type === 0)
-                              ? acc + `${v.name}:r,`
-                              : acc + `${v.name}:${v.name}(r.url),`
-                            : acc,
-                        (f.signer !== undefined ? "sign:sign," : "") +
-                        (f.verifier !== undefined ? "verify:verify," : ""),
-                      )
-                      }})`,
-                    )
-                  }`,
+            table => (
+              functions =>
+                functions.reduce((a, k) =>
+                  a(k)
+                  , new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")}r=>({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
                 )
-              )(),
-            ))(
-              [{ name: "req", type: 0, f: query }, {
-                name: "query",
-                type: 1,
-                f: query,
-              }, { name: "param", type: 1, f: params }],
-            );
+            )(
+              table.map(
+                x => x.type === 1
+                  ? x.name === "param"
+                    ? params(o)(f as ObjectRawResponseCommon)
+                    : x.name === "query"
+                      ? query(o)(f as ObjectRawResponseCommon)
+                      : x.name === "sign"
+                        ? signer(f.signer as SignVerifyOptions)
+                        : x.name === "verify"
+                          ? verifier(f.verifier as SignVerifyOptions)
+                          : x.name === "jSigner"
+                            ? jSigner(f.jSigner as SignVerifyOptions)
+                            : x.name === "jVerify"
+                              ? jVerify(f.verifier as SignVerifyOptions)
+                              : null
+
+                  : null
+              ).filter(x => x !== null)
+            )
+          )(
+            [
+              { name: "req", value: "r", type: 0 },
+              { name: "param", value: "param(r.url)", type: 1 },
+              { name: "query", value: "query(r.url)", type: 1 },
+              { name: "date", value: "Date.now()", type: 0 },
+              { name: "sign", value: "sign", type: 1 },
+              { name: "verify", value: "verify", type: 1 },
+              { name: "jSign", value: "jSign", type: 1 },
+              { name: "jVerify", value: "jVerify", type: 1 }
+            ].filter(x => ar.includes(x.name))
+          )
+        )
+

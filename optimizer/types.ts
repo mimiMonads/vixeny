@@ -1,21 +1,24 @@
 import { ParamsMethod } from "../builder/types.ts";
 import { JsonOptions, JsonType } from "../components/stringify/types.ts";
 import { SignVerifyOptions } from "../components/tokens/types.ts";
-
+import { JsonSinger } from "../components/tokens/jSigner.ts"
 export type ParamsOptions = {
   elements: string[];
 };
 export type QueryOptions = {
   only?: string[];
 };
-export type AddOption = "req" | "query" | "param";
+export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify";
 export type AddOptions = AddOption[];
 export type RequestArguments = {
   req: Request;
-  query: Record<string, string | null | undefined>;
+  query: Record<string, string | undefined>;
   param: Record<string, string>;
+  date: number;
   sign: (s: string) => string;
+  jSign: (s: string) => string;
   verify: (s: string) => boolean;
+  jVerify: (s: string) => Record<string, JsonType> | null;
 };
 export type Petition =
   | ObjectRawResponseCommon
@@ -29,9 +32,11 @@ export type RawResponseCommon = {
   query?: QueryOptions;
   add?: AddOptions;
   signer?: SignVerifyOptions;
+  jSigner?: JsonSinger;
   verifier?: SignVerifyOptions;
+  jVerify?: SignVerifyOptions;
   delete?: AddOptions;
-  dev?: "test";
+  dev?: 'test';
   method?: ParamsMethod;
   status?: number;
   headers?: Record<string, string> | defaultMime;
@@ -52,6 +57,7 @@ export type ObjectRawCommonRequest = {
   f: (r: RequestArguments) => Response | Promise<Response>;
   param?: ParamsOptions;
   signer?: SignVerifyOptions;
+  jSigner?: JsonSinger;
   verifier?: SignVerifyOptions;
   query?: QueryOptions;
   add?: AddOptions;

@@ -85,7 +85,7 @@ Deno.test(
         path: "/test/",
         signer: { seed: "test" },
         f: (r) => r.sign("hello"),
-      })([]))(new Request("http://localhost:8080/test/")).sign("hello"),
+      })(["sign"]))(new Request("http://localhost:8080/test/")).sign("hello"),
       signer({ seed: "test" })("hello"),
     ),
 );

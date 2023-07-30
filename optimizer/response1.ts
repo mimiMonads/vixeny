@@ -25,24 +25,24 @@ export default (o?: funRouterOptions) =>
                   )(
                     jsonComposer(f.json.scheme),
                   )
-                  :  (h => async (r: Request) =>
+                  : (h => async (r: Request) =>
                     new Response(
                       await f.f((c)(r)) as BodyInit,
                       h,
                     ))(h)
-                    
-                    )(
-                      {
-                        headers:
-                          typeof f.headers === "string"
-                            ? {
-                              "Content-Type": mime.find((x) => x[0] === f.headers)![1],
-                            }
-                            : f.headers ? Object.entries({...f.headers}) : { "Content-Type": "text/plain" },
 
-                        status: "status" in f ? f.status : 200,
-                      },
-                    )
+              )(
+                {
+                  headers:
+                    typeof f.headers === "string"
+                      ? {
+                        "Content-Type": mime.find((x) => x[0] === f.headers)![1],
+                      }
+                      : f.headers ? Object.entries({ ...f.headers }) : { "Content-Type": "text/plain" },
+
+                  status: "status" in f ? f.status : 200,
+                },
+              )
               : "json" in f
                 ? (
                   (j) =>
@@ -68,16 +68,16 @@ export default (o?: funRouterOptions) =>
                     jsonComposer(f.json.scheme),
                   )
                   : (h => (r: Request) => new Response(f.f((c)(r)) as BodyInit, h))(h)
-                  
-                  )({
-                      headers:
-                        typeof f.headers === "string"
-                          ? {
-                            "Content-Type": mime.find((x) => x[0] === f.headers)![1],
-                          }
-                          : f.headers ? Object.entries({...f.headers}) : { "Content-Type": "text/plain" },
-                      status: "status" in f ? f.status : 200,
-                    })
+
+              )({
+                headers:
+                  typeof f.headers === "string"
+                    ? {
+                      "Content-Type": mime.find((x) => x[0] === f.headers)![1],
+                    }
+                    : f.headers ? Object.entries({ ...f.headers }) : { "Content-Type": "text/plain" },
+                status: "status" in f ? f.status : 200,
+              })
               : "json" in f
                 ? (
                   (j) =>
@@ -89,7 +89,7 @@ export default (o?: funRouterOptions) =>
                 : (r: Request) => new Response(f.f((c)(r)) as BodyInit))(
                   aComposer(o)(f as ObjectRawResponseCommon)(el),
                 ))(
-                  checker(f?.delete || [])(["param", "query", "req"])(f?.add || [])(
+                  checker(f?.delete || [])(["param", "query", "req", "date", "sign", "verify", "jVerify", "jSign"])(f?.add || [])(
                     f.f.toString(),
                   ),
                 );
