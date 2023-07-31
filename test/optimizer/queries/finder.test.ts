@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
-import finder from "../../../optimizer/queries/finder.ts";
+import finder from "../../../components/queries/finder.ts";
 
 Deno.test(
   "queries",

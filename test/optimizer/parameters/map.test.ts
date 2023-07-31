@@ -1,4 +1,4 @@
-import options from "../../../optimizer/parameters/map.ts";
+import options from "../../../components/parameters/map.ts";
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
 
 Deno.test(

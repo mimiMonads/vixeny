@@ -1,5 +1,5 @@
-import slicer from "../../../optimizer/parameters/slicer.ts";
-import options from "../../../optimizer/parameters/map.ts";
+import slicer from "../../../components/parameters/slicer.ts";
+import options from "../../../components/parameters/map.ts";
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
 
 // "/test/:id"
@@ -8,13 +8,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          slicer(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello"),
       "hello",
@@ -26,13 +25,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          slicer(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/?a=1"),
       "hello",
@@ -53,8 +51,7 @@ Deno.test(
         )
     )(
       new Function(
-        ` return ${
-          slicer(options()({ path: "/test/:id/", f: (_) => "hello" }))
+        ` return ${slicer(options()({ path: "/test/:id/", f: (_) => "hello" }))
         }`,
       )(),
     ),
@@ -73,8 +70,7 @@ Deno.test(
         )
     )(
       new Function(
-        ` return ${
-          slicer(options()({ path: "/test/:id/", f: (_) => "hello" }))
+        ` return ${slicer(options()({ path: "/test/:id/", f: (_) => "hello" }))
         }`,
       )(),
     ),
@@ -87,13 +83,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          slicer(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/hi",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/hi",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/hi"),
       "hello",
@@ -104,13 +99,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          slicer(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/hi",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/hi",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/hi?a=1"),
       "hello",
@@ -130,14 +124,13 @@ Deno.test(
           ["hello", "hello"],
         )
     )(
-      new Function(` return ${
-        slicer(
-          options()({
-            path: "/test/:id/hi",
-            f: (_) => "hello",
-          }),
-        )
-      }`)(),
+      new Function(` return ${slicer(
+        options()({
+          path: "/test/:id/hi",
+          f: (_) => "hello",
+        }),
+      )
+        }`)(),
     ),
 );
 Deno.test(
@@ -153,14 +146,13 @@ Deno.test(
           ["hello", "hello"],
         )
     )(
-      new Function(` return ${
-        slicer(
-          options()({
-            path: "/test/:id/hi",
-            f: (_) => "hello",
-          }),
-        )
-      }`)(),
+      new Function(` return ${slicer(
+        options()({
+          path: "/test/:id/hi",
+          f: (_) => "hello",
+        }),
+      )
+        }`)(),
     ),
 );
 
@@ -171,13 +163,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          slicer(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/hi/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/hi/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/hi/"),
       "hello",
@@ -188,13 +179,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          slicer(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/hi/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/hi/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/hi/?a=1"),
       "hello",
@@ -215,13 +205,12 @@ Deno.test(
         )
     )(
       new Function(
-        ` return ${
-          slicer(
-            options()({
-              path: "/test/:id/hi/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options()({
+            path: "/test/:id/hi/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )(),
     ),
@@ -240,13 +229,12 @@ Deno.test(
         )
     )(
       new Function(
-        ` return ${
-          slicer(
-            options()({
-              path: "/test/:id/hi/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options()({
+            path: "/test/:id/hi/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )(),
     ),
@@ -259,13 +247,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          slicer(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/:test/:id/hi/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/:test/:id/hi/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/hello/world/hi/"),
       "hello/world",
@@ -276,13 +263,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          slicer(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/:test/:id/hi/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/:test/:id/hi/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/hello/world/hi/?a=1"),
       "hello/world",
@@ -302,13 +288,12 @@ Deno.test(
         )
     )(
       new Function(
-        ` return ${
-          slicer(
-            options()({
-              path: "/:test/:id/hi/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options()({
+            path: "/:test/:id/hi/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )(),
     ),
@@ -327,13 +312,12 @@ Deno.test(
         )
     )(
       new Function(
-        ` return ${
-          slicer(
-            options()({
-              path: "/:test/:id/hi/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${slicer(
+          options()({
+            path: "/:test/:id/hi/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )(),
     ),

@@ -1,5 +1,5 @@
-import one from "../../../optimizer/parameters/one.ts";
-import options from "../../../optimizer/parameters/map.ts";
+import one from "../../../components/parameters/one.ts";
+import options from "../../../components/parameters/map.ts";
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
 
 // "/test/:id"
@@ -8,13 +8,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          one(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${one(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello").id,
       "hello",
@@ -25,13 +24,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          one(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${one(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello?a=1").id,
       "hello",
@@ -82,13 +80,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          one(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${one(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/").id,
       "hello",
@@ -99,13 +96,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          one(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${one(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/?a=1").id,
       "hello",
@@ -156,13 +152,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          one(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/hi",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${one(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/hi",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/hi").id,
       "hello",
@@ -173,13 +168,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          one(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/hi",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${one(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/hi",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/hi?a=1").id,
       "hello",
@@ -200,8 +194,7 @@ Deno.test(
         )
     )(
       new Function(
-        ` return ${
-          one(options()({ path: "/test/:id/hi", f: (_) => "hello" }))
+        ` return ${one(options()({ path: "/test/:id/hi", f: (_) => "hello" }))
         }`,
       )(),
     ),
@@ -220,8 +213,7 @@ Deno.test(
         )
     )(
       new Function(
-        ` return ${
-          one(options()({ path: "/test/:id/hi", f: (_) => "hello" }))
+        ` return ${one(options()({ path: "/test/:id/hi", f: (_) => "hello" }))
         }`,
       )(),
     ),
@@ -234,13 +226,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          one(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/hi/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${one(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/hi/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/hi/").id,
       "hello",
@@ -251,13 +242,12 @@ Deno.test(
   (_) =>
     assertEquals(
       new Function(
-        ` return ${
-          one(
-            options({ hasName: "http://localhost:8080/" })({
-              path: "/test/:id/hi/",
-              f: (_) => "hello",
-            }),
-          )
+        ` return ${one(
+          options({ hasName: "http://localhost:8080/" })({
+            path: "/test/:id/hi/",
+            f: (_) => "hello",
+          }),
+        )
         }`,
       )()("http://localhost:8080/test/hello/hi/?a=1").id,
       "hello",
@@ -278,8 +268,7 @@ Deno.test(
         )
     )(
       new Function(
-        ` return ${
-          one(options()({ path: "/test/:id/hi/", f: (_) => "hello" }))
+        ` return ${one(options()({ path: "/test/:id/hi/", f: (_) => "hello" }))
         }`,
       )(),
     ),
@@ -298,8 +287,7 @@ Deno.test(
         )
     )(
       new Function(
-        ` return ${
-          one(options()({ path: "/test/:id/hi/", f: (_) => "hello" }))
+        ` return ${one(options()({ path: "/test/:id/hi/", f: (_) => "hello" }))
         }`,
       )(),
     ),
