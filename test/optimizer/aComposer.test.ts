@@ -89,3 +89,56 @@ Deno.test(
       signer({ seed: "test" })("hello"),
     ),
 );
+Deno.test(
+  "Date",
+  (_) =>
+    assertEquals(
+      typeof (aComposer()({
+        path: "/test/",
+        signer: { seed: "test" },
+        f: (r) => r.date.toString(),
+      })(["date"]))(new Request("http://localhost:8080/test/")).date,
+      "number",
+    ),
+);
+Deno.test(
+  "randomNumber",
+  (_) =>
+    assertEquals(
+      typeof (aComposer()({
+        path: "/test/",
+        signer: { seed: "test" },
+        f: (r) => r.randomNumber.toString(),
+      })(["randomNumber"]))(new Request("http://localhost:8080/test/")).randomNumber,
+      "number",
+    ),
+);
+Deno.test(
+  "Hash",
+  (_) =>
+    assertEquals(
+      typeof (aComposer()({
+        path: "/test/",
+        signer: { seed: "test" },
+        f: (r) => r.hash,
+      })(["hash"]))(new Request("http://localhost:8080/test/")).hash,
+      "string",
+    ),
+);
+Deno.test(
+  "cookie",
+  (_) =>
+    assertEquals(
+      (aComposer()({
+        path: "/test/",
+        signer: { seed: "test" },
+        f: (r) => r.cookie?.id ?? "not_found",
+      })(["cookie"]))(new Request("http://localhost:8080/test/", {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cookie': 'id=user'
+        }
+      })).cookie,
+      { id: "user" },
+    ),
+);

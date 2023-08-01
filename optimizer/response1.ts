@@ -89,7 +89,7 @@ export default (o?: funRouterOptions) =>
                 : (r: Request) => new Response(f.f((c)(r)) as BodyInit))(
                   aComposer(o)(f as ObjectRawResponseCommon)(el),
                 ))(
-                  checker(f?.delete || [])(["param", "query", "req", "date", "sign", "verify", "jVerify", "jSign"])(f?.add || [])(
+                  checker(f?.delete || [])(["cookie", "randomNumber", "hash", "param", "query", "req", "date", "sign", "verify", "jVerify", "jSign"])(f?.add || [])(
                     f.f.toString(),
                   ),
                 );

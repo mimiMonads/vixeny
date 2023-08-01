@@ -8,13 +8,19 @@ export type ParamsOptions = {
 export type QueryOptions = {
   only?: string[];
 };
-export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify";
+export type DebugOptions = {
+  type: "log"
+}
+export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie";
 export type AddOptions = AddOption[];
 export type RequestArguments = {
   req: Request;
   query: Record<string, string | undefined>;
   param: Record<string, string>;
   date: number;
+  randomNumber: number;
+  hash: string;
+  cookie: null | { [key: string]: string | undefined };
   sign: (s: string) => string;
   jSign: (s: string) => string;
   verify: (s: string) => boolean;
@@ -36,7 +42,7 @@ export type RawResponseCommon = {
   verifier?: SignVerifyOptions;
   jVerify?: SignVerifyOptions;
   delete?: AddOptions;
-  dev?: 'test';
+  debug?: DebugOptions;
   method?: ParamsMethod;
   status?: number;
   headers?: Record<string, string> | defaultMime;
@@ -62,7 +68,7 @@ export type ObjectRawCommonRequest = {
   query?: QueryOptions;
   add?: AddOptions;
   delete?: AddOptions;
-  dev?: "test";
+  debug?: DebugOptions;
   method?: ParamsMethod;
 };
 

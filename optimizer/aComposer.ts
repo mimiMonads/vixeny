@@ -1,5 +1,6 @@
 import params from "../components/parameters/main.ts";
 import query from "../components/queries/main.ts";
+import cookies from '../components/cookies/main.ts'
 import signer from "../components/tokens/signer.ts";
 import verifier from "../components/tokens/verifier.ts";
 import jVerify from "../components/tokens/jVerify.ts";
@@ -40,7 +41,9 @@ export default (o?: funRouterOptions) =>
                             ? jSigner(f.jSigner as SignVerifyOptions)
                             : x.name === "jVerify"
                               ? jVerify(f.verifier as SignVerifyOptions)
-                              : null
+                              : x.name === "cookie"
+                                ? cookies(f)
+                                : null
 
                   : null
               ).filter(x => x !== null)
@@ -51,8 +54,11 @@ export default (o?: funRouterOptions) =>
               { name: "param", value: "param(r.url)", type: 1 },
               { name: "query", value: "query(r.url)", type: 1 },
               { name: "date", value: "Date.now()", type: 0 },
+              { name: "randomNumber", value: "Math.random()", type: 0 },
+              { name: "hash", value: "crypto.randomUUID()", type: 0 },
               { name: "sign", value: "sign", type: 1 },
               { name: "verify", value: "verify", type: 1 },
+              { name: 'cookie', value: 'cookie(r.headers.get("cookie"))', type: 1 },
               { name: "jSign", value: "jSign", type: 1 },
               { name: "jVerify", value: "jVerify", type: 1 }
             ].filter(x => ar.includes(x.name))
