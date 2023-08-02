@@ -23,7 +23,7 @@ export type RequestArguments = {
   query: Record<string, string | undefined>;
   param: Record<string, string>;
   date: number;
-  resolve: Record<string,RequestArguments>
+  resolve: Record<string, unknown | null>;
   randomNumber: number;
   hash: string;
   cookie: null | { [key: string]: string | undefined };
