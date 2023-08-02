@@ -1,3 +1,2 @@
-import { AddOptions } from "../../optimizer/types.ts";
 
-export default ["req", "query", "param"] as AddOptions;
+export default ["cookie", "randomNumber", "hash", "param", "query", "req", "date", "sign", "verify", "jVerify", "jSign", "resolve"] as string[] 

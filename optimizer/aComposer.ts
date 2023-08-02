@@ -5,9 +5,11 @@ import signer from "../components/tokens/signer.ts";
 import verifier from "../components/tokens/verifier.ts";
 import jVerify from "../components/tokens/jVerify.ts";
 import jSigner from "../components/tokens/jSigner.ts";
+import resolve from "./resolve/main.ts"
 import { SignVerifyOptions } from "../components/tokens/types.ts";
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
+import { ResolveOptions, TypeResolveOptions } from "./resolve/types.ts";
 
 
 
@@ -43,7 +45,9 @@ export default (o?: funRouterOptions) =>
                               ? jVerify(f.verifier as SignVerifyOptions)
                               : x.name === "cookie"
                                 ? cookies(f)
-                                : null
+                                : x.name === "resolve"
+                                  ? resolve(o)(f.path)(f.resolve as ResolveOptions).map((x: unknown) => x[1])
+                                  : null
 
                   : null
               ).filter(x => x !== null)
@@ -60,7 +64,8 @@ export default (o?: funRouterOptions) =>
               { name: "verify", value: "verify", type: 1 },
               { name: 'cookie', value: 'cookie(r.headers.get("cookie"))', type: 1 },
               { name: "jSign", value: "jSign", type: 1 },
-              { name: "jVerify", value: "jVerify", type: 1 }
+              { name: "jVerify", value: "jVerify", type: 1 },
+              { name: "resolve", value: 'resolve(r)', type: 1 }
             ].filter(x => ar.includes(x.name))
           )
         )

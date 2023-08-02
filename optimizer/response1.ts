@@ -4,6 +4,7 @@ import checker from "./checker.ts";
 import aComposer from "./aComposer.ts";
 import mime from "../components/util/mime.ts";
 import jsonComposer from "../components/stringify/stringify.ts";
+import elements from "../components/util/elements.ts";
 
 export default (o?: funRouterOptions) =>
   (f: ObjectRawResponseCommon | ObjectRawCommonRequest) =>
@@ -11,7 +12,7 @@ export default (o?: funRouterOptions) =>
       ((c) =>
         "type" in f
           ? (r: Request) => f.f((c)(r))
-          : f.f.constructor.name === "AsyncFunction" || "signer" in f
+          : f.f.constructor.name === "AsyncFunction"
             ? "status" in f || "headers" in f
               ? ((h: ResponseInit) =>
                 "json" in f
@@ -89,7 +90,7 @@ export default (o?: funRouterOptions) =>
                 : (r: Request) => new Response(f.f((c)(r)) as BodyInit))(
                   aComposer(o)(f as ObjectRawResponseCommon)(el),
                 ))(
-                  checker(f?.delete || [])(["cookie", "randomNumber", "hash", "param", "query", "req", "date", "sign", "verify", "jVerify", "jSign"])(f?.add || [])(
+                  checker(f?.delete || [])(elements)(f?.add || [])(
                     f.f.toString(),
                   ),
                 );
