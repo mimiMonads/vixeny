@@ -9,7 +9,7 @@ import resolve from "./resolve/main.ts"
 import { SignVerifyOptions } from "../components/tokens/types.ts";
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
-import { ResolveOptions, TypeResolveOptions } from "./resolve/types.ts";
+import { ResolveOptions } from "./resolve/types.ts";
 
 
 
@@ -46,7 +46,7 @@ export default (o?: funRouterOptions) =>
                               : x.name === "cookie"
                                 ? cookies(f)
                                 : x.name === "resolve"
-                                  ? resolve(o)(f.path)(f.resolve as ResolveOptions).map((x: unknown) => x[1])
+                                  ? (resolve(o)(f.path)(f.resolve as ResolveOptions))
                                   : null
 
                   : null
@@ -65,7 +65,7 @@ export default (o?: funRouterOptions) =>
               { name: 'cookie', value: 'cookie(r.headers.get("cookie"))', type: 1 },
               { name: "jSign", value: "jSign", type: 1 },
               { name: "jVerify", value: "jVerify", type: 1 },
-              { name: "resolve", value: 'resolve(r)', type: 1 }
+              { name: "resolve", value: 'resolve(r)', type: 1}
             ].filter(x => ar.includes(x.name))
           )
         )

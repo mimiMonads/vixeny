@@ -16,14 +16,14 @@ export type QueryOptions = {
 export type DebugOptions = {
   type: "log"
 }
-export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie";
+export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie" | "resolve" ;
 export type AddOptions = AddOption[];
 export type RequestArguments = {
   req: Request;
   query: Record<string, string | undefined>;
   param: Record<string, string>;
   date: number;
-  resolve: unknown[]
+  resolve: Record<string,RequestArguments>
   randomNumber: number;
   hash: string;
   cookie: null | { [key: string]: string | undefined };
