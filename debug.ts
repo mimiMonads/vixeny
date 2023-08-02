@@ -13,7 +13,7 @@ const v = fun()([
             query:{only:["hello"]},
             f: f=> f.query.hello ?? "not_found"
         }],
-        f: f => f.resolve.element_1.param.name  + " " + f.resolve.element_2.query.hello
+        f: f => f.resolve.element_1 + " " + f.resolve.element_2
             }
 ])
 console.log(await v(r).text())

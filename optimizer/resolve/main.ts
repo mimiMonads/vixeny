@@ -17,7 +17,7 @@ export default (o?: funRouterOptions) => (path: string) => (input: ResolveOption
         .map(x => ({ ...x, path: path }))
         .map(x => ({
           name: x.name, 
-          f: aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString()))
+          f: (a=>k=>r=>k(a(r)))(aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())))(x.f)
         }))
       )
         
