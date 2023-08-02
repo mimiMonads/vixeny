@@ -2,6 +2,11 @@ import { ParamsMethod } from "../builder/types.ts";
 import { JsonOptions, JsonType } from "../components/stringify/types.ts";
 import { SignVerifyOptions } from "../components/tokens/types.ts";
 import { JsonSinger } from "../components/tokens/jSigner.ts"
+import { ResolveOptions as UnResolveOption } from "./resolve/types.ts";
+
+
+type ResolveOptions = Omit<UnResolveOption, "path">
+
 export type ParamsOptions = {
   elements: string[];
 };
@@ -18,6 +23,7 @@ export type RequestArguments = {
   query: Record<string, string | undefined>;
   param: Record<string, string>;
   date: number;
+  resolve: unknown[]
   randomNumber: number;
   hash: string;
   cookie: null | { [key: string]: string | undefined };
@@ -45,6 +51,7 @@ export type RawResponseCommon = {
   debug?: DebugOptions;
   method?: ParamsMethod;
   status?: number;
+  resolve?: ResolveOptions | ResolveOptions[];
   headers?: Record<string, string> | defaultMime;
 };
 
@@ -57,10 +64,8 @@ export type ObjectRawResponseCommon =
     json: JsonOptions;
   });
 
-export type ObjectRawCommonRequest = {
-  type: "request";
+export type RawCommonRequest = {
   path: string;
-  f: (r: RequestArguments) => Response | Promise<Response>;
   param?: ParamsOptions;
   signer?: SignVerifyOptions;
   jSigner?: JsonSinger;
@@ -69,8 +74,14 @@ export type ObjectRawCommonRequest = {
   add?: AddOptions;
   delete?: AddOptions;
   debug?: DebugOptions;
-  method?: ParamsMethod;
+  resolve?: ResolveOptions | ResolveOptions[];
 };
+
+export type ObjectRawCommonRequest = {
+  method?: ParamsMethod;
+  type: "request";
+  f: (r: RequestArguments) => Response | Promise<Response>;
+} & RawCommonRequest
 
 export type ObjectRawResponseReturn = {
   type: "response";
