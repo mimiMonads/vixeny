@@ -14,9 +14,9 @@ export type QueryOptions = {
   only?: string[];
 };
 export type DebugOptions = {
-  type: "log"
+  type: "list"
 }
-export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie" | "resolve" ;
+export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie" | "resolve";
 export type AddOptions = AddOption[];
 export type RequestArguments = {
   req: Request;
