@@ -17,7 +17,9 @@ export default (o?: funRouterOptions) => (path: string) => (input: ResolveOption
         .map(x => ({ ...x, path: path }))
         .map(x => ({
           name: x.name, 
-          f: (a=>(k: (arg0: any) => any)=>(r: any)=>k(a(r)))(aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())))(x.f)
+          f: x.f.constructor.name === "AsyncFunction"
+            ?(a=> k=> r=>  Promise.resolve(a(r)).then(k))(aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())))( x.f)
+            :(a=>(k: (arg0: any) => any)=>(r: any)=>k(a(r)))(aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())))(x.f)
         }))
       )
         
