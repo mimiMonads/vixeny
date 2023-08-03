@@ -1,5 +1,6 @@
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawCommonRequest, ObjectRawResponseCommon } from "./types.ts";
+//import checkAsync from "./checkAsync.ts";
 import checker from "./checker.ts";
 import aComposer from "./aComposer.ts";
 import mime from "../components/util/mime.ts";

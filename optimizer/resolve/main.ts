@@ -18,15 +18,17 @@ export default (o?: funRouterOptions) => (path: string) => (input: ResolveOption
           .map(x => ({
             name: x.name,
             f: x.f.constructor.name === "AsyncFunction"
-              ? (a => k => r => Promise.resolve(a(r)).then(k))(aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())))
+              ? (a => (k: ((value: any) => any)|null|undefined) => (r: any) => Promise.resolve(a(r)).then(k))(aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())))
                 (x.debug?.type === "list"
-                  ? (l => k => f => console.log("Vixeny is using : " + JSON.stringify(l)) as unknown as null ?? k(f))
-                    (checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString()))
-                    (x.f)
-                  : x.f)
+                ? ( n => (l: any) => (k: (arg0: any) => any) => (f: any) => console.log("Vixeny in ' " + n + " ' is using : " + JSON.stringify(l)) as unknown as null ?? k(f))
+                  (x.debug.name)
+                  (checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString()))
+                  (x.f)
+                : x.f)
               : (a => (k: (arg0: any) => any) => (r: any) => k(a(r)))(aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())))
                 (x.debug?.type === "list"
-                  ? (l => k => f => console.log("Vixeny is using : " + JSON.stringify(l)) as unknown as null ?? k(f))
+                  ? ( n => (l: any) => (k: (arg0: any) => any) => (f: any) => console.log("Vixeny in ' " + n + " ' is using : " + JSON.stringify(l)) as unknown as null ?? k(f))
+                    (x.debug.name)
                     (checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString()))
                     (x.f)
                   : x.f)
