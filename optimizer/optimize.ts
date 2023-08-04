@@ -1,7 +1,7 @@
 import { funRouterOptions } from "../types.ts";
 import { RouteTypes } from "../builder/types.ts"
 import { Petition } from "./types.ts";
-import response from "./response1.ts";
+import response from "./response.ts";
 import staticFiles from "./staticFiles/main.ts";
 import vixeny from "../fun.ts"
 
