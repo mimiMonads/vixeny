@@ -13,6 +13,8 @@ export default (o?: funRouterOptions) =>
     ((elementsUsed) => (
       table =>
         (composition =>
+
+          //console.log(typeof composition, typeof f, f.f, composition.toString()) as unknown as string &&
           table.headers && table.json
             ? composition(table.json)(table.headers)(f.f)(aComposer(o)(f as ObjectRawResponseCommon)(elementsUsed))
             : table.headers
@@ -24,17 +26,16 @@ export default (o?: funRouterOptions) =>
           "type" in f
             ?
             new Function(`
-      return ${table.json ? "j=>" : ""}${table.async ? "async f=>" : "f=>"}${table.asyncResolve ? "async c=>" : "c=>"}r=>
+      return ${table.json ? "j=>" : ""}${table.async ? "async f=>" : "f=>"}${table.asyncResolve ? "async c=>" : "c=>"}${table.async || table.asyncResolve ? "async " : ""}r=>
       ${table.async ? "await f" : "f"}(${table.asyncResolve ? "await c" : "c"}(r))`)()
-            :
-            new Function(`
-      return ${table.json ? "j=>" : ""}${table.headers ? "h=>" : ""}${table.async ? "async f=>" : "f=>"}${table.asyncResolve ? "async c=>" : "c=>"}r=>
-      new Response(${table.async ? "await f" : "f"}(${table.asyncResolve ? "await c" : "c"}(r))${table.headers ? ",h" : ""})`)()
+            : new Function(
+              `return ${table.json ? "j=>" : ""}${table.headers ? "h=>" : ""}${table.async ? "f=>" : "f=>"}${table.asyncResolve ? "c=>" : "c=>"}${table.async || table.asyncResolve ? "async " : ""}r=>new Response(${table.async || table.asyncResolve ? "await f" : "f"}(${table.asyncResolve ? "await c" : "c"}(r))${table.headers ? ",h" : ""})`
+            )()
         )
     )(
       {
         async: f.f.constructor.name === "AsyncFunction",
-        asyncResolve: !checkAsync(f as ObjectRawResponseCommon),
+        asyncResolve: checkAsync(f as ObjectRawResponseCommon),
         headers: "status" in f || "headers" in f
           ?
           {
