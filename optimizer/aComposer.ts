@@ -28,13 +28,6 @@ export default (o?: funRouterOptions) =>
                 functions.reduce((a, k) =>
                   a(k)
                   ,
-                  // console.log(
-                  //   "----",
-                  //   "aComposer",
-                  //   table, 
-                  //   new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")} ${ f.resolve &&  checkAsync(f)?" async  r=> ": "r=>"}({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
-                  // .toString(),
-                  // "----") as unknown ??
                   new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")} ${ f.resolve &&  checkAsync(f)?" async r=> ": "r=>"}({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
                 )
             )(
