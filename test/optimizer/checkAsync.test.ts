@@ -1,6 +1,6 @@
 
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
-import checkAsync from "../../optimizer/checkAsync.ts";
+import checkAsync from "../../optimizer/recursiveCheckAsync.ts";
 
 Deno.test(
   "check for async",

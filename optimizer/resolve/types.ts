@@ -7,4 +7,6 @@ export type ResolveOptions = {
   f: (f: RequestArguments) => unknown;
 } & RawCommonRequest
 
+export type ResponseResponse = (r: Request) => unknown
+
 export type TypeResolveOptions = ({ async: false, f: (f: RequestArguments) => BodyInit })[] | ({ async: true, f: (f: RequestArguments) => Promise<BodyInit> })[]

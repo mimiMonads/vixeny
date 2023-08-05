@@ -6,6 +6,7 @@ import verifier from "../components/tokens/verifier.ts";
 import jVerify from "../components/tokens/jVerify.ts";
 import jSigner from "../components/tokens/jSigner.ts";
 import resolve from "./resolve/main.ts"
+import checkAsync from "./recursiveCheckAsync.ts";
 import { SignVerifyOptions } from "../components/tokens/types.ts";
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
@@ -26,7 +27,15 @@ export default (o?: funRouterOptions) =>
               functions =>
                 functions.reduce((a, k) =>
                   a(k)
-                  , new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")}r=>({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
+                  ,
+                  // console.log(
+                  //   "----",
+                  //   "aComposer",
+                  //   table, 
+                  //   new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")} ${ f.resolve &&  checkAsync(f)?" async  r=> ": "r=>"}({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
+                  // .toString(),
+                  // "----") as unknown ??
+                  new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")} ${ f.resolve &&  checkAsync(f)?" async r=> ": "r=>"}({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
                 )
             )(
               table.map(
@@ -46,7 +55,7 @@ export default (o?: funRouterOptions) =>
                               : x.name === "cookie"
                                 ? cookies(f)
                                 : x.name === "resolve"
-                                  ? (resolve(o)(f.path)(f.resolve as ResolveOptions))
+                                  ? resolve(o)(f.path)(f.resolve as ResolveOptions)
                                   : null
 
                   : null
@@ -65,7 +74,7 @@ export default (o?: funRouterOptions) =>
               { name: 'cookie', value: 'cookie(r.headers.get("cookie"))', type: 1 },
               { name: "jSign", value: "jSign", type: 1 },
               { name: "jVerify", value: "jVerify", type: 1 },
-              { name: "resolve", value: 'resolve(r)', type: 1}
+              { name: "resolve", value: `${checkAsync(f)?" await resolve(r) ": "resolve(r)"}`, type: 1}
             ].filter(x => ar.includes(x.name))
           )
         )

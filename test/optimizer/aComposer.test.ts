@@ -1,7 +1,7 @@
 import signer from "../../components/tokens/signer.ts";
 import aComposer from "../../optimizer/aComposer.ts";
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
-
+//await ((hi: (arg0: any) => any)=> async (r: any)=>({hi:await hi(r)}))((hi=>async (f: any) =>({hi:await hi(f)})) (async (f: { blob: () => any; })=> await(await f.blob()).text()))(new Request("http://hi.com/", {method: "POST", body: "hello"})),
 Deno.test(
   "Query",
   (_) =>
