@@ -25,8 +25,8 @@ export default (o?: funRouterOptions) =>
           (
             table => (
               functions =>
-                functions.reduce((a, k) =>
-                  a(k)
+                functions.reduce((s, k) =>
+                  s(k)
                   ,
                   new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")} ${ f.resolve &&  checkAsync(f) ?" async r=> ": "r=>"}({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
                 )
@@ -38,13 +38,21 @@ export default (o?: funRouterOptions) =>
                     : x.name === "query"
                       ? query(o)(f as ObjectRawResponseCommon)
                       : x.name === "sign"
-                        ? signer(f.signer as SignVerifyOptions)
+                        ?  "signer" in f 
+                            ? signer(f.signer as SignVerifyOptions)
+                            : (I:string) => I
                         : x.name === "verify"
-                          ? verifier(f.verifier as SignVerifyOptions)
-                          : x.name === "jSigner"
-                            ? jSigner(f.jSigner as SignVerifyOptions)
+                          ? "verifier" in f 
+                              ? verifier(f.verifier as SignVerifyOptions)
+                              : () => false
+                          : x.name === "jSign"
+                            ? "jSigner" in f
+                                ?jSigner(f.jSigner as SignVerifyOptions)
+                                : (I:Record<string,any>) => I
                             : x.name === "jVerify"
-                              ? jVerify(f.verifier as SignVerifyOptions)
+                              ? "jVerifier" in f
+                                ? jVerify(f.verifier as SignVerifyOptions)
+                                : () => null
                               : x.name === "cookie"
                                 ? cookies(f)
                                 : x.name === "resolve"

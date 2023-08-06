@@ -47,7 +47,7 @@ export type RawResponseCommon = {
   signer?: SignVerifyOptions;
   jSigner?: JsonSinger;
   verifier?: SignVerifyOptions;
-  jVerify?: SignVerifyOptions;
+  jVerifier?: SignVerifyOptions;
   delete?: AddOptions;
   debug?: DebugOptions;
   method?: ParamsMethod;
@@ -69,8 +69,9 @@ export type RawCommonRequest = {
   path: string;
   param?: ParamsOptions;
   signer?: SignVerifyOptions;
-  jSigner?: JsonSinger;
   verifier?: SignVerifyOptions;
+  jSigner?: JsonSinger;
+  jVerifier?: SignVerifyOptions;
   query?: QueryOptions;
   add?: AddOptions;
   delete?: AddOptions;
