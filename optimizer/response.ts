@@ -13,9 +13,7 @@ export default (o?: funRouterOptions) =>
     ((elementsUsed) => (
       table =>
         (composition =>
-
-          //console.log(typeof composition, typeof f, f.f, composition.toString()) as unknown as string &&
-          table.headers && table.json
+          (table.headers && table.json)
             ? composition(table.json)(table.headers)(f.f)(aComposer(o)(f as ObjectRawResponseCommon)(elementsUsed))
             : table.headers
               ? composition(table.headers)(f.f)(aComposer(o)(f as ObjectRawResponseCommon)(elementsUsed))
@@ -26,10 +24,9 @@ export default (o?: funRouterOptions) =>
           "type" in f
             ?
             new Function(`
-      return ${table.json ? "j=>" : ""}${table.async ? "async f=>" : "f=>"}${table.asyncResolve ? "async c=>" : "c=>"}${table.async || table.asyncResolve ? "async " : ""}r=>
-      ${table.async ? "await f" : "f"}(${table.asyncResolve ? "await c" : "c"}(r))`)()
+      return ${table.json ? "j=>" : ""}${table.async ? "async f=>" : "f=>"}${table.asyncResolve ? "async c=>" : "c=>"}${table.async || table.asyncResolve ? "async " : ""}r=>${table.async || table.asyncResolve ? "await f" : "f"}(${table.asyncResolve ? "await c" : "c"}(r))`)()
             : new Function(
-              `return ${table.json ? "j=>" : ""}${table.headers ? "h=>" : ""}${table.async ? "f=>" : "f=>"}${table.asyncResolve ? "c=>" : "c=>"}${table.async || table.asyncResolve ? "async " : ""}r=>new Response(${table.async || table.asyncResolve ? "await f" : "f"}(${table.asyncResolve ? "await c" : "c"}(r))${table.headers ? ",h" : ""})`
+              `return ${table.json ? "j=>" : ""}${table.headers ? "h=>" : ""}${table.async ? "f=>" : "f=>"}${table.asyncResolve ? "c=>" : "c=>"}${table.async || table.asyncResolve ? "async " : ""}r=> new Response(${table.async || table.asyncResolve ? "await f" : "f"}(${table.asyncResolve ? "await c" : "c"}(r))${table.headers ? ",h" : ""})`
             )()
         )
     )(
@@ -52,4 +49,4 @@ export default (o?: funRouterOptions) =>
         json: "json" in f ? jsonComposer(f.json.scheme) : null
       }
     ))
-      (checker(f?.delete || [])(elements)(f?.add || [])(f.f.toString()),);
+      (checker(f?.delete || [])(elements)(f?.add || [])(f.f.toString()));

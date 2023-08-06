@@ -14,7 +14,7 @@ export default (o?: funRouterOptions) => (path: string) => (input: ResolveOption
           (isAsync => 
         table.reduce((a, k) => a(k.f),
           new Function(` return ${table.map(x => x.name + "=>").join("")}${isAsync?"async r =>":" r=>"}({${table.map(x => x.name 
-            + ":" +( x.f.constructor.name === "AsyncFunction" ? "await ": "")+ x.name + "(r)").join(",")}})`)()
+            + ":" +( isAsync ? "await ": "")+ x.name + "(r)").join(",")}})`)()
           ) as unknown as ResponseResponse
            )(
               ar.some(x => recursiveCheck(x as ObjectRawResponseCommon )) 

@@ -28,7 +28,7 @@ export default (o?: funRouterOptions) =>
                 functions.reduce((a, k) =>
                   a(k)
                   ,
-                  new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")} ${ f.resolve &&  checkAsync(f)?" async r=> ": "r=>"}({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
+                  new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")} ${ f.resolve &&  checkAsync(f) ?" async r=> ": "r=>"}({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
                 )
             )(
               table.map(

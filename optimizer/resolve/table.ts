@@ -13,8 +13,8 @@ export default (debug: boolean) =>(o?: funRouterOptions)=>(path:string)=>(table:
     name: x.name,
     f: (
         composed =>
-        x.f.constructor.name === "AsyncFunction"|| composed.constructor.name
-        ? `((a=>k=>async r=>  await k( await a (r)))(${composed.toString()})(${x.f.toString()}))`
+        x.f.constructor.name === "AsyncFunction"|| composed.constructor.name === "AsyncFunction" 
+        ? `((a=>k=>async r=>await k(await a(r)))(${composed.toString()})(${x.f.toString()}))`
         : `((a=>k=>r=>k(a(r)))(${composed.toString()})(${x.f.toString()}))`
     )(
         aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())) as (r:Request) => any  | Promise<any>
@@ -27,7 +27,7 @@ export default (debug: boolean) =>(o?: funRouterOptions)=>(path:string)=>(table:
         name: x.name,
         f: (
             composed =>
-            x.f.constructor.name === "AsyncFunction" || composed.constructor.name
+            x.f.constructor.name === "AsyncFunction" || composed.constructor.name === "AsyncFunction" 
             ?
             (a => (k: (arg0: any) => any) =>  async (r: Request) => await k( await a (r)))(composed)( x.f)
 
