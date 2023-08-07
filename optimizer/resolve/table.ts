@@ -33,7 +33,9 @@ export default (debug: boolean) =>(o?: funRouterOptions)=>(path:string)=>(table:
 
             : (a => (k: (arg0: any) => any) => (r: Request)=> k(a(r)))(composed)(x.f)
         )(
-            aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())) as (r:Request) => any  | Promise<any>
+            ( typeof x.only !== "undefined" && x.only.length > 0)
+            ? aComposer(o)(x as ObjectRawResponseCommon)(x.only)
+            : aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())) as (r:Request) => any  | Promise<any>
         )
         }
     ))

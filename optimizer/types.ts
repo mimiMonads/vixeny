@@ -52,6 +52,7 @@ export type RawResponseCommon = {
   debug?: DebugOptions;
   method?: ParamsMethod;
   status?: number;
+  only?: AddOptions;
   resolve?: ResolveOptions | ResolveOptions[];
   headers?: Record<string, string> | defaultMime;
 };
@@ -76,6 +77,7 @@ export type RawCommonRequest = {
   add?: AddOptions;
   delete?: AddOptions;
   debug?: DebugOptions;
+  only?: AddOptions;
   resolve?: ResolveOptions | ResolveOptions[];
 };
 

@@ -6,15 +6,24 @@
     <b style="font-size:1.2em; font-style:italic; color:darkcyan;">Unleash the functional beast~</b>
   </p>
 
+
+
+
 ## Introduction
 
-Vixeny is a purely functional web framework in TypeScript that aims to rival other typed programming languages like Go or Rust.
-- **High-Performance:** Carefully optimized for delivering top-tier performance at every processing level.
-- **Self-Sufficiency:** Operates independently, with no external dependencies.
-- **Immutable Data:** Prioritizes data safety and eliminates side effects.
-- **Scalability:** Ensures high performance even under heavy loads.
-- **Extensive Testing:** Over 100 different tests to ensure stability, reliability, and robustness in various scenarios and environments.
-- **User-Friendly:** Provides clear syntax and comprehensive documentation for developers at all levels.
+Welcome to Vixeny, a web framework that offers both the strengths of functional programming and extensive support for other paradigms. Whether you're a seasoned functional programmer, new to the concept, or even if you choose to take a different path altogether, Vixeny has something to offer you.
+
+### Embracing Different Styles
+
+Vixeny is about flexibility, expressiveness, and the joy of coding. Our philosophy embraces various programming approaches, all supported by key features:
+
+- **Functional, but Not Exclusive:** Functional programming is a tool, not a mandate, within Vixeny. If you prefer other paradigms, you'll find support and features to suit your needs. It's about providing different avenues to success, not making things difficult.
+- **Modular and Predictable:** Thanks to its functional nature, Vixeny ensures easy testing with predictable and immutable structures. This design fosters a robust and reliable development environment.
+- **Opt-in Side Effects:** In Vixeny, side effects are an option, not a given. You have the control to explicitly create them when needed. Vixeny can't be mutated without your direct intention.
+- **High-Performance, Elegance, and More:** Whether functional principles or other paradigms guide you, Vixeny's commitment to performance, safety, readability, and community remains strong.
+
+In Vixeny, your way of coding is embraced, and your unique approach is celebrated. Dive into our Getting Started guide and discover how Vixeny can meet you where you are and help you build extraordinary web applications.
+
 
 ## Benchmarks
 
@@ -25,7 +34,29 @@ Vixeny is a purely functional web framework in TypeScript that aims to rival oth
 [By Denosaurs](https://github.com/denosaurs/bench)
 
 
-## Get Started in 10 Minutes!
+
+## The Basics
+
+```typescript
+/*
+    The vixeny framework requires:
+
+    vixeny(options)([...petitions])
+
+    Options - Configuration options for the vixeny server.
+    Petitions - An array of Petition (routes).
+
+*/
+import { Petitions } from "vixeny/types";
+
+    //Petition in the hello world example.
+    {
+      path: "/",
+      f: () => "hello world",
+    } 
+
+
+```
 
 ### Hello World in Deno!
 
@@ -61,28 +92,7 @@ export default {
 }
 
 ```
-## The Basics
 
-```typescript
-/*
-    The vixeny framework requires:
-
-    vixeny(options)([...petitions])
-
-    Options - Configuration options for the vixeny server.
-    Petitions - An array of Petition (routes).
-
-*/
-import { Petitions } from "vixeny/types";
-
-    //Petition in the hello world example.
-    {
-      path: "/",
-      f: () => "hello world",
-    } 
-
-
-```
 
 ## Parameters
 

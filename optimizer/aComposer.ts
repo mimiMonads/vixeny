@@ -13,6 +13,9 @@ import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
 import { ResolveOptions } from "./resolve/types.ts";
 
 
+ export type specialOptions = {
+  
+} & funRouterOptions
 
 export default (o?: funRouterOptions) =>
   (f: ObjectRawResponseCommon) =>
@@ -40,24 +43,26 @@ export default (o?: funRouterOptions) =>
                       : x.name === "sign"
                         ?  "signer" in f 
                             ? signer(f.signer as SignVerifyOptions)
-                            : (I:string) => I
+                            :  console.warn(`"sign" is being used without "signer Options", use " delete: ["sign"]`) as unknown ?? ((I:string) => I)
                         : x.name === "verify"
                           ? "verifier" in f 
                               ? verifier(f.verifier as SignVerifyOptions)
-                              : () => false
+                              : console.warn(`"verify" is being used without "verifier Options", use " delete: ["verify]`) as unknown ??  (() => false)
                           : x.name === "jSign"
-                            ? "jSigner" in f
-                                ?jSigner(f.jSigner as SignVerifyOptions)
-                                : (I:Record<string,any>) => I
+                            ?  "jSigner" in f
+                                ? jSigner(f.jSigner as SignVerifyOptions)
+                                : console.warn(`"jSign" is being used without "jSigner Options", use " delete: ["jSign]`) as unknown ?? ((I:Record<string,unknown>) => I)
                             : x.name === "jVerify"
                               ? "jVerifier" in f
                                 ? jVerify(f.verifier as SignVerifyOptions)
-                                : () => null
+                                :  console.warn(`"jSign" is being used without "jSigner Options", use " delete: ["jSign]`) as unknown ?? (() => null)
                               : x.name === "cookie"
                                 ? cookies(f)
                                 : x.name === "resolve"
+                                  ? "resolve" in f
                                   ? resolve(o)(f.path)(f.resolve as ResolveOptions)
-                                  : null
+                                  : console.warn(`"resolve" is being used without "resolve Options", use " delete: ["jSign]`) as unknown ?? (() => null)
+                                : null
 
                   : null
               ).filter(x => x !== null)

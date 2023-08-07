@@ -49,4 +49,4 @@ export default (o?: funRouterOptions) =>
         json: "json" in f ? jsonComposer(f.json.scheme) : null
       }
     ))
-     (checker(f?.delete || [])(elements)(f?.add || [])(f.f.toString()));
+     ( ( typeof f.only !== "undefined" && f.only.length > 0) ? f.only : checker(f?.delete || [])(elements)(f?.add || [])(f.f.toString()));
