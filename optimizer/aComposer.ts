@@ -7,14 +7,17 @@ import jVerify from "../components/tokens/jVerify.ts";
 import jSigner from "../components/tokens/jSigner.ts";
 import resolve from "./resolve/main.ts"
 import checkAsync from "./recursiveCheckAsync.ts";
+import branch from "./branch/main.ts"
 import { SignVerifyOptions } from "../components/tokens/types.ts";
 import { funRouterOptions } from "../types.ts";
 import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
 import { ResolveOptions } from "./resolve/types.ts";
+import { BranchOptions } from "./branch/types.ts";
 
 
  export type specialOptions = {
-  mutable?: true
+  mutable?: true,
+  branch?: boolean
 } & funRouterOptions
 
 export default (o?: specialOptions ) =>
@@ -31,7 +34,17 @@ export default (o?: specialOptions ) =>
                 functions.reduce((s, k) =>
                   s(k)
                   ,
-                  new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")} ${ f.resolve &&  checkAsync(f) ?" async r=> ": "r=>"}({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
+                  new Function(` return ${table.map(x => x.type === 1 ? x.name + "=>" : "").join("")} ${ 
+                    f.resolve &&  checkAsync(f) ? 
+                      o && "branch" in o 
+                        ? " r=>async b=> " 
+                        : " async r=> "
+                    : 
+                      o && "branch" in o 
+                        ? "r=>b=>"
+                        : "r=>"
+                  
+                  }({${table.map(x => x.name + ":" + x.value).join(",")}})`)()
                 )
             )(
               ( o => 
@@ -63,6 +76,10 @@ export default (o?: specialOptions ) =>
                                     ? "resolve" in f
                                       ? resolve(o)(f.path)(f.resolve as ResolveOptions)
                                       : console.warn(`"resolve" is being used without "resolve Options", use " delete: ["resolve"]`) as unknown ?? (() => null)
+                                  : x.name === "branch"
+                                    ? "branch" in f
+                                      ? branch({...o, branch: true})(f.path)(f.branch as BranchOptions) as unknown as null
+                                      : console.warn(`"branch" is being used without "branch Options", use " delete: ["branch"]`) as unknown ?? (() => null)
                                   : null
                     : null
                 ).filter(x => x !== null)
@@ -86,7 +103,8 @@ export default (o?: specialOptions ) =>
                 { name: "jVerify", value: "jVerify", type: 1 },
                 { name: "resolve", value: `${checkAsync(f)? " await resolve(r)": "resolve(r)"}`, type: 1},
                 { name: "mutable", value: mutable ? "r.m" : "{}", type: 0},
-                { name: "branch", value: `${checkAsync(f)? " await branch(r)": "branch(r)"}`, type: 1},
+                { name: "branch", value: `${checkAsync(f)? " await branch(r)": "branch(r)"}` , type: 1},
+                { name: "arguments", value:  o && "branch" in o ? "b" : null , type: 0},
               ].filter(x => ar.includes(x.name))
             )(
               ("mutable" in f) || ( o && "mutable" in o)

@@ -3,10 +3,11 @@ import { JsonOptions, JsonType } from "../components/stringify/types.ts";
 import { SignVerifyOptions } from "../components/tokens/types.ts";
 import { JsonSinger } from "../components/tokens/jSigner.ts"
 import { ResolveOptions as UnResolveOption } from "./resolve/types.ts";
-import { BranchOptions } from "./branch/types.ts";
+import { BranchOptions  as UnBranchOptions} from "./branch/types.ts";
 
 
 type ResolveOptions = Omit<UnResolveOption, "path">
+type BranchOptions = Omit<UnBranchOptions, "path">
 
 export type ParamsOptions = {
   elements: string[];
@@ -18,7 +19,7 @@ export type DebugOptions = {
   type: "list",
   name: string
 }
-export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie" | "resolve" | "mutable" | "branch";
+export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie" | "resolve" | "mutable" | "branch" | "arguments";
 export type AddOptions = AddOption[];
 export type RequestArguments = {
   req: Request;
@@ -58,6 +59,7 @@ export type RawResponseCommon = {
   status?: number;
   only?: AddOptions;
   resolve?: ResolveOptions | ResolveOptions[];
+  branch?: BranchOptions | BranchOptions[];
   headers?: Record<string, string> | defaultMime;
 };
 
