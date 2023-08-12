@@ -48,21 +48,21 @@ export default (o?: specialOptions ) =>
                           : x.name === "verify"
                             ? "verifier" in f 
                                 ? verifier(f.verifier as SignVerifyOptions)
-                                : console.warn(`"verify" is being used without "verifier Options", use " delete: ["verify]`) as unknown ??  (() => false)
+                                : console.warn(`"verify" is being used without "verifier Options", use " delete: ["verify"]`) as unknown ??  (() => false)
                             : x.name === "jSign"
                               ?  "jSigner" in f
                                   ? jSigner(f.jSigner as SignVerifyOptions)
-                                  : console.warn(`"jSign" is being used without "jSigner Options", use " delete: ["jSign]`) as unknown ?? ((I:Record<string,unknown>) => I)
+                                  : console.warn(`"jSign" is being used without "jSigner Options", use " delete: ["jSign"]`) as unknown ?? ((I:Record<string,unknown>) => I)
                               : x.name === "jVerify"
                                 ? "jVerifier" in f
                                   ? jVerify(f.verifier as SignVerifyOptions)
-                                  :  console.warn(`"jSign" is being used without "jSigner Options", use " delete: ["jSign]`) as unknown ?? (() => null)
+                                  :  console.warn(`"jVerify" is being used without "jVerify Options", use " delete: ["jVerifier"]`) as unknown ?? (() => null)
                                 : x.name === "cookie"
                                   ? cookies(f)
                                   : x.name === "resolve"
                                     ? "resolve" in f
                                       ? resolve(o)(f.path)(f.resolve as ResolveOptions)
-                                      : console.warn(`"resolve" is being used without "resolve Options", use " delete: ["jSign]`) as unknown ?? (() => null)
+                                      : console.warn(`"resolve" is being used without "resolve Options", use " delete: ["resolve"]`) as unknown ?? (() => null)
                                   : null
                     : null
                 ).filter(x => x !== null)
@@ -85,7 +85,8 @@ export default (o?: specialOptions ) =>
                 { name: "jSign", value: "jSign", type: 1 },
                 { name: "jVerify", value: "jVerify", type: 1 },
                 { name: "resolve", value: `${checkAsync(f)? " await resolve(r)": "resolve(r)"}`, type: 1},
-                { name: "mutable", value: mutable ? "r.m" : "{}", type: 0}
+                { name: "mutable", value: mutable ? "r.m" : "{}", type: 0},
+                { name: "branch", value: `${checkAsync(f)? " await branch(r)": "branch(r)"}`, type: 1},
               ].filter(x => ar.includes(x.name))
             )(
               ("mutable" in f) || ( o && "mutable" in o)

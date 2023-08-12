@@ -6,8 +6,6 @@ import { ObjectRawResponseCommon, ObjectRawCommonRequest } from "./types.ts";
 
 type RecFunc = (f: ObjectRawResponseCommon) => boolean;
 
-
-
 export default 
 ((f: (x: RecFunc) => RecFunc) =>
   ((x: (arg: any) => any) => (v: any) => x(x)(v))(
@@ -22,4 +20,5 @@ export default
       ? false
       : (!Array.isArray(f.resolve) && f.resolve && f.resolve.f.constructor.name === "AsyncFunction") 
       || ("resolve" in f && Array.isArray(f.resolve) && f.resolve.some(x => solver(x as unknown as ObjectRawResponseCommon)))
+      || ("branch" in f && Array.isArray(f.branch) && f.branch.some(x => solver(x as unknown as ObjectRawResponseCommon)))
 ) as unknown as (f: ObjectRawResponseCommon) => boolean;

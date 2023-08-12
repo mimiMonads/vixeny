@@ -3,6 +3,7 @@ import { JsonOptions, JsonType } from "../components/stringify/types.ts";
 import { SignVerifyOptions } from "../components/tokens/types.ts";
 import { JsonSinger } from "../components/tokens/jSigner.ts"
 import { ResolveOptions as UnResolveOption } from "./resolve/types.ts";
+import { BranchOptions } from "./branch/types.ts";
 
 
 type ResolveOptions = Omit<UnResolveOption, "path">
@@ -17,7 +18,7 @@ export type DebugOptions = {
   type: "list",
   name: string
 }
-export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie" | "resolve" | "mutable";
+export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie" | "resolve" | "mutable" | "branch";
 export type AddOptions = AddOption[];
 export type RequestArguments = {
   req: Request;
@@ -25,10 +26,12 @@ export type RequestArguments = {
   param: Record<string, string>;
   date: number;
   resolve: Record<string, unknown | null>;
+  branch: Record<string, {(args: unknown): Promise<unknown> | unknown}>;
   randomNumber: number;
   hash: string;
   cookie: null | { [key: string]: string | undefined };
-  mutable: Record<string,unknown>
+  mutable: Record<string,unknown>;
+  arguments: unknown;
   sign: (s: string) => string;
   jSign: (s: string) => string;
   verify: (s: string) => boolean;
@@ -82,6 +85,7 @@ export type RawCommonRequest = {
   debug?: DebugOptions;
   only?: AddOptions;
   resolve?: ResolveOptions | ResolveOptions[];
+  branch?: BranchOptions | BranchOptions[];
 };
 
 export type ObjectRawCommonRequest = {
