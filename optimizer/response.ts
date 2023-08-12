@@ -24,9 +24,10 @@ export default (o?: funRouterOptions) =>
           "type" in f
             ?
             new Function(`
-      return ${table.json ? "j=>" : ""}f=>c=>${table.async || table.asyncResolve ? "async " : ""}r=>${table.async || table.asyncResolve ? "await f" : "f"}(${table.asyncResolve ? "await c" : "c"}(r))`)()
+      return ${table.json ? "j=>" : ""}f=>c=>${table.async || table.asyncResolve ? "async " : ""}r=>${table.async || table.asyncResolve ? "await f" : "f"}(${table.asyncResolve ? "await c" : "c"}(${"mutable" in f ? "{r:r,m:{}}" : "r" }))`)()
             : new Function(
-              `return ${table.json ? "j=>" : ""}${table.headers ? "h=>" : ""}${table.async ? "f=>" : "f=>"}${table.asyncResolve ? "c=>" : "c=>"}${table.async || table.asyncResolve ? "async " : ""}r=> new Response(${table.async || table.asyncResolve ? "await f" : "f"}(${table.asyncResolve ? "await c" : "c"}(r))${table.headers ? ",h" : ""})`
+              `return ${table.json ? "j=>" : ""}${table.headers ? "h=>" : ""}${table.async ? "f=>" : "f=>"}${table.asyncResolve ? "c=>" : "c=>"}${table.async || table.asyncResolve ? "async " : ""}r=> new Response(${table.async || table.asyncResolve ? "await f" : "f"}(${
+                table.asyncResolve ? "await c" : "c"}(${"mutable" in f ? "{r:r,m:{}}" : "r" }))${table.headers ? ",h" : ""})`
             )()
         )
     )(

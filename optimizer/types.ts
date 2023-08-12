@@ -17,7 +17,7 @@ export type DebugOptions = {
   type: "list",
   name: string
 }
-export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie" | "resolve";
+export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie" | "resolve" | "mutable";
 export type AddOptions = AddOption[];
 export type RequestArguments = {
   req: Request;
@@ -28,6 +28,7 @@ export type RequestArguments = {
   randomNumber: number;
   hash: string;
   cookie: null | { [key: string]: string | undefined };
+  mutable: Record<string,unknown>
   sign: (s: string) => string;
   jSign: (s: string) => string;
   verify: (s: string) => boolean;
@@ -59,9 +60,11 @@ export type RawResponseCommon = {
 
 export type ObjectRawResponseCommon =
   | (RawResponseCommon & {
+    mutable?: true;
     f: (r: RequestArguments) => BodyInit | Promise<BodyInit>;
   })
   | (RawResponseCommon & {
+    mutable?: true;
     f: (r: RequestArguments) => JsonType | Promise<JsonType>;
     json: JsonOptions;
   });
@@ -84,6 +87,7 @@ export type RawCommonRequest = {
 export type ObjectRawCommonRequest = {
   method?: ParamsMethod;
   type: "request";
+  mutable?: true;
   f: (r: RequestArguments) => Response | Promise<Response>;
 } & RawCommonRequest
 
