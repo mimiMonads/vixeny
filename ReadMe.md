@@ -7,6 +7,9 @@
   </p>
 
 
+Coming soon!
+At the moment we are working on the website!
+[website](https://vixeny.dev/)
 
 
 ## Introduction
