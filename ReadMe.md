@@ -7,6 +7,14 @@
   </p>
 
 
+## Docs
+
+Coming soon!
+At the moment we are working on the website!
+<br>
+
+[website](https://vixeny.dev/)
+
 ## Introduction
 
 Welcome to Vixeny, a web framework that offers both the strengths of functional programming and extensive support for other paradigms. Whether you're a seasoned functional programmer, new to the concept, or even if you choose to take a different path altogether, Vixeny has something to offer you.
@@ -30,14 +38,6 @@ In Vixeny, your way of coding is embraced, and your unique approach is celebrate
 
 ### Deno
 [By Denosaurs](https://github.com/denosaurs/bench)
-
-## Docs
-
-Coming soon!
-At the moment we are working on the website!
-<br>
-
-[website](https://vixeny.dev/)
 
 
 ## Q&A

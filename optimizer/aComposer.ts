@@ -23,7 +23,7 @@ import { BranchOptions } from "./branch/types.ts";
 export default (o?: specialOptions ) =>
   (f: ObjectRawResponseCommon) =>
     (ar: string[]) =>
-      ar.length === 0
+      ar.length === 0 && !( o &&  "branch" in  o)
         ? ((r: Request) => r) as unknown as (r: Request) => RequestArguments
         : (
           el => el
