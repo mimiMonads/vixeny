@@ -1,12 +1,12 @@
 
 import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
-import checkAsync from "../../optimizer/resolve/main.ts";
 
+import resolveComposer from "../../components/optimizer/resolveComposer.ts";
 
 Deno.test(
   "check for async",
     async () =>   assertEquals(
-       ( await checkAsync()("/")({
+       ( await resolveComposer()({
         name: "first",
         path: "/",
         f: async f => await(await f.req.blob()).text()
@@ -20,7 +20,7 @@ Deno.test(
 Deno.test(
   "check for sync",
   () => assertEquals(
-    checkAsync()("/")({
+    resolveComposer()({
         name: "hi",
         path: "/",
       f: () => "hello"
@@ -31,9 +31,22 @@ Deno.test(
 
 
 Deno.test(
+  "check for sync",
+ async () => assertEquals(
+    await resolveComposer(
+      {mutable: {hi:"hello"}}
+    )({
+        name: "resolve",
+        path: "/",
+      f: f => f.mutable
+    })(new Request("http://hi.com/")),
+    {resolve : { hi : "hello"}}
+  )
+)
+Deno.test(
   "check for async",
       async () =>   assertEquals(
-      (await checkAsync()("/")({
+      (await resolveComposer()({
         name: "first",
         resolve: [{
           name: "second",
@@ -52,7 +65,7 @@ Deno.test(
 Deno.test(
   "check for sync",
   () => assertEquals(
-    checkAsync()("/")({
+    resolveComposer()({
         name: "first",
         resolve:{
           name: "second",
