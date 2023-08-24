@@ -33,20 +33,19 @@ export default (o?: funRouterOptions) =>
       {
         async: f.f.constructor.name === "AsyncFunction",
         asyncResolve: checkAsync(f as ObjectRawResponseCommon),
-        headers: "status" in f || "headers" in f
-          ?
-          {
-            headers: new Headers(
-              typeof f.headers === "string"
-                ? {
-                  "Content-Type": mime.find((x) => x[0] === f.headers)![1],
-                }
-                : f.headers ? Object.entries({ ...f.headers }) : { "Content-Type": "text/plain" },
-            ),
-            status: "status" in f ? f.status : 200,
-          }
-          : null,
+        headers: 
+        "headings" in f
+          ? typeof f.headings?.headers == "string"
+            ? {...f.headings, headers: {"Content-Type": mime.find((x) => x[0] === f.headings?.headers)![1]}}
+            : {...f.headings}
+          : null, 
         json: "json" in f ? jsonComposer(f.json.scheme) : null
       }
     ))
-      ((typeof f.only !== "undefined" && f.only.length > 0) ? f.only : checker(f?.delete || [])(elements)(f?.add || [])(f.f.toString()));
+      (
+        (
+          typeof f.options?.only !== "undefined" && f.options.only.length > 0) 
+          ? f.options.only
+          : checker(f.options?.remove || [])(elements)(f.options?.add || [])(f.f.toString()
+        )
+      );

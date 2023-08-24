@@ -54,7 +54,9 @@ Deno.test(
         },
       ],
         path: "/",
-        add: ["resolve"],
+        options: {
+          add: ["resolve"]
+        },
         f: f => f.resolve
       })
       (new Request("http://hi.com/", {method: "POST", body: "hello"}))),

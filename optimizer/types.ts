@@ -10,19 +10,18 @@ type ResolveOptions = Omit<UnResolveOption, "path">
 type BranchOptions = Omit<UnBranchOptions, "path">
 
 export type PetitionOptions = {
-  add?: AddOption;
+  add?: AddOption[];
   debug?: DebugOptions;
-  remove?: AddOption;
-  only?: AddOption;
+  remove?: AddOption[];
+  only?: AddOption[];
 }
 
 export type PetitionHeader = {
-  headers: HeadersInit | string
-  statusText: string;
-  status: number;
+  headers?: HeadersInit | defaultMime
+  statusText?: string;
+  status?: number;
 }
 
-new Response(null,)
 
 export type QueryOptions = {
   only?: string[];
@@ -60,20 +59,14 @@ export type RawResponseCommon = {
   path: string;
   options?: PetitionOptions;
   query?: QueryOptions;
-  add?: AddOptions;
   signer?: SignVerifyOptions;
   jSigner?: JsonSinger;
   verifier?: SignVerifyOptions;
   jVerifier?: SignVerifyOptions;
-  delete?: AddOptions;
-  debug?: DebugOptions;
   method?: ParamsMethod;
-  status?: number;
-  only?: AddOptions;
   resolve?: ResolveOptions | ResolveOptions[];
   branch?: BranchOptions | BranchOptions[];
   headings?: PetitionHeader;
-  headers?: Record<string, string> | defaultMime;
 };
 
 export type ObjectRawResponseCommon =
@@ -95,10 +88,6 @@ export type RawCommonRequest = {
   jSigner?: JsonSinger;
   jVerifier?: SignVerifyOptions;
   query?: QueryOptions;
-  add?: AddOptions;
-  delete?: AddOptions;
-  debug?: DebugOptions;
-  only?: AddOptions;
   resolve?: ResolveOptions | ResolveOptions[];
   branch?: BranchOptions | BranchOptions[];
 };

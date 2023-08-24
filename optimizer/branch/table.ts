@@ -17,7 +17,8 @@ export default (debug: boolean) =>(o?: specialOptions)=>(path:string)=>(table:Br
         ? `((a=>k=>async r=>await k(await a(r)))(${composed.toString()})(${x.f.toString()}))`
         : `((a=>k=>r=>k(a(r)))(${composed.toString()})(${x.f.toString()}))`
     )(
-        aComposer(o)(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())) as (r:Request) => any  | Promise<any>
+        aComposer(o)(x as ObjectRawResponseCommon)(checker(x.options?.remove ?? [])(elements)(x.options?.add ?? [])(x.f.toString())) as (r:Request) => any | Promise<any>
+
     )
     }
 ))
@@ -33,9 +34,9 @@ export default (debug: boolean) =>(o?: specialOptions)=>(path:string)=>(table:Br
 
             : (a => (k: (arg0: any) => any) => (r: Request)=> (b:unknown) => k(a(r)(b)))(composed)(x.f)
         )(
-            ( typeof x.only !== "undefined" && x.only.length > 0)
-            ? aComposer(o ? {...aComposer, branch: false} : {branch:false})(x as ObjectRawResponseCommon)(x.only)
-            : aComposer(o ? {...aComposer, branch: false} : {branch:false})(x as ObjectRawResponseCommon)(checker(x?.delete ?? [])(elements)(x?.add ?? [])(x.f.toString())) as (r:Request) => any  | Promise<any>
-        )
+            (typeof x.options?.only !== "undefined" && x.options.only.length > 0)
+            ? aComposer(o ? {...aComposer, branch: false} : {branch:false})(x as ObjectRawResponseCommon)(x.options.only)
+            : aComposer(o ? {...aComposer, branch: false} : {branch:false})(x as ObjectRawResponseCommon)(checker(x.options?.remove ?? [])(elements)(x.options?.add ?? [])(x.f.toString())) as (r:Request) => any  | Promise<any>
+          )
         }
     ))
