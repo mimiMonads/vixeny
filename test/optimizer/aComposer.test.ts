@@ -7,7 +7,6 @@ Deno.test(
   (_) =>
     assertEquals(
       (aComposer({ hasName: "http://localhost:8080/" })({
-        param: { elements: ["id"] },
         path: "/test",
         f: (r) => r.query.hello || "nothing",
       })(["query"]))(new Request("http://localhost:8080/test?hello=hi")).query
@@ -21,7 +20,6 @@ Deno.test(
     assertEquals(
       (aComposer()({
         path: "/test",
-        param: { elements: ["id"] },
         f: (r) => r.query.hello || "nothing",
       })(["query"]))(new Request("http://localhost:8080/test?hello=hi")).query
         .hello,
@@ -33,7 +31,6 @@ Deno.test(
   (_) =>
     assertEquals(
       (aComposer({ hasName: "http://localhost:8080/" })({
-        param: { elements: ["id"] },
         path: "/test",
         f: (r) => r.query.hello || "nothing",
       })(["query", "req"]))(new Request("http://localhost:8080/test?hello=hi"))
@@ -47,7 +44,6 @@ Deno.test(
     assertEquals(
       (aComposer({ hasName: "http://localhost:8080/" })({
         path: "/test/:id",
-        param: { elements: ["id"] },
         f: (r) => r.param.id,
       })(["param"]))(new Request("http://localhost:8080/test/1")).param.id,
       "1",
@@ -60,7 +56,6 @@ Deno.test(
     assertEquals(
       (aComposer({ hasName: "http://localhost:8080/" })({
         path: "/test/:a/:b/:c/",
-        param: { elements: ["a", "b", "c"] },
         f: (r) => r.param.id,
       })(["param"]))(new Request("http://localhost:8080/test/1/2/3/")).param.b,
       "2",

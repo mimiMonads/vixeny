@@ -3,15 +3,27 @@ import { JsonOptions, JsonType } from "../components/stringify/types.ts";
 import { SignVerifyOptions } from "../components/tokens/types.ts";
 import { JsonSinger } from "../components/tokens/jSigner.ts"
 import { ResolveOptions as UnResolveOption } from "./resolve/types.ts";
-import { BranchOptions  as UnBranchOptions} from "./branch/types.ts";
+import { BranchOptions as UnBranchOptions } from "./branch/types.ts";
 
 
 type ResolveOptions = Omit<UnResolveOption, "path">
 type BranchOptions = Omit<UnBranchOptions, "path">
 
-export type ParamsOptions = {
-  elements: string[];
-};
+export type PetitionOptions = {
+  add?: AddOption;
+  debug?: DebugOptions;
+  remove?: AddOption;
+  only?: AddOption;
+}
+
+export type PetitionHeader = {
+  headers: HeadersInit | string
+  statusText: string;
+  status: number;
+}
+
+new Response(null,)
+
 export type QueryOptions = {
   only?: string[];
 };
@@ -27,11 +39,11 @@ export type RequestArguments = {
   param: Record<string, string>;
   date: number;
   resolve: Record<string, unknown | null>;
-  branch: Record<string, {(args: unknown): Promise<unknown> | unknown}>;
+  branch: Record<string, { (args: unknown): Promise<unknown> | unknown }>;
   randomNumber: number;
   hash: string;
   cookie: null | { [key: string]: string | undefined };
-  mutable: Record<string,unknown>;
+  mutable: Record<string, unknown>;
   arguments: unknown;
   sign: (s: string) => string;
   jSign: (s: string) => string;
@@ -46,7 +58,7 @@ export type Petition =
 
 export type RawResponseCommon = {
   path: string;
-  param?: ParamsOptions;
+  options?: PetitionOptions;
   query?: QueryOptions;
   add?: AddOptions;
   signer?: SignVerifyOptions;
@@ -60,6 +72,7 @@ export type RawResponseCommon = {
   only?: AddOptions;
   resolve?: ResolveOptions | ResolveOptions[];
   branch?: BranchOptions | BranchOptions[];
+  headings?: PetitionHeader;
   headers?: Record<string, string> | defaultMime;
 };
 
@@ -76,8 +89,8 @@ export type ObjectRawResponseCommon =
 
 export type RawCommonRequest = {
   path: string;
-  param?: ParamsOptions;
   signer?: SignVerifyOptions;
+  options?: PetitionOptions;
   verifier?: SignVerifyOptions;
   jSigner?: JsonSinger;
   jVerifier?: SignVerifyOptions;
