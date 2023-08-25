@@ -14,6 +14,9 @@ export type PetitionOptions = {
   debug?: DebugOptions;
   remove?: AddOption[];
   only?: AddOption[];
+  setHash?: string;
+  setRandomNumber?: number;
+  setDate?: number;
 }
 
 export type PetitionHeader = {
