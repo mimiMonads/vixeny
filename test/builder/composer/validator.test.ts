@@ -6,7 +6,7 @@ Deno.test(
   (_) =>
     assertEquals(
       validator({})(1)(-1)(["/", "/hello", "/test"]),
-      's === "/" ? 1  : s.length > 6 &&  s.indexOf("hello?") === 1  || s.indexOf("hello") === 1 ? 2 :  s.length > 5 &&  s.indexOf("test?") === 1  || s.indexOf("test") === 1 ? 3 :  -1',
+      's === "/" ? 1  :   s === "/hello" || s.indexOf("hello?") === 1 ? 2 :    s === "/test" || s.indexOf("test?") === 1 ? 3 :  -1',
     ),
 );
 
