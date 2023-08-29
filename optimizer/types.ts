@@ -9,32 +9,90 @@ import { BranchOptions as UnBranchOptions } from "./branch/types.ts";
 type ResolveOptions = Omit<UnResolveOption, "path">
 type BranchOptions = Omit<UnBranchOptions, "path">
 
+/**
+ * Options for the petition.
+ */
 export type PetitionOptions = {
+  /**
+   * Options for adding.
+   */
   add?: AddOption[];
+  /**
+   * Options for debugging.
+   */
   debug?: DebugOptions;
+  /**
+   * Options for removing.
+   */
   remove?: AddOption[];
+  /**
+   * Options for filtering only specified items.
+   */
   only?: AddOption[];
+  /**
+   * Hash to set.
+   */
   setHash?: string;
+  /**
+   * Random number to set.
+   */
   setRandomNumber?: number;
+  /**
+   * Date to set.
+   */
   setDate?: number;
 }
 
+
+/**
+ * Headers for the petition.
+ */
 export type PetitionHeader = {
+  /** 
+   * The headers initialization. 
+   */
   headers?: HeadersInit | defaultMime
+  /** 
+   * The status text. 
+   */
   statusText?: string;
+  /** 
+   * The status number. 
+   */
   status?: number;
 }
 
-
+/**
+ * Options for the query.
+ */
 export type QueryOptions = {
+  /**
+   * Specify only certain fields.
+   */
   only?: string[];
 };
+
+/**
+ * Options for debugging.
+ */
 export type DebugOptions = {
   type: "list",
   name: string
 }
+
+/**
+ * Options for adding.
+ */
 export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" | "jSign" | "jVerify" | "randomNumber" | "hash" | "cookie" | "resolve" | "mutable" | "branch" | "arguments";
+
+/**
+ * List of options for adding.
+ */
 export type AddOptions = AddOption[];
+
+/**
+ * Arguments for the request.
+ */
 export type RequestArguments = {
   req: Request;
   query: Record<string, string | undefined>;
@@ -52,12 +110,19 @@ export type RequestArguments = {
   verify: (s: string) => boolean;
   jVerify: (s: string) => Record<string, JsonType> | null;
 };
+
+/**
+ * Petition object.
+ */
 export type Petition =
   | ObjectRawResponseCommon
   | ObjectRawResponseReturn
   | ObjectRawCommonRequest
   | ObjectRawResponseStatic;
 
+/**
+ * Common raw response object.
+ */
 export type RawResponseCommon = {
   path: string;
   options?: PetitionOptions;
@@ -72,6 +137,9 @@ export type RawResponseCommon = {
   headings?: PetitionHeader;
 };
 
+/**
+ * Object for raw response with common properties.
+ */
 export type ObjectRawResponseCommon =
   | (RawResponseCommon & {
     mutable?: true;
@@ -83,6 +151,9 @@ export type ObjectRawResponseCommon =
     json: JsonOptions;
   });
 
+/**
+ * Common raw request object.
+ */
 export type RawCommonRequest = {
   path: string;
   signer?: SignVerifyOptions;
@@ -95,6 +166,9 @@ export type RawCommonRequest = {
   branch?: BranchOptions | BranchOptions[];
 };
 
+/**
+ * Object for raw common request.
+ */
 export type ObjectRawCommonRequest = {
   method?: ParamsMethod;
   type: "request";
@@ -102,6 +176,9 @@ export type ObjectRawCommonRequest = {
   f: (r: RequestArguments) => Response | Promise<Response>;
 } & RawCommonRequest
 
+/**
+ * Object for raw response return.
+ */
 export type ObjectRawResponseReturn = {
   type: "response";
   path: string;
@@ -109,6 +186,9 @@ export type ObjectRawResponseReturn = {
   method?: ParamsMethod;
 };
 
+/**
+ * Object for raw response static.
+ */
 export type ObjectRawResponseStatic = {
   type: "static";
   name: string;
