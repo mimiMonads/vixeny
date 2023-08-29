@@ -46,8 +46,8 @@ export default (o?: funRouterOptions) =>
                       )
                         .flat(3)
                         .concat(typeof a[1][3] == "undefined" ? [] : a[1][3].length < 1 ? [] : [...a[1][3]].slice(0, a[1][3].length - 2))
-                        .concat(o?.notFound ?? notFound)
-                        .concat(o?.badMethod ?? badMethod),
+                        .concat(typeof o?.[404] !== "undefined" ? o['404'] : notFound)
+                        .concat(typeof o?.[405] !== "undefined" ? o['405'] : badMethod),
                     )
                 )(
                   il.map(
