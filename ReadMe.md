@@ -4,6 +4,8 @@
   <img src="misc/logo.png" alt="Vixeny Logo" style="max-width: 100%;">
   <br>
   <b style="font-size:1.2em; font-style:italic; color:darkcyan;">Unleash the functional beast~</b>
+  <br>
+  Currently, we are working on JSDocs and the website.
 </p>
 
 ## Introduction
@@ -14,11 +16,12 @@ Welcome to Vixeny, a web framework that combines the strengths of functional pro
 
 Vixeny celebrates flexibility, expressiveness, and the joy of coding. Our philosophy supports various programming styles, making it unique and accessible for different developers:
 
-- **Functional, but Not Exclusive:** Vixeny uses functional programming as a tool, not a constraint. It provides support for multiple paradigms, fostering different paths to success.
-- **Modular and Predictable:** With functional principles at its core, Vixeny ensures easy testing, predictable and immutable structures, fostering a robust and reliable development environment.
-- **Opt-in Side Effects:** Side effects are an option in Vixeny, giving you control to create them when needed, ensuring intentionality.
-- **High-Performance, Elegance, and More:** Vixeny's commitment to performance, safety, readability, and community aligns with various programming principles, not just functional ones.
-- **Testing with Pure Functionality:** The pure nature of Vixeny's operations and data structures facilitates rigorous testing. Mocking, especially of async functions, allows developers to isolate their code from external dependencies. This ensures tests are deterministic, reproducible, and unaffected by external factors, making Vixeny's development environment even more reliable and efficient.
+- **Functional, but Not Exclusive:** Vixeny uses functional programming as a tool, not a constraint. It provides support for multiple paradigms, fostering different paths to success. 💼
+- **Modular and Predictable:** With functional principles at its core, Vixeny ensures easy testing, predictable and immutable structures, fostering a robust and reliable development environment. 🧩
+- **Opt-in Side Effects:** Side effects are an option in Vixeny, giving you control to create them when needed, ensuring intentionality. 🚦
+- **High-Performance, Elegance, and More:** Vixeny's commitment to performance, safety, readability, and community aligns with various programming principles, not just functional ones. 🚀
+- **Testing with Pure Functionality:** The pure nature of Vixeny's operations and data structures facilitates rigorous testing. Mocking, especially of async functions, allows developers to isolate their code from external dependencies. This ensures tests are deterministic, reproducible, and unaffected by external factors, making Vixeny's development environment even more reliable and efficient. ✅
+- **Framework Agnostic:** Vixeny is not tied to any specific framework, making it flexible and adaptable to various development environments. 🌍
 
 Dive into our Getting Started guide and discover how Vixeny meets you where you are, helping you build extraordinary web applications.
 
