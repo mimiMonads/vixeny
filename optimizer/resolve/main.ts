@@ -1,12 +1,12 @@
 
 import recursiveCheck from "../checkAsync.ts";
 import { ResolveOptions, ResponseResponse } from "./types.ts";
-import { funRouterOptions } from "../../types.ts";
+import { FunRouterOptions } from "../../types.ts";
 import { ObjectRawResponseCommon } from "../types.ts";
 
 import table from "./table.ts";
 
-export default (o?: funRouterOptions) => (path: string) => (input: ResolveOptions | ResolveOptions[]): ResponseResponse =>
+export default (o?: FunRouterOptions) => (path: string) => (input: ResolveOptions | ResolveOptions[]): ResponseResponse =>
   (
     ar =>
       (

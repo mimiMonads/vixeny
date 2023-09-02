@@ -9,7 +9,7 @@ import resolve from "./resolve/main.ts"
 import checkAsync from "./recursiveCheckAsync.ts";
 import branch from "./branch/main.ts"
 import { SignVerifyOptions } from "../components/tokens/types.ts";
-import { funRouterOptions } from "../types.ts";
+import { FunRouterOptions } from "../types.ts";
 import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
 import { ResolveOptions } from "./resolve/types.ts";
 import { BranchOptions } from "./branch/types.ts";
@@ -18,7 +18,7 @@ import { BranchOptions } from "./branch/types.ts";
  export type specialOptions = {
   mutable?: true,
   branch?: boolean
-} & funRouterOptions
+} & FunRouterOptions
 
 export default (o?: specialOptions ) =>
   (f: ObjectRawResponseCommon) =>
@@ -84,7 +84,7 @@ export default (o?: specialOptions ) =>
                     : null
                 ).filter(x => x !== null)
                 )(
-                  "mutable" in f ? {...o, mutable: true} as funRouterOptions: o
+                  "mutable" in f ? {...o, mutable: true} as FunRouterOptions: o
               )
             )
           )(

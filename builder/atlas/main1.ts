@@ -3,7 +3,7 @@ import {
   ParamsMethod,
   RequestFunction,
 } from "../types.ts";
-import { funRouterOptions } from "../../types.ts"
+import { FunRouterOptions } from "../../types.ts"
 import badMethod from "../../components/util/badMethod.ts";
 import notFound from "../../components/util/notFound.ts";
 
@@ -22,7 +22,7 @@ export type Atlas = [
   (Atlas | []),
 ];
 
-export default (o?: funRouterOptions) =>
+export default (o?: FunRouterOptions) =>
   (a: [ArraySwap[], PartialAtlas]): Atlas =>
     (
       (ParamsMethod) =>

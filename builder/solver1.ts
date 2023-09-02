@@ -1,11 +1,11 @@
 import { Atlas as Atlas1 } from "./atlas/main1.ts"
-import { funRouterOptions } from "../types.ts";
+import { FunRouterOptions } from "../types.ts";
 import solver from "./composer/methods1.ts";
 import finderMethods from "./composer/finderMethods.ts";
 
 
 
-export default (o?: funRouterOptions) =>
+export default (o?: FunRouterOptions) =>
   (atlas: Atlas1) => (
     (me) =>
       (

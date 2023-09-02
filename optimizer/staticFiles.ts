@@ -1,4 +1,4 @@
-import { funRouterOptions } from "../types.ts";
+import { FunRouterOptions } from "../types.ts";
 import { ObjectRawResponseStatic } from "./types.ts";
 import syncCheckDir from "./syncCheckDir.ts";
 import bunSyncCheckDir from "./syncCheckDir_Bun.ts";
@@ -10,7 +10,7 @@ import atlas from "../builder/atlas/main1.ts";
 import solver from "../builder/solver1.ts";
 import split from "../builder/atlas/splitter.ts";
 
-export default (o?: funRouterOptions) =>
+export default (o?: FunRouterOptions) =>
   (f: ObjectRawResponseStatic): (r: Request) => Response | Promise<Response> =>
     ((p) =>
       ((re) =>

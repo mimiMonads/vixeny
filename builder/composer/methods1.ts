@@ -1,11 +1,11 @@
-import { funRouterOptions } from "../../types.ts";
+import { FunRouterOptions } from "../../types.ts";
 import parser from "./parser1.ts";
 import map from "../atlas/map.ts";
 
 
 import { Atlas as Atlas1 } from '../atlas/main1.ts'
 
-export default (o?: funRouterOptions) =>
+export default (o?: FunRouterOptions) =>
   (atlas: Atlas1) =>
     (start: number) =>
       (end: number) =>

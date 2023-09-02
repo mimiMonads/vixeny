@@ -1,8 +1,8 @@
 import { ObjectRawResponseCommon } from "../../optimizer/types.ts";
-import { funRouterOptions } from "../../types.ts";
+import { FunRouterOptions } from "../../types.ts";
 import { info } from "./types.ts";
 
-export default (options?: funRouterOptions) =>
+export default (options?: FunRouterOptions) =>
   (f: ObjectRawResponseCommon): info =>
     (
       (list) => (

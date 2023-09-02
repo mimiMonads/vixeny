@@ -1,11 +1,11 @@
 import elements from "../../components/util/elements.ts";
-import { funRouterOptions } from "../../types.ts";
+import { FunRouterOptions } from "../../types.ts";
 import aComposer from "../aComposer.ts";
 import checker from "../checker.ts";
 import { ObjectRawResponseCommon } from "../types.ts";
 import { ResolveOptions } from "./types.ts";
 
-export default (debug: boolean) =>(o?: funRouterOptions)=>(path:string)=>(table:ResolveOptions[]) => 
+export default (debug: boolean) =>(o?: FunRouterOptions)=>(path:string)=>(table:ResolveOptions[]) => 
     debug === true
     ?  table
     .map(x => ({ ...x, path: path }))

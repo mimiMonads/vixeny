@@ -14,17 +14,17 @@
  */
 
 
-import { funRouterOptions } from "./types.ts";
+import { FunRouterOptions , Vixeny} from "./types.ts";
 import { Petition } from "./optimizer/types.ts";
 import optimizer from "./optimizer/optimize.ts";
 import atlas from "./builder/atlas/main1.ts";
 import split from "./builder/atlas/splitter.ts";
 import solver from "./builder/solver1.ts";
 
-
-type Vixeny = (o?: funRouterOptions) => (routes: Petition[]) => (r: Request) => Promise<Response> | Response
-
-export default ((o?: funRouterOptions) =>
+/**
+ * change in the future
+ */
+export default ((o?: FunRouterOptions) =>
   (routes: Petition[]) =>
     ((re) =>
       (map =>
@@ -38,4 +38,4 @@ export default ((o?: funRouterOptions) =>
           optimizer(o)(routes),
         ),
       ),
-    )) as unknown as Vixeny;
+    ))  as Vixeny;

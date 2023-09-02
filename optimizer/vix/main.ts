@@ -1,9 +1,9 @@
-import { Petitions, funRouterOptions } from "../../types.ts"
+import { Petitions, FunRouterOptions } from "../../types.ts"
 import { SignVerifyOptions } from "../../components/tokens/types.ts"
 import vixeny from "../../fun.ts"
 import mapping from "./map.ts"
 type CustomVerifyVixeny =
-  funRouterOptions & {
+  FunRouterOptions & {
     at: string,
     401?: { (r: Request): boolean } | { async(r: Request): boolean },
     customVerify: { (r: Request): boolean } | { async(r: Request): boolean },
@@ -12,7 +12,7 @@ type CustomVerifyVixeny =
   }
 
 type VixVixeny =
-  funRouterOptions & {
+  FunRouterOptions & {
     at: string,
     401?: { (r: Request): boolean } | { async(r: Request): boolean },
     vixToken: SignVerifyOptions,

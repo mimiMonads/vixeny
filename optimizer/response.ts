@@ -1,5 +1,5 @@
 
-import { funRouterOptions } from "../types.ts";
+import { FunRouterOptions } from "../types.ts";
 import { ObjectRawCommonRequest, ObjectRawResponseCommon } from "./types.ts";
 import checkAsync from "./recursiveCheckAsync.ts"
 import checker from "./checker.ts";
@@ -8,7 +8,7 @@ import mime from "../components/util/mime.ts";
 import jsonComposer from "../components/stringify/stringify.ts";
 import elements from "../components/util/elements.ts";
 
-export default (o?: funRouterOptions) =>
+export default (o?: FunRouterOptions) =>
   (f: ObjectRawResponseCommon | ObjectRawCommonRequest) =>
     ((elementsUsed) => (
       table =>

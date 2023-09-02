@@ -1,6 +1,6 @@
 import resolver from "../../optimizer/resolve/main.ts"
 
-import { funRouterOptions } from "../../types.ts"
+import { FunRouterOptions } from "../../types.ts"
 
 import { ResolveOptions  as ResolveIncomplete} from "../../types.ts"
 
@@ -11,7 +11,7 @@ type ResolveOptions = {
 
 type ResolveSetter = {
     mutable?: Record<string, unknown> 
-} & funRouterOptions
+} & FunRouterOptions
 
 
 export default (o?: ResolveSetter) =>  (f:ResolveOptions) =>

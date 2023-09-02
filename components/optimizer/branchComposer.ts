@@ -1,4 +1,4 @@
-import { funRouterOptions } from "../../types.ts"
+import { FunRouterOptions } from "../../types.ts"
 import { BranchOptions  as BranchIncomplete} from "../../types.ts"
 import branch from "../../optimizer/branch/main.ts"
 
@@ -8,7 +8,7 @@ type BranchOptions = {
 
 type BranchSetter = { 
     mutable?: Record<string,unknown>
-} & funRouterOptions
+} & FunRouterOptions
 
 export default (o?: BranchSetter) => (f:BranchOptions) =>
     o && "mutable" in o 

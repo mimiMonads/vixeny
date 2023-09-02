@@ -1,8 +1,8 @@
-import { funRouterOptions } from "../../types.ts";
+import { FunRouterOptions } from "../../types.ts";
 import map from "./map.ts";
 import parameters from "./parameters.ts";
 
-export default (options?: funRouterOptions) =>
+export default (options?: FunRouterOptions) =>
   (base: number) =>
     (notFound: number) =>
       (ar: string[]) =>

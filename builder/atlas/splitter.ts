@@ -1,10 +1,10 @@
-import { funRouterOptions } from "../../types.ts";
+import { FunRouterOptions } from "../../types.ts";
 import { RouteTypes } from "../types.ts";
 import main1 from "./main1.ts";
 import { ArraySwap } from "../types.ts";
 import { PartialAtlas } from "./main1.ts";
 
-export default (o?: funRouterOptions) =>
+export default (o?: FunRouterOptions) =>
   (a: RouteTypes[]) =>
     (
       (fl) =>

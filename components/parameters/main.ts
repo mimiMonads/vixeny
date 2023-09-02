@@ -1,12 +1,12 @@
 import { ObjectRawResponseCommon } from "../../optimizer/types.ts";
-import { funRouterOptions } from "../../types.ts";
+import { FunRouterOptions } from "../../types.ts";
 import multi from "./multi.ts";
 import one from "./one.ts";
 import map from "./map.ts";
 
 type ParamsResult = { (s: string): Record<string, string> };
 
-export default (options?: funRouterOptions) =>
+export default (options?: FunRouterOptions) =>
   (f: ObjectRawResponseCommon) =>
     (
       (info) =>
