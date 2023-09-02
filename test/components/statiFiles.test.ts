@@ -15,7 +15,7 @@ Deno.test(
         )
     )(
       staticFiles()(
-        { type: "static", path: "./test/", name: "/static/" },
+        { type: "fileServer", path: "./test/", name: "/static/" },
       )
     )
 )

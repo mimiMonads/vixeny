@@ -40,7 +40,7 @@ Deno.test(
             optimize({ hasName: "http://localhost:8080/" })([...paths,
             { path: "/hello/*", f: () => "wild" },
             { path: "/hello/nested/*", f: () => "card" },
-            { type: "static", path: "./test/", name: "/static/" },
+            { type: "fileServer", path: "./test/", name: "/static/" },
             ]),
           ),
         ),

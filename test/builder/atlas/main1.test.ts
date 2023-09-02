@@ -79,7 +79,7 @@ Deno.test(
       atlas()(split()(optimize()([...paths,
       { path: "/hello/*", f: () => "wild" },
       { path: "/hello/nested/*", f: () => "card" },
-      { type: "static", path: "./test/", name: "/static/" },
+      { type: "fileServer", path: "./test/", name: "/static/" },
       ])))[4].slice(0, -2) as unknown as null,
 
       [

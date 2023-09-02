@@ -5,7 +5,7 @@ Deno.test(
     "test",
     () => 
         assertEquals(
-            main({type: "static", path: "./test/", name: "/hello", mime:false}).some(x => x.path === "/hello/fun.test.ts"),
+            main({type: "fileServer", path: "./test/", name: "/hello", mime:false}).some(x => x.path === "/hello/fun.test.ts"),
             true
         )
 )
@@ -14,7 +14,7 @@ Deno.test(
     "test",
     () => 
         assertEquals(
-            main({type: "static", path: "./test/", name: "/", mime:false}).some(x => x.path === "/fun.test.ts"),
+            main({type: "fileServer", path: "./test/", name: "/", mime:false}).some(x => x.path === "/fun.test.ts"),
             true
         )
 )
@@ -23,7 +23,7 @@ Deno.test(
     "test",
     () => 
         assertEquals(
-            main({type: "static", path: "./test/", name: "/hello/nested", mime:false}).some(x => x.path === "/hello/nested/fun.test.ts"),
+            main({type: "fileServer", path: "./test/", name: "/hello/nested", mime:false}).some(x => x.path === "/hello/nested/fun.test.ts"),
             true
         )
 )

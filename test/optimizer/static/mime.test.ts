@@ -6,7 +6,7 @@ Deno.test(
     "hello",
     () => 
         assertEquals(
-            mime({type: "static", path:"./", name:"/hello/"}).length,
+            mime({type: "fileServer", path:"./", name:"/hello/"}).length,
             74
         )
 )
@@ -15,7 +15,7 @@ Deno.test(
     "hello",
     () => 
         assertEquals(
-            mime({type: "static", path:"./", name:"/hello/", mime: false}).length,
+            mime({type: "fileServer", path:"./", name:"/hello/", mime: false}).length,
             0
         )
 )
@@ -24,7 +24,7 @@ Deno.test(
     "hello",
     () => 
         assertEquals(
-            mime({type: "static", path:"./", name:"/hello/", extra: [ [".ts", "hello/hello"]]}).at(74),
+            mime({type: "fileServer", path:"./", name:"/hello/", extra: [ [".ts", "hello/hello"]]}).at(74),
             [".ts", "hello/hello"]
         )
 )

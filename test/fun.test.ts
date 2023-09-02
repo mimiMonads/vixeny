@@ -208,7 +208,7 @@ Deno.test(
       })([...paths,
       { path: "/hello/*", f: () => "wild" },
       { path: "/hello/nested/*", f: () => "card" },
-      { type: "static", path: "./test/", name: "/static/" },
+      { type: "fileServer", path: "./test/", name: "/static/" },
       ])
     )
 )

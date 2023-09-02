@@ -90,12 +90,30 @@ export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" |
  */
 export type AddOptions = AddOption[];
 
-/**
- * Arguments for the request.
- */
+new Response
+
 export type RequestArguments = {
   req: Request;
   query: Record<string, string | undefined>;
+  /**
+   * Gets the parameters from the URL
+   * 
+   * ```ts
+   * {
+   *   path: '/hello/:name',
+   *   f: ctx => ctx.param.name
+   * };
+   * 
+   * // If the `ctx` goes out of context
+   * {
+   *   path: '/hello/:name',
+   *   options: {add: ["param"]},
+   *   f: ctx => outOfContext(ctx)
+   * };
+   * ```
+   * 
+   * @see {@link https://vixeny.dev/docs/modules/parameters | Vixeny Parameters} 
+   */
   param: Record<string, string>;
   date: number;
   resolve: Record<string, unknown | null>;
@@ -190,17 +208,17 @@ export type ObjectRawResponseReturn = {
  * Object for raw response static.
  */
 export type ObjectRawResponseStatic = {
-  type: "static";
+  type: "fileServer";
   name: string;
   path: string;
 } | {
-  type: "static";
+  type: "fileServer";
   name: string;
   path: string;
   mime?: true;
   extra: [string, string][];
 } | {
-  type: "static";
+  type: "fileServer";
   name: string;
   path: string;
   mime: false;

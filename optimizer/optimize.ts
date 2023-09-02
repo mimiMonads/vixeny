@@ -15,7 +15,7 @@ export default (
           "type" in x
             ? x.type === "response"
               ? [x?.method ? x.method : "GET", x.path, x.r, false] as RouteTypes
-              : x.type === "static"
+              : x.type === "fileServer"
                 ? ["GET", x.name + "*", vixeny(o)(staticFiles(x)), 'static'] as RouteTypes
                 : [
                   x?.method ? x.method : "GET",
