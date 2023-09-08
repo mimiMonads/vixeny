@@ -1,7 +1,11 @@
 **Vixeny**
 
-![Vixeny Logo](misc/logo.png)  
-*Unleash the functional beast~*  
+<p align="center">
+  <img src="misc/logo.png" alt="Vixeny Logo" style="max-width: 100%;">
+  <br>
+  <b style="font-size:1.2em; font-style:italic; color:darkcyan;">Unleash the functional beast~</b>
+</p>
+
 ⚙️ We're refining our JSDocs and website.
 
 **About Vixeny**  
