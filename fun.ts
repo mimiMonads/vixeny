@@ -21,9 +21,7 @@ import atlas from "./builder/atlas/main1.ts";
 import split from "./builder/atlas/splitter.ts";
 import solver from "./builder/solver1.ts";
 
-/**
- * change in the future
- */
+
 export default ((o?: FunRouterOptions) =>
   (routes: Petition[]) =>
     ((re) =>

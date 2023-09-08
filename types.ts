@@ -73,8 +73,10 @@ export type Vixeny = (o?: FunRouterOptions) => (routes: Petition[]) => (r: Reque
  * import arrayPetitions from "./someWhere"
  * vixeny(options)(...arrayPetitions)
  * ```
+ * --- 
  * 
  * Also you can use add multiple `Petition`
+ * 
  * ```ts
  * import arrayPetitions from "./someWhere"
  * vixeny(options)([
@@ -84,7 +86,7 @@ export type Vixeny = (o?: FunRouterOptions) => (routes: Petition[]) => (r: Reque
  * },
  * ...arrayPetitions
  * ])
- * 
+ * ```
  */
 export type Petitions = Petition[]
 export type BranchOptions = branch;
