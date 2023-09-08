@@ -67,7 +67,24 @@ export type FunRouterOptions = {
 
 export type Vixeny = (o?: FunRouterOptions) => (routes: Petition[]) => (r: Request) => Promise<Response> | Response;
 /**
- * An array of Petitions.
+ * Vixeny takes an array ot `Petitions` 
+ * 
+ * ```ts
+ * import arrayPetitions from "./someWhere"
+ * vixeny(options)(...arrayPetitions)
+ * ```
+ * 
+ * Also you can use add multiple `Petition`
+ * ```ts
+ * import arrayPetitions from "./someWhere"
+ * vixeny(options)([
+ * {
+ *  path: "/path",
+ *  f: () => "Hello world"
+ * },
+ * ...arrayPetitions
+ * ])
+ * 
  */
 export type Petitions = Petition[]
 export type BranchOptions = branch;
