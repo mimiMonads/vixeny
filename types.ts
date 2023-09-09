@@ -81,10 +81,10 @@ export type Vixeny = (o?: FunRouterOptions) => (routes: Petition[]) => (r: Reque
  * import arrayPetitions from "./someWhere"
  * vixeny(options)([
  * {
- *  path: "/path",
- *  f: () => "Hello world"
+ *    path: "/path",
+ *    f: () => "Hello world"
  * },
- * ...arrayPetitions
+ *  ...arrayPetitions
  * ])
  * ```
  */
