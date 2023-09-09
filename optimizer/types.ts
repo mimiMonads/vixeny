@@ -532,7 +532,26 @@ export type RawCommonRequest = {
  */
   signer?: SignVerifyOptions;
   options?: PetitionOptions;
-  
+  /**
+ * Verifies a signed string.
+ * 
+ * Takes a signed string, such as one that was previously signed using the corresponding `signer`, and checks its validity based on the `seed` provided.
+ * 
+ * ```ts
+ * {
+ *   path: "/path",
+ *   verifier: {
+ *     seed: "SECRET_SEED",
+ *   },
+ *   f: ctx => ctx.cookie.id
+ *     ? ctx.verify(ctx.cookie.id)
+ *       ? "valid"
+ *       : "invalid"
+ *     : "no cookie"
+ * }
+ * ```
+ * 
+ */
   verifier?: SignVerifyOptions;
   jSigner?: JsonSinger;
   jVerifier?: SignVerifyOptions;
