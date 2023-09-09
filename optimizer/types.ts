@@ -303,19 +303,180 @@ export type RequestArguments = {
  * 
  * @see {@link https://vixeny.dev/docs/modules/cookie | Vixeny Cookies} 
  */
-
   cookie: null | { [key: string]: string | undefined };
+  /**
+ * Utilizes `ctx.mutable` for scenarios where mutable state is needed in Vixeny.
+ * 
+ * ---
+ * ```ts
+ * {
+ *   path: '/mutable',
+ *   mutable: true,
+ *   //  the function is "example", resolves with name "hello", which mutates "result"
+ *   resolve: {...example_r_$hello_m_$result_string},
+ *   f: ctx => ctx.mutable.result as string
+ * };
+ * ```
+ * The mutable state is global and can be accessed at any depth:
+ * 
+ * ```ts
+ * {
+ *   path: '/deepMutable',
+ *   mutable: true,
+ *   //  the function is "example", resolves with name "hello", which mutates "result"
+ *   resolve: {...example_r_$hello_m_$result_string},
+ *   f: ctx => ctx.branch.function("Greetings") as string,
+ *   branch: {
+ *     name: "function",
+ *     f: c => `${c.arguments} ${c.mutable.result}`
+ *   }
+ * };
+ * ```
+ * Use `ctx.mutable` judiciously, ensuring it addresses genuine mutable requirements.
+ * 
+ * @see {@link https://vixeny.dev/docs/modules/mutable | Vixeny Mutable}
+ */
+
   mutable: Record<string, unknown>;
+  /**
+ * Interacts with the `arguments` property in `ctx.branch` to receive input for branch functions. 
+ * 
+ * ---
+ * ```ts
+ * {
+ *   path: '/path',
+ *   f: ctx => ctx.branch.hello("Greetings!"),
+ *   branch: {
+ *     name: "hello",
+ *     f: c => c.arguments
+ *   }
+ * };
+ * ```
+ * When invoking a branch function, any parameters passed are accessible as `arguments` within the branch function.
+ * 
+ * ---
+ * ```ts
+ * {
+ *   path: '/multipleArgs',
+ *   f: ctx => ctx.branch.greet("Hello", "world!"),
+ *   branch: {
+ *     name: "greet",
+ *     f: c => `${c.arguments[0]} ${c.arguments[1]}`
+ *   }
+ * };
+ * ```
+ * In this example, multiple arguments are passed to the branch function, and they're accessed via index in the branch.
+ * 
+ */
   arguments: unknown;
+  /**
+   *  Takes a string and sign it, it has to:
+   *  - Be longer than 7 
+   *  - Have a `seed`, witch it has to be declare in the `Petition` , `branch` or `resolve`
+   * 
+   * ```ts
+   * {
+   *  path:"/path",
+   *  signer: {
+   *    seed: "SECRET_SEED",
+   *  },
+   *  f: ctx => ctx.sign(ctx.cookie.id)
+   * }
+   * ```
+   * 
+   */
   sign: (s: string) => string;
-  jSign: (s: string) => string;
+/**
+ * Verifies a signed string.
+ * 
+ * Takes a signed string, typically stored in a cookie, and checks its validity, according to the `seed` 
+ * 
+ * ```ts
+ * {
+ *   path: "/path",
+ *   verifier: {
+ *    seed: "SECRET_SEED",
+ *   },
+ *   f: ctx => ctx.cookie.id
+ *     ? ctx.verify(ctx.cookie.id)
+ *       ? "valid"
+ *       : "invalid"
+ *     : "no cookie"
+ * }
+ * ```
+ * 
+ */
   verify: (s: string) => boolean;
+  /**
+   *  Takes a JSON object and sign it and st, it has to:
+   *  - Be longer than 7 
+   *  - Have a `seed`, witch it has to be declare in the `Petition` , `branch` or `resolve`
+   * 
+   * ```ts
+   * {
+   *   path:"/path/:id",
+   *   jSigner: {
+   *      seed: "SECRET_SEED",
+   *    },
+   *   f: ctx => ctx.jSign(ctx.param)
+   *  }
+   * ```
+   * 
+   */
+  jSign: (s: JsonType) => string;
+/**
+ * `jVerifier` is responsible for token handling in `jVerify`.
+ * 
+ * When using `jSigner`:
+ * - Avoid setting a fixed size for tokens.
+ * - Always ensure an expiration time is added to tokens.
+ * 
+ * we are using `resolve` in the next example
+ * ```ts
+ * {
+ *   path: "/path",
+ *   jVerifier: {
+ *     seed: "SECRET_SEED",
+ *   },
+ *   resolve: {
+ *     name: "user",
+ *     f: ctx => ctx.jVerify(ctx.cookie?.user)?.name
+ *   },
+ *   f: ctx => ctx.resolve.user as string ?? "not_user_found"
+ * }
+ * ```
+ * 
+ */
   jVerify: (s: string) => Record<string, JsonType> | null;
 };
 
 /**
- * Petition object.
+ * **Petitions in Vixeny**:
+ * 
+ * 1. **Untyped**: Standard without `type`. Returns `BodyInit`.
+ * ```ts
+ * { path: "/", f: () => "hello world" }
+ * ```
+ * 
+ * 2. **Type Request**: Returns `Response` for custom statuses.
+ * ```ts
+ * { 
+ *  path: "/response/who/:name",
+ *  type: "request", 
+ *  f: context => 
+ *    context.param.name === "Bun" 
+ *      ? new Response("Welcome") 
+ *      : new Response("Only devs", {status: 400})
+ *  }
+ * ```
+ * 
+ * 3. **Type Response**: Direct interaction with Request and Response.
+ * ```ts
+ * { path: "/response/hello", type: "response", r: r => new Response("Hello world!") }
+ * ```
+ * 
  */
+
 export type Petition =
   | ObjectRawResponseCommon
   | ObjectRawResponseReturn
@@ -326,6 +487,9 @@ export type Petition =
  * Common raw response object.
  */
 export type RawResponseCommon = {
+  /**
+   * Route Method
+   */
   method?: ParamsMethod;
   headings?: PetitionHeader;
 } & RawCommonRequest ;
@@ -334,9 +498,41 @@ export type RawResponseCommon = {
  * Common raw request object.
  */
 export type RawCommonRequest = {
+/**
+ * Represents the endpoint path for a Vixeny petition.
+ *
+ * Remember that it have to start with `/`
+ * 
+ * A "Hello World" example on `"/"`:
+ * ```ts
+ * {
+ *  path: "/",
+ *  f: () => "hello world",
+ * }
+ * ```
+ *
+ * Alongside other configurations, this path determines how the server responds to specific endpoints.
+ */
   path: string;
+/**
+ * Signs a string for secure storage and transport.
+ * 
+ * Takes a string and signs it using the provided `seed`. The resulting signed string can later be verified to ensure its authenticity and integrity.
+ * 
+ * ```ts
+ * {
+ *   path: "/path",
+ *   signer: {
+ *     seed: "SECRET_SEED",
+ *   },
+ *   f: ctx => ctx.sign(ctx.request.body.data)
+ * }
+ * ```
+ * 
+ */
   signer?: SignVerifyOptions;
   options?: PetitionOptions;
+  
   verifier?: SignVerifyOptions;
   jSigner?: JsonSinger;
   jVerifier?: SignVerifyOptions;
@@ -389,14 +585,13 @@ export type RawCommonRequest = {
 export type ObjectRawResponseCommon =
   | (RawResponseCommon & {
     mutable?: true;
-    f: (r: RequestArguments) => BodyInit | Promise<BodyInit>;
+    f: (ctx: RequestArguments) => BodyInit | Promise<BodyInit>;
   })
   | (RawResponseCommon & {
     mutable?: true;
-    f: (r: RequestArguments) => JsonType | Promise<JsonType>;
+    f: (ctx: RequestArguments) => JsonType | Promise<JsonType>;
     json: JsonOptions;
   });
-
 
 
 /**
@@ -406,7 +601,7 @@ export type ObjectRawCommonRequest = {
   method?: ParamsMethod;
   type: "request";
   mutable?: true;
-  f: (r: RequestArguments) => Response | Promise<Response>;
+  f: (ctx: RequestArguments) => Response | Promise<Response>;
 } & RawCommonRequest
 
 /**
@@ -418,6 +613,7 @@ export type ObjectRawResponseReturn = {
   r: (r: Request) => Response | Promise<Response>;
   method?: ParamsMethod;
 };
+
 
 /**
  * Object for raw response static.

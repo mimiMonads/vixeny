@@ -1,6 +1,5 @@
 // deno-lint-ignore-file
 
-import { ResolveOptions } from "./resolve/types.ts";
 import { ObjectRawResponseCommon, ObjectRawCommonRequest } from "./types.ts";
 
 
