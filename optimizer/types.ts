@@ -598,30 +598,65 @@ export type RawCommonRequest = {
   branch?: BranchOptions | BranchOptions[];
 };
 
+export type  MutableKey  = {
+  /**
+ * Enables mutable state in Vixeny petitions.
+ * 
+ * Vixeny primarily champions immutability, but for instances requiring mutable state, the `mutable` property is at your disposal.
+ * 
+ * Use at the petition's onset:
+ * ```ts
+ * {
+ *     path: "/mutable",
+ *     mutable: true,
+ *     resolve: {...example_r_$hello_m_$result_string},
+ *     f: c => c.mutable.result as string,
+ * }
+ * ```
+ * 
+ * It's globally accessible, effective at any depth:
+ * ```ts
+ * {
+ *     path: "/mutable",
+ *     mutable: true,
+ *     resolve: {...example_r_$hello_m_$result_string},
+ *     f: c => c.branch.function("Hello") as string,
+ *     branch: {
+ *         name: "function",
+ *         f: c => c.arguments + c.mutable.result as string
+ *     }
+ * }
+ * ```
+ * 
+ * `mutable` offers flexibility, letting developers mold Vixeny to diverse needs.
+ */
+  mutable?: true
+}
+
 /**
  * Object for raw response with common properties.
  */
 export type ObjectRawResponseCommon =
   | (RawResponseCommon & {
-    mutable?: true;
     f: (ctx: RequestArguments) => BodyInit | Promise<BodyInit>;
-  })
+  } & MutableKey )
   | (RawResponseCommon & {
-    mutable?: true;
     f: (ctx: RequestArguments) => JsonType | Promise<JsonType>;
     json: JsonOptions;
-  });
+  } & MutableKey );
 
 
 /**
  * Object for raw common request.
  */
 export type ObjectRawCommonRequest = {
+  /**
+   * Route Method
+   */
   method?: ParamsMethod;
   type: "request";
-  mutable?: true;
   f: (ctx: RequestArguments) => Response | Promise<Response>;
-} & RawCommonRequest
+} & RawCommonRequest & MutableKey
 
 /**
  * Object for raw response return.
