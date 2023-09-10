@@ -89,7 +89,59 @@ export type AddOption = "req" | "query" | "param" | "date" | "sign" | "verify" |
  */
 export type AddOptions = AddOption[];
 
-new Response
+export type PathKey = {
+/**
+ * Represents the endpoint path for a Vixeny petition.
+ *
+ * Remember that it have to start with `/`
+ * 
+ * A "Hello World" example on `"/"`:
+ * ```ts
+ * {
+ *  path: "/",
+ *  f: () => "hello world",
+ * }
+ * ```
+ *
+ * Alongside other configurations, this path determines how the server responds to specific endpoints.
+ */
+path: string;
+}
+
+export type  MutableKey  = {
+  /**
+ * Enables mutable state in Vixeny petitions.
+ * 
+ * Vixeny primarily champions immutability, but for instances requiring mutable state, the `mutable` property is at your disposal.
+ * 
+ * Use at the petition's onset:
+ * ```ts
+ * {
+ *     path: "/mutable",
+ *     mutable: true,
+ *     resolve: {...example_r_$hello_m_$result_string},
+ *     f: c => c.mutable.result as string,
+ * }
+ * ```
+ * 
+ * It's globally accessible, effective at any depth:
+ * ```ts
+ * {
+ *     path: "/mutable",
+ *     mutable: true,
+ *     resolve: {...example_r_$hello_m_$result_string},
+ *     f: c => c.branch.function("Hello") as string,
+ *     branch: {
+ *         name: "function",
+ *         f: c => c.arguments + c.mutable.result as string
+ *     }
+ * }
+ * ```
+ * 
+ * `mutable` offers flexibility, letting developers mold Vixeny to diverse needs.
+ */
+  mutable?: true
+}
 
 export type RequestArguments = {
   /**
@@ -494,26 +546,12 @@ export type RawResponseCommon = {
   headings?: PetitionHeader;
 } & RawCommonRequest ;
 
+
+
 /**
  * Common raw request object.
  */
 export type RawCommonRequest = {
-/**
- * Represents the endpoint path for a Vixeny petition.
- *
- * Remember that it have to start with `/`
- * 
- * A "Hello World" example on `"/"`:
- * ```ts
- * {
- *  path: "/",
- *  f: () => "hello world",
- * }
- * ```
- *
- * Alongside other configurations, this path determines how the server responds to specific endpoints.
- */
-  path: string;
 /**
  * Signs a string for secure storage and transport.
  * 
@@ -555,6 +593,9 @@ export type RawCommonRequest = {
   verifier?: SignVerifyOptions;
   jSigner?: JsonSinger;
   jVerifier?: SignVerifyOptions;
+  /**
+   * 
+   */
   query?: QueryOptions;
   resolve?: ResolveOptions | ResolveOptions[];
     /**
@@ -596,48 +637,34 @@ export type RawCommonRequest = {
  * ```
  */
   branch?: BranchOptions | BranchOptions[];
-};
+} & PathKey;
 
-export type  MutableKey  = {
-  /**
- * Enables mutable state in Vixeny petitions.
- * 
- * Vixeny primarily champions immutability, but for instances requiring mutable state, the `mutable` property is at your disposal.
- * 
- * Use at the petition's onset:
- * ```ts
- * {
- *     path: "/mutable",
- *     mutable: true,
- *     resolve: {...example_r_$hello_m_$result_string},
- *     f: c => c.mutable.result as string,
- * }
- * ```
- * 
- * It's globally accessible, effective at any depth:
- * ```ts
- * {
- *     path: "/mutable",
- *     mutable: true,
- *     resolve: {...example_r_$hello_m_$result_string},
- *     f: c => c.branch.function("Hello") as string,
- *     branch: {
- *         name: "function",
- *         f: c => c.arguments + c.mutable.result as string
- *     }
- * }
- * ```
- * 
- * `mutable` offers flexibility, letting developers mold Vixeny to diverse needs.
- */
-  mutable?: true
-}
+
 
 /**
  * Object for raw response with common properties.
  */
 export type ObjectRawResponseCommon =
   | (RawResponseCommon & {
+  /**
+   * 
+   * `f` requires a functions which arguments contains the `context` and need to return a `BodyInit` or a `Promise<BodyInit>`
+   * 
+   * - `Each context is unique, yet you can link them with mutable`
+   * - `options can modify the arguments / context`
+   * 
+   * ---
+   * 
+   * ```ts
+   * {
+   *    path: "/path",
+   *    f: ctx => "hi"
+   * 
+   * }
+   * 
+   * ```
+   * 
+   */
     f: (ctx: RequestArguments) => BodyInit | Promise<BodyInit>;
   } & MutableKey )
   | (RawResponseCommon & {
@@ -654,7 +681,44 @@ export type ObjectRawCommonRequest = {
    * Route Method
    */
   method?: ParamsMethod;
+  /**
+  * 
+  * Returns `Response` for custom statuses.
+  * 
+  * ---
+  * ```ts
+  * { 
+  *   path: "/response/who/:name",
+  *   type: "request", 
+  *   f: context => 
+  *      context.param.name === "Bun" 
+  *        ? new Response("Welcome") 
+  *        : new Response("Only devs", {status: 400})
+  *  } 
+  * ```
+  */
   type: "request";
+  /**
+   * 
+   * ---
+   * If  type `request` is present 
+   * `f` requires a functions which arguments contains the `context` and need to return a `Response` or a `Promise<Response>`
+   * 
+   * - `Each context is unique, yet you can link them with mutable`
+   * - `options can modify the arguments / context`
+   * 
+   * ---
+   * 
+   * ```ts
+   * {
+   *    path: "/path",
+   *    f: ctx => new Response("hi")
+   * 
+   * }
+   * 
+   * ```
+   * 
+   */
   f: (ctx: RequestArguments) => Response | Promise<Response>;
 } & RawCommonRequest & MutableKey
 
@@ -662,11 +726,37 @@ export type ObjectRawCommonRequest = {
  * Object for raw response return.
  */
 export type ObjectRawResponseReturn = {
+  /**
+   * 
+   *  Direct interaction with Request and Response.
+   * 
+   * ---
+   * ```ts
+   * {
+   *    path: "/response/hello", 
+   *    type: "response",
+   *    r: r => new Response("Hello world!") 
+   * }
+   * ```
+   */
   type: "response";
-  path: string;
+    /**
+   * 
+   * `r` requires a functions which arguments contains the `Request` and need to return a `Response` or a `Promise<Response>`
+   * ---
+   * 
+   * ```ts
+   * {
+   *    path: "/path",
+   *    r: () => new Response("hi")
+   * 
+   * }
+   * 
+   * ```
+   */
   r: (r: Request) => Response | Promise<Response>;
   method?: ParamsMethod;
-};
+}& PathKey;
 
 
 /**
