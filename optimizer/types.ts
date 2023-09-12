@@ -543,6 +543,9 @@ export type RawResponseCommon = {
    * Route Method
    */
   method?: ParamsMethod;
+  /**
+   * @see {@link https://vixeny.dev/docs/modules/headings | Vixeny headings}
+   */
   headings?: PetitionHeader;
 } & RawCommonRequest ;
 
