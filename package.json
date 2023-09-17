@@ -29,5 +29,8 @@
   "bugs": {
     "url": "https://github.com/mimiMonads/vixeny/issues"
   },
-  "homepage": "https://vixeny.dev/"
+  "homepage": "https://vixeny.dev/",
+  "devDependencies": {
+    "bun-types": "^1.0.2"
+  }
 }

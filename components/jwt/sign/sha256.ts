@@ -1,6 +1,6 @@
 import { CryptoHasher } from "bun";
 
-const shaSigner =
+export default
   (sha256: (hash: TypedArray) => CryptoHasher) => (header=Buffer.from(JSON.stringify({
     alg: "HS256",
     typ: "JWT"
@@ -12,10 +12,10 @@ const shaSigner =
             header + json + "." +
             sha256(
               Buffer.concat([
-                Buffer.alloc(64).map((x, i) => hmac[i] ^ 0x5c),
+                new Uint8Array(64).map((_x, i) => hmac[i] ^ 0x5c),
                 sha256(
                   Buffer.concat([
-                    Buffer.alloc(64).map((x, i) => hmac[i] ^ 0x36),
+                    new Uint8Array(64).map((_x, i) => hmac[i] ^ 0x36),
                     Buffer.from(header + json),
                   ])
                 ).digest(),
