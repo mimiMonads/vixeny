@@ -1,11 +1,12 @@
 import finder from "../../../components/parameters/finder.ts";
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import options from "../../../components/parameters/map.ts";
 
-Deno.test(
+test(
   "only one parameter at the end and query",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (new Function(` return ${finder(options()({ f: (_) => "hello", path: "/test/:id/:hi" }))
         }`))()("456/hi"),
       {
@@ -15,10 +16,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "only one parameter at the end and query",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (new Function(` return ${finder(options()({ f: (_) => "hello", path: "/:test/:id/:hi" }))
         }`))()("test/456/hi"),
       {
@@ -29,10 +30,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "only one parameter at the end and query",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (new Function(` return ${finder(options()({ f: (_) => "hello", path: "/:test/:id/hi" }))
         }`))()("test/456"),
       {

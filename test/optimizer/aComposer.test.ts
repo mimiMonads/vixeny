@@ -1,11 +1,12 @@
 import signer from "../../components/tokens/signer.ts";
 import aComposer from "../../optimizer/aComposer.ts";
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 //await ((hi: (arg0: any) => any)=> async (r: any)=>({hi:await hi(r)}))((hi=>async (f: any) =>({hi:await hi(f)})) (async (f: { blob: () => any; })=> await(await f.blob()).text()))(new Request("http://hi.com/", {method: "POST", body: "hello"})),
-Deno.test(
+test(
   "Query",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (aComposer({ hasName: "http://localhost:8080/" })({
         path: "/test",
         f: (r) => r.query.hello || "nothing",
@@ -14,10 +15,10 @@ Deno.test(
       "hi",
     ),
 );
-Deno.test(
+test(
   "Query",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (aComposer()({
         path: "/test",
         f: (r) => r.query.hello || "nothing",
@@ -26,10 +27,10 @@ Deno.test(
       "hi",
     ),
 );
-Deno.test(
+test(
   "Query",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (aComposer({ hasName: "http://localhost:8080/" })({
         path: "/test",
         f: (r) => r.query.hello || "nothing",
@@ -38,10 +39,10 @@ Deno.test(
       "hi",
     ),
 );
-Deno.test(
+test(
   "Params",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (aComposer({ hasName: "http://localhost:8080/" })({
         path: "/test/:id",
         f: (r) => r.param.id,
@@ -50,10 +51,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "Params",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (aComposer({ hasName: "http://localhost:8080/" })({
         path: "/test/:a/:b/:c/",
         f: (r) => r.param.id,
@@ -61,10 +62,10 @@ Deno.test(
       "2",
     ),
 );
-Deno.test(
+test(
   "Params",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (aComposer()({
         path: "/test/:a/:b/:c/",
         f: (r) => r.param.id.toString(),
@@ -72,10 +73,10 @@ Deno.test(
       "2",
     ),
 );
-Deno.test(
+test(
   "Sign",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (aComposer()({
         path: "/test/",
         signer: { seed: "test" },
@@ -84,10 +85,10 @@ Deno.test(
       signer({ seed: "test" })("12345678955"),
     ),
 );
-Deno.test(
+test(
   "Date",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       typeof (aComposer()({
         path: "/test/",
         signer: { seed: "test" },
@@ -96,10 +97,10 @@ Deno.test(
       "number",
     ),
 );
-Deno.test(
+test(
   "randomNumber",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       typeof (aComposer()({
         path: "/test/",
         signer: { seed: "test" },
@@ -108,10 +109,10 @@ Deno.test(
       "number",
     ),
 );
-Deno.test(
+test(
   "Hash",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       typeof (aComposer()({
         path: "/test/",
         signer: { seed: "test" },
@@ -120,10 +121,10 @@ Deno.test(
       "string",
     ),
 );
-Deno.test(
+test(
   "cookie",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       (aComposer()({
         path: "/test/",
         signer: { seed: "test" },

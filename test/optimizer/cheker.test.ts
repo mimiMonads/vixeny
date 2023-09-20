@@ -1,10 +1,11 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import checker from "../../optimizer/checker.ts";
 
-Deno.test(
+test(
   "Params",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       checker([])(["param"])([])("r=> r. param "),
       ["param"],
     ),

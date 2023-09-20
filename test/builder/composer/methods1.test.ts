@@ -1,11 +1,12 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import methods from "../../../builder/composer/methods1.ts";
 
-Deno.test(
+test(
   "composer",
   (_) =>
     ((f) =>
-      assertEquals(
+      assert.deepStrictEqual(
         [
           f[0]("http://localhost:8080/"),
           f[0]("http://localhost:8080/test"),
@@ -40,11 +41,11 @@ Deno.test(
       ),
 );
 
-Deno.test(
+test(
   "composer",
   (_) =>
     ((f) =>
-      assertEquals(
+      assert.deepStrictEqual(
         [
           f[0]("http://localhost:8080/"),
           f[0]("http://localhost:8080/test"),
@@ -81,11 +82,11 @@ Deno.test(
 
 
 
-Deno.test(
+test(
   "composer",
   (_) =>
     ((f) =>
-      assertEquals(
+      assert.deepStrictEqual(
         [
           f[0]("http://localhost:8080/"),
           f[0]("http://localhost:8080/test"),
@@ -141,11 +142,11 @@ Deno.test(
       ),
 );
 
-Deno.test(
+test(
   "composer",
   (_) =>
     ((f) =>
-      assertEquals(
+      assert.deepStrictEqual(
         [
           f[0]("http://localhost:8080/"),
           f[0]("http://localhost:8080/test"),

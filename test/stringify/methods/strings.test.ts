@@ -1,19 +1,20 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import string from "../../../components/stringify/methods/json_string.ts";
 
-Deno.test(
+test(
   "string",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       string({ type: "string", name: "hello", required: true, path: ".hello" }),
       `'"hello":' + str(o.hello)`,
     ),
 );
 
-Deno.test(
+test(
   "string",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       string({
         type: "string",
         name: "hello",
@@ -24,19 +25,19 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "string",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       string({ type: "string", name: "hello", required: true, const: "hi" }),
       `'"hello":"hi"'`,
     ),
 );
 
-Deno.test(
+test(
   "string",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       string({ type: "string", name: "hello", required: true, default: "hi" }),
       string({ type: "string", name: "hello", required: false, default: "hi" }),
     ),

@@ -1,22 +1,23 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 
 import checker from "../../../optimizer/staticFiles/getMime.ts";
 
 
 
-Deno.test(
+test(
     "test",
     () => 
-        assertEquals(
+        assert.deepStrictEqual(
             checker([[".txt", "hello"]])(".hello"),
             "text/html"
         )
 )
 
-Deno.test(
+test(
     "test",
     () => 
-        assertEquals(
+        assert.deepStrictEqual(
             checker([[".hello", "hello"]])(".hello"),
             "hello"
         )

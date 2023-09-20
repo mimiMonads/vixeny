@@ -1,10 +1,11 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import boolean from "../../../components/stringify/methods/json_boolean.ts";
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       boolean({
         type: "boolean",
         name: "hello",
@@ -16,10 +17,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       boolean({
         type: "boolean",
         name: "hello",
@@ -30,10 +31,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       boolean({
         type: "boolean",
         name: "hello",
@@ -45,10 +46,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       boolean({
         type: "boolean",
         name: "hello",
@@ -66,10 +67,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       boolean({
         type: "boolean",
         name: "hello",

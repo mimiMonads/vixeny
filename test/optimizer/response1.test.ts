@@ -1,10 +1,11 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import response from "../../optimizer/response.ts";
 
-Deno.test(
+test(
   "Response response",
   async (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
        await (response()({
         path: "/hello/:id",
         f: (f) => JSON.stringify(f.param),
@@ -12,10 +13,10 @@ Deno.test(
       '{"id":"hello"}'
     ),
 );
-Deno.test(
+test(
   "Response response",
   async (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
        await (response()({
         path: "/hello/:id",
         type: "request",
@@ -25,10 +26,10 @@ Deno.test(
     ),
 );
 
-// Deno.test(
+// test(
 //   "Response response",
 //   async (_) =>
-//     assertEquals(
+//     assert.deepStrictEqual(
 //       await (await (response()({
 //         path: "/",
 //         json: {
@@ -47,10 +48,10 @@ Deno.test(
 //     ),
 // );
 
-// Deno.test(
+// test(
 //   "Response response",
 //   async (_) =>
-//     assertEquals(
+//     assert.deepStrictEqual(
 //       await (await (response()({
 //         path: "/",
 //         json: {

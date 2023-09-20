@@ -1,13 +1,14 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import atlas from "../../../builder/atlas/main1.ts";
 import optimize from "../../../optimizer/optimize.ts";
 import paths from "../../util/paths.ts";
 import split from "../../../builder/atlas/splitter.ts";
 
-Deno.test(
+test(
   "Atlas",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       ((r) => [r[0], r[1], r[2]])(
         atlas()(split()(optimize()(paths))),
       ),
@@ -72,10 +73,10 @@ Deno.test(
            ]
     ),
 );
-Deno.test(
+test(
   "Atlas",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       atlas()(split()(optimize()([...paths,
       { path: "/hello/*", f: () => "wild" },
       { path: "/hello/nested/*", f: () => "card" },

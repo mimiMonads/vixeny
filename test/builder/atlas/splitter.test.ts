@@ -1,5 +1,6 @@
 
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import paths from "../../util/paths.ts";
 import optimize from "../../../optimizer/optimize.ts";
 import split from "../../../builder/atlas/splitter.ts";
@@ -8,10 +9,10 @@ import split from "../../../builder/atlas/splitter.ts";
 
 
 
-Deno.test(
+test(
   "arraySwap",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       split({ hasName: "http://localhost:8080/" })(
         optimize({ hasName: "http://localhost:8080/" })(paths),
       )[0].map((x) => [x[0], x[1], x[2]]),
@@ -33,10 +34,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "arraySwap",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       split()(optimize()(paths))[0].map((x) => [x[0], x[1], x[2]]),
       [
         [1, "/", "GET"],
@@ -56,10 +57,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "cheksplit",
   () => {
-    assertEquals(
+    assert.deepStrictEqual(
       split()(optimize()([{ path: '/', f: () => 'hello' }, { path: "/hello/*", f: () => "wild" }, { path: "/hello/hello/*", f: () => "wild" }]))[1][2],
       [
         [
@@ -72,10 +73,10 @@ Deno.test(
 )
 
 
-Deno.test(
+test(
   "cheksplit",
   () => {
-    assertEquals(
+    assert.deepStrictEqual(
       split()(optimize()([{ path: '/', f: () => 'hello' }, { path: "/hello/*", f: () => "wild" }, { path: "/hello/hello/*", f: () => "wild" },
       { type: "fileServer", path: "./test/", name: "/static/" },
       ]))[1][2],
@@ -88,10 +89,10 @@ Deno.test(
     )
   }
 )
-Deno.test(
+test(
   "cheksplit",
   () => {
-    assertEquals(
+    assert.deepStrictEqual(
       split()(optimize()([{ path: '/', f: () => 'hello' }]))[1][2],
       [
       ]

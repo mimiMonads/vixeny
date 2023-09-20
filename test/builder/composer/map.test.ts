@@ -1,10 +1,11 @@
 import map from "../../../builder/composer/map.ts";
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 
-Deno.test(
+test(
   "only one parameter at the end",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       map({})("/test/:id"),
       {
         elements: [
@@ -28,10 +29,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "only one parameter at the end",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       map({})("/test/:id/:acc/:x/"),
       {
         elements: [

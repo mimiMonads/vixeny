@@ -1,10 +1,11 @@
-// import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+// import assert from "node:assert";
+import test from "node:test"
 // import o from "../../methods/array.ts";
 
-// Deno.test(
+// test(
 //     "hello",
 //     _ =>
-//     assertEquals(
+//     assert.deepStrictEqual(
 //         o.Y(["string","string","string",["hi","hello"]]),
 //         null
 //     )

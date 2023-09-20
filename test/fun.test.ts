@@ -1,13 +1,14 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import paths from "./util/paths.ts";
 import fun from "../fun.ts";
 
-Deno.test(
+test(
   "main",
   () =>
     (
       async (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             await (f(new Request("http://localhost:8080/")) as Response).text(),
             await (f(new Request("http://localhost:8080/one")) as Response).text(),
@@ -58,12 +59,12 @@ Deno.test(
 )
 
 
-Deno.test(
+test(
   "main",
   () =>
     (
       async (f) =>
-        assertEquals(
+      assert.deepStrictEqual(
           [
   
             await (f(new Request("http://localhost:8080/count")) as Response).text(),
@@ -105,12 +106,12 @@ Deno.test(
 
 
 
-Deno.test(
+test(
   "main",
   () =>
     (
       async (f) =>
-        assertEquals(
+      assert.deepStrictEqual(
           [
             await (f(new Request("http://localhost:8080/")) as Response).text(),
             await (f(new Request("http://localhost:8080/test")) as Response).text(),
@@ -156,12 +157,12 @@ Deno.test(
 )
 
 
-Deno.test(
+test(
   "main",
   () =>
     (
       async (f) =>
-        assertEquals(
+      assert.deepStrictEqual(
           [
             await (f(new Request("http://localhost:8080/")) as Response).text(),
             await (f(new Request("http://localhost:8080/test")) as Response).text(),

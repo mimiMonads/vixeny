@@ -1,10 +1,11 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import map from "../../../builder/atlas/map.ts";
 
-Deno.test(
+test(
   "position",
   () =>
-    assertEquals(
+    assert.deepStrictEqual(
       map(
         [
           [
@@ -43,8 +44,8 @@ Deno.test(
 );
 
 
-Deno.test("functionName basic test", () => {
-  assertEquals(
+test("functionName basic test", () => {
+  assert.deepStrictEqual(
     map([
       [
         ["a", "b"],
@@ -62,8 +63,8 @@ Deno.test("functionName basic test", () => {
   );
 });
 
-Deno.test("functionName edge case test", () => {
-  assertEquals(
+test("functionName edge case test", () => {
+  assert.deepStrictEqual(
     map([
       [
         ["a"],
@@ -83,8 +84,8 @@ Deno.test("functionName edge case test", () => {
 
 
 
-Deno.test("functionName edge case test", () => {
-  assertEquals(
+test("functionName edge case test", () => {
+  assert.deepStrictEqual(
     map([
       [
         [ "/count", "/hello_world", "/random_number" ]

@@ -1,11 +1,12 @@
 
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 
 import resolveComposer from "../../components/optimizer/resolveComposer.ts";
 
-Deno.test(
+test(
   "check for async",
-    async () =>   assertEquals(
+    async () =>   assert.deepStrictEqual(
        ( await resolveComposer()({
         name: "first",
         path: "/",
@@ -17,9 +18,9 @@ Deno.test(
 )
 //await (first=>async r =>({first:await first(r)}))((a=>k=>async r=> await k(await a(r)))(r=>({req:r}))(async f => await(await f.req.blob()).text()))(new Request("http://localhost:8080/", {method: "POST", body: "hello"}))
 
-Deno.test(
+test(
   "check for sync",
-  () => assertEquals(
+  () => assert.deepStrictEqual(
     resolveComposer()({
         name: "hi",
         path: "/",
@@ -30,9 +31,9 @@ Deno.test(
 )
 
 
-Deno.test(
+test(
   "check for sync",
- async () => assertEquals(
+ async () => assert.deepStrictEqual(
     await resolveComposer(
       {mutable: {hi:"hello"}}
     )({
@@ -43,9 +44,9 @@ Deno.test(
     {resolve : { hi : "hello"}}
   )
 )
-Deno.test(
+test(
   "check for async",
-      async () =>   assertEquals(
+      async () =>   assert.deepStrictEqual(
       (await resolveComposer()({
         name: "first",
         resolve: [{
@@ -64,9 +65,9 @@ Deno.test(
   )
 )
 
-Deno.test(
+test(
   "check for sync",
-  () => assertEquals(
+  () => assert.deepStrictEqual(
     resolveComposer()({
         name: "first",
         resolve:{

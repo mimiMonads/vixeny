@@ -1,11 +1,12 @@
 import multi from "../../../components/parameters/multi.ts";
 import options from "../../../components/parameters/map.ts";
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${multi(
           options({ hasName: "http://localhost:8080/" })({
@@ -21,10 +22,10 @@ Deno.test(
       },
     ),
 );
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${multi(
           options({ hasName: "http://localhost:8080/" })({
@@ -41,10 +42,10 @@ Deno.test(
       },
     ),
 );
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${multi(
           options({ hasName: "http://localhost:8080/" })({

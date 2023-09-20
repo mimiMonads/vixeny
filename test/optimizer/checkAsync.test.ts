@@ -1,10 +1,11 @@
 
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import checkAsync from "../../optimizer/recursiveCheckAsync.ts";
 
-Deno.test(
+test(
   "check for async",
-  () => assertEquals(
+  () => assert.deepStrictEqual(
     checkAsync({
       path: "/",
       f: async f => await f.req.blob()
@@ -12,9 +13,9 @@ Deno.test(
     true
   )
 )
-Deno.test(
+test(
   "check for sync",
-  () => assertEquals(
+  () => assert.deepStrictEqual(
     checkAsync({
       path: "/",
       f: () => "hello"
@@ -22,9 +23,9 @@ Deno.test(
     false
   )
 )
-Deno.test(
+test(
   "check for nested async",
-  () => assertEquals(
+  () => assert.deepStrictEqual(
     checkAsync({
       path: "/",
       resolve: {
@@ -36,9 +37,9 @@ Deno.test(
     true
   )
 )
-Deno.test(
+test(
   "check for nested async",
-  () => assertEquals(
+  () => assert.deepStrictEqual(
     checkAsync({
       path: "/",
       resolve: {
@@ -50,9 +51,9 @@ Deno.test(
     false
   )
 )
-Deno.test(
+test(
   "check for nested array async",
-  () => assertEquals(
+  () => assert.deepStrictEqual(
     checkAsync({
       path: "/",
       resolve: [
@@ -69,9 +70,9 @@ Deno.test(
     true
   )
 )
-Deno.test(
+test(
   "check for nested array async",
-  () => assertEquals(
+  () => assert.deepStrictEqual(
     checkAsync({
       path: "/",
       resolve: [

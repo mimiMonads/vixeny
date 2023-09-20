@@ -1,12 +1,13 @@
 import parser from "../../../builder/composer/parser1.ts";
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 
-Deno.test(
+test(
   "composer",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [f("/"), f("/notFound"), f("/outOfTheScope/")],
           [0, 50, 50],
         )
@@ -16,12 +17,12 @@ Deno.test(
 );
 
 
-Deno.test(
+test(
   "composer",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [f("/hello"), f("/hello/hello"), f("/other/bla/bla"), f("/notFound"), f("/outOfTheScope/")],
           [0, 0, 1, -1, -1],
         )
@@ -30,12 +31,12 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "composer",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [f("/"), f("/notFound"), f("/outOfTheScope/")],
           [1, 50, 50],
         )
@@ -43,12 +44,12 @@ Deno.test(
       parser({})([["/"]])([0])([1])(1)(50),
     ),
 );
-Deno.test(
+test(
   "composer",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("/"),
             f("/hello"),
@@ -63,12 +64,12 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "composer",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("/"),
             f("/hello"),
@@ -88,12 +89,12 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "composer",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("/"),
             f("/hello"),
@@ -119,12 +120,12 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "composer",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("/"),
             f("/hello"),
@@ -146,12 +147,12 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "composer",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("/"),
             f("/hello"),

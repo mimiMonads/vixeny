@@ -1,16 +1,17 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import solver from "../../builder/solver1.ts";
 import atlas from "../../builder/atlas/main1.ts";
 import paths from "../util/paths.ts";
 import split from "../../builder/atlas/splitter.ts";
 import optimize from "../../optimizer/optimize.ts";
 
-Deno.test(
+test(
   "resolver",
   (_) =>
     (
       (a) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             a(new Request("http://localhost:8080/")),
             a(new Request("http://localhost:8080/one")),
@@ -48,12 +49,12 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "resolver",
   (_) =>
     (
       (a) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             a(new Request("http://localhost:8080/")),
             a(new Request("http://localhost:8080/one")),
@@ -79,12 +80,12 @@ Deno.test(
 );
 
 
-Deno.test(
+test(
   "resolver",
   (_) =>
     (
       (a) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             a(new Request("http://localhost:8080/")),
             a(new Request("http://localhost:8080/one")),
@@ -109,12 +110,12 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "resolver",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f(new Request("http://localhost:8000/count")),
             f(new Request("http://localhost:8000/hello_world")),

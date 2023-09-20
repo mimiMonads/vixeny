@@ -1,10 +1,11 @@
 import options from "../../../components/parameters/map.ts";
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 
-Deno.test(
+test(
   "only one parameter at the end",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       options({})({ path: "/test/:id", f: (_) => "hello" }),
       {
         elements: [
@@ -27,10 +28,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "only one parameter at the end",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       options({})({ path: "/test/:id/", f: (_) => "hello" }),
       {
         elements: [
@@ -53,10 +54,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "only one parameter at the end",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       options({})({ path: "/test/:id/hi", f: (_) => "hello" }),
       {
         elements: [
@@ -81,10 +82,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "only one parameter at the end",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       options({})({ path: "/test/:id/hi/", f: (_) => "hello" }),
       {
         elements: [
@@ -109,10 +110,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "only one parameter at the end",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       options({})({ path: "/test/:id/:test", f: (_) => "hello" }),
       {
         elements: [
@@ -138,10 +139,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "only one parameter at the end",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       options({})({ path: "/:test/:id/:hi", f: (_) => "hello" }),
       {
         elements: [

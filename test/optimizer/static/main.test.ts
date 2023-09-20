@@ -1,28 +1,29 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import main from "../../../optimizer/staticFiles/main.ts";
 
-Deno.test(
+test(
     "test",
     () => 
-        assertEquals(
+        assert.deepStrictEqual(
             main({type: "fileServer", path: "./test/", name: "/hello", mime:false}).some(x => x.path === "/hello/fun.test.ts"),
             true
         )
 )
 
-Deno.test(
+test(
     "test",
     () => 
-        assertEquals(
+        assert.deepStrictEqual(
             main({type: "fileServer", path: "./test/", name: "/", mime:false}).some(x => x.path === "/fun.test.ts"),
             true
         )
 )
 
-Deno.test(
+test(
     "test",
     () => 
-        assertEquals(
+        assert.deepStrictEqual(
             main({type: "fileServer", path: "./test/", name: "/hello/nested", mime:false}).some(x => x.path === "/hello/nested/fun.test.ts"),
             true
         )

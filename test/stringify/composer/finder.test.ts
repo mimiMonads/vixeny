@@ -1,10 +1,11 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import finder from "../../../components/stringify/composer/finder.ts";
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       finder({
         type: "object",
         properties: {

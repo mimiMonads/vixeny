@@ -1,12 +1,13 @@
 import slicer from "../../../components/parameters/slicer.ts";
 import options from "../../../components/parameters/map.ts";
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 
 // "/test/:id"
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${slicer(
           options({ hasName: "http://localhost:8080/" })({
@@ -20,10 +21,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${slicer(
           options({ hasName: "http://localhost:8080/" })({
@@ -37,12 +38,12 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "param",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("http://localhost:8080/test/hello/"),
             f("http://localhost:8080/test/hello/"),
@@ -56,12 +57,12 @@ Deno.test(
       )(),
     ),
 );
-Deno.test(
+test(
   "param",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("http://localhost:8080/test/hello/?a=1"),
             f("http://localhost:8080/test/hello/?a=1"),
@@ -78,10 +79,10 @@ Deno.test(
 
 // "/test/:id/hi"
 
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${slicer(
           options({ hasName: "http://localhost:8080/" })({
@@ -94,10 +95,10 @@ Deno.test(
       "hello",
     ),
 );
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${slicer(
           options({ hasName: "http://localhost:8080/" })({
@@ -111,12 +112,12 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "param",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("http://localhost:8080/test/hello/hi"),
             f("http://localhost:8080/test/hello/hi"),
@@ -133,12 +134,12 @@ Deno.test(
         }`)(),
     ),
 );
-Deno.test(
+test(
   "param",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("http://localhost:8080/test/hello/hi?a=1"),
             f("http://localhost:8080/test/hello/hi?a=1"),
@@ -158,10 +159,10 @@ Deno.test(
 
 // "/test/:id/hi/"
 
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${slicer(
           options({ hasName: "http://localhost:8080/" })({
@@ -174,10 +175,10 @@ Deno.test(
       "hello",
     ),
 );
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${slicer(
           options({ hasName: "http://localhost:8080/" })({
@@ -191,12 +192,12 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "param",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("http://localhost:8080/test/hello/hi/"),
             f("http://localhost:8080/test/hello/hi/"),
@@ -215,12 +216,12 @@ Deno.test(
       )(),
     ),
 );
-Deno.test(
+test(
   "param",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("http://localhost:8080/test/hello/hi/?a=1"),
             f("http://localhost:8080/test/hello/hi/?a=1"),
@@ -242,10 +243,10 @@ Deno.test(
 
 // "/:test/:id/hi/"
 
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${slicer(
           options({ hasName: "http://localhost:8080/" })({
@@ -258,10 +259,10 @@ Deno.test(
       "hello/world",
     ),
 );
-Deno.test(
+test(
   "param",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       new Function(
         ` return ${slicer(
           options({ hasName: "http://localhost:8080/" })({
@@ -274,12 +275,12 @@ Deno.test(
       "hello/world",
     ),
 );
-Deno.test(
+test(
   "param",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("http://localhost:8080/hello/world/hi/"),
             f("http://localhost:8080/hello/world/hi/"),
@@ -298,12 +299,12 @@ Deno.test(
       )(),
     ),
 );
-Deno.test(
+test(
   "param",
   (_) =>
     (
       (f) =>
-        assertEquals(
+        assert.deepStrictEqual(
           [
             f("http://localhost:8080/hello/world/hi/"),
             f("http://localhost:8080/hello/world/hi/?a=1"),

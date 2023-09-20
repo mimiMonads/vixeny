@@ -1,10 +1,11 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import number from "../../../components/stringify/methods/json_number.ts";
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       number({
         type: "number",
         name: "hello",
@@ -16,19 +17,19 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       number({ type: "number", name: "hello", required: true, path: ".hello" }),
       `'"hello":'+( typeof o.hello === "number"?o.hello:'null')`,
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       number({
         type: "number",
         name: "hello",
@@ -40,10 +41,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       number({
         type: "number",
         name: "hello",

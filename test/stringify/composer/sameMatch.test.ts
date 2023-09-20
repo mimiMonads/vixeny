@@ -1,10 +1,11 @@
-import { assertEquals } from "https://deno.land/std@0.160.0/testing/asserts.ts";
+import assert from "node:assert";
+import test from "node:test"
 import composer from "../../../components/stringify/stringify.ts";
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
 
       composer({
         type: "object",
@@ -18,10 +19,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       composer({
         type: "object",
         properties: {
@@ -40,10 +41,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
       composer({
         type: "object",
         properties: {
@@ -68,10 +69,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
 
       composer({
         type: "object",
@@ -85,10 +86,10 @@ Deno.test(
     ),
 );
 
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
 
       composer({
         type: "object",
@@ -101,10 +102,10 @@ Deno.test(
       JSON.stringify({ hello: 2 })
     ),
 );
-Deno.test(
+test(
   "hello",
   (_) =>
-    assertEquals(
+    assert.deepStrictEqual(
 
       composer({
         type: "object",
