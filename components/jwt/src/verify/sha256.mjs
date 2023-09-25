@@ -1,9 +1,10 @@
-import { CryptoHasher } from "bun";
 
-export default     (hash: (hash: StringOrBuffer) => CryptoHasher) =>
-(key: Buffer | TypedArray) =>
+export default     
+(Buffer) =>
+(hash) =>
+(key) =>
   (
-    (hmac) => (message: string) =>
+    (hmac) => (message) =>
       message.substring(message.lastIndexOf(".") + 1) ===
       hash(
         Buffer.concat([
@@ -14,7 +15,7 @@ export default     (hash: (hash: StringOrBuffer) => CryptoHasher) =>
               Buffer.from(message.substring(0, message.lastIndexOf("."))),
             ])
           ).digest(),
-        ]) as unknown as TypedArray
+        ]) 
       )
         .digest()
         .toString("base64url")
@@ -26,7 +27,7 @@ export default     (hash: (hash: StringOrBuffer) => CryptoHasher) =>
               ),
               "base64url"
             ).toString() 
-          ) as string
+          )
         : null
   )(
     key.length > 64
