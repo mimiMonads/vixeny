@@ -1,43 +1,99 @@
 
 import { bench , run } from "mitata";
 import stringify from "../components/stringify/safe.mjs";
-import Ustringify from "../components/stringify/unsafe.mjs";
-const str = stringify({
-    type: "object",
-    properties: {
-        sub: { type: "string" },
-        iat: { type: "number" },
-        r: {type: "string", const: "hello"}
+import Ustringify from "../components/stringify/unsafe.mjs"; 
+import safe from "../components/stringify/safe.mjs";
+import unsafe from "../components/stringify/unsafe.mjs";
+
+// one string 
+
+
+const one_string = {
+    hello : "hello"
+},
+    str_one_string = stringify({
+        type: "object",
+        properties: {
+            hello: { type: "string" },
+        },
+        required: ["hello"],
+      }),
+    ustr_one_string = Ustringify({
+        type: "object",
+        properties: {
+            hello: { type: "string" },
+        },
+        required: ["hello"],
+      })
+
+// three
+
+
+const three_string = {
+        hello : "hello",
+        bar: "hello1",
+        foo: "hello2"
     },
-    required: ["sub","iat"],
-  })
+        str_three_string = stringify({
+            type: "object",
+            properties: {
+                hello: { type: "string" },
+                bar: { type: "string" },
+                foo: { type: "string" }
+            },
+            required: ["hello","bar", "foo"],
+          }),
+        ustr_three_string = Ustringify({
+            type: "object",
+            properties: {
+                hello: { type: "string" },
+                bar: { type: "string" },
+                foo: { type: "string" }
+            },
+            required: ["hello","bar", "foo"],
+          })
 
-  const ustr = Ustringify({
-    type: "object",
-    properties: {
-        sub: { type: "string" },
-        iat: { type: "number" },
-        r: {type: "string", const: "hello"}
-    },
-    required: ["sub","iat"],
-  })
+//nested 
+const nested = {
+    hello: {
+        hello: "foo"
+    }
+},
+    str_nested = safe({
+        type: "object",
+        properties: {
+          hello: {
+            type: "object",
+            properties: {
+              hello: { type: "string" },
+            },
+          },
+        },
+        required: ["hello"],
+      }),
+    ustr_nested = unsafe({
+        type: "object",
+        properties: {
+          hello: {
+            type: "object",
+            properties: {
+              hello: { type: "string" },
+            },
+          },
+        },
+        required: ["hello"],
+      })
 
-const f = {
-    sub: "1234567890",
-    iat: Date.now(),
-    r: "hello"
-}
+bench('standard / one_string_string',  () => JSON.stringify(one_string))
+bench('V safe / one_string_string', () => str_one_string(one_string))
+bench('V unsafe / one_string_string',  () => ustr_one_string(one_string))
 
-const f1 = {
-    sub: "1234567890",
-    iat: Date.now(),
-    r: "hello"
-}
+bench('standard / three_string_string',  () => JSON.stringify(three_string))
+bench('V safe / three_string_string', () => str_three_string(three_string))
+bench('V unsafe / three_string_string',  () => ustr_three_string(three_string))
 
-
-
-bench('standard / string_number_const',  () => JSON.stringify(f1))
-bench('V / string_number_const', () => str(f))
-bench('V / unsafe_string_number_const',  () => ustr(f))
+bench('standard / nested',  () => JSON.stringify(nested))
+bench('V safe / nested', () => str_nested(nested))
+bench('V unsafe / nested',  () => ustr_nested(nested))
 
 await run()
