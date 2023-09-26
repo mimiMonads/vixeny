@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "deno test -A ./test/*"
+    "test": "deno test -A ./test/*", 
+    "bench-jwt": " bun ./bench/jwt.mjs && deno run -A ./bench/jwt.mjs && node ./bench/jwt.mjs ",
+    "bench-stringify" : " bun ./bench/stringify.mjs && deno run -A ./bench/stringify.mjs && node ./bench/stringify.mjs "
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
   "keywords": [
     "deno",
     "bun",
+    "node",
     "functional"
   ],
   "author": "Antony Vladimir",
