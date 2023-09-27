@@ -1,5 +1,8 @@
 import sign from "../components/jwt/signSha256.mjs";
 import verifySha256 from "../components/jwt/verifySha256.mjs";
+import parseArguments from "../components/rtUtil/parseArguments.mjs";
+console.log(parseArguments())
+
 import { bench , run , group} from "mitata";
 import * as jose from 'jose'
 
