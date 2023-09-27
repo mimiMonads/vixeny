@@ -1,9 +1,10 @@
 
-import { bench , run } from "mitata";
+import { bench , run, group } from "mitata";
 import stringify from "../components/stringify/safe.mjs";
 import Ustringify from "../components/stringify/unsafe.mjs"; 
 import safe from "../components/stringify/safe.mjs";
 import unsafe from "../components/stringify/unsafe.mjs";
+
 
 // one string 
 
@@ -25,6 +26,21 @@ const one_string = {
         },
         required: ["hello"],
       })
+
+// one number
+
+
+const one_number = {
+  hello : 1234
+},
+  str_one_number = stringify({
+      type: "object",
+      properties: {
+          hello: { type: "number" },
+      },
+      required: ["hello"],
+    })
+
 
 // three
 
@@ -84,16 +100,30 @@ const nested = {
         required: ["hello"],
       })
 
-bench('standard / one_string_string',  () => JSON.stringify(one_string))
-bench('V safe / one_string_string', () => str_one_string(one_string))
-bench('V unsafe / one_string_string',  () => ustr_one_string(one_string))
 
-bench('standard / three_string_string',  () => JSON.stringify(three_string))
-bench('V safe / three_string_string', () => str_three_string(three_string))
-bench('V unsafe / three_string_string',  () => ustr_three_string(three_string))
+group("One element type string", ()=>{
+  bench('JSON',  () => JSON.stringify(one_string))
+  bench('Vixeny safe', () => str_one_string(one_string))
+  bench('Vixeny unsafe',  () => ustr_one_string(one_string))
+})
 
-bench('standard / nested',  () => JSON.stringify(nested))
-bench('V safe / nested', () => str_nested(nested))
-bench('V unsafe / nested',  () => ustr_nested(nested))
+group("One element type number", ()=>{
+  bench('JSON',  () => JSON.stringify(one_number))
+  bench('Vixeny', () => str_one_number(one_number))
+
+})
+
+group("Three elements type string", () => {
+  bench('JSON',  () => JSON.stringify(three_string))
+  bench('Vixeny safe', () => str_three_string(three_string))
+  bench('Vixeny unsafe',  () => ustr_three_string(three_string))
+})
+
+group("One nested element", () => {
+  bench('JSON',  () => JSON.stringify(nested))
+  bench('Vixeny safe', () => str_nested(nested))
+  bench('Vixeny unsafe',  () => ustr_nested(nested))
+})
+
 
 await run()

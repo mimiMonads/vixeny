@@ -1,6 +1,6 @@
 {
   "name": "vixeny",
-  "version": "0.0.74",
+  "version": "0.0.75",
   "description": "A functional router for Bun and Deno",
   "main": "fun.ts",
   "directories": {
@@ -8,8 +8,12 @@
   },
   "scripts": {
     "test": "deno test -A ./test/*", 
+    "bench-bun": "find ./bench -type f -name '*.*' -exec bun {} \\;",
+    "bench-deno": "find ./bench -type f -name '*.*' -exec deno {} \\;",
+    "bench-node": "find ./bench -type f -name '*.*' -exec node {} \\;",
     "bench-jwt": " bun ./bench/jwt.mjs && deno run -A ./bench/jwt.mjs && node ./bench/jwt.mjs ",
-    "bench-stringify" : " bun ./bench/stringify.mjs && deno run -A ./bench/stringify.mjs && node ./bench/stringify.mjs "
+    "bench-stringify" : " bun ./bench/stringify.mjs && deno run -A ./bench/stringify.mjs && node ./bench/stringify.mjs ",
+    "bench-query" : " bun ./bench/query.mjs && deno run -A ./bench/query.mjs && node ./bench/query.mjs "
   },
   "repository": {
     "type": "git",
