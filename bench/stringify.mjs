@@ -4,9 +4,8 @@ import stringify from "../components/stringify/safe.mjs";
 import Ustringify from "../components/stringify/unsafe.mjs"; 
 import safe from "../components/stringify/safe.mjs";
 import unsafe from "../components/stringify/unsafe.mjs";
-
-
-// one string 
+import parseArguments from "../components/rtUtil/parseArguments.mjs";
+const args = parseArguments();
 
 
 const one_string = {
@@ -126,4 +125,6 @@ group("One nested element", () => {
 })
 
 
-await run()
+await run({
+  json: "json" in args
+})

@@ -1,5 +1,9 @@
 import { bench , run, group } from "mitata";
 import queryParser from "../components/queries/queryParser.mjs";
+import parseArguments from "../components/rtUtil/parseArguments.mjs";
+const args = parseArguments();
+
+
 const parser = queryParser()(["param1"])
 const multiParser = queryParser()(["param1","param2"])
 
@@ -27,4 +31,6 @@ group('multi query', () => {
   
   
 
-await run()
+await run({
+  json: "json" in args
+})
