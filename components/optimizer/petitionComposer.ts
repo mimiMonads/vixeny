@@ -1,2 +1,2 @@
-import response  from "../../optimizer/response.ts";
-export  default response
+import response from "../../optimizer/response.ts";
+export default response;

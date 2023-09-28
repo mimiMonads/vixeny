@@ -1,6 +1,6 @@
 import specialString from "../../../builder/composer/specialString.ts";
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 
 test(
   "hello",

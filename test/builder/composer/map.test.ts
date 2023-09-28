@@ -1,6 +1,6 @@
 import map from "../../../builder/composer/map.ts";
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 
 test(
   "only one parameter at the end",

@@ -1,13 +1,8 @@
-
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 import paths from "../../util/paths.ts";
 import optimize from "../../../optimizer/optimize.ts";
 import split from "../../../builder/atlas/splitter.ts";
-
-
-
-
 
 test(
   "arraySwap",
@@ -61,43 +56,52 @@ test(
   "cheksplit",
   () => {
     assert.deepStrictEqual(
-      split()(optimize()([{ path: '/', f: () => 'hello' }, { path: "/hello/*", f: () => "wild" }, { path: "/hello/hello/*", f: () => "wild" }]))[1][2],
+      split()(
+        optimize()([{ path: "/", f: () => "hello" }, {
+          path: "/hello/*",
+          f: () => "wild",
+        }, { path: "/hello/hello/*", f: () => "wild" }]),
+      )[1][2],
       [
         [
           ["/hello/"],
-          ["/hello/hello/"]
-        ]
-      ]
-    )
-  }
-)
-
+          ["/hello/hello/"],
+        ],
+      ],
+    );
+  },
+);
 
 test(
   "cheksplit",
   () => {
     assert.deepStrictEqual(
-      split()(optimize()([{ path: '/', f: () => 'hello' }, { path: "/hello/*", f: () => "wild" }, { path: "/hello/hello/*", f: () => "wild" },
-      { type: "fileServer", path: "./test/", name: "/static/" },
-      ]))[1][2],
+      split()(
+        optimize()([
+          {
+            path: "/",
+            f: () => "hello",
+          },
+          { path: "/hello/*", f: () => "wild" },
+          { path: "/hello/hello/*", f: () => "wild" },
+          { type: "fileServer", path: "./test/", name: "/static/" },
+        ]),
+      )[1][2],
       [
         [
           ["/hello/", "/static/"],
-          ["/hello/hello/"]
-        ]
-      ]
-    )
-  }
-)
+          ["/hello/hello/"],
+        ],
+      ],
+    );
+  },
+);
 test(
   "cheksplit",
   () => {
     assert.deepStrictEqual(
-      split()(optimize()([{ path: '/', f: () => 'hello' }]))[1][2],
-      [
-      ]
-    )
-  }
-)
-
-
+      split()(optimize()([{ path: "/", f: () => "hello" }]))[1][2],
+      [],
+    );
+  },
+);

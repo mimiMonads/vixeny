@@ -1,4 +1,4 @@
-export default x =>
+export default (x) =>
   "const" in x && typeof x.const === "string"
     ? `'"${x.name}":"${x.const}"'`
     : x.required && !("default" in x)

@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 import solver from "../../builder/solver1.ts";
 import atlas from "../../builder/atlas/main1.ts";
 import paths from "../util/paths.ts";
@@ -38,10 +38,11 @@ test(
       solver({ hasName: "http://localhost:8080/" })(
         atlas({ hasName: "http://localhost:8080/" })(
           split({ hasName: "http://localhost:8080/" })(
-            optimize({ hasName: "http://localhost:8080/" })([...paths,
-            { path: "/hello/*", f: () => "wild" },
-            { path: "/hello/nested/*", f: () => "card" },
-            { type: "fileServer", path: "./test/", name: "/static/" },
+            optimize({ hasName: "http://localhost:8080/" })([
+              ...paths,
+              { path: "/hello/*", f: () => "wild" },
+              { path: "/hello/nested/*", f: () => "card" },
+              { type: "fileServer", path: "./test/", name: "/static/" },
             ]),
           ),
         ),
@@ -72,13 +73,12 @@ test(
             a(new Request("http://localhost:8080/NOTFOUND")),
             a(new Request("http://localhost:8080/", { method: "BAD" })),
           ],
-          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
         )
     )(
       solver()(atlas()(split()(optimize()(paths)))),
     ),
 );
-
 
 test(
   "resolver",
@@ -103,7 +103,7 @@ test(
             a(new Request("http://localhost:8080/NOTFOUND")),
             a(new Request("http://localhost:8080/", { method: "BAD" })),
           ],
-          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
         )
     )(
       solver()(atlas()(split()(optimize()(paths)))),
@@ -125,32 +125,38 @@ test(
             f(new Request("http://localhost:8000/NOTFOUND")),
             f(new Request("http://localhost:8000/", { method: "BAD" })),
           ],
-          [0, 1, 2, 3, 4, 5, 6]
+          [0, 1, 2, 3, 4, 5, 6],
         )
     )(
-      solver()(atlas()(split()(optimize()([
-        {
-          path: "/count",
-          f: () => "1"
-        },
-        {
-          path: "/hello_world",
-          f: () => "2",
-        },
-        {
-          path: "/random_number",
-          f: () => "3",
-        },
-        {
-          path: "/plus_1",
-          f: () => "4",
-          method: "POST",
-        },
-        {
-          path: "/minus_1",
-          f: () => "5",
-          method: "POST",
-        },
-      ])))),
+      solver()(
+        atlas()(
+          split()(
+            optimize()([
+              {
+                path: "/count",
+                f: () => "1",
+              },
+              {
+                path: "/hello_world",
+                f: () => "2",
+              },
+              {
+                path: "/random_number",
+                f: () => "3",
+              },
+              {
+                path: "/plus_1",
+                f: () => "4",
+                method: "POST",
+              },
+              {
+                path: "/minus_1",
+                f: () => "5",
+                method: "POST",
+              },
+            ]),
+          ),
+        ),
+      ),
     ),
 );

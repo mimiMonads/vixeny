@@ -1,6 +1,6 @@
 import validator from "../../../builder/composer/validator.ts";
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 
 test(
   "composer",

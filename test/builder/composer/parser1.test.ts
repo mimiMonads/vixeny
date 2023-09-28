@@ -1,6 +1,6 @@
 import parser from "../../../builder/composer/parser1.ts";
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 
 test(
   "composer",
@@ -16,14 +16,19 @@ test(
     ),
 );
 
-
 test(
   "composer",
   (_) =>
     (
       (f) =>
         assert.deepStrictEqual(
-          [f("/hello"), f("/hello/hello"), f("/other/bla/bla"), f("/notFound"), f("/outOfTheScope/")],
+          [
+            f("/hello"),
+            f("/hello/hello"),
+            f("/other/bla/bla"),
+            f("/notFound"),
+            f("/outOfTheScope/"),
+          ],
           [0, 0, 1, -1, -1],
         )
     )(
@@ -114,7 +119,9 @@ test(
       parser({})([["/", "/hello", "/test"], ["/hello/", "/test/hello"], [
         "/hello/:id/test",
         "/test/:id/hello",
-      ], ["/hello/:id/test/", "/test/:id/hello/"]])([0, 3, 5, 7])([1, 2, 3, 4])(0)(
+      ], ["/hello/:id/test/", "/test/:id/hello/"]])([0, 3, 5, 7])([1, 2, 3, 4])(
+        0,
+      )(
         50,
       ),
     ),
@@ -173,5 +180,3 @@ test(
       ]])([0, 3, 5])([1, 2, 4])(1)(50),
     ),
 );
-
-

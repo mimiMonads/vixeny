@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 import string from "../../../components/stringify/methods/json_string.ts";
 
 test(

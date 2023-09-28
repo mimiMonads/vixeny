@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 import finder from "../../../components/stringify/composer/finder.ts";
 
 test(

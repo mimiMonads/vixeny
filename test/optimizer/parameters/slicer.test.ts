@@ -1,7 +1,7 @@
 import slicer from "../../../components/parameters/slicer.ts";
 import options from "../../../components/parameters/map.ts";
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 
 // "/test/:id"
 test(
@@ -9,12 +9,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${slicer(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello"),
       "hello",
@@ -26,12 +27,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${slicer(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/?a=1"),
       "hello",
@@ -52,7 +54,8 @@ test(
         )
     )(
       new Function(
-        ` return ${slicer(options()({ path: "/test/:id/", f: (_) => "hello" }))
+        ` return ${
+          slicer(options()({ path: "/test/:id/", f: (_) => "hello" }))
         }`,
       )(),
     ),
@@ -71,7 +74,8 @@ test(
         )
     )(
       new Function(
-        ` return ${slicer(options()({ path: "/test/:id/", f: (_) => "hello" }))
+        ` return ${
+          slicer(options()({ path: "/test/:id/", f: (_) => "hello" }))
         }`,
       )(),
     ),
@@ -84,12 +88,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${slicer(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/hi",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/hi",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/hi"),
       "hello",
@@ -100,12 +105,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${slicer(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/hi",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/hi",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/hi?a=1"),
       "hello",
@@ -125,13 +131,14 @@ test(
           ["hello", "hello"],
         )
     )(
-      new Function(` return ${slicer(
-        options()({
-          path: "/test/:id/hi",
-          f: (_) => "hello",
-        }),
-      )
-        }`)(),
+      new Function(` return ${
+        slicer(
+          options()({
+            path: "/test/:id/hi",
+            f: (_) => "hello",
+          }),
+        )
+      }`)(),
     ),
 );
 test(
@@ -147,13 +154,14 @@ test(
           ["hello", "hello"],
         )
     )(
-      new Function(` return ${slicer(
-        options()({
-          path: "/test/:id/hi",
-          f: (_) => "hello",
-        }),
-      )
-        }`)(),
+      new Function(` return ${
+        slicer(
+          options()({
+            path: "/test/:id/hi",
+            f: (_) => "hello",
+          }),
+        )
+      }`)(),
     ),
 );
 
@@ -164,12 +172,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${slicer(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/hi/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/hi/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/hi/"),
       "hello",
@@ -180,12 +189,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${slicer(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/hi/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/hi/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/hi/?a=1"),
       "hello",
@@ -206,12 +216,13 @@ test(
         )
     )(
       new Function(
-        ` return ${slicer(
-          options()({
-            path: "/test/:id/hi/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options()({
+              path: "/test/:id/hi/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )(),
     ),
@@ -230,12 +241,13 @@ test(
         )
     )(
       new Function(
-        ` return ${slicer(
-          options()({
-            path: "/test/:id/hi/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options()({
+              path: "/test/:id/hi/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )(),
     ),
@@ -248,12 +260,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${slicer(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/:test/:id/hi/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/:test/:id/hi/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/hello/world/hi/"),
       "hello/world",
@@ -264,12 +277,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${slicer(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/:test/:id/hi/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/:test/:id/hi/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/hello/world/hi/?a=1"),
       "hello/world",
@@ -289,12 +303,13 @@ test(
         )
     )(
       new Function(
-        ` return ${slicer(
-          options()({
-            path: "/:test/:id/hi/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options()({
+              path: "/:test/:id/hi/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )(),
     ),
@@ -313,12 +328,13 @@ test(
         )
     )(
       new Function(
-        ` return ${slicer(
-          options()({
-            path: "/:test/:id/hi/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          slicer(
+            options()({
+              path: "/:test/:id/hi/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )(),
     ),

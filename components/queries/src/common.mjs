@@ -1,17 +1,16 @@
-export default (o) =>
-  (f) =>
-    (
-      (b) =>
-        (
-          (p) =>
-            b !== -1
-              ? `s=>(i=>
+export default (o) => (f) =>
+  (
+    (b) =>
+      (
+        (p) =>
+          b !== -1
+            ? `s=>(i=>
                 i!==-1?
                 Object.fromEntries(
                 s.slice(i+1).split("&").map((x) => x.split("="))
                 )
                 :null)(s.indexOf("?"))`
-              : ` (b=>s =>
+            : ` (b=>s =>
                 
                 b !== -1
                   ? Object.fromEntries(
@@ -29,11 +28,11 @@ export default (o) =>
                         ${p},
                     ).split("&").map((x) => x.split("=")),
                   ))(-1)`
-        )(
-          f.path.includes("/" + (o?.paramsStartsWith || ":"))
-            ? f.path.indexOf("/" + (o?.paramsStartsWith || ":"))
-            : f.path.length,
-        )
-    )(
-      typeof o?.hasName === "string" ? o.hasName.length : -1,
-    );
+      )(
+        f.path.includes("/" + (o?.paramsStartsWith || ":"))
+          ? f.path.indexOf("/" + (o?.paramsStartsWith || ":"))
+          : f.path.length,
+      )
+  )(
+    typeof o?.hasName === "string" ? o.hasName.length : -1,
+  );

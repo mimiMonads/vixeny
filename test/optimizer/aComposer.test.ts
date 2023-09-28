@@ -1,7 +1,7 @@
 import signer from "../../components/tokens/signer.ts";
 import aComposer from "../../optimizer/aComposer.ts";
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 //await ((hi: (arg0: any) => any)=> async (r: any)=>({hi:await hi(r)}))((hi=>async (f: any) =>({hi:await hi(f)})) (async (f: { blob: () => any; })=> await(await f.blob()).text()))(new Request("http://hi.com/", {method: "POST", body: "hello"})),
 test(
   "Query",
@@ -81,7 +81,9 @@ test(
         path: "/test/",
         signer: { seed: "test" },
         f: (r) => r.sign("hello"),
-      })(["sign"]))(new Request("http://localhost:8080/test/")).sign("12345678955"),
+      })(["sign"]))(new Request("http://localhost:8080/test/")).sign(
+        "12345678955",
+      ),
       signer({ seed: "test" })("12345678955"),
     ),
 );
@@ -105,7 +107,8 @@ test(
         path: "/test/",
         signer: { seed: "test" },
         f: (r) => r.randomNumber.toString(),
-      })(["randomNumber"]))(new Request("http://localhost:8080/test/")).randomNumber,
+      })(["randomNumber"]))(new Request("http://localhost:8080/test/"))
+        .randomNumber,
       "number",
     ),
 );
@@ -129,12 +132,14 @@ test(
         path: "/test/",
         signer: { seed: "test" },
         f: (r) => r.cookie?.id ?? "not_found",
-      })(["cookie"]))(new Request("http://localhost:8080/test/", {
-        headers: {
-          'Content-Type': 'application/json',
-          'Cookie': 'id=user'
-        }
-      })).cookie,
+      })(["cookie"]))(
+        new Request("http://localhost:8080/test/", {
+          headers: {
+            "Content-Type": "application/json",
+            "Cookie": "id=user",
+          },
+        }),
+      ).cookie,
       { id: "user" },
     ),
 );

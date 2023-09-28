@@ -1,12 +1,12 @@
-
 import { RawCommonRequest, RequestArguments } from "../types.ts";
-
 
 export type ResolveOptions = {
   name: string;
   f: (f: RequestArguments) => unknown;
-} & RawCommonRequest
+} & RawCommonRequest;
 
-export type ResponseResponse = (r: Request) => unknown
+export type ResponseResponse = (r: Request) => unknown;
 
-export type TypeResolveOptions = ({ async: false, f: (f: RequestArguments) => BodyInit })[] | ({ async: true, f: (f: RequestArguments) => Promise<BodyInit> })[]
+export type TypeResolveOptions =
+  | ({ async: false; f: (f: RequestArguments) => BodyInit })[]
+  | ({ async: true; f: (f: RequestArguments) => Promise<BodyInit> })[];

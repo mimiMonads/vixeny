@@ -1,7 +1,7 @@
 import one from "../../../components/parameters/one.ts";
 import options from "../../../components/parameters/map.ts";
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 
 // "/test/:id"
 test(
@@ -9,12 +9,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${one(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          one(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello").id,
       "hello",
@@ -25,12 +26,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${one(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          one(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello?a=1").id,
       "hello",
@@ -81,12 +83,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${one(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          one(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/").id,
       "hello",
@@ -97,12 +100,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${one(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          one(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/?a=1").id,
       "hello",
@@ -153,12 +157,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${one(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/hi",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          one(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/hi",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/hi").id,
       "hello",
@@ -169,12 +174,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${one(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/hi",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          one(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/hi",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/hi?a=1").id,
       "hello",
@@ -195,7 +201,8 @@ test(
         )
     )(
       new Function(
-        ` return ${one(options()({ path: "/test/:id/hi", f: (_) => "hello" }))
+        ` return ${
+          one(options()({ path: "/test/:id/hi", f: (_) => "hello" }))
         }`,
       )(),
     ),
@@ -214,7 +221,8 @@ test(
         )
     )(
       new Function(
-        ` return ${one(options()({ path: "/test/:id/hi", f: (_) => "hello" }))
+        ` return ${
+          one(options()({ path: "/test/:id/hi", f: (_) => "hello" }))
         }`,
       )(),
     ),
@@ -227,12 +235,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${one(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/hi/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          one(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/hi/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/hi/").id,
       "hello",
@@ -243,12 +252,13 @@ test(
   (_) =>
     assert.deepStrictEqual(
       new Function(
-        ` return ${one(
-          options({ hasName: "http://localhost:8080/" })({
-            path: "/test/:id/hi/",
-            f: (_) => "hello",
-          }),
-        )
+        ` return ${
+          one(
+            options({ hasName: "http://localhost:8080/" })({
+              path: "/test/:id/hi/",
+              f: (_) => "hello",
+            }),
+          )
         }`,
       )()("http://localhost:8080/test/hello/hi/?a=1").id,
       "hello",
@@ -269,7 +279,8 @@ test(
         )
     )(
       new Function(
-        ` return ${one(options()({ path: "/test/:id/hi/", f: (_) => "hello" }))
+        ` return ${
+          one(options()({ path: "/test/:id/hi/", f: (_) => "hello" }))
         }`,
       )(),
     ),
@@ -288,7 +299,8 @@ test(
         )
     )(
       new Function(
-        ` return ${one(options()({ path: "/test/:id/hi/", f: (_) => "hello" }))
+        ` return ${
+          one(options()({ path: "/test/:id/hi/", f: (_) => "hello" }))
         }`,
       )(),
     ),

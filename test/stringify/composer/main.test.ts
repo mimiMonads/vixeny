@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 import composer from "../../../components/stringify/stringify.ts";
 
 test(

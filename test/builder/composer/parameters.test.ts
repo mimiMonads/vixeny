@@ -1,7 +1,7 @@
 import map from "../../../builder/composer/map.ts";
 import parameter from "../../../builder/composer/parameters.ts";
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 
 test(
   "composer",

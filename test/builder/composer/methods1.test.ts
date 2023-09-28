@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 import methods from "../../../builder/composer/methods1.ts";
 
 test(
@@ -80,8 +80,6 @@ test(
       ),
 );
 
-
-
 test(
   "composer",
   (_) =>
@@ -116,7 +114,6 @@ test(
             ],
             [],
             [
-
               [
                 "GET",
               ],
@@ -176,7 +173,6 @@ test(
             ],
             [],
             [
-
               [
                 "GET",
               ],

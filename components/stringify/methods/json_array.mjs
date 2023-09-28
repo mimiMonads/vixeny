@@ -1,2 +1,1 @@
-
-export default x => `'"${x.name}":' + JSON.stringify(o${x.path})`;
+export default (x) => `'"${x.name}":' + JSON.stringify(o${x.path})`;

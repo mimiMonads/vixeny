@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import test from "node:test"
+import test from "node:test";
 import map from "../../../builder/atlas/map.ts";
 
 test(
@@ -43,7 +43,6 @@ test(
     ),
 );
 
-
 test("functionName basic test", () => {
   assert.deepStrictEqual(
     map([
@@ -59,7 +58,7 @@ test("functionName basic test", () => {
     [
       [0, 2],
       [3, 4],
-    ]
+    ],
   );
 });
 
@@ -78,27 +77,23 @@ test("functionName edge case test", () => {
     [
       [0, 1],
       [2, 3],
-    ]
+    ],
   );
 });
-
-
 
 test("functionName edge case test", () => {
   assert.deepStrictEqual(
     map([
       [
-        [ "/count", "/hello_world", "/random_number" ]
+        ["/count", "/hello_world", "/random_number"],
       ],
       [
-        [ "/plus_1", "/minus_1" ]
-      ]
+        ["/plus_1", "/minus_1"],
+      ],
     ]),
     [
       [0],
       [3],
-    ]
+    ],
   );
 });
-
-

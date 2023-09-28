@@ -1,17 +1,12 @@
-
-
-
 export default (_o: any) => (s: string) =>
   s
     ? Object.fromEntries(
       s
         .split("; ")
-        .filter(x =>
+        .filter((x) =>
           x
-            .indexOf('=') !== -1
+            .indexOf("=") !== -1
         )
-        .map(x =>
-          x.split("=")
-        )
+        .map((x) => x.split("=")),
     )
-    : null
+    : null;

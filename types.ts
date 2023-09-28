@@ -1,8 +1,8 @@
 ///
 
 import { Petition } from "./optimizer/types.ts";
-import { BranchOptions  as branch} from "./optimizer/branch/types.ts";
-import { ResolveOptions as  resolve } from "./optimizer/resolve/types.ts";
+import { BranchOptions as branch } from "./optimizer/branch/types.ts";
+import { ResolveOptions as resolve } from "./optimizer/resolve/types.ts";
 
 /**
  * Options for the router, it is `optional`
@@ -21,7 +21,7 @@ import { ResolveOptions as  resolve } from "./optimizer/resolve/types.ts";
 export type FunRouterOptions = {
   /**
    * Optimize the router. It always has to end with "/"
-   * 
+   *
    * ```ts
    * //Correct
    * {
@@ -36,14 +36,14 @@ export type FunRouterOptions = {
   hasName?: string;
   /**
    * When an URL with a valid URL is detected and used it will be added to yout `context`
-   * 
+   *
    * ```ts
    * // default
    * {
    *  path: "/route/:name",
    *  f: ctx => ctx.param.name
    * }
-   * // this behavour can change with this option, for example: 
+   * // this behavour can change with this option, for example:
    * {
    *  path: "/route/-name",
    *  f: ctx => ctx.param.name
@@ -52,7 +52,7 @@ export type FunRouterOptions = {
    * ```
    */
   paramsStartsWith?: string;
-  
+
   /**
    * A function that takes a Request and returns a Response for 404 errors.
    */
@@ -64,19 +64,20 @@ export type FunRouterOptions = {
   405?: (x: Request) => Response;
 };
 
-
-export type Vixeny = (o?: FunRouterOptions) => (routes: Petition[]) => (r: Request) => Promise<Response> | Response;
+export type Vixeny = (
+  o?: FunRouterOptions,
+) => (routes: Petition[]) => (r: Request) => Promise<Response> | Response;
 /**
- * Vixeny takes an array ot `Petitions` 
- * 
+ * Vixeny takes an array ot `Petitions`
+ *
  * ```ts
  * import arrayPetitions from "./someWhere"
  * vixeny(options)(...arrayPetitions)
  * ```
- * --- 
- * 
+ * ---
+ *
  * Also you can use add multiple `Petition`
- * 
+ *
  * ```ts
  * import arrayPetitions from "./someWhere"
  * vixeny(options)([
@@ -88,6 +89,6 @@ export type Vixeny = (o?: FunRouterOptions) => (routes: Petition[]) => (r: Reque
  * ])
  * ```
  */
-export type Petitions = Petition[]
+export type Petitions = Petition[];
 export type BranchOptions = branch;
 export type ResolveOptions = resolve;
