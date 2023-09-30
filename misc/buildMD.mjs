@@ -14,16 +14,16 @@ findAllFiles("./bench/results/")
       a.split("-").pop().split(".")[0],
     )
   )
-  .reduce((acc, curr, index) =>
-    (
-      (position) => [...acc.slice(0, position), curr, ...acc.slice(position)]
-    )(
-      index % 3 === 0
-        ? Math.floor(index / 3)
-        : index % 3 === 1
-        ? Math.floor(index / 3) * 2 + 1
-        : Math.floor(index / 3) * 2 + 2,
-    ), [])
+  .reduce((acc, curr, index) => 
+  (
+    (position) => [...acc.slice(0, position), curr, ...acc.slice(position)]
+  )(
+    index % 3 === 0
+      ? Math.floor(index / 3)
+      : index % 3 === 1
+      ? Math.floor(2 * (index / 3)) + 1
+      : Math.floor(2 * (index / 3 + 0.5))
+  ), [])
   .map((x) => JSON.parse(readFileSync(x)))
   .forEach((json) =>
     console.log(
