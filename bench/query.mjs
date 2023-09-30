@@ -13,7 +13,7 @@ group("One query", () => {
   bench("new URL", () => ({
     param1: new URL(url).searchParams.get("param1"),
   }));
-  bench("Vixeny query parser", () => parser(url));
+  bench("Vixeny query", () => parser(url));
 });
 
 group("multi query", () => {
@@ -25,7 +25,7 @@ group("multi query", () => {
       param3: uri.searchParams.get("param3"),
     };
   });
-  bench("Vixeny query parser", () => multiParser(url));
+  bench("Vixeny query", () => multiParser(url));
 });
 
 await run({

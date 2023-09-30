@@ -27,6 +27,5 @@ export default (joiner) => (readdir) => (stat) => (dir) =>
     )
   )(
     // Setting up the Y combinator.
-    (f) =>
-      ((x) => x(x))((x) => f((y) => x(x)(y))),
+    (f) => ((x) => x(x))((x) => f((y) => x(x)(y))),
   );

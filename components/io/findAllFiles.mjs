@@ -1,5 +1,5 @@
 import recursiveFileFind from "./src/recursiveFileFind.mjs";
-import {readdirSync ,statSync} from "node:fs"
+import { readdirSync, statSync } from "node:fs";
 import joiner from "../util/joiner.mjs";
 
 /**
@@ -12,11 +12,11 @@ import joiner from "../util/joiner.mjs";
  * @function
  * @param {string} dirPath - The path to the directory.
  * @returns {Array<Array<(string|boolean)>>} An array of arrays, where each inner array contains a path and a boolean.
- * 
+ *
  * @example
  * const fileFinder = recursiveFileFindFunction('./base/path/');
  * const results = fileFinder('./another/path/');
  * console.log(results); // [[path1, false], [path2, true], ...]
  */
 
-export default recursiveFileFind(joiner)(readdirSync)(statSync)
+export default recursiveFileFind(joiner)(readdirSync)(statSync);
