@@ -1,4 +1,4 @@
-export default (a) => (b) => (
+export default () => (a) => (b) => (
     result => (
       (
         result.set(a),

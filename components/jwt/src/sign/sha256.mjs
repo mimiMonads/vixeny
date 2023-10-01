@@ -1,3 +1,5 @@
+import concatTwoUint8Array from "../../../bytes/src/concatTwoUint8Array.mjs";
+
 export default (Buffer) =>
 (sha256) =>
 (
@@ -8,16 +10,18 @@ export default (Buffer) =>
 ) =>
 (key) =>
   (
-    (hmac) => (message) =>
+    (hmac) => (lf => rg=>
+      (message) =>
       (
         (json) =>
           header + json + "." +
           sha256(
+            
             Buffer.concat([
-              new Uint8Array(64).map((_x, i) => hmac[i] ^ 0x5c),
+              lf,
               sha256(
                 Buffer.concat([
-                  new Uint8Array(64).map((_x, i) => hmac[i] ^ 0x36),
+                  rg,
                   Buffer.from(header + json),
                 ]),
               ).digest(),
@@ -27,6 +31,8 @@ export default (Buffer) =>
       )(
         Buffer.from(JSON.stringify(message)).toString("base64url"),
       )
+
+    )(new Uint8Array(64).map((_x, i) => hmac[i] ^ 0x5c))(new Uint8Array(64).map((_x, i) => hmac[i] ^ 0x36))
   )(
     key.length > 64
       ? sha256(key).digest()

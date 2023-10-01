@@ -6,6 +6,13 @@
   <b style="font-size:1.2em; font-style:italic; color:darkcyan;">Harness the Power of Pure Functionality</b>
 </p>
 
+<p align="center">
+  <br>
+  📢 <b style="font-size:1.5em; color:darkcyan;">Evolution Alert!</b>
+  <br>
+  <span style="font-size:1.2em;">Vixeny is transitioning from a framework to a library. Exciting enhancements ahead. Stay tuned & give us a thumbs up!👍</span>
+  <br><br>
+</p>
 
 🌊 **Vixeny: Harnessing the Power of Functional Programming for Modern Web Development**
 

@@ -1,13 +1,15 @@
 export default (Buffer) => (hash) => (key) =>
   (
-    (hmac) => (message) =>
+    (hmac) => (
+      lf => rg =>
+      (message) =>
       message.substring(message.lastIndexOf(".") + 1) ===
           hash(
             Buffer.concat([
-              new Uint8Array(64).map((_x, i) => hmac[i] ^ 0x5c),
+              lf,
               hash(
                 Buffer.concat([
-                  new Uint8Array(64).map((_x, i) => hmac[i] ^ 0x36),
+                  rg,
                   Buffer.from(message.substring(0, message.lastIndexOf("."))),
                 ]),
               ).digest(),
@@ -25,6 +27,7 @@ export default (Buffer) => (hash) => (key) =>
           ).toString(),
         )
         : null
+    )(new Uint8Array(64).map((_x, i) => hmac[i] ^ 0x5c))(new Uint8Array(64).map((_x, i) => hmac[i] ^ 0x36))
   )(
     key.length > 64
       ? hash(key).digest()
