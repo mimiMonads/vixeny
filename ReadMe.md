@@ -6,31 +6,23 @@
   <b style="font-size:1.2em; font-style:italic; color:darkcyan;">Harness the Power of Pure Functionality</b>
 </p>
 
-⚙️ Our JSDocs and website are currently under refinement.
 
-**About Vixeny**\
-Vixeny stands at the crossroads of flexibility and function. Designed with
-modern web development needs in mind, it champions:
+🌊 **Vixeny: Harnessing the Power of Functional Programming for Modern Web Development**
 
-- **Functional Purity:** Dive deep into functional programming while keeping
-  doors open for other paradigms. 🌊
-- **Immutable Structures:** A functional architecture ensures predictability and
-  robustness in every piece of code. 🧩
-- **Decide Your Effects:** Have controlled side effects; introduce them at your
-  will. 🚦
-- **Performance-Centric:** Striving for excellence in speed, safety, and code
-  clarity. 🚀
-- **Seamless Testing:** Due to its functional nature, testing is
-  straightforward, reproducible, and reliable. ✅
-- **Runtime Agnosticism:** Vixeny is unbias; it thrives across various
-  JavaScript runtimes. 🌍
+🌍 A performance-centric, runtime-agnostic library designed for purity, immutability, and controlled effects. Whether you're deep diving into functional paradigms or balancing them with others, Vixeny offers the flexibility and robustness web developers need.
 
-Kickstart your journey with our [Getting Started guide](#).
+🚀 **Features**:
+- **Functional Purity**: Embrace functional programming without constraints.
+- **Immutable Structures**: Ensure predictability and robustness in your codebase.
+- **Decide Your Effects**: Controlled side effects for enhanced code safety.
+- **Performance-Centric**: Prioritizing speed, safety, and code clarity.
+- **Seamless Testing**: Easy, reproducible, and reliable testing due to its functional nature.
+- **Runtime Agnosticism**: Thrive across various JavaScript runtimes.
 
-**Documentation Update**\
-We're in the process of enhancing our documentation. Bear with us as we
-transition.\
-🔗 [Dive into Vixeny](https://vixeny.dev/)
+✅ Dive into our [Getting Started guide](https://vixeny.dev/) and explore Vixeny's capabilities.
+
+🔗 **Documentation**: Under enhancement. We appreciate your patience during this transition.
+
 
 **Benchmarks**
 
