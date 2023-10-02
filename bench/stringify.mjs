@@ -1,22 +1,21 @@
 import { bench, group, run } from "mitata";
-import stringify from "../components/stringify/safe.mjs";
-import Ustringify from "../components/stringify/unsafe.mjs";
-import safe from "../components/stringify/safe.mjs";
-import unsafe from "../components/stringify/unsafe.mjs";
-import parseArguments from "../components/rtUtil/parseArguments.mjs";
+import jsonString from "../components/encode/jsonString.mjs";
+
+
+import parseArguments from "../components/runtime/parseArguments.mjs";
 const args = parseArguments();
 
 const one_string = {
     hello: "hello",
   },
-  str_one_string = stringify({
+  str_one_string = jsonString()({
     type: "object",
     properties: {
       hello: { type: "string" },
     },
     required: ["hello"],
   }),
-  ustr_one_string = Ustringify({
+  ustr_one_string = jsonString({type: "unsafe"})({
     type: "object",
     properties: {
       hello: { type: "string" },
@@ -29,7 +28,7 @@ const one_string = {
 const one_number = {
     hello: 1234,
   },
-  str_one_number = stringify({
+  str_one_number = jsonString()({
     type: "object",
     properties: {
       hello: { type: "number" },
@@ -44,7 +43,7 @@ const three_string = {
     bar: "hello1",
     foo: "hello2",
   },
-  str_three_string = stringify({
+  str_three_string = jsonString()({
     type: "object",
     properties: {
       hello: { type: "string" },
@@ -53,7 +52,7 @@ const three_string = {
     },
     required: ["hello", "bar", "foo"],
   }),
-  ustr_three_string = Ustringify({
+  ustr_three_string = jsonString({type: "unsafe"})({
     type: "object",
     properties: {
       hello: { type: "string" },
@@ -69,7 +68,7 @@ const nested = {
       hello: "foo",
     },
   },
-  str_nested = safe({
+  str_nested = jsonString()({
     type: "object",
     properties: {
       hello: {
@@ -81,7 +80,7 @@ const nested = {
     },
     required: ["hello"],
   }),
-  ustr_nested = unsafe({
+  ustr_nested = jsonString({type: "unsafe"})({
     type: "object",
     properties: {
       hello: {

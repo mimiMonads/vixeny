@@ -1,6 +1,6 @@
 import params from "../components/parameters/main.ts";
 import query from "../components/queries/main.ts";
-import cookies from "../components/cookies/main.ts";
+import cookies from "../components/http/cookies/main.js";
 import signer from "../components/tokens/signer.ts";
 import verifier from "../components/tokens/verifier.ts";
 import jVerify from "../components/tokens/jVerify.ts";

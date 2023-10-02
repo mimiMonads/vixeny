@@ -1,4 +1,4 @@
-import findAllFiles from "../components/io/findAllFiles.mjs";
+import findAllFiles from "../components/files/findAllFiles.mjs";
 import { duration } from "mitata/reporter/fmt.mjs";
 import { readFileSync, writeFileSync } from "node:fs";
 

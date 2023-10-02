@@ -1,4 +1,3 @@
-import concatTwoUint8Array from "../../../bytes/src/concatTwoUint8Array.mjs";
 
 export default (Buffer) =>
 (sha256) =>

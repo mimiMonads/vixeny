@@ -1,6 +1,6 @@
 import sign from "../components/jwt/signSha256.mjs";
 import verifySha256 from "../components/jwt/verifySha256.mjs";
-import parseArguments from "../components/rtUtil/parseArguments.mjs";
+import parseArguments from "../components/runtime/parseArguments.mjs";
 
 const args = parseArguments();
 
