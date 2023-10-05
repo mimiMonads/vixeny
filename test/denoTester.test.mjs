@@ -1,9 +1,6 @@
-import main from "./fun.test.mjs";
-import assert from "node:assert";
-import test from "node:test";
+import main from "../components/encode/test/b64toUrl.test.mjs"
+import tester from "./resolverTest.mjs"
 
-const describe = (v) => ({
-  toEqual: (ar) => assert.deepStrictEqual(v, ar),
-});
 
-main(test)((i) => i)(describe);
+
+main(tester.test)(tester.it)(tester.describe);
