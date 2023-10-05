@@ -1,11 +1,10 @@
-export default () => (a) => (b) => (
-    result => (
+export default () => (a) => (b) =>
+  (
+    (result) => (
       (
-        result.set(a),
-        result.set(b, a.length),
-        result
+        result.set(a), result.set(b, a.length), result
       )
     )
   )(
-    new Uint8Array(a.length + b.length)
-  )
+    new Uint8Array(a.length + b.length),
+  );

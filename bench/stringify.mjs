@@ -1,7 +1,6 @@
 import { bench, group, run } from "mitata";
 import jsonString from "../components/encode/jsonString.mjs";
 
-
 import parseArguments from "../components/runtime/parseArguments.mjs";
 const args = parseArguments();
 
@@ -15,7 +14,7 @@ const one_string = {
     },
     required: ["hello"],
   }),
-  ustr_one_string = jsonString({type: "unsafe"})({
+  ustr_one_string = jsonString({ type: "unsafe" })({
     type: "object",
     properties: {
       hello: { type: "string" },
@@ -52,7 +51,7 @@ const three_string = {
     },
     required: ["hello", "bar", "foo"],
   }),
-  ustr_three_string = jsonString({type: "unsafe"})({
+  ustr_three_string = jsonString({ type: "unsafe" })({
     type: "object",
     properties: {
       hello: { type: "string" },
@@ -80,7 +79,7 @@ const nested = {
     },
     required: ["hello"],
   }),
-  ustr_nested = jsonString({type: "unsafe"})({
+  ustr_nested = jsonString({ type: "unsafe" })({
     type: "object",
     properties: {
       hello: {

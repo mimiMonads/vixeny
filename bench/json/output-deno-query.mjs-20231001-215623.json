@@ -1,1 +1,104 @@
-{"benchmarks":[{"name":"new URL","group":"One query","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":66397,"min":5250,"max":460130,"jit":[497039,66475,49043,35577,55655,29626,30768,35527,56266,111481],"p75":9578,"p99":10490,"avg":7532,"p995":12724,"p999":73949}},{"name":"Vixeny query","group":"One query","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":890,"min":53.0644,"max":277.3433,"jit":[91543,6402,5119,4809,4769,4699,4669,4668,20629,12103],"p75":54.1785,"p99":111.6892,"avg":57.40175629213485,"p995":115.6296,"p999":277.3433}},{"name":"new URL","group":"multi query","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":24,"min":3594.2978,"max":4546.7626,"jit":[177666,17694,13526,12514,12103,11642,12033,11602,15559,23926],"p75":3633.1772,"p99":4546.7626,"avg":3678.904666666667,"p995":4546.7626,"p999":4546.7626}},{"name":"Vixeny query","group":"multi query","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":361,"min":134.8309,"max":221.3536,"jit":[174981,6984,5431,5000,5050,4870,5190,4749,28754,13435],"p75":143.4813,"p99":174.4949,"avg":142.70246592797784,"p995":202.4138,"p999":221.3536}}],"cpu":"AMD Ryzen 7 3750H with Radeon Vega Mobile Gfx","runtime":"deno 1.37.0 (x86_64-unknown-linux-gnu)"}
+{
+  "benchmarks": [
+    {
+      "name": "new URL",
+      "group": "One query",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 66397,
+        "min": 5250,
+        "max": 460130,
+        "jit": [
+          497039,
+          66475,
+          49043,
+          35577,
+          55655,
+          29626,
+          30768,
+          35527,
+          56266,
+          111481
+        ],
+        "p75": 9578,
+        "p99": 10490,
+        "avg": 7532,
+        "p995": 12724,
+        "p999": 73949
+      }
+    },
+    {
+      "name": "Vixeny query",
+      "group": "One query",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 890,
+        "min": 53.0644,
+        "max": 277.3433,
+        "jit": [91543, 6402, 5119, 4809, 4769, 4699, 4669, 4668, 20629, 12103],
+        "p75": 54.1785,
+        "p99": 111.6892,
+        "avg": 57.40175629213485,
+        "p995": 115.6296,
+        "p999": 277.3433
+      }
+    },
+    {
+      "name": "new URL",
+      "group": "multi query",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 24,
+        "min": 3594.2978,
+        "max": 4546.7626,
+        "jit": [
+          177666,
+          17694,
+          13526,
+          12514,
+          12103,
+          11642,
+          12033,
+          11602,
+          15559,
+          23926
+        ],
+        "p75": 3633.1772,
+        "p99": 4546.7626,
+        "avg": 3678.904666666667,
+        "p995": 4546.7626,
+        "p999": 4546.7626
+      }
+    },
+    {
+      "name": "Vixeny query",
+      "group": "multi query",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 361,
+        "min": 134.8309,
+        "max": 221.3536,
+        "jit": [174981, 6984, 5431, 5000, 5050, 4870, 5190, 4749, 28754, 13435],
+        "p75": 143.4813,
+        "p99": 174.4949,
+        "avg": 142.70246592797784,
+        "p995": 202.4138,
+        "p999": 221.3536
+      }
+    }
+  ],
+  "cpu": "AMD Ryzen 7 3750H with Radeon Vega Mobile Gfx",
+  "runtime": "deno 1.37.0 (x86_64-unknown-linux-gnu)"
+}

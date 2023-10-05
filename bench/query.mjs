@@ -1,5 +1,5 @@
 import { bench, group, run } from "mitata";
-import queryParser from "../components/http/queries/queryParser.mjs";
+import queryParser from "../components/http/src/queries/queryParser.mjs";
 import parseArguments from "../components/runtime/parseArguments.mjs";
 const args = parseArguments();
 

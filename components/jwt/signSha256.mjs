@@ -1,6 +1,7 @@
 import signer from "./src/sign/sha256.mjs";
 import nodeCrypto from "node:crypto";
 import BufferProto from "node:buffer";
+import name from "../runtime/name.mjs";
 
 export default () =>
   (
@@ -13,9 +14,5 @@ export default () =>
           : (d) => nodeCrypto.createHash("sha256").update(d),
       )
   )(
-    typeof Bun !== "undefined"
-      ? "Bun"
-      : typeof Bun !== "undefined"
-      ? "Deno"
-      : "Node",
+    name(),
   )();

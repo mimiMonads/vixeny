@@ -1,1 +1,215 @@
-{"benchmarks":[{"name":"JSON","group":"One element type string","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":687,"min":60.6446,"max":217.9631,"jit":[27572,1442,732,460,571,391,350,350,340,340],"p75":75.0769,"p99":118.2866,"avg":73.78665400291118,"p995":136.6523,"p999":217.9631}},{"name":"Vixeny safe","group":"One element type string","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":947,"min":40.3834,"max":168.8031,"jit":[94038,7724,1283,831,751,711,672,5540,892,592],"p75":61.3059,"p99":107.0073,"avg":53.4695804646252,"p995":114.1709,"p999":168.8031}},{"name":"Vixeny unsafe","group":"One element type string","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":6217,"min":1.0379,"max":111.4778,"jit":[122551,2445,381,291,250,221,210,201,190,191],"p75":14.3802,"p99":17.7545,"avg":8.044248544313657,"p995":53.0934,"p999":71.924}},{"name":"JSON","group":"One element type number","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":616,"min":78.1548,"max":139.5579,"jit":[76454,751,291,200,140,151,140,140,141,130],"p75":83.9437,"p99":87.7419,"avg":82.55908522727275,"p995":91.8297,"p999":139.5579}},{"name":"Vixeny","group":"One element type number","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":2149,"min":19.4969,"max":103.9064,"jit":[132881,1012,441,281,241,210,201,190,201,200],"p75":22.2591,"p99":71.3519,"avg":23.405481665891156,"p995":76.4686,"p999":93.8595}},{"name":"JSON","group":"Three elements type string","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":437,"min":107.3579,"max":166.2173,"jit":[109637,1012,481,351,250,231,220,211,210,181],"p75":115.5956,"p99":143.1015,"avg":117.26206201372987,"p995":148.4988,"p999":166.2173}},{"name":"Vixeny safe","group":"Three elements type string","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":243,"min":200.0893,"max":357.8115,"jit":[171284,5230,952,722,611,551,561,541,541,521],"p75":211.6913,"p99":281.9932,"avg":215.18419506172836,"p995":284.1824,"p999":357.8115}},{"name":"Vixeny unsafe","group":"Three elements type string","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":1073,"min":41.77,"max":106.4573,"jit":[121149,4769,521,361,300,291,291,270,271,260],"p75":45.0983,"p99":100.5582,"avg":47.019704659832215,"p995":101.8826,"p999":105.7118}},{"name":"JSON","group":"One nested element","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":418,"min":110.3276,"max":188.6086,"jit":[110158,1072,331,230,221,190,170,171,200,171],"p75":130.3214,"p99":134.2829,"avg":122.67911866028705,"p995":140.1119,"p999":188.6086}},{"name":"Vixeny safe","group":"One nested element","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":657,"min":72.9449,"max":129.3586,"jit":[129285,1944,621,431,431,360,390,351,391,300],"p75":76.7511,"p99":116.5904,"avg":77.35255007610343,"p995":125.5744,"p999":129.3586}},{"name":"Vixeny unsafe","group":"One nested element","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":6983,"min":7.1024,"max":11.5519,"jit":[127662,5340,391,220,191,180,181,180,200,191],"p75":7.1716,"p99":7.4431,"avg":7.171274896176438,"p995":7.5463,"p999":8.8026}}],"cpu":"AMD Ryzen 7 3750H with Radeon Vega Mobile Gfx","runtime":"bun 1.0.3 (x64-linux)"}
+{
+  "benchmarks": [
+    {
+      "name": "JSON",
+      "group": "One element type string",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 687,
+        "min": 60.6446,
+        "max": 217.9631,
+        "jit": [27572, 1442, 732, 460, 571, 391, 350, 350, 340, 340],
+        "p75": 75.0769,
+        "p99": 118.2866,
+        "avg": 73.78665400291118,
+        "p995": 136.6523,
+        "p999": 217.9631
+      }
+    },
+    {
+      "name": "Vixeny safe",
+      "group": "One element type string",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 947,
+        "min": 40.3834,
+        "max": 168.8031,
+        "jit": [94038, 7724, 1283, 831, 751, 711, 672, 5540, 892, 592],
+        "p75": 61.3059,
+        "p99": 107.0073,
+        "avg": 53.4695804646252,
+        "p995": 114.1709,
+        "p999": 168.8031
+      }
+    },
+    {
+      "name": "Vixeny unsafe",
+      "group": "One element type string",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 6217,
+        "min": 1.0379,
+        "max": 111.4778,
+        "jit": [122551, 2445, 381, 291, 250, 221, 210, 201, 190, 191],
+        "p75": 14.3802,
+        "p99": 17.7545,
+        "avg": 8.044248544313657,
+        "p995": 53.0934,
+        "p999": 71.924
+      }
+    },
+    {
+      "name": "JSON",
+      "group": "One element type number",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 616,
+        "min": 78.1548,
+        "max": 139.5579,
+        "jit": [76454, 751, 291, 200, 140, 151, 140, 140, 141, 130],
+        "p75": 83.9437,
+        "p99": 87.7419,
+        "avg": 82.55908522727275,
+        "p995": 91.8297,
+        "p999": 139.5579
+      }
+    },
+    {
+      "name": "Vixeny",
+      "group": "One element type number",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 2149,
+        "min": 19.4969,
+        "max": 103.9064,
+        "jit": [132881, 1012, 441, 281, 241, 210, 201, 190, 201, 200],
+        "p75": 22.2591,
+        "p99": 71.3519,
+        "avg": 23.405481665891156,
+        "p995": 76.4686,
+        "p999": 93.8595
+      }
+    },
+    {
+      "name": "JSON",
+      "group": "Three elements type string",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 437,
+        "min": 107.3579,
+        "max": 166.2173,
+        "jit": [109637, 1012, 481, 351, 250, 231, 220, 211, 210, 181],
+        "p75": 115.5956,
+        "p99": 143.1015,
+        "avg": 117.26206201372987,
+        "p995": 148.4988,
+        "p999": 166.2173
+      }
+    },
+    {
+      "name": "Vixeny safe",
+      "group": "Three elements type string",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 243,
+        "min": 200.0893,
+        "max": 357.8115,
+        "jit": [171284, 5230, 952, 722, 611, 551, 561, 541, 541, 521],
+        "p75": 211.6913,
+        "p99": 281.9932,
+        "avg": 215.18419506172836,
+        "p995": 284.1824,
+        "p999": 357.8115
+      }
+    },
+    {
+      "name": "Vixeny unsafe",
+      "group": "Three elements type string",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 1073,
+        "min": 41.77,
+        "max": 106.4573,
+        "jit": [121149, 4769, 521, 361, 300, 291, 291, 270, 271, 260],
+        "p75": 45.0983,
+        "p99": 100.5582,
+        "avg": 47.019704659832215,
+        "p995": 101.8826,
+        "p999": 105.7118
+      }
+    },
+    {
+      "name": "JSON",
+      "group": "One nested element",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 418,
+        "min": 110.3276,
+        "max": 188.6086,
+        "jit": [110158, 1072, 331, 230, 221, 190, 170, 171, 200, 171],
+        "p75": 130.3214,
+        "p99": 134.2829,
+        "avg": 122.67911866028705,
+        "p995": 140.1119,
+        "p999": 188.6086
+      }
+    },
+    {
+      "name": "Vixeny safe",
+      "group": "One nested element",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 657,
+        "min": 72.9449,
+        "max": 129.3586,
+        "jit": [129285, 1944, 621, 431, 431, 360, 390, 351, 391, 300],
+        "p75": 76.7511,
+        "p99": 116.5904,
+        "avg": 77.35255007610343,
+        "p995": 125.5744,
+        "p999": 129.3586
+      }
+    },
+    {
+      "name": "Vixeny unsafe",
+      "group": "One nested element",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 6983,
+        "min": 7.1024,
+        "max": 11.5519,
+        "jit": [127662, 5340, 391, 220, 191, 180, 181, 180, 200, 191],
+        "p75": 7.1716,
+        "p99": 7.4431,
+        "avg": 7.171274896176438,
+        "p995": 7.5463,
+        "p999": 8.8026
+      }
+    }
+  ],
+  "cpu": "AMD Ryzen 7 3750H with Radeon Vega Mobile Gfx",
+  "runtime": "bun 1.0.3 (x64-linux)"
+}

@@ -1,9 +1,11 @@
-import { JsonStringify } from './src/stringify/types';
+import { JsonStringify } from "./src/stringify/types";
 
 // Define the options type for the function
 export interface StringifyOptions {
-  type?: 'unsafe' | 'safe';
+  type?: "unsafe" | "safe";
 }
 
 // Define the type for the main function
-export type JsonStringifyFunction = (options?: StringifyOptions) => (schema: JsonStringify) => string;
+export type JsonStringifyFunction = (
+  options?: StringifyOptions,
+) => (schema: JsonStringify) => string;

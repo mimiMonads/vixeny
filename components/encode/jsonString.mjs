@@ -1,5 +1,5 @@
-import unsafe from "./src/stringify/unsafe.mjs"
-import safe from "./src/stringify/safe.mjs"
+import unsafe from "./src/stringify/unsafe.mjs";
+import safe from "./src/stringify/safe.mjs";
 
 /**
  * Stringifies a given schema based on provided options.
@@ -18,7 +18,7 @@ import safe from "./src/stringify/safe.mjs"
  *    },
  *    required: ["hello"],
  * });
- * 
+ *
  * // Using the unsafe stringify method
  * const ustr_one_string = stringify({type:"unsafe"})({
  *    type: "object",
@@ -27,12 +27,12 @@ import safe from "./src/stringify/safe.mjs"
  *    },
  *    required: ["hello"],
  * });
-  * @note
+ * @note
  * To use the TypeScript typings for this function, import the `JsonStringifyFunction` type from the corresponding type definition file. Example:
  * `import { JsonStringifyFunction } from 'vixeny/components/encode/types;`
  */
 
-export default options => schema =>
-    typeof options === "object" && "type" in options && options.type === "unsafe"
-        ? unsafe(schema)
-        : safe(schema)
+export default (options) => (schema) =>
+  typeof options === "object" && "type" in options && options.type === "unsafe"
+    ? unsafe(schema)
+    : safe(schema);
