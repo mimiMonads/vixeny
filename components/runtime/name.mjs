@@ -1,7 +1,7 @@
 export default () =>
   typeof Bun !== "undefined"
     ? "Bun"
-    : typeof Bun !== "undefined"
+    : typeof Deno !== "undefined"
     ? "Deno"
     : typeof Node !== "undefined"
     ? "Node"
