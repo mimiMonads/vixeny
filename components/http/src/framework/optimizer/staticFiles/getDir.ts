@@ -1,7 +1,7 @@
 import syncCheckDir from "../syncCheckDir.ts";
 import bunSyncCheckDir from "../syncCheckDir_Bun.ts";
 import denoCheckRead from "../checkRead_Deno.ts";
-import joiner from "../../components/util/joiner.ts";
+import joiner from "../../../../../util/joiner.mjs";
 
 export default (s: string) =>
   (

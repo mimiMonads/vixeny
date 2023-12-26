@@ -1,4 +1,4 @@
-import { JsonStringify } from "./src/stringify/types";
+import { JsonStringify } from "./src/stringify/types.ts";
 
 // Define the options type for the function
 export interface StringifyOptions {

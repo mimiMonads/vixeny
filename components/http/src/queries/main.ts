@@ -1,7 +1,8 @@
 import { FunRouterOptions } from "../../types.ts";
 import common from "./common.ts";
 import elements from "./elements.ts";
-import { ObjectRawResponseCommon } from "../../optimizer/types.ts";
+import { ObjectRawResponseCommon } from "../framework/optimizer/types.ts";
+
 import filter from "./filter.ts";
 export default (o?: FunRouterOptions) => (f: ObjectRawResponseCommon) =>
   f && "query" in f && f.query?.only

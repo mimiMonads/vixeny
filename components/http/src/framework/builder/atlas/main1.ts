@@ -1,7 +1,10 @@
 import { ArraySwap, ParamsMethod, RequestFunction } from "../types.ts";
-import { FunRouterOptions } from "../../types.ts";
-import badMethod from "../../components/util/badMethod.ts";
-import notFound from "../../components/util/notFound.ts";
+import { FunRouterOptions } from "../../../../types.ts";
+
+
+
+import badMethod from "../../../util/badMethod.ts";
+import notFound from "../../../util/notFound.ts";
 
 type InnerObj = [string, RequestFunction] | [];
 type InnerObjEmpty = [string, RequestFunction];

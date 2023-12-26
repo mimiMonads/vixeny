@@ -1,4 +1,4 @@
-import { FunRouterOptions } from "../../types.ts";
+import { FunRouterOptions } from "../../../../types.ts";
 import { RouteTypes } from "../types.ts";
 import main1 from "./main1.ts";
 import { ArraySwap } from "../types.ts";

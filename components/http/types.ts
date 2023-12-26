@@ -1,8 +1,8 @@
 ///
 
-import { Petition } from "./optimizer/types.ts";
-import { BranchOptions as branch } from "./optimizer/branch/types.ts";
-import { ResolveOptions as resolve } from "./optimizer/resolve/types.ts";
+import { Petition } from "./src/framework/optimizer/types.ts";
+import { BranchOptions as branch } from "./src/framework/optimizer/branch/types.ts";
+import { ResolveOptions as resolve } from "./src/framework/optimizer/resolve/types.ts";
 
 /**
  * Options for the router, it is `optional`

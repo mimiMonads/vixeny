@@ -1,4 +1,4 @@
-import { ObjectRawResponseCommon } from "../../optimizer/types.ts";
+import { ObjectRawResponseCommon } from "../framework/optimizer/types.ts";
 import { FunRouterOptions } from "../../types.ts";
 import { info } from "./types.ts";
 

@@ -1,4 +1,5 @@
-import { Petition } from "../../optimizer/types.ts";
+import { Petition } from "../../src/framework/optimizer/types.ts";
+
 export default [
   { type: "response", path: "/", r: (_) => new Response("GET:main") },
   { type: "response", path: "/one", r: (_) => new Response("1") },

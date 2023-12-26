@@ -1,5 +1,5 @@
 import { Atlas as Atlas1 } from "./atlas/main1.ts";
-import { FunRouterOptions } from "../types.ts";
+import { FunRouterOptions } from "../../../types.ts";
 import solver from "./composer/methods1.ts";
 import finderMethods from "./composer/finderMethods.ts";
 

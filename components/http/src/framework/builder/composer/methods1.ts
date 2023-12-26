@@ -1,4 +1,4 @@
-import { FunRouterOptions } from "../../types.ts";
+import { FunRouterOptions } from "../../../../types.ts";
 import parser from "./parser1.ts";
 import map from "../atlas/map.ts";
 

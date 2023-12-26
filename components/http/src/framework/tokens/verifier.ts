@@ -1,5 +1,5 @@
 import solver from "./src/solver.ts";
-import validChar from "../util/validChar.ts";
+import validChar from "../../../../util/validChar.ts";
 import { SignVerifyOptions } from "./types.ts";
 import verifyWithSize from "./src/verifyWithSize.ts";
 

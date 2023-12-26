@@ -1,9 +1,9 @@
-import { FunRouterOptions } from "../types.ts";
+import { FunRouterOptions } from "../../../types.ts";
 import { RouteTypes } from "../builder/types.ts";
 import { Petition } from "./types.ts";
 import response from "./response.ts";
 import staticFiles from "./staticFiles/main.ts";
-import vixeny from "../fun.ts";
+import vixeny from "../../../serve.ts";
 
 export default (
   o?: FunRouterOptions,

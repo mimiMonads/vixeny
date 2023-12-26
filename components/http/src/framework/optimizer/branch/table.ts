@@ -1,4 +1,4 @@
-import elements from "../../components/util/elements.ts";
+import elements from "../../../util/elements.ts";
 
 import aComposer, { specialOptions } from "../aComposer.ts";
 import checker from "../checker.ts";

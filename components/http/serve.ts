@@ -12,11 +12,12 @@
  */
 
 import { FunRouterOptions, Vixeny } from "./types.ts";
-import { Petition } from "./src/optimizer/types.ts";
-import optimizer from "./src/optimizer/optimize.ts";
-import atlas from "./src/builder/atlas/main1.ts";
-import split from "./src/builder/atlas/splitter.ts";
-import solver from "./src/builder/solver1.ts";
+import { Petition } from "./src/framework/optimizer/types.ts";
+
+import optimizer from "./src/framework/optimizer/optimize.ts";
+import atlas from "./src/framework/builder/atlas/main1.ts";
+import split from "./src/framework/builder/atlas/splitter.ts";
+import solver from "./src/framework/builder/solver1.ts";
 
 export default ((o?: FunRouterOptions) => (routes: Petition[]) =>
   ((re) =>

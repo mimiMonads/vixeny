@@ -1,11 +1,12 @@
-import { FunRouterOptions } from "../types.ts";
+import { FunRouterOptions } from "../../../types.ts";
 import { ObjectRawCommonRequest, ObjectRawResponseCommon } from "./types.ts";
 import checkAsync from "./recursiveCheckAsync.ts";
 import checker from "./checker.ts";
 import aComposer from "./aComposer.ts";
-import mime from "../components/util/mime.ts";
-import jsonComposer from "../components/stringify/stringify.ts";
-import elements from "../components/util/elements.ts";
+import mime from "../../util/mime.ts";
+import jsonComposer from "../../../../encode/jsonString.mjs";
+
+import elements from "../../util/elements.ts";
 
 export default (o?: FunRouterOptions) =>
 (f: ObjectRawResponseCommon | ObjectRawCommonRequest) =>
@@ -64,7 +65,7 @@ export default (o?: FunRouterOptions) =>
             }
             : { ...f.headings }
           : null,
-        json: "json" in f ? jsonComposer(f.json.scheme) : null,
+        json: "json" in f ? jsonComposer({type:"safe"})(f.json.scheme) : null,
       },
     ))(
       (

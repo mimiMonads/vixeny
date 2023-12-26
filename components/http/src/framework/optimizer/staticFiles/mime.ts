@@ -1,4 +1,5 @@
-import mime from "../../components/util/mime.ts";
+import mime from "../../../util/mime.ts";
+
 import { ObjectRawResponseStatic } from "../types.ts";
 
 export default (f: ObjectRawResponseStatic) =>

@@ -1,7 +1,10 @@
 import { ParamsMethod } from "../builder/types.ts";
-import { JsonOptions, JsonType } from "../components/stringify/types.ts";
-import { SignVerifyOptions } from "../components/tokens/types.ts";
-import { JsonSinger } from "../components/tokens/jSigner.ts";
+
+import { JsonOptions, JsonType} from "../../../../encode/src/stringify/types.ts";
+
+
+import { SignVerifyOptions } from "../tokens/types.ts";
+import { JsonSinger } from "../tokens/jSigner.ts";
 import { ResolveOptions as UnResolveOption } from "./resolve/types.ts";
 import { BranchOptions as UnBranchOptions } from "./branch/types.ts";
 

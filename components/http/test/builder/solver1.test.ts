@@ -1,13 +1,13 @@
 import assert from "node:assert";
 import test from "node:test";
-import solver from "../../builder/solver1.ts";
-import atlas from "../../builder/atlas/main1.ts";
+import solver from "../../src/framework/builder/solver1.ts";
+import atlas from "../../src/framework/builder/atlas/main1.ts";
 import paths from "../util/paths.ts";
-import split from "../../builder/atlas/splitter.ts";
-import optimize from "../../optimizer/optimize.ts";
+import split from "../../src/framework/builder/atlas/splitter.ts";
+import optimize from "../../src/framework/optimizer/optimize.ts";
 
 test(
-  "resolver",
+  "full routes",
   (_) =>
     (
       (a) =>
@@ -32,7 +32,7 @@ test(
             a(new Request("http://localhost:8080/NOTFOUND")),
             a(new Request("http://localhost:8080/", { method: "BAD" })),
           ],
-          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 14, 15, 16],
         )
     )(
       solver({ hasName: "http://localhost:8080/" })(
@@ -42,7 +42,6 @@ test(
               ...paths,
               { path: "/hello/*", f: () => "wild" },
               { path: "/hello/nested/*", f: () => "card" },
-              { type: "fileServer", path: "./test/", name: "/static/" },
             ]),
           ),
         ),

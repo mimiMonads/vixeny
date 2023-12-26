@@ -1,15 +1,19 @@
-import params from "../components/parameters/main.ts";
-import query from "../components/queries/main.ts";
-import cookies from "../components/http/cookies/main.js";
-import signer from "../components/tokens/signer.ts";
-import verifier from "../components/tokens/verifier.ts";
-import jVerify from "../components/tokens/jVerify.ts";
-import jSigner from "../components/tokens/jSigner.ts";
+import params from "../../parameters/main.ts";
+
+
+import query from "../../queries/main.ts";
+
+import cookies from "../../cookies/main.ts";
+
+import signer from "../tokens/signer.ts";
+import verifier from "../tokens/verifier.ts";
+import jVerify from "../tokens/jVerify.ts";
+import jSigner from "../tokens/jSigner.ts";
 import resolve from "./resolve/main.ts";
 import checkAsync from "./recursiveCheckAsync.ts";
 import branch from "./branch/main.ts";
-import { SignVerifyOptions } from "../components/tokens/types.ts";
-import { FunRouterOptions } from "../types.ts";
+import { SignVerifyOptions } from "../tokens/types.ts";
+import { FunRouterOptions } from "../../../types.ts";
 import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
 import { ResolveOptions } from "./resolve/types.ts";
 import { BranchOptions } from "./branch/types.ts";

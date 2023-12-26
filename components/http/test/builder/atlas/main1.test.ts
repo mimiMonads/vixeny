@@ -1,9 +1,10 @@
 import assert from "node:assert";
 import test from "node:test";
-import atlas from "../../../builder/atlas/main1.ts";
-import optimize from "../../../optimizer/optimize.ts";
+
+import atlas from "../../../src/framework//builder/atlas/main1.ts";
+import optimize from "../../../src/framework/optimizer/optimize.ts";
 import paths from "../../util/paths.ts";
-import split from "../../../builder/atlas/splitter.ts";
+import split from "../../../src/framework/builder/atlas/splitter.ts";
 
 test(
   "Atlas",

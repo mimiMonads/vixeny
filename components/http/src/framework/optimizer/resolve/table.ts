@@ -1,5 +1,5 @@
-import elements from "../../components/util/elements.ts";
-import { FunRouterOptions } from "../../types.ts";
+import elements from "../../../util/elements.ts";
+import { FunRouterOptions } from "../../../../types.ts";
 import aComposer from "../aComposer.ts";
 import checker from "../checker.ts";
 import { ObjectRawResponseCommon } from "../types.ts";
