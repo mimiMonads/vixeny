@@ -1,13 +1,13 @@
 {
   "name": "vixeny",
-  "version": "0.0.75",
+  "version": "0.0.76",
   "description": "A functional router for Bun and Deno",
   "main": "fun.ts",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "deno test -A ./test/*",
+    "test": "deno test -A ./ && node --test ./",
     "bench-bun": "find ./bench -type f -name '*.mjs' -exec bun {} \\;",
     "bench-deno": "find ./bench -type f -name '*.mjs' -exec deno {} \\;",
     "bench-node": "find ./bench -type f -name '*.mjs' -exec node {} \\;",

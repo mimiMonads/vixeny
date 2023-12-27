@@ -65,7 +65,9 @@ export default (o?: FunRouterOptions) =>
             }
             : { ...f.headings }
           : null,
-        json: "json" in f ? jsonComposer({type:"safe"})(f.json.scheme) : null,
+        json: "json" in f
+          ? jsonComposer({ type: "safe" })(f.json.scheme)
+          : null,
       },
     ))(
       (

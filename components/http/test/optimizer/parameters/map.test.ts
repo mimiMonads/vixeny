@@ -1,4 +1,4 @@
-import options from "../../../components/parameters/map.ts";
+import map from "../../../src/parameters/map.ts";
 import assert from "node:assert";
 import test from "node:test";
 
@@ -6,7 +6,7 @@ test(
   "only one parameter at the end",
   (_) =>
     assert.deepStrictEqual(
-      options({})({ path: "/test/:id", f: (_) => "hello" }),
+      map({})({ path: "/test/:id", f: (_) => "hello" }),
       {
         elements: [
           ":id",
@@ -32,7 +32,7 @@ test(
   "only one parameter at the end",
   (_) =>
     assert.deepStrictEqual(
-      options({})({ path: "/test/:id/", f: (_) => "hello" }),
+      map({})({ path: "/test/:id/", f: (_) => "hello" }),
       {
         elements: [
           ":id",
@@ -58,7 +58,7 @@ test(
   "only one parameter at the end",
   (_) =>
     assert.deepStrictEqual(
-      options({})({ path: "/test/:id/hi", f: (_) => "hello" }),
+      map({})({ path: "/test/:id/hi", f: (_) => "hello" }),
       {
         elements: [
           ":id",
@@ -86,7 +86,7 @@ test(
   "only one parameter at the end",
   (_) =>
     assert.deepStrictEqual(
-      options({})({ path: "/test/:id/hi/", f: (_) => "hello" }),
+      map({})({ path: "/test/:id/hi/", f: (_) => "hello" }),
       {
         elements: [
           ":id",
@@ -114,7 +114,7 @@ test(
   "only one parameter at the end",
   (_) =>
     assert.deepStrictEqual(
-      options({})({ path: "/test/:id/:test", f: (_) => "hello" }),
+      map({})({ path: "/test/:id/:test", f: (_) => "hello" }),
       {
         elements: [
           ":id",
@@ -143,7 +143,7 @@ test(
   "only one parameter at the end",
   (_) =>
     assert.deepStrictEqual(
-      options({})({ path: "/:test/:id/:hi", f: (_) => "hello" }),
+      map({})({ path: "/:test/:id/:hi", f: (_) => "hello" }),
       {
         elements: [
           ":test",

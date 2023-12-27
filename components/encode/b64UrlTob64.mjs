@@ -9,4 +9,3 @@ export default () => (b64url) =>
         ? b64url.replace(/-/g, "+").replace(/_/g, "/")
         : null
   )(b64url.length % 4);
-

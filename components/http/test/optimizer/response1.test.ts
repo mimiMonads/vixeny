@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import test from "node:test";
-import response from "../../optimizer/response.ts";
+import response from "../../src/framework/optimizer/response.ts";
 
 test(
   "Response response",
@@ -25,5 +25,3 @@ test(
       '{"id":"hello"}',
     ),
 );
-
-

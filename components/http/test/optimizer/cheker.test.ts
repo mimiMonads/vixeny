@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import test from "node:test";
-import checker from "../../optimizer/checker.ts";
+import checker from "../../src/framework/optimizer/checker.ts";
 
 test(
   "Params",

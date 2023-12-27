@@ -1,4 +1,4 @@
-import parser from "../../../builder/composer/parser1.ts";
+import parser from "../../../src/framework/builder/composer/parser1.ts";
 import assert from "node:assert";
 import test from "node:test";
 

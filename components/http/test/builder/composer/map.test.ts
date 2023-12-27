@@ -1,4 +1,4 @@
-import map from "../../../builder/composer/map.ts";
+import map from "../../../src/framework/builder/composer/map.ts";
 import assert from "node:assert";
 import test from "node:test";
 

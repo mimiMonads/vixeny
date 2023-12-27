@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import test from "node:test";
 
-import composer from "../../../optimizer/staticFiles/composedPaths.ts";
+import composer from "../../../src/framework/optimizer/staticFiles/composedPaths.ts";
 
 test(
   "hello",

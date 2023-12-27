@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import test from "node:test";
-import checkAsync from "../../optimizer/recursiveCheckAsync.ts";
+import checkAsync from "../../src/framework/optimizer/checkAsync.ts";
 
 test(
   "check for async",

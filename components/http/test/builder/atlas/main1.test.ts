@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import test from "node:test";
 
-import atlas from "../../../src/framework//builder/atlas/main1.ts";
+import atlas from "../../../src/framework/builder/atlas/main1.ts";
 import optimize from "../../../src/framework/optimizer/optimize.ts";
 import paths from "../../util/paths.ts";
 import split from "../../../src/framework/builder/atlas/splitter.ts";
@@ -86,7 +86,7 @@ test(
           }, {
             path: "/hello/nested/*",
             f: () => "card",
-          }, { type: "fileServer", path: "./test/", name: "/static/" }]),
+          }, { type: "fileServer", path: "./misc/", name: "/static/" }]),
         ),
       )[4].slice(0, -2) as unknown as null,
       [

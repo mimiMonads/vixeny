@@ -1,5 +1,5 @@
-import slicer from "../../../components/parameters/slicer.ts";
-import options from "../../../components/parameters/map.ts";
+import slicer from "../../../src/parameters/slicer.ts";
+import map from "../../../src/parameters/map.ts";
 import assert from "node:assert";
 import test from "node:test";
 
@@ -11,7 +11,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id",
               f: (_) => "hello",
             }),
@@ -29,7 +29,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/",
               f: (_) => "hello",
             }),
@@ -54,9 +54,7 @@ test(
         )
     )(
       new Function(
-        ` return ${
-          slicer(options()({ path: "/test/:id/", f: (_) => "hello" }))
-        }`,
+        ` return ${slicer(map()({ path: "/test/:id/", f: (_) => "hello" }))}`,
       )(),
     ),
 );
@@ -74,9 +72,7 @@ test(
         )
     )(
       new Function(
-        ` return ${
-          slicer(options()({ path: "/test/:id/", f: (_) => "hello" }))
-        }`,
+        ` return ${slicer(map()({ path: "/test/:id/", f: (_) => "hello" }))}`,
       )(),
     ),
 );
@@ -90,7 +86,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/hi",
               f: (_) => "hello",
             }),
@@ -107,7 +103,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/hi",
               f: (_) => "hello",
             }),
@@ -133,7 +129,7 @@ test(
     )(
       new Function(` return ${
         slicer(
-          options()({
+          map()({
             path: "/test/:id/hi",
             f: (_) => "hello",
           }),
@@ -156,7 +152,7 @@ test(
     )(
       new Function(` return ${
         slicer(
-          options()({
+          map()({
             path: "/test/:id/hi",
             f: (_) => "hello",
           }),
@@ -174,7 +170,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/hi/",
               f: (_) => "hello",
             }),
@@ -191,7 +187,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/hi/",
               f: (_) => "hello",
             }),
@@ -218,7 +214,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options()({
+            map()({
               path: "/test/:id/hi/",
               f: (_) => "hello",
             }),
@@ -243,7 +239,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options()({
+            map()({
               path: "/test/:id/hi/",
               f: (_) => "hello",
             }),
@@ -262,7 +258,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/:test/:id/hi/",
               f: (_) => "hello",
             }),
@@ -279,7 +275,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/:test/:id/hi/",
               f: (_) => "hello",
             }),
@@ -305,7 +301,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options()({
+            map()({
               path: "/:test/:id/hi/",
               f: (_) => "hello",
             }),
@@ -330,7 +326,7 @@ test(
       new Function(
         ` return ${
           slicer(
-            options()({
+            map()({
               path: "/:test/:id/hi/",
               f: (_) => "hello",
             }),

@@ -1,11 +1,11 @@
-import { FunRouterOptions } from "../types.ts";
+import { FunRouterOptions } from "../../../types.ts";
 import { ObjectRawResponseStatic } from "./types.ts";
 import syncCheckDir from "./syncCheckDir.ts";
 import bunSyncCheckDir from "./syncCheckDir_Bun.ts";
 import denoCheckRead from "./checkRead_Deno.ts";
 import staticPaths from "./staticPaths.ts";
-import mime from "../components/util/mime.ts";
-import joiner from "../components/util/joiner.ts";
+import mime from "../../util/mime.ts";
+import joiner from "../../../../util/joiner.mjs";
 import atlas from "../builder/atlas/main1.ts";
 import solver from "../builder/solver1.ts";
 import split from "../builder/atlas/splitter.ts";

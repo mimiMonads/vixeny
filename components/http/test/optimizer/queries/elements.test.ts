@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import test from "node:test";
-import elements from "../../../components/queries/elements.ts";
+import elements from "../../../src/queries/elements.ts";
 
 test(
   "queries",

@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import test from "node:test";
 
-import resolveComposer from "../../components/optimizer/resolveComposer.ts";
+import resolveComposer from "../../src/optimizer/resolveComposer.ts";
 
 test(
   "check for async",

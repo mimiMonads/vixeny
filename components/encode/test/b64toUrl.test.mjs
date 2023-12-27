@@ -9,4 +9,4 @@ import test from "../../util/test.mjs";
       describe(convert("U28")).toEqual("U28=")),
     test("Returns null for invalid base64url strings", () =>
       describe(convert("Invalid*String")).toEqual(null))
-))(test.test)(test.describe)
+))(test.test)(test.describe);

@@ -1,7 +1,9 @@
 import { ParamsMethod } from "../builder/types.ts";
 
-import { JsonOptions, JsonType} from "../../../../encode/src/stringify/types.ts";
-
+import {
+  JsonOptions,
+  JsonType,
+} from "../../../../encode/src/stringify/types.ts";
 
 import { SignVerifyOptions } from "../tokens/types.ts";
 import { JsonSinger } from "../tokens/jSigner.ts";

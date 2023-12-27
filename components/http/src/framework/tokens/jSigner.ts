@@ -3,7 +3,10 @@ import signer from "./signer.ts";
 import stringify from "../../../../encode/src/stringify/safe.mjs";
 
 import { SignVerifyOptions } from "./types.ts";
-import { JsonStringify, JsonType } from "../../../../encode/src/stringify/types.ts";
+import {
+  JsonStringify,
+  JsonType,
+} from "../../../../encode/src/stringify/types.ts";
 export type JsonSinger = SignVerifyOptions & {
   schema?: JsonStringify;
 };

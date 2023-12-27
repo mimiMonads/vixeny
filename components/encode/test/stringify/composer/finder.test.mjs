@@ -1,4 +1,4 @@
-import convert from "../../../src/stringify/composer/finder.mjs"; 
+import convert from "../../../src/stringify/composer/finder.mjs";
 import test from "../../../../util/test.mjs";
 
 ((test) => (describe) => (
@@ -15,5 +15,7 @@ import test from "../../../../util/test.mjs";
       },
       required: ["hello"],
     }))
-    .toEqual(`"{" +'"hello":{' + '"hello":' + (typeof o.hello.hello === "string"?str(o.hello.hello):'null') + "}" + "}"`))
-))(test.test)(test.describe)
+      .toEqual(
+        `"{" +'"hello":{' + '"hello":' + (typeof o.hello.hello === "string"?str(o.hello.hello):'null') + "}" + "}"`,
+      ))
+))(test.test)(test.describe);

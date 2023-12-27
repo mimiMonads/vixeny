@@ -1,13 +1,13 @@
 import assert from "node:assert";
 import test from "node:test";
-import main from "../../../optimizer/staticFiles/main.ts";
+import main from "../../../src/framework/optimizer/staticFiles/main.ts";
 
 test(
   "test",
   () =>
     assert.deepStrictEqual(
-      main({ type: "fileServer", path: "./test/", name: "/hello", mime: false })
-        .some((x) => x.path === "/hello/fun.test.ts"),
+      main({ type: "fileServer", path: "./misc/", name: "/hello", mime: false })
+        .some((x) => x.path === "/hello/logo.png"),
       true,
     ),
 );
@@ -16,8 +16,8 @@ test(
   "test",
   () =>
     assert.deepStrictEqual(
-      main({ type: "fileServer", path: "./test/", name: "/", mime: false })
-        .some((x) => x.path === "/fun.test.ts"),
+      main({ type: "fileServer", path: "./misc/", name: "/", mime: false })
+        .some((x) => x.path === "/logo.png"),
       true,
     ),
 );
@@ -28,10 +28,10 @@ test(
     assert.deepStrictEqual(
       main({
         type: "fileServer",
-        path: "./test/",
+        path: "./misc/",
         name: "/hello/nested",
         mime: false,
-      }).some((x) => x.path === "/hello/nested/fun.test.ts"),
+      }).some((x) => x.path === "/hello/nested/logo.png"),
       true,
     ),
 );

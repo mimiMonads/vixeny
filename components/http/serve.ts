@@ -31,5 +31,3 @@ export default ((o?: FunRouterOptions) => (routes: Petition[]) =>
         ),
       ),
     )) as Vixeny;
-
-

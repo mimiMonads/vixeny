@@ -1,5 +1,5 @@
-import multi from "../../../components/parameters/multi.ts";
-import options from "../../../components/parameters/map.ts";
+import multi from "../../../src/parameters/multi.ts";
+import map from "../../../src/parameters/map.ts";
 import assert from "node:assert";
 import test from "node:test";
 
@@ -10,7 +10,7 @@ test(
       new Function(
         ` return ${
           multi(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/:hello",
               f: (_) => "hello",
             }),
@@ -30,7 +30,7 @@ test(
       new Function(
         ` return ${
           multi(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/:test/:id/:hello",
               f: (_) => "hello",
             }),
@@ -51,7 +51,7 @@ test(
       new Function(
         ` return ${
           multi(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/:test/:id/hello",
               f: (_) => "hello",
             }),

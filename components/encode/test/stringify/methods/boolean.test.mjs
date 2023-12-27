@@ -11,40 +11,37 @@ import test from "../../../../util/test.mjs";
       const: true,
       path: ".hello",
     }))
-    .toEqual(`'"hello":' + true`)),
-
-  test("hello - Handles required boolean with name and path", () =>
-    describe(convert({
-      type: "boolean",
-      name: "hello",
-      required: true,
-      path: ".hello",
-    }))
-    .toEqual(`'"hello":'+( typeof o.hello === "boolean"?o.hello:'null')`)),
-
-  test("hello - Handles required boolean with default value", () =>
-    describe(convert({
-      type: "boolean",
-      name: "hello",
-      required: true,
-      default: true,
-      path: ".hello",
-    }))
-    .toEqual(`'"hello":'+( typeof o.hello === "boolean"?o.hello:'true')`)),
-
-  test("hello - Compares required and optional boolean with default value", () =>
-    describe(convert({
-      type: "boolean",
-      name: "hello",
-      required: true,
-      default: true,
-      path: ".hello",
-    }))
-    .toEqual(convert({
-      type: "boolean",
-      name: "hello",
-      required: false,
-      default: true,
-      path: ".hello",
-    })))
-))(test.test)(test.describe)
+      .toEqual(`'"hello":' + true`)),
+    test("hello - Handles required boolean with name and path", () =>
+      describe(convert({
+        type: "boolean",
+        name: "hello",
+        required: true,
+        path: ".hello",
+      }))
+        .toEqual(`'"hello":'+( typeof o.hello === "boolean"?o.hello:'null')`)),
+    test("hello - Handles required boolean with default value", () =>
+      describe(convert({
+        type: "boolean",
+        name: "hello",
+        required: true,
+        default: true,
+        path: ".hello",
+      }))
+        .toEqual(`'"hello":'+( typeof o.hello === "boolean"?o.hello:'true')`)),
+    test("hello - Compares required and optional boolean with default value", () =>
+      describe(convert({
+        type: "boolean",
+        name: "hello",
+        required: true,
+        default: true,
+        path: ".hello",
+      }))
+        .toEqual(convert({
+          type: "boolean",
+          name: "hello",
+          required: false,
+          default: true,
+          path: ".hello",
+        })))
+))(test.test)(test.describe);

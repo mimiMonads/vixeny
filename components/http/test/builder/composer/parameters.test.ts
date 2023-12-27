@@ -1,5 +1,5 @@
-import map from "../../../builder/composer/map.ts";
-import parameter from "../../../builder/composer/parameters.ts";
+import map from "../../../src/framework/builder/composer/map.ts";
+import parameter from "../../../src/framework/builder/composer/parameters.ts";
 import assert from "node:assert";
 import test from "node:test";
 

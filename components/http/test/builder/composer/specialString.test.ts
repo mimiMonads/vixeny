@@ -1,4 +1,4 @@
-import specialString from "../../../builder/composer/specialString.ts";
+import specialString from "../../../src/framework/builder/composer/specialString.ts";
 import assert from "node:assert";
 import test from "node:test";
 

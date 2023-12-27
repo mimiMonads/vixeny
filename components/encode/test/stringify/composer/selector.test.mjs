@@ -9,5 +9,5 @@ import test from "../../../../util/test.mjs";
       required: false,
       const: "world",
     }]))
-    .toEqual(`'"hello2":"world"'`))
-))(test.test)(test.describe)
+      .toEqual(`'"hello2":"world"'`))
+))(test.test)(test.describe);

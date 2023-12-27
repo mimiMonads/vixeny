@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import test from "node:test";
-import methods from "../../../builder/composer/methods1.ts";
+import methods from "../../../src/framework/builder/composer/methods1.ts";
 
 test(
   "composer",

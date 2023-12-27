@@ -11,22 +11,8 @@
  *  Thanks and have fun and remember that we are in alhpa
  */
 
-import { FunRouterOptions, Vixeny } from "./types.ts";
-import { Petition } from "./optimizer/types.ts";
-import optimizer from "./optimizer/optimize.ts";
-import atlas from "./builder/atlas/main1.ts";
-import split from "./builder/atlas/splitter.ts";
-import solver from "./builder/solver1.ts";
+import serve from "./components/http/serve.ts";
 
-export default ((o?: FunRouterOptions) => (routes: Petition[]) =>
-  ((re) =>
-    ((map) =>
-      ((s) => (r: Request) => map[s(r)](r))(
-        solver(o)(re),
-      ))([...re[3]]))(
-      atlas(o)(
-        split(o)(
-          optimizer(o)(routes),
-        ),
-      ),
-    )) as Vixeny;
+import { Vixeny } from "./components/http/types.ts";
+
+export default serve as Vixeny;

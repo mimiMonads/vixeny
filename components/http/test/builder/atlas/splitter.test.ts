@@ -1,8 +1,8 @@
 import assert from "node:assert";
 import test from "node:test";
 import paths from "../../util/paths.ts";
-import optimize from "../../../optimizer/optimize.ts";
-import split from "../../../builder/atlas/splitter.ts";
+import optimize from "../../../src/framework/optimizer/optimize.ts";
+import split from "../../../src/framework/builder/atlas/splitter.ts";
 
 test(
   "arraySwap",
@@ -84,7 +84,7 @@ test(
           },
           { path: "/hello/*", f: () => "wild" },
           { path: "/hello/hello/*", f: () => "wild" },
-          { type: "fileServer", path: "./test/", name: "/static/" },
+          { type: "fileServer", path: "./components/", name: "/static/" },
         ]),
       )[1][2],
       [

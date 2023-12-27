@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import test from "node:test";
-import map from "../../../builder/atlas/map.ts";
+import map from "../../../src/framework/builder/atlas/map.ts";
 
 test(
   "position",

@@ -1,5 +1,5 @@
-import one from "../../../components/parameters/one.ts";
-import options from "../../../components/parameters/map.ts";
+import one from "../../../src/parameters/one.ts";
+import map from "../../../src/parameters/map.ts";
 import assert from "node:assert";
 import test from "node:test";
 
@@ -11,7 +11,7 @@ test(
       new Function(
         ` return ${
           one(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id",
               f: (_) => "hello",
             }),
@@ -28,7 +28,7 @@ test(
       new Function(
         ` return ${
           one(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id",
               f: (_) => "hello",
             }),
@@ -53,7 +53,7 @@ test(
         )
     )(
       new Function(
-        ` return ${one(options()({ path: "/test/:id", f: (_) => "hello" }))}`,
+        ` return ${one(map()({ path: "/test/:id", f: (_) => "hello" }))}`,
       )(),
     ),
 );
@@ -71,7 +71,7 @@ test(
         )
     )(
       new Function(
-        ` return ${one(options()({ path: "/test/:id", f: (_) => "hello" }))}`,
+        ` return ${one(map()({ path: "/test/:id", f: (_) => "hello" }))}`,
       )(),
     ),
 );
@@ -85,7 +85,7 @@ test(
       new Function(
         ` return ${
           one(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/",
               f: (_) => "hello",
             }),
@@ -102,7 +102,7 @@ test(
       new Function(
         ` return ${
           one(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/",
               f: (_) => "hello",
             }),
@@ -127,7 +127,7 @@ test(
         )
     )(
       new Function(
-        ` return ${one(options()({ path: "/test/:id/", f: (_) => "hello" }))}`,
+        ` return ${one(map()({ path: "/test/:id/", f: (_) => "hello" }))}`,
       )(),
     ),
 );
@@ -145,7 +145,7 @@ test(
         )
     )(
       new Function(
-        ` return ${one(options()({ path: "/test/:id/", f: (_) => "hello" }))}`,
+        ` return ${one(map()({ path: "/test/:id/", f: (_) => "hello" }))}`,
       )(),
     ),
 );
@@ -159,7 +159,7 @@ test(
       new Function(
         ` return ${
           one(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/hi",
               f: (_) => "hello",
             }),
@@ -176,7 +176,7 @@ test(
       new Function(
         ` return ${
           one(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/hi",
               f: (_) => "hello",
             }),
@@ -201,9 +201,7 @@ test(
         )
     )(
       new Function(
-        ` return ${
-          one(options()({ path: "/test/:id/hi", f: (_) => "hello" }))
-        }`,
+        ` return ${one(map()({ path: "/test/:id/hi", f: (_) => "hello" }))}`,
       )(),
     ),
 );
@@ -221,9 +219,7 @@ test(
         )
     )(
       new Function(
-        ` return ${
-          one(options()({ path: "/test/:id/hi", f: (_) => "hello" }))
-        }`,
+        ` return ${one(map()({ path: "/test/:id/hi", f: (_) => "hello" }))}`,
       )(),
     ),
 );
@@ -237,7 +233,7 @@ test(
       new Function(
         ` return ${
           one(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/hi/",
               f: (_) => "hello",
             }),
@@ -254,7 +250,7 @@ test(
       new Function(
         ` return ${
           one(
-            options({ hasName: "http://localhost:8080/" })({
+            map({ hasName: "http://localhost:8080/" })({
               path: "/test/:id/hi/",
               f: (_) => "hello",
             }),
@@ -279,9 +275,7 @@ test(
         )
     )(
       new Function(
-        ` return ${
-          one(options()({ path: "/test/:id/hi/", f: (_) => "hello" }))
-        }`,
+        ` return ${one(map()({ path: "/test/:id/hi/", f: (_) => "hello" }))}`,
       )(),
     ),
 );
@@ -299,9 +293,7 @@ test(
         )
     )(
       new Function(
-        ` return ${
-          one(options()({ path: "/test/:id/hi/", f: (_) => "hello" }))
-        }`,
+        ` return ${one(map()({ path: "/test/:id/hi/", f: (_) => "hello" }))}`,
       )(),
     ),
 );

@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import test from "node:test";
 
-import mime from "../../../optimizer/staticFiles/mime.ts";
+import mime from "../../../src/framework/optimizer/staticFiles/mime.ts";
 
 test(
   "hello",

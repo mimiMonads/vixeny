@@ -1,10 +1,9 @@
-import verifier from "../../../components/tokens/verifier.ts";
-import signer from "../../../components/tokens/signer.ts";
-
+import verifier from "../../../src/framework/tokens/verifier.ts";
+import signer from "../../../src/framework/tokens/signer.ts";
 import assert from "node:assert";
 import test from "node:test";
-import jSigner from "../../../components/tokens/jSigner.ts";
-import jVerify from "../../../components/tokens/jVerify.ts";
+import jSigner from "../../../src/framework/tokens/jSigner.ts";
+import jVerify from "../../../src/framework/tokens/jVerify.ts";
 
 test(
   "test",

@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import test from "node:test";
-import finder from "../../../components/queries/finder.ts";
+import finder from "../../../src/queries/finder.ts";
 
 test(
   "queries",
