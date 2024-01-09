@@ -13,8 +13,7 @@ import checkAsync from "./recursiveCheckAsync.ts";
 import branch from "./branch/main.ts";
 import { SignVerifyOptions } from "../tokens/types.ts";
 import { FunRouterOptions } from "../../../types.ts";
-import { ObjectRawResponseCommon, RequestArguments } from "./types.ts";
-import { ResolveOptions } from "./resolve/types.ts";
+import { CommonRequestMorphism, RequestMorphism} from "./types.ts";
 import { BranchOptions } from "./branch/types.ts";
 
 export type specialOptions = {
@@ -23,10 +22,10 @@ export type specialOptions = {
 } & FunRouterOptions;
 
 export default (o?: specialOptions) =>
-(f: ObjectRawResponseCommon) =>
+(f: CommonRequestMorphism  | RequestMorphism) =>
 (ar: string[]) =>
   ar.length === 0 && !(o && "branch" in o)
-    ? ((r: Request) => r) as unknown as (r: Request) => RequestArguments
+    ? ((r: Request) => r) 
     : (
       (el) => el
     )(
@@ -54,9 +53,9 @@ export default (o?: specialOptions) =>
                 (x) =>
                   x.type === 1
                     ? x.name === "param"
-                      ? params(o)(f as ObjectRawResponseCommon)
+                      ? params(o)(f)
                       : x.name === "query"
-                      ? query(o)(f as ObjectRawResponseCommon)
+                      ? query(o)(f)
                       : x.name === "sign"
                       ? "signer" in f
                         ? signer(f.signer as SignVerifyOptions)
@@ -77,22 +76,22 @@ export default (o?: specialOptions) =>
                         ) as unknown ?? ((I: Record<string, unknown>) => I)
                       : x.name === "jVerify"
                       ? "jVerifier" in f
-                        ? jVerify(f.verifier as SignVerifyOptions)
+                        ? jVerify(f.jVerifier as SignVerifyOptions)
                         : console.warn(
                           `"jVerify" is being used without "jVerify Options", use " delete: ["jVerifier"]`,
                         ) as unknown ?? (() => null)
                       : x.name === "cookie"
                       ? cookies(f)
                       : x.name === "resolve"
-                      ? "resolve" in f
-                        ? resolve(o)(f.path)(f.resolve as ResolveOptions)
+                      ? "resolve" in f && f.resolve
+                        ? resolve(o)(f.path)(f.resolve)
                         : console.warn(
                           `"resolve" is being used without "resolve Options", use " delete: ["resolve"]`,
                         ) as unknown ?? (() => null)
                       : x.name === "branch"
-                      ? "branch" in f
+                      ? "branch" in f && f.branch
                         ? branch({ ...o, branch: true })(f.path)(
-                          f.branch as BranchOptions,
+                          f.branch ,
                         ) as unknown as null
                         : console.warn(
                           `"branch" is being used without "branch Options", use " delete: ["branch"]`,

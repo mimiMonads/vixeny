@@ -1,9 +1,9 @@
-import { ObjectRawResponseCommon } from "../framework/optimizer/types.ts";
+import { CommonRequestMorphism, RequestMorphism } from "../framework/optimizer/types.ts";
 import { FunRouterOptions } from "../../types.ts";
 import { info } from "./types.ts";
 
 export default (options?: FunRouterOptions) =>
-(f: ObjectRawResponseCommon): info =>
+(f: CommonRequestMorphism | RequestMorphism): info =>
   (
     (list) => (
       ((startsWith) =>

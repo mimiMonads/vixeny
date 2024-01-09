@@ -73,27 +73,13 @@ test(
       "2",
     ),
 );
-test(
-  "Sign",
-  (_) =>
-    assert.deepStrictEqual(
-      (aComposer()({
-        path: "/test/",
-        signer: { seed: "test" },
-        f: (r) => r.sign("hello"),
-      })(["sign"]))(new Request("http://localhost:8080/test/")).sign(
-        "12345678955",
-      ),
-      signer({ seed: "test" })("12345678955"),
-    ),
-);
+
 test(
   "Date",
   (_) =>
     assert.deepStrictEqual(
       typeof (aComposer()({
         path: "/test/",
-        signer: { seed: "test" },
         f: (r) => r.date.toString(),
       })(["date"]))(new Request("http://localhost:8080/test/")).date,
       "number",
@@ -105,7 +91,6 @@ test(
     assert.deepStrictEqual(
       typeof (aComposer()({
         path: "/test/",
-        signer: { seed: "test" },
         f: (r) => r.randomNumber.toString(),
       })(["randomNumber"]))(new Request("http://localhost:8080/test/"))
         .randomNumber,
@@ -118,7 +103,6 @@ test(
     assert.deepStrictEqual(
       typeof (aComposer()({
         path: "/test/",
-        signer: { seed: "test" },
         f: (r) => r.hash,
       })(["hash"]))(new Request("http://localhost:8080/test/")).hash,
       "string",
@@ -130,7 +114,6 @@ test(
     assert.deepStrictEqual(
       (aComposer()({
         path: "/test/",
-        signer: { seed: "test" },
         f: (r) => r.cookie?.id ?? "not_found",
       })(["cookie"]))(
         new Request("http://localhost:8080/test/", {

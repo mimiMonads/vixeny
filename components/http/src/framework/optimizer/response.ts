@@ -1,5 +1,5 @@
 import { FunRouterOptions } from "../../../types.ts";
-import { ObjectRawCommonRequest, ObjectRawResponseCommon } from "./types.ts";
+import { CommonRequestMorphism, RequestMorphism } from "./types.ts";
 import checkAsync from "./recursiveCheckAsync.ts";
 import checker from "./checker.ts";
 import aComposer from "./aComposer.ts";
@@ -9,25 +9,25 @@ import jsonComposer from "../../../../encode/jsonString.mjs";
 import elements from "../../util/elements.ts";
 
 export default (o?: FunRouterOptions) =>
-(f: ObjectRawResponseCommon | ObjectRawCommonRequest) =>
+(f: CommonRequestMorphism  | RequestMorphism) =>
   ((elementsUsed) =>
     (
       (table) =>
         ((composition) =>
           (table.headers && table.json)
             ? composition(table.json)(table.headers)(f.f)(
-              aComposer(o)(f as ObjectRawResponseCommon)(elementsUsed),
+              aComposer(o)(f )(elementsUsed),
             )
             : table.headers
             ? composition(table.headers)(f.f)(
-              aComposer(o)(f as ObjectRawResponseCommon)(elementsUsed),
+              aComposer(o)(f )(elementsUsed),
             )
             : table.json
             ? composition(table.json)(f.f)(
-              aComposer(o)(f as ObjectRawResponseCommon)(elementsUsed),
+              aComposer(o)(f )(elementsUsed),
             )
             : composition(f.f)(
-              aComposer(o)(f as ObjectRawResponseCommon)(elementsUsed),
+              aComposer(o)(f)(elementsUsed),
             ))(
             "type" in f
               ? new Function(`
@@ -53,7 +53,7 @@ export default (o?: FunRouterOptions) =>
     )(
       {
         async: f.f.constructor.name === "AsyncFunction",
-        asyncResolve: checkAsync(f as ObjectRawResponseCommon),
+        asyncResolve: checkAsync(f),
         headers: "headings" in f
           ? typeof f.headings?.headers == "string"
             ? {
@@ -66,7 +66,7 @@ export default (o?: FunRouterOptions) =>
             : { ...f.headings }
           : null,
         json: "json" in f
-          ? jsonComposer({ type: "safe" })(f.json.scheme)
+          ? null //jsonComposer({ type: "safe" })(f.json.scheme)
           : null,
       },
     ))(

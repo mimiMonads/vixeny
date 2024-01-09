@@ -1,12 +1,10 @@
-import { RawCommonRequest, RequestArguments } from "../types.ts";
+import { Morphism, PetitionOptions } from "../types.ts";
 
-export type ResolveOptions = {
-  name: string;
-  f: (f: RequestArguments) => unknown;
-} & RawCommonRequest;
+export type ResolveOption = (Morphism & { name: string , options?: PetitionOptions});
+export type ResolveOptions = ResolveOption[];
 
 export type ResponseResponse = (r: Request) => unknown;
 
 export type TypeResolveOptions =
-  | ({ async: false; f: (f: RequestArguments) => BodyInit })[]
-  | ({ async: true; f: (f: RequestArguments) => Promise<BodyInit> })[];
+  | ({ async: false; f: (f: any) => BodyInit })[]
+  | ({ async: true; f: (f: any) => Promise<BodyInit> })[];

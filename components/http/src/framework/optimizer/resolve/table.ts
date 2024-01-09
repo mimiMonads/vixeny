@@ -2,33 +2,14 @@ import elements from "../../../util/elements.ts";
 import { FunRouterOptions } from "../../../../types.ts";
 import aComposer from "../aComposer.ts";
 import checker from "../checker.ts";
-import { ObjectRawResponseCommon } from "../types.ts";
+import { CommonRequestMorphism } from "../types.ts";
 import { ResolveOptions } from "./types.ts";
 
-export default (debug: boolean) =>
+export default 
 (o?: FunRouterOptions) =>
 (path: string) =>
-(table: ResolveOptions[]) =>
-  debug === true
-    ? table
-      .map((x) => ({ ...x, path: path }))
-      .map((x) => ({
-        name: x.name,
-        f: (
-          (composed) =>
-            x.f.constructor.name === "AsyncFunction" ||
-              composed.constructor.name === "AsyncFunction"
-              ? `((a=>k=>async r=>await k(await a(r)))(${composed.toString()})(${x.f.toString()}))`
-              : `((a=>k=>r=>k(a(r)))(${composed.toString()})(${x.f.toString()}))`
-        )(
-          aComposer(o)(x as ObjectRawResponseCommon)(
-            checker(x.options?.remove ?? [])(elements)(x.options?.add ?? [])(
-              x.f.toString(),
-            ),
-          ) as (r: Request) => any | Promise<any>,
-        ),
-      }))
-    : table
+(table: ResolveOptions) =>
+ table
       .map((x) => ({ ...x, path: path }))
       .map((x) => ({
         name: x.name,
@@ -43,8 +24,8 @@ export default (debug: boolean) =>
               )(x.f)
         )(
           (typeof x.options?.only !== "undefined" && x.options.only.length > 0)
-            ? aComposer(o)(x as ObjectRawResponseCommon)(x.options.only)
-            : aComposer(o)(x as ObjectRawResponseCommon)(
+            ? aComposer(o)(x as CommonRequestMorphism)(x.options.only)
+            : aComposer(o)(x as CommonRequestMorphism)(
               checker(x.options?.remove ?? [])(elements)(x.options?.add ?? [])(
                 x.f.toString(),
               ),

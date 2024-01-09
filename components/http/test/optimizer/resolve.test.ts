@@ -8,9 +8,9 @@ test(
   async () =>
     assert.deepStrictEqual(
       await resolveComposer()({
-        name: "first",
-        path: "/",
-        f: async (f) => await (await f.req.blob()).text(),
+        first: {
+          f: async (f) => await (await f.req.blob()).text(),
+        },
       })(
         new Request("http://hi.com/", { method: "POST", body: "hello" }),
       ) as Record<string, string>,
@@ -24,9 +24,9 @@ test(
   () =>
     assert.deepStrictEqual(
       resolveComposer()({
-        name: "hi",
-        path: "/",
+        hi: {
         f: () => "hello",
+      }
       })(new Request("http://hi.com/")),
       { hi: "hello" },
     ),
@@ -38,11 +38,9 @@ test(
     assert.deepStrictEqual(
       await resolveComposer(
         { mutable: { hi: "hello" } },
-      )({
-        name: "resolve",
-        path: "/",
+      )({resolve :{
         f: (f) => f.mutable,
-      })(new Request("http://hi.com/")),
+      }})(new Request("http://hi.com/")),
       { resolve: { hi: "hello" } },
     ),
 );
@@ -51,17 +49,16 @@ test(
   async () =>
     assert.deepStrictEqual(
       await resolveComposer()({
-        name: "first",
-        resolve: [{
-          name: "second",
+        first :{
+        resolve: {
+          second : {
           f: async (f) => (await f.req.blob()).text(),
-        }],
-        path: "/",
+        }},
         options: {
           add: ["resolve"],
         },
         f: (f) => f.resolve,
-      })(new Request("http://hi.com/", { method: "POST", body: "hello" })),
+      }})(new Request("http://hi.com/", { method: "POST", body: "hello" })),
       { first: { second: "hello" } },
     ),
 );
@@ -71,14 +68,12 @@ test(
   () =>
     assert.deepStrictEqual(
       resolveComposer()({
-        name: "first",
-        resolve: {
-          name: "second",
+        first : {
+        resolve: { second :{
           f: (f) => "hello",
-        },
-        path: "/",
+        }},
         f: (f) => f.resolve,
-      })(new Request("http://hi.com/")),
+      }})(new Request("http://hi.com/")),
       { first: { second: "hello" } },
     ),
 );

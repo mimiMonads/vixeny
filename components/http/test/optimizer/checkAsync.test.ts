@@ -30,10 +30,9 @@ test(
     assert.deepStrictEqual(
       checkAsync({
         path: "/",
-        resolve: {
-          name: "hi",
+        resolve:{ hi: {
           f: async (f) => await f.req.blob(),
-        },
+        }},
         f: () => "hi",
       }),
       true,
@@ -45,10 +44,9 @@ test(
     assert.deepStrictEqual(
       checkAsync({
         path: "/",
-        resolve: {
-          name: "hi",
+        resolve:{ hi: {
           f: () => "hi",
-        },
+        }},
         f: () => "hi",
       }),
       false,
@@ -60,16 +58,16 @@ test(
     assert.deepStrictEqual(
       checkAsync({
         path: "/",
-        resolve: [
-          {
-            name: "hi",
+        resolve:{ 
+          "hi" :{
+           
             f: () => "ji",
           },
-          {
-            name: "hi2",
+          "hi2" :{
+  
             f: async (f) => await f.req.blob(),
           },
-        ],
+        },
         f: () => "hi",
       }),
       true,
@@ -81,16 +79,15 @@ test(
     assert.deepStrictEqual(
       checkAsync({
         path: "/",
-        resolve: [
-          {
-            name: "hi",
+        resolve: {
+          hi :{
+
             f: () => "ji",
           },
-          {
-            name: "hi2",
+          hi2 :{
             f: () => "hi",
           },
-        ],
+        },
         f: () => "hi",
       }),
       false,

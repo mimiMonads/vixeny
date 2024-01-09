@@ -2,11 +2,10 @@ import resolver from "../../src/framework/optimizer/resolve/main.ts";
 
 import { FunRouterOptions } from "../../../../types.ts";
 
-import { ResolveOptions as ResolveIncomplete } from "../../../../types.ts";
+import { Morphism, MorphismMap } from "../framework/optimizer/types.ts";
 
-type ResolveOptions = {
-  path: string;
-} & ResolveIncomplete;
+type ResolveOptions = {[key: string]: ({
+} & Morphism)};
 
 type ResolveSetter = {
   mutable?: Record<string, unknown>;
@@ -17,6 +16,6 @@ export default (o?: ResolveSetter) => (f: ResolveOptions) =>
     ? (
       (m) =>
         ((f) => async (r: Request) =>
-          await f({ r: r, m: m } as unknown as Request))(resolver(o)(f.path)(f))
+          await f({ r: r, m: m } as unknown as Request))(resolver(o)("/")(f))
     )({ ...o.mutable })
-    : resolver(o)(f.path)(f);
+    : resolver(o)("/")(f);

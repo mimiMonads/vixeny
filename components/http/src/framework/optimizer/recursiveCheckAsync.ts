@@ -1,27 +1,20 @@
-// deno-lint-ignore-file
+import { CommonRequestMorphism, RequestMorphism } from "./types.ts";
 
-import { ObjectRawCommonRequest, ObjectRawResponseCommon } from "./types.ts";
-
-type RecFunc = (f: ObjectRawResponseCommon) => boolean;
+type RecFunc = (f: CommonRequestMorphism | RequestMorphism) => boolean ;
 
 export default ((f: (x: RecFunc) => RecFunc) =>
   ((x: (arg: any) => any) => (v: any) => x(x)(v))(
     (x: (arg: any) => any) => (v: any) =>
-      f((y: ObjectRawResponseCommon) => x(x)(y))(v),
+      f((y: CommonRequestMorphism | RequestMorphism) => x(x)(y))(v),
   ))(
-    (solver: RecFunc) => (f: ObjectRawResponseCommon) =>
+    (solver: RecFunc) => (f: CommonRequestMorphism | RequestMorphism) =>
       f.f.constructor.name === "AsyncFunction"
         ? true
         : f.f.constructor.name === "Function" &&
             typeof f.resolve === "undefined"
         ? false
-        : (!Array.isArray(f.resolve) && f.resolve &&
-          f.resolve.f.constructor.name === "AsyncFunction") ||
-          ("resolve" in f && Array.isArray(f.resolve) && f.resolve.some((x) =>
-            solver(x as unknown as ObjectRawResponseCommon)
-          )) ||
-          ("branch" in f && Array.isArray(f.branch) &&
-            f.branch.some((x) =>
-              solver(x as unknown as ObjectRawResponseCommon)
-            )),
-  ) as unknown as (f: ObjectRawResponseCommon) => boolean;
+        : ("resolve" in f && f.resolve &&
+            Object.keys(f.resolve).some(ob =>  f.resolve && solver(f.resolve[ob] as unknown as CommonRequestMorphism | RequestMorphism))) ??
+          ("branch" in f && f.branch &&
+            Object.keys(f.branch).some(ob =>  f.branch && solver(f.branch[ob] as unknown as CommonRequestMorphism | RequestMorphism))) ?? false
+  ) as unknown as (f: CommonRequestMorphism | RequestMorphism) => boolean;

@@ -1,1 +1,126 @@
-{"benchmarks":[{"name":"Jose","group":"Sign","time":500,"warmup":true,"baseline":false,"async":true,"stats":{"n":19956,"min":18355,"max":504276,"jit":[3803774,172574,124434,113583,113824,83326,95329,71033,116538,111529],"p75":23303,"p99":73528,"avg":25066,"p995":202319,"p999":359905}},{"name":"Vixeny JWT","group":"Sign","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":32943,"min":9438,"max":660829,"jit":[215654,113262,150752,120566,51046,83156,44122,43191,64661,37010],"p75":18254,"p99":34355,"avg":15187,"p995":38843,"p999":167925}},{"name":"Jose","group":"verify","time":500,"warmup":true,"baseline":false,"async":true,"stats":{"n":20236,"min":19586,"max":901871,"jit":[980679,86974,62267,67467,56075,56065,51015,50235,74159,87925],"p75":23384,"p99":68599,"avg":24722,"p995":83237,"p999":531607}},{"name":"Vixeny JWT","group":"verify","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":28532,"min":12092,"max":308759,"jit":[692338,105127,31639,26540,33983,25739,26229,24756,77626,57368],"p75":16370,"p99":41128,"avg":17530,"p995":44253,"p999":66324}}],"cpu":"AMD Ryzen 7 4700U with Radeon Graphics","runtime":"deno 1.39.1 (x86_64-unknown-linux-gnu)"}
+{
+  "benchmarks": [
+    {
+      "name": "Jose",
+      "group": "Sign",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": true,
+      "stats": {
+        "n": 19956,
+        "min": 18355,
+        "max": 504276,
+        "jit": [
+          3803774,
+          172574,
+          124434,
+          113583,
+          113824,
+          83326,
+          95329,
+          71033,
+          116538,
+          111529
+        ],
+        "p75": 23303,
+        "p99": 73528,
+        "avg": 25066,
+        "p995": 202319,
+        "p999": 359905
+      }
+    },
+    {
+      "name": "Vixeny JWT",
+      "group": "Sign",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 32943,
+        "min": 9438,
+        "max": 660829,
+        "jit": [
+          215654,
+          113262,
+          150752,
+          120566,
+          51046,
+          83156,
+          44122,
+          43191,
+          64661,
+          37010
+        ],
+        "p75": 18254,
+        "p99": 34355,
+        "avg": 15187,
+        "p995": 38843,
+        "p999": 167925
+      }
+    },
+    {
+      "name": "Jose",
+      "group": "verify",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": true,
+      "stats": {
+        "n": 20236,
+        "min": 19586,
+        "max": 901871,
+        "jit": [
+          980679,
+          86974,
+          62267,
+          67467,
+          56075,
+          56065,
+          51015,
+          50235,
+          74159,
+          87925
+        ],
+        "p75": 23384,
+        "p99": 68599,
+        "avg": 24722,
+        "p995": 83237,
+        "p999": 531607
+      }
+    },
+    {
+      "name": "Vixeny JWT",
+      "group": "verify",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 28532,
+        "min": 12092,
+        "max": 308759,
+        "jit": [
+          692338,
+          105127,
+          31639,
+          26540,
+          33983,
+          25739,
+          26229,
+          24756,
+          77626,
+          57368
+        ],
+        "p75": 16370,
+        "p99": 41128,
+        "avg": 17530,
+        "p995": 44253,
+        "p999": 66324
+      }
+    }
+  ],
+  "cpu": "AMD Ryzen 7 4700U with Radeon Graphics",
+  "runtime": "deno 1.39.1 (x86_64-unknown-linux-gnu)"
+}

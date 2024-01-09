@@ -1,1 +1,93 @@
-{"benchmarks":[{"name":"new URL","group":"One query","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":42,"min":1383.3875,"max":2514.6211,"jit":[124503,13826,13956,6422,5981,7033,5951,5841,18655,7735],"p75":1613.9669,"p99":2514.6211,"avg":1576.4272071428575,"p995":2514.6211,"p999":2514.6211}},{"name":"Vixeny query","group":"One query","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":592,"min":72.4529,"max":196.9063,"jit":[117771,8566,10400,982,671,621,621,6833,791,592],"p75":85.4693,"p99":162.2983,"avg":85.85217871621617,"p995":182.0745,"p999":196.9063}},{"name":"new URL","group":"multi query","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":42,"min":1537.3452,"max":2116.3882,"jit":[331191,4929,2765,2004,1854,5390,1784,2004,1973,1923],"p75":1569.5656,"p99":2116.3882,"avg":1581.6741976190478,"p995":2116.3882,"p999":2116.3882}},{"name":"Vixeny query","group":"multi query","time":500,"warmup":true,"baseline":false,"async":false,"stats":{"n":338,"min":138.4928,"max":252.1308,"jit":[279224,6512,7765,1232,912,892,852,921,851,852],"p75":151.2126,"p99":204.0286,"avg":152.61964940828398,"p995":221.9122,"p999":252.1308}}],"cpu":"AMD Ryzen 7 4700U with Radeon Graphics","runtime":"bun 1.0.20 (x64-linux)"}
+{
+  "benchmarks": [
+    {
+      "name": "new URL",
+      "group": "One query",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 42,
+        "min": 1383.3875,
+        "max": 2514.6211,
+        "jit": [
+          124503,
+          13826,
+          13956,
+          6422,
+          5981,
+          7033,
+          5951,
+          5841,
+          18655,
+          7735
+        ],
+        "p75": 1613.9669,
+        "p99": 2514.6211,
+        "avg": 1576.4272071428575,
+        "p995": 2514.6211,
+        "p999": 2514.6211
+      }
+    },
+    {
+      "name": "Vixeny query",
+      "group": "One query",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 592,
+        "min": 72.4529,
+        "max": 196.9063,
+        "jit": [117771, 8566, 10400, 982, 671, 621, 621, 6833, 791, 592],
+        "p75": 85.4693,
+        "p99": 162.2983,
+        "avg": 85.85217871621617,
+        "p995": 182.0745,
+        "p999": 196.9063
+      }
+    },
+    {
+      "name": "new URL",
+      "group": "multi query",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 42,
+        "min": 1537.3452,
+        "max": 2116.3882,
+        "jit": [331191, 4929, 2765, 2004, 1854, 5390, 1784, 2004, 1973, 1923],
+        "p75": 1569.5656,
+        "p99": 2116.3882,
+        "avg": 1581.6741976190478,
+        "p995": 2116.3882,
+        "p999": 2116.3882
+      }
+    },
+    {
+      "name": "Vixeny query",
+      "group": "multi query",
+      "time": 500,
+      "warmup": true,
+      "baseline": false,
+      "async": false,
+      "stats": {
+        "n": 338,
+        "min": 138.4928,
+        "max": 252.1308,
+        "jit": [279224, 6512, 7765, 1232, 912, 892, 852, 921, 851, 852],
+        "p75": 151.2126,
+        "p99": 204.0286,
+        "avg": 152.61964940828398,
+        "p995": 221.9122,
+        "p999": 252.1308
+      }
+    }
+  ],
+  "cpu": "AMD Ryzen 7 4700U with Radeon Graphics",
+  "runtime": "bun 1.0.20 (x64-linux)"
+}

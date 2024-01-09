@@ -1,4 +1,4 @@
-import sign from "../components/jwt/signSha256.mjs";
+import signSha256 from "../components/jwt/signSha256.mjs";
 import verifySha256 from "../components/jwt/verifySha256.mjs";
 import parseArguments from "../components/runtime/parseArguments.mjs";
 
@@ -21,9 +21,13 @@ const header = {
   typ: "JWT",
 };
 
-const s = sign()(secret);
+const fr = () => ({
+  time: performance.now(),
+});
+
+const s = signSha256()(secret);
 const v = verifySha256()(secret);
-const signature = sign()(secret)(payload);
+const signature = signSha256()(secret)(payload);
 
 group("Sign", () => {
   bench("Jose", async () => {
@@ -37,10 +41,25 @@ group("Sign", () => {
   });
 });
 
-group("verify", () => {
+group("Verify", () => {
   bench("Jose", async () => await jose.jwtVerify(signature, secret));
   bench("Vixeny JWT", () => {
     v(signature);
+  });
+});
+
+group("Anti-catching", () => {
+  bench("Jose", async () => {
+    await jose.jwtVerify(
+      await new jose.SignJWT(fr())
+        .setProtectedHeader(header)
+        .sign(secret),
+      secret,
+    );
+  });
+
+  bench("Vixeny JWT", () => {
+    v(s(fr()));
   });
 });
 

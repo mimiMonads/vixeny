@@ -1,8 +1,6 @@
-import { RawCommonRequest, RequestArguments } from "../types.ts";
+import { AnyMorphism, RawCommonRequest, PetitionOptions } from "../types.ts";
 
-export type BranchOptions = {
-  name: string;
-  f: (f: RequestArguments) => unknown;
-} & RawCommonRequest;
+export type BranchOption = (AnyMorphism & {name: string , options?: PetitionOptions})
+export type BranchOptions = BranchOption[]
 
 export type ResponseResponse = (r: Request) => unknown;

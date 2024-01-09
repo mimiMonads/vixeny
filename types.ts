@@ -1,8 +1,7 @@
 ///
 
 import { Petition } from "./components/http/src/framework/optimizer/types.ts";
-import { BranchOptions as branch } from "./components/http/types.ts";
-import { ResolveOptions as resolve } from "./components/http/types.ts";
+
 
 /**
  * Options for the router, it is `optional`
@@ -90,5 +89,4 @@ export type Vixeny = (
  * ```
  */
 export type Petitions = Petition[];
-export type BranchOptions = branch;
-export type ResolveOptions = resolve;
+

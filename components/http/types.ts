@@ -1,8 +1,6 @@
 ///
 
-import { Petition } from "./src/framework/optimizer/types.ts";
-import { BranchOptions as branch } from "./src/framework/optimizer/branch/types.ts";
-import { ResolveOptions as resolve } from "./src/framework/optimizer/resolve/types.ts";
+import { AnyMorphismMap, CommonRequestMorphism, MorphismMap, ObjectRawResponseReturn, ObjectRawResponseStatic, RequestMorphism } from "./src/framework/optimizer/types.ts";
 
 /**
  * Options for the router, it is `optional`
@@ -66,7 +64,16 @@ export type FunRouterOptions = {
 
 export type Vixeny = (
   o?: FunRouterOptions,
-) => (routes: Petition[]) => (r: Request) => Promise<Response> | Response;
+) => <
+T extends MorphismMap,
+B extends AnyMorphismMap,
+A = any,
+R = any,
+> (routes: ( RequestMorphism<T, B, A, R>
+  | CommonRequestMorphism<T, B, A, R>
+  | ObjectRawResponseReturn
+  | ObjectRawResponseStatic)[]
+) => (r: Request) => Promise<Response> | Response;
 /**
  * Vixeny takes an array ot `Petitions`
  *
@@ -89,6 +96,5 @@ export type Vixeny = (
  * ])
  * ```
  */
-export type Petitions = Petition[];
-export type BranchOptions = branch;
-export type ResolveOptions = resolve;
+
+
