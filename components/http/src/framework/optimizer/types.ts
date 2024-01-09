@@ -29,8 +29,8 @@ interface Ctx<
   B extends AnyMorphismMap,
   A = unknown,
 > {
-  resolve?: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
-  branch?: { [V in keyof B]: { (ctx: A): ReturnType<B[V]["f"]> } };
+  resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
+  branch: { [V in keyof B]: { (ctx: A): ReturnType<B[V]["f"]> } };
   /**
    * Adds with query to the `context`
    *
