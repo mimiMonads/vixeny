@@ -1,36 +1,37 @@
 import { ParamsMethod } from "../builder/types.ts";
 
 export type Morphism<
-  ResMap extends MorphismMap = MorphismMap,
-  BraMap extends AnyMorphismMap = AnyMorphismMap,
-  Args = any,
-  Return = any,
+ResMap extends MorphismMap = MorphismMap,
+BraMap extends AnyMorphismMap = AnyMorphismMap,
+Query extends QueryOptions = QueryOptions,
+Param extends ParamOptions = ParamOptions,
 > = {
-  resolve?: ResMap;
-  branch?: BraMap;
-  options?: PetitionOptions
-  f: (ctx: Ctx<ResMap, BraMap, Args>) => Return;
+resolve?: ResMap;
+branch?: BraMap;
+f: (ctx: Ctx<ResMap, BraMap, Query,Param>) => any;
+query?: Query;
+param?: Param;
 };
 
 export type AnyMorphism<
-  ResMap extends MorphismMap = MorphismMap,
-  BraMap extends AnyMorphismMap = AnyMorphismMap,
-  Args = any,
-  Return = any,
-> = Omit<Morphism<any, any, Args, any>, "f"> & {
-  f: (ctx: Ctx<ResMap, BraMap, Args>) => any;
+ResMap extends MorphismMap = MorphismMap,
+BraMap extends AnyMorphismMap = AnyMorphismMap,
+Query extends QueryOptions = QueryOptions,
+Param extends ParamOptions = ParamOptions,
+> = Omit<Morphism<ResMap, BraMap, Query, Param>, "f"> & {
+f: (ctx: Ctx<ResMap, BraMap, Query,Param>) => any;
 };
-
 export type MorphismMap = { [key: string]: Morphism<any, any, any, any> };
 export type AnyMorphismMap = { [key: string]: AnyMorphism<any, any, any, any> };
 
-interface Ctx<
-  R extends MorphismMap,
-  B extends AnyMorphismMap,
-  A = unknown,
+export interface Ctx<
+R extends MorphismMap,
+B extends AnyMorphismMap,
+QS extends QueryOptions | undefined ,
+PA extends ParamOptions | undefined 
 > {
   resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
-  branch: { [V in keyof B]: { (ctx: A): ReturnType<B[V]["f"]> } };
+  branch: { [V in keyof B]: { (ctx: Ctx<R,B,QS,PA>): ReturnType<B[V]["f"]> } };
   /**
    * Adds with query to the `context`
    *
@@ -65,7 +66,11 @@ interface Ctx<
    * };
    * ```
    */
-  query: Record<string, string | undefined>;
+  query: QS extends { unique: true }
+    ? (string | null)
+    : { [key: string]: string };
+
+
   /**
    * Gets the parameters from the URL
    *
@@ -83,7 +88,7 @@ interface Ctx<
    * };
    * ```
    */
-  param: Record<string, string>;
+   param?: PA extends { unique: true }? string: Record<string, string >;
   /**
    * Adds a Date.now() returning the number of milliseconds elapsed since the epoch.
    *
@@ -251,28 +256,28 @@ interface Ctx<
 }
 
 export type CommonRequestMorphism<
-  ResMap extends MorphismMap = MorphismMap,
-  BraMap extends AnyMorphismMap = AnyMorphismMap,
-  Args = any,
-  Return = any,
+ResMap extends MorphismMap = MorphismMap,
+BraMap extends AnyMorphismMap = AnyMorphismMap,
+Query extends QueryOptions = QueryOptions,
+Param extends ParamOptions = ParamOptions,
 > =
-  & Omit<Morphism<ResMap, BraMap, Args, Return>, "f">
+  & Omit<Morphism<ResMap, BraMap, Query,Param>, "f">
   & RawCommonRequest
   & {
     headings?: PetitionHeader;
-    f: (ctx: Ctx<ResMap, BraMap, Args>) => BodyInit | Promise<BodyInit>;
+    f: (ctx: Ctx<ResMap, BraMap, Query,Param>) => BodyInit | Promise<BodyInit>;
   };
 
   export type RequestMorphism<
   ResMap extends MorphismMap = MorphismMap,
   BraMap extends AnyMorphismMap = AnyMorphismMap,
-  Args = any,
-  Return = any,
+  Query extends QueryOptions = QueryOptions,
+  Param extends ParamOptions = ParamOptions,
 > =
-  & Omit<Morphism<ResMap, BraMap, Args, Return>, "f">
+  & Omit<Morphism<ResMap, BraMap, Query, Param>, "f">
   & ObjectRawCommonRequest
   & {
-    f: (ctx: Ctx<ResMap, BraMap, Args>) => Response | Promise<Response>;
+    f: (ctx: Ctx<ResMap, BraMap, Query,Param>) => Response | Promise<Response>;
   };
 
 
@@ -539,15 +544,16 @@ export type PetitionHeader = {
   status?: number;
 };
 
-/**
- * Options for the query.
- */
 export type QueryOptions = {
-  /**
-   * Specify only certain fields.
-   */
-  only?: string[];
-};
+  unique?: true ; 
+  name: string // 'unique' is an optional boolean    
+} | {
+  only?: string[]
+}
+
+export type ParamOptions = {
+  unique?: true;  // 'unique' is an optional boolean    
+} 
 
 /**
  * Object for raw response static.

@@ -12,7 +12,7 @@
  */
 
 import { FunRouterOptions, Vixeny } from "./types.ts";
-import { AnyMorphismMap, CommonRequestMorphism, MorphismMap, ObjectRawResponseReturn, ObjectRawResponseStatic, RequestMorphism } from "./src/framework/optimizer/types.ts";
+
 
 import optimizer from "./src/framework/optimizer/optimize.ts";
 import atlas from "./src/framework/builder/atlas/main1.ts";
@@ -20,16 +20,8 @@ import split from "./src/framework/builder/atlas/splitter.ts";
 import solver from "./src/framework/builder/solver1.ts";
 
 
-export default ((o?: FunRouterOptions) => <
-T extends MorphismMap,
-B extends AnyMorphismMap,
-A = any,
-R = any,
-> (routes: ( RequestMorphism<T, B, A, R>
-  | CommonRequestMorphism<T, B, A, R>
-  | ObjectRawResponseReturn
-  | ObjectRawResponseStatic)[]
-) =>
+export default ((o?: FunRouterOptions) =>
+ (routes) =>
   ((re) =>
     ((map) =>
       ((s) => (r: Request) => map[s(r)](r))(

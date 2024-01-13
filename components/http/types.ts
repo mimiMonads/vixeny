@@ -1,6 +1,6 @@
 ///
 
-import { AnyMorphismMap, CommonRequestMorphism, MorphismMap, ObjectRawResponseReturn, ObjectRawResponseStatic, RequestMorphism } from "./src/framework/optimizer/types.ts";
+import {  AnyMorphismMap, CommonRequestMorphism, MorphismMap, ObjectRawResponseReturn, ObjectRawResponseStatic, ParamOptions, QueryOptions, RequestMorphism } from "./src/framework/optimizer/types.ts";
 
 /**
  * Options for the router, it is `optional`
@@ -67,10 +67,10 @@ export type Vixeny = (
 ) => <
 T extends MorphismMap,
 B extends AnyMorphismMap,
-A = any,
-R = any,
-> (routes: ( RequestMorphism<T, B, A, R>
-  | CommonRequestMorphism<T, B, A, R>
+Q extends QueryOptions  ,
+P extends ParamOptions ,
+> (routes: ( RequestMorphism<T, B, Q, P>
+  | CommonRequestMorphism<T, B, Q, P>
   | ObjectRawResponseReturn
   | ObjectRawResponseStatic)[]
 ) => (r: Request) => Promise<Response> | Response;
