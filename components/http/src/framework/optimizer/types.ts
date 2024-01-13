@@ -11,6 +11,7 @@ branch?: BraMap;
 f: (ctx: Ctx<ResMap, BraMap, Query,Param>) => any;
 query?: Query;
 param?: Param;
+options?: PetitionOptions;
 };
 
 export type AnyMorphism<
@@ -27,8 +28,8 @@ export type AnyMorphismMap = { [key: string]: AnyMorphism<any, any, any, any> };
 export interface Ctx<
 R extends MorphismMap,
 B extends AnyMorphismMap,
-QS extends QueryOptions | undefined ,
-PA extends ParamOptions | undefined 
+QS extends QueryOptions ,
+PA extends ParamOptions 
 > {
   resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
   branch: { [V in keyof B]: { (ctx: Ctx<R,B,QS,PA>): ReturnType<B[V]["f"]> } };
@@ -359,7 +360,7 @@ export type RawCommonRequest = {
    * Route Method
    */
   method?: ParamsMethod;
-  options?: PetitionOptions;
+
   query?: QueryOptions;
   resolve?: MorphismMap;
   /**

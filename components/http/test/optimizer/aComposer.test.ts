@@ -45,7 +45,7 @@ test(
     assert.deepStrictEqual(
       (aComposer({ hasName: "http://localhost:8080/" })({
         path: "/test/:id",
-        f: (r) => r.param.id,
+        f: (r) => (r.param as Record<string, string>).id ,
       })(["param"]))(new Request("http://localhost:8080/test/1")).param.id,
       "1",
     ),
@@ -57,7 +57,7 @@ test(
     assert.deepStrictEqual(
       (aComposer({ hasName: "http://localhost:8080/" })({
         path: "/test/:a/:b/:c/",
-        f: (r) => r.param.id,
+        f: (r) => (r.param as Record<string, string>).id,
       })(["param"]))(new Request("http://localhost:8080/test/1/2/3/")).param.b,
       "2",
     ),
@@ -68,7 +68,7 @@ test(
     assert.deepStrictEqual(
       (aComposer()({
         path: "/test/:a/:b/:c/",
-        f: (r) => r.param.id.toString(),
+        f: (r) => (r.param as Record<string, string>).id.toString(),
       })(["param"]))(new Request("http://localhost:8080/test/1/2/3/")).param.b,
       "2",
     ),

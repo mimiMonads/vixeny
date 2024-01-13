@@ -8,8 +8,8 @@ import unique from "./unique.ts";
 export default (o?: FunRouterOptions) => (f: CommonRequestMorphism | RequestMorphism) =>
   f.query && 'name' in f.query 
     ? new Function(`return ${unique([f.query.name])}`)()
-    : f && "query" in f && 'only' in  f.query
-    ? new Function(`return ${elements(f.query["only"])}`)()
+    :   f.query &&   Array.isArray(f.query.only)
+    ? new Function(`return ${elements(f.query.only)}`)()
     : (
       (only) =>
         only.length > 0

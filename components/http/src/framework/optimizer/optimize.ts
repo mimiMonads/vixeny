@@ -1,6 +1,6 @@
 import { FunRouterOptions } from "../../../types.ts";
 import { RouteTypes } from "../builder/types.ts";
-import { AnyMorphismMap, CommonRequestMorphism, MorphismMap, ObjectRawResponseReturn, ObjectRawResponseStatic, RequestMorphism } from "./types.ts";
+import { AnyMorphismMap, CommonRequestMorphism, MorphismMap, ObjectRawResponseReturn, ObjectRawResponseStatic, ParamOptions, QueryOptions, RequestMorphism } from "./types.ts";
 import response from "./response.ts";
 import staticFiles from "./staticFiles/main.ts";
 import vixeny from "../../../serve.ts";
@@ -9,13 +9,13 @@ import vixeny from "../../../serve.ts";
 
 export default (
   o?: FunRouterOptions,
-): <
+):<
 T extends MorphismMap,
 B extends AnyMorphismMap,
-A = any,
-R = any,
-> (routes: ( RequestMorphism<T, B, A, R>
-  | CommonRequestMorphism<T, B, A, R>
+Q extends QueryOptions  ,
+P extends ParamOptions ,
+> (routes: ( RequestMorphism<T, B, Q, P>
+  | CommonRequestMorphism<T, B, Q, P>
   | ObjectRawResponseReturn
   | ObjectRawResponseStatic)[]
 ) => RouteTypes[] =>
