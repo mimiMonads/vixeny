@@ -1,8 +1,8 @@
 import resolver from "../../src/framework/optimizer/resolve/main.ts";
 
-import { FunRouterOptions } from "../../../../types.ts";
+import { FunRouterOptions } from "../../types.ts";
 
-import { Morphism, MorphismMap } from "../framework/optimizer/types.ts";
+import { Morphism } from "../framework/optimizer/types.ts";
 
 type ResolveOptions = {[key: string]: ({
 } & Morphism)};

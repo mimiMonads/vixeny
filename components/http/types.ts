@@ -1,6 +1,6 @@
 ///
 
-import {  AnyMorphismMap, CommonRequestMorphism, MorphismMap, ObjectRawResponseReturn, ObjectRawResponseStatic, ParamOptions, QueryOptions, RequestMorphism } from "./src/framework/optimizer/types.ts";
+import {  AnyMorphismMap, CommonRequestMorphism, MorphismMap, ObjectRawResponseReturn, ObjectRawResponseStatic, ParamOptions, Petition, QueryOptions, RequestMorphism } from "./src/framework/optimizer/types.ts";
 
 /**
  * Options for the router, it is `optional`
@@ -60,19 +60,35 @@ export type FunRouterOptions = {
    * A function that takes a Request and returns a Response for 405 errors.
    */
   405?: (x: Request) => Response;
+  cyclePluging?: CyclePlugingMap;
+
 };
 
-export type Vixeny = (
-  o?: FunRouterOptions,
-) => <
-T extends MorphismMap,
-B extends AnyMorphismMap,
-Q extends QueryOptions  ,
-P extends ParamOptions ,
-> (routes: ( RequestMorphism<T, B, Q, P>
-  | CommonRequestMorphism<T, B, Q, P>
-  | ObjectRawResponseReturn
-  | ObjectRawResponseStatic)[]
+export type  CyclePlugingMap = {
+  [key: string]: CyclePluging;
+  param?: never;
+  f?: never;
+}
+
+export type CyclePluging = {
+  name: Symbol,
+  f: (o?:FunRouterOptions)=> (p: Petition) => (r:Request)=> any,
+  type: CyclePlugingResolution
+}
+
+type CyclePlugingResolution =  any ;
+export type Vixeny = <O extends FunRouterOptions>(o?: O) => <
+  T extends MorphismMap,
+  B extends AnyMorphismMap,
+  Q extends QueryOptions,
+  P extends ParamOptions,
+>(
+  routes: (
+    RequestMorphism<T, B, Q, P, O>
+    | CommonRequestMorphism<T, B, Q, P, O>
+    | ObjectRawResponseReturn
+    | ObjectRawResponseStatic
+  )[]
 ) => (r: Request) => Promise<Response> | Response;
 /**
  * Vixeny takes an array ot `Petitions`

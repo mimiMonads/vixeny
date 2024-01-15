@@ -1,17 +1,24 @@
+import { CyclePlugingMap, FunRouterOptions } from "../../../types.ts";
 import { ParamsMethod } from "../builder/types.ts";
+
+type ExtractPluginTypes<O extends FunRouterOptions> = O extends { cyclePluging: infer CPM }
+  ? { [K in keyof CPM]: CPM[K] extends { type: infer T } ? T : never }
+  : {};
 
 export type Morphism<
 ResMap extends MorphismMap = MorphismMap,
 BraMap extends AnyMorphismMap = AnyMorphismMap,
 Query extends QueryOptions = QueryOptions,
 Param extends ParamOptions = ParamOptions,
+Options extends FunRouterOptions = FunRouterOptions
 > = {
 resolve?: ResMap;
 branch?: BraMap;
-f: (ctx: Ctx<ResMap, BraMap, Query,Param>) => any;
+f: (ctx: WithPlugins<ResMap, BraMap, Query,Param,Options>) => any;
 query?: Query;
 param?: Param;
 options?: PetitionOptions;
+plugins?: ExtractPluginTypes<Options>;
 };
 
 export type AnyMorphism<
@@ -19,20 +26,36 @@ ResMap extends MorphismMap = MorphismMap,
 BraMap extends AnyMorphismMap = AnyMorphismMap,
 Query extends QueryOptions = QueryOptions,
 Param extends ParamOptions = ParamOptions,
-> = Omit<Morphism<ResMap, BraMap, Query, Param>, "f"> & {
-f: (ctx: Ctx<ResMap, BraMap, Query,Param>) => any;
+Options extends FunRouterOptions = FunRouterOptions
+> = Omit<Morphism<ResMap, BraMap, Query, Param,Options >, "f"> & {
+f: (ctx: WithPlugins<ResMap, BraMap, Query,Param,Options>) => any;
 };
-export type MorphismMap = { [key: string]: Morphism<any, any, any, any> };
-export type AnyMorphismMap = { [key: string]: AnyMorphism<any, any, any, any> };
+export type MorphismMap = { [key: string]: Morphism<any, any, any, any,any> };
+export type AnyMorphismMap = { [key: string]: AnyMorphism<any, any, any, any, any> };
+
+// Helper type to extract the functions from CyclePlugingMap
+type CyclePlugingFunctions<CPM extends CyclePlugingMap> = {
+  [K in keyof CPM]:   Awaited<ReturnType<ReturnType<ReturnType<CPM[K]['f']>>>>;
+};
+
+type WithPlugins<
+  R extends MorphismMap,
+  B extends AnyMorphismMap,
+  QS extends QueryOptions,
+  PA extends ParamOptions,
+  O extends FunRouterOptions
+> = Ctx<R, B, QS, PA, O> & (O extends { cyclePluging: infer CPM } ? CPM extends CyclePlugingMap ? CyclePlugingFunctions<CPM> : never : {})
 
 export interface Ctx<
 R extends MorphismMap,
 B extends AnyMorphismMap,
 QS extends QueryOptions ,
-PA extends ParamOptions 
+PA extends ParamOptions ,
+O extends FunRouterOptions,
 > {
   resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
-  branch: { [V in keyof B]: { (ctx: Ctx<R,B,QS,PA>): ReturnType<B[V]["f"]> } };
+  branch: { [V in keyof B]: { (ctx: WithPlugins<R,B,QS,PA, O>): ReturnType<B[V]["f"]> } };
+ 
   /**
    * Adds with query to the `context`
    *
@@ -254,6 +277,8 @@ PA extends ParamOptions
    * }
    * ```
    */
+
+  
 }
 
 export type CommonRequestMorphism<
@@ -261,12 +286,13 @@ ResMap extends MorphismMap = MorphismMap,
 BraMap extends AnyMorphismMap = AnyMorphismMap,
 Query extends QueryOptions = QueryOptions,
 Param extends ParamOptions = ParamOptions,
+Options extends FunRouterOptions = FunRouterOptions
 > =
-  & Omit<Morphism<ResMap, BraMap, Query,Param>, "f">
+  & Omit<Morphism<ResMap, BraMap, Query,Param, Options>, "f">
   & RawCommonRequest
   & {
     headings?: PetitionHeader;
-    f: (ctx: Ctx<ResMap, BraMap, Query,Param>) => BodyInit | Promise<BodyInit>;
+    f: (ctx: WithPlugins<ResMap, BraMap, Query,Param, Options>) => BodyInit | Promise<BodyInit>;
   };
 
   export type RequestMorphism<
@@ -274,11 +300,12 @@ Param extends ParamOptions = ParamOptions,
   BraMap extends AnyMorphismMap = AnyMorphismMap,
   Query extends QueryOptions = QueryOptions,
   Param extends ParamOptions = ParamOptions,
+  Options extends FunRouterOptions = FunRouterOptions
 > =
-  & Omit<Morphism<ResMap, BraMap, Query, Param>, "f">
+  & Omit<Morphism<ResMap, BraMap, Query, Param, Options>, "f">
   & ObjectRawCommonRequest
   & {
-    f: (ctx: Ctx<ResMap, BraMap, Query,Param>) => Response | Promise<Response>;
+    f: (ctx: WithPlugins<ResMap, BraMap, Query,Param,Options>) => Response | Promise<Response>;
   };
 
 
