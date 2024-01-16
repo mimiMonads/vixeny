@@ -26,7 +26,9 @@ export default
           (typeof x.options?.only !== "undefined" && x.options.only.length > 0)
             ? aComposer(o)(x as CommonRequestMorphism)(x.options.only)
             : aComposer(o)(x as CommonRequestMorphism)(
-              checker(x.options?.remove ?? [])(elements)(x.options?.add ?? [])(
+              checker(x.options?.remove ?? [])(elements)(
+                [...(x.options?.add || []), ...( Object.keys(o?.cyclePluging || {}) || [])]
+              )(
                 x.f.toString(),
               ),
             ) as (r: Request) => any | Promise<any>,

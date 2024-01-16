@@ -32,7 +32,9 @@ export default
             : aComposer(
               o ? { ...aComposer, branch: false } : { branch: false },
             )(x)(
-              checker(x.options?.remove ?? [])(elements)(x.options?.add ?? [])(
+              checker(x.options?.remove ?? [])(elements)(
+                [...(x.options?.add || []), ...( Object.keys(o?.cyclePluging || {}) || [])]
+              )(
                 x.f.toString(),
               ),
             ) as (r: Request) => any | Promise<any>,

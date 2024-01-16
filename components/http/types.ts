@@ -65,31 +65,29 @@ export type FunRouterOptions = {
 };
 
 export type  CyclePlugingMap = {
-  [key: string]: CyclePluging;
-  param?: never;
-  f?: never;
+  [key: string]: CyclePluging ;
 }
 
 export type CyclePluging = {
   name: Symbol,
   f: (o?:FunRouterOptions)=> (p: Petition) => (r:Request)=> any,
-  type: CyclePlugingResolution
+  type: unknown
 }
 
-type CyclePlugingResolution =  any ;
+
 export type Vixeny = <O extends FunRouterOptions>(o?: O) => <
-  T extends MorphismMap,
-  B extends AnyMorphismMap,
-  Q extends QueryOptions,
-  P extends ParamOptions,
+T extends MorphismMap,
+B extends AnyMorphismMap,
+Q extends QueryOptions,
+P extends ParamOptions,
 >(
-  routes: (
-    RequestMorphism<T, B, Q, P, O>
-    | CommonRequestMorphism<T, B, Q, P, O>
-    | ObjectRawResponseReturn
-    | ObjectRawResponseStatic
-  )[]
-) => (r: Request) => Promise<Response> | Response;
+routes: (
+  RequestMorphism<T, B, Q, P, O>
+  | CommonRequestMorphism<T, B, Q, P, O>
+  | ObjectRawResponseReturn
+  | ObjectRawResponseStatic
+)[]
+) =>  (r: Request) => Promise<Response> | Response;
 /**
  * Vixeny takes an array ot `Petitions`
  *

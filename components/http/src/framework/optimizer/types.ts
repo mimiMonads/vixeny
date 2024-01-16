@@ -1,8 +1,9 @@
 import { CyclePlugingMap, FunRouterOptions } from "../../../types.ts";
 import { ParamsMethod } from "../builder/types.ts";
 
-type ExtractPluginTypes<O extends FunRouterOptions> = O extends { cyclePluging: infer CPM }
-  ? { [K in keyof CPM]: CPM[K] extends { type: infer T } ? T : never }
+// Modified ExtractPluginTypes
+type ExtractPluginTypes<O extends FunRouterOptions> = O['cyclePluging'] extends CyclePlugingMap
+  ? { [K in keyof O['cyclePluging']]?: O['cyclePluging'][K] extends { type: infer T } ? T : never }
   : {};
 
 export type Morphism<
@@ -10,14 +11,14 @@ ResMap extends MorphismMap = MorphismMap,
 BraMap extends AnyMorphismMap = AnyMorphismMap,
 Query extends QueryOptions = QueryOptions,
 Param extends ParamOptions = ParamOptions,
-Options extends FunRouterOptions = FunRouterOptions
+Options extends FunRouterOptions = FunRouterOptions,
 > = {
 resolve?: ResMap;
 branch?: BraMap;
 f: (ctx: WithPlugins<ResMap, BraMap, Query,Param,Options>) => any;
 query?: Query;
 param?: Param;
-options?: PetitionOptions;
+options?: PetitionOptions<[keyof Options['cyclePluging']]>;
 plugins?: ExtractPluginTypes<Options>;
 };
 
@@ -112,7 +113,7 @@ O extends FunRouterOptions,
    * };
    * ```
    */
-   param?: PA extends { unique: true }? string: Record<string, string >;
+   param: PA extends { unique: true }? string: Record<string, string >;
   /**
    * Adds a Date.now() returning the number of milliseconds elapsed since the epoch.
    *
@@ -389,56 +390,17 @@ export type RawCommonRequest = {
   method?: ParamsMethod;
 
   query?: QueryOptions;
-  resolve?: MorphismMap;
-  /**
-   * Branch
-   *
-   * - **Usage**: Branches can be synchronous or asynchronous and receive input via the `arguments` property.
-   *
-   * ```ts
-   * // Basic use of branch:
-   * {
-   *     path: "/branch",
-   *     f: c => c.branch.hello("hi"),
-   *     branch: { name: "hello", f: c => c.arguments }
-   * }
-   * ```
-   *
-   * - **Combining Branches**: You can define multiple branches and use them in compositions.
-   *
-   * ```ts
-   * {
-   *     path: "/branches",
-   *     f: c => `${c.branch.left("Hello ")}${c.branch.right("world!")}`,
-   *     branch: [ { name: "left", f: c => c.arguments }, { name: "right", f: c => c.arguments } ]
-   * }
-   * ```
-   *
-   * - **Interaction with Resolve**: Branches can leverage the `resolve` property for more intricate compositions.
-   *
-   * ```ts
-   * {
-   *     path: "/branch",
-   *     f: c => c.branch.hello("world!"),
-   *     branch: {
-   *         resolve: { name: "prefix", f: () => "hello" },
-   *         name: "hello",
-   *         f: c => `${c.resolve.prefix}${c.arguments}`
-   *     }
-   * }
-   * ```
-   */
-  branch?: AnyMorphismMap;
+
 } & PathKey;
 
 /**
  * Options for the petition.
  */
-export type PetitionOptions = {
+export type PetitionOptions<T> = {
   /**
    * Options for adding.
    */
-  add?: AddOption[];
+  add?: AddOption[] | T;
   /**
    * Options for debugging.
    */
@@ -446,11 +408,11 @@ export type PetitionOptions = {
   /**
    * Options for removing.
    */
-  remove?: AddOption[];
+  remove?: AddOption[] | T;
   /**
    * Options for filtering only specified items.
    */
-  only?: AddOption[];
+  only?: AddOption[] | T;
   /**
    * Hash to set.
    */

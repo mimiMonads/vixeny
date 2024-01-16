@@ -14,8 +14,9 @@ T extends MorphismMap,
 B extends AnyMorphismMap,
 Q extends QueryOptions  ,
 P extends ParamOptions ,
-> (routes: ( RequestMorphism<T, B, Q, P>
-  | CommonRequestMorphism<T, B, Q, P>
+O extends FunRouterOptions
+> (routes: ( RequestMorphism<T, B, Q, P, O>
+  | CommonRequestMorphism<T, B, Q, P, O>
   | ObjectRawResponseReturn
   | ObjectRawResponseStatic)[]
 ) => RouteTypes[] =>
