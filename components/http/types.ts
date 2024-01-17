@@ -72,6 +72,7 @@ export type CyclePluging = {
   name: Symbol,
   f: (o?:FunRouterOptions)=> (p: Petition) => (r:Request)=> any,
   type: unknown
+  options?: {[k: string]: any};
 }
 
 
