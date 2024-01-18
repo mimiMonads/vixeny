@@ -1,9 +1,9 @@
-import { CyclePlugingMap, FunRouterOptions } from "../../../types.ts";
+import { CyclePluginMap, FunRouterOptions } from "../../../types.ts";
 import { ParamsMethod } from "../builder/types.ts";
 
 // Modified ExtractPluginTypes
-type ExtractPluginTypes<O extends FunRouterOptions> = O['cyclePluging'] extends CyclePlugingMap
-  ? { [K in keyof O['cyclePluging']]?: O['cyclePluging'][K] extends { type: infer T } ? T : never }
+type ExtractPluginTypes<O extends FunRouterOptions> = O['cyclePlugin'] extends CyclePluginMap
+  ? { [K in keyof O['cyclePlugin']]?: O['cyclePlugin'][K] extends { type: infer T } ? T : never }
   : {};
 
 export type Morphism<
@@ -18,7 +18,7 @@ branch?: BraMap;
 f: (ctx: WithPlugins<ResMap, BraMap, Query,Param,Options>) => any;
 query?: Query;
 param?: Param;
-options?: PetitionOptions<[keyof Options['cyclePluging']]>;
+options?: PetitionOptions<[keyof Options['cyclePlugin']]>;
 plugins?: ExtractPluginTypes<Options>;
 };
 
@@ -34,8 +34,8 @@ f: (ctx: WithPlugins<ResMap, BraMap, Query,Param,Options>) => any;
 export type MorphismMap = { [key: string]: Morphism<any, any, any, any,any> };
 export type AnyMorphismMap = { [key: string]: AnyMorphism<any, any, any, any, any> };
 
-// Helper type to extract the functions from CyclePlugingMap
-type CyclePlugingFunctions<CPM extends CyclePlugingMap> = {
+// Helper type to extract the functions from CyclePluginMap
+type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
   [K in keyof CPM]:   Awaited<ReturnType<ReturnType<ReturnType<CPM[K]['f']>>>>;
 };
 
@@ -45,7 +45,7 @@ type WithPlugins<
   QS extends QueryOptions,
   PA extends ParamOptions,
   O extends FunRouterOptions
-> = Ctx<R, B, QS, PA, O> & (O extends { cyclePluging: infer CPM } ? CPM extends CyclePlugingMap ? CyclePlugingFunctions<CPM> : never : {})
+> = Ctx<R, B, QS, PA, O> & (O extends { cyclePlugin: infer CPM } ? CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM> : never : {})
 
 export interface Ctx<
 R extends MorphismMap,

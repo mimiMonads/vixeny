@@ -75,7 +75,7 @@ export default (o?: FunRouterOptions) =>
         )
         ? f.options.only
         : checker(f.options?.remove || [])(elements)(
-          [...(f.options?.add || []), ...( Object.keys(o?.cyclePluging || {}) || [])]
+          [...(f.options?.add || []), ...( Object.keys(o?.cyclePlugin || {}) || [])]
           )(
           f.f.toString(),
         ),

@@ -27,7 +27,7 @@ export default
             ? aComposer(o)(x as CommonRequestMorphism)(x.options.only)
             : aComposer(o)(x as CommonRequestMorphism)(
               checker(x.options?.remove ?? [])(elements)(
-                [...(x.options?.add || []), ...( Object.keys(o?.cyclePluging || {}) || [])]
+                [...(x.options?.add || []), ...( Object.keys(o?.cyclePlugin || {}) || [])]
               )(
                 x.f.toString(),
               ),

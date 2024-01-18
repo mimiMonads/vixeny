@@ -60,15 +60,16 @@ export type FunRouterOptions = {
    * A function that takes a Request and returns a Response for 405 errors.
    */
   405?: (x: Request) => Response;
-  cyclePluging?: CyclePlugingMap;
+  cyclePlugin?: CyclePluginMap;
 
 };
 
-export type  CyclePlugingMap = {
-  [key: string]: CyclePluging ;
+export type  CyclePluginMap = {
+  [key: string]: CyclePlugin ;
 }
 
-export type CyclePluging = {
+
+export type CyclePlugin = {
   name: Symbol,
   f: (o?:FunRouterOptions)=> (p: Petition) => (r:Request)=> any,
   type: unknown

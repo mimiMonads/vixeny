@@ -24,8 +24,8 @@ type NativeMaps = {
     { condition: (x:NativeMaps) => x.name === "resolve", action: () => ("resolve" in f) ? resolve(o)(f.path)(f.resolve as MorphismMap) : null },
     { condition: (x:NativeMaps) => x.name === "branch", action: () => ("branch" in f) ? branch({ ...o, branch: true })(f.path)(f!.branch as AnyMorphismMap) : null },
 ]
-.concat(Object.keys(o?.cyclePluging || {}).map( x  =>    ( {
-    condition: (name => (x:NativeMaps) => x.name === name)(x), action: () => o!.cyclePluging![x]!['f'](o)(f)
+.concat(Object.keys(o?.cyclePlugin || {}).map( x  =>    ( {
+    condition: (name => (x:NativeMaps) => x.name === name)(x), action: () => o!.cyclePlugin![x]!['f'](o)(f)
   })
 ))
 )

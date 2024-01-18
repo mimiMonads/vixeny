@@ -60,7 +60,7 @@ export default (o?: FunRouterOptions)=>( f:CommonRequestMorphism | RequestMorphi
       value: o && "branch" in o ? "b" : null,
       type: 0,
     },
-  ].concat(Object.keys(o?.cyclePluging || {}).map( x  =>    ( {
+  ].concat(Object.keys(o?.cyclePlugin || {}).map( x  =>    ( {
     name: x,
     value: mutable ? x + "(r.r.url)" :  x + "(r.url)",
     type: 1,

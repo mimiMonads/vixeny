@@ -33,7 +33,7 @@ export default
               o ? { ...aComposer, branch: false } : { branch: false },
             )(x)(
               checker(x.options?.remove ?? [])(elements)(
-                [...(x.options?.add || []), ...( Object.keys(o?.cyclePluging || {}) || [])]
+                [...(x.options?.add || []), ...( Object.keys(o?.cyclePlugin || {}) || [])]
               )(
                 x.f.toString(),
               ),
