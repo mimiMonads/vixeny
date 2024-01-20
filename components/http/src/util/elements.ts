@@ -14,4 +14,5 @@ export default [
   "mutable",
   "branch",
   "arguments",
+  "token"
 ] as string[];

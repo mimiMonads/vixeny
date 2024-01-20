@@ -14,4 +14,4 @@ export default (remove: string[]) =>
     .reduce(
       (acc, v) => acc.includes(v) === false ? acc.concat(v) : acc,
       [] as string[],
-    );
+    ) as string[];

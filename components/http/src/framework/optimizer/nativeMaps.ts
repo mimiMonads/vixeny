@@ -42,6 +42,13 @@ export default (o?: FunRouterOptions)=>( f:CommonRequestMorphism | RequestMorphi
         : 'cookie(r.headers.get("cookie"))',
       type: 1,
     },
+    {
+      name: "token",
+      value: mutable
+        ? 'token(r.r.headers.get("Cookie"))'
+        : 'token(r.headers.get("Cookie"))',
+      type: 1,
+    },
     { name: "jSign", value: "jSign", type: 1 },
     { name: "jVerify", value: "jVerify", type: 1 },
     {

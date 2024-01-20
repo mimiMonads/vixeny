@@ -4,7 +4,6 @@ import checkAsync from "./recursiveCheckAsync.ts";
 import checker from "./checker.ts";
 import aComposer from "./aComposer.ts";
 import mime from "../../util/mime.ts";
-import jsonComposer from "../../../../encode/jsonString.mjs";
 
 import elements from "../../util/elements.ts";
 

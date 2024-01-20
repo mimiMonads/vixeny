@@ -3,6 +3,7 @@ import query from "../../queries/main.ts";
 import cookies from "../../cookies/main.ts";
 import resolve from "./resolve/main.ts";
 import branch from "./branch/main.ts";
+import cookieToTokenMain from "../../cookieToToken/cookieToTokenMain.ts";
 import { FunRouterOptions } from "../../../types.ts";
 import { AnyMorphismMap, CommonRequestMorphism, MorphismMap, RequestMorphism } from "./types.ts";
  
@@ -20,6 +21,7 @@ type NativeMaps = {
     ) ([
     { condition: (x:NativeMaps) => x.name === "param", action: () => params(o)(f)},
     { condition: (x:NativeMaps) => x.name === "query", action: () => query(o)(f) },
+    { condition: (x:NativeMaps) => x.name === "token", action: () => cookieToTokenMain(o)(f) },
     { condition: (x:NativeMaps) => x.name === "cookie", action: () => cookies(f) },
     { condition: (x:NativeMaps) => x.name === "resolve", action: () => ("resolve" in f) ? resolve(o)(f.path)(f.resolve as MorphismMap) : null },
     { condition: (x:NativeMaps) => x.name === "branch", action: () => ("branch" in f) ? branch({ ...o, branch: true })(f.path)(f!.branch as AnyMorphismMap) : null },

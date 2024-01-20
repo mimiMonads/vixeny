@@ -4,7 +4,7 @@ import { ParamsMethod } from "../builder/types.ts";
 // Modified ExtractPluginTypes
 type ExtractPluginTypes<O extends FunRouterOptions> = O['cyclePlugin'] extends CyclePluginMap
   ? { [K in keyof O['cyclePlugin']]?: O['cyclePlugin'][K] extends { type: infer T } ? T : never }
-  : {};
+  : unknown;
 
 export type Morphism<
 ResMap extends MorphismMap = MorphismMap,
@@ -20,7 +20,12 @@ query?: Query;
 param?: Param;
 options?: PetitionOptions<[keyof Options['cyclePlugin']]>;
 plugins?: ExtractPluginTypes<Options>;
+crypto?: CryptoOptions
 };
+
+export type CryptoOptions = {
+  globalKey: SupportedKeys
+}
 
 export type AnyMorphism<
 ResMap extends MorphismMap = MorphismMap,
@@ -56,7 +61,7 @@ O extends FunRouterOptions,
 > {
   resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
   branch: { [V in keyof B]: { (ctx: WithPlugins<R,B,QS,PA, O>): ReturnType<B[V]["f"]> } };
- 
+  token: Record<string, Record<string, unknown> | null >
   /**
    * Adds with query to the `context`
    *
@@ -446,7 +451,8 @@ export type AddOption =
   | "resolve"
   | "mutable"
   | "branch"
-  | "arguments";
+  | "arguments"
+  | "token";
 /*
 | "sign"
 | "verify"
@@ -564,6 +570,19 @@ export type ObjectRawResponseStatic = {
   path: string;
   mime: false;
 };
+
+export type SupportedKeys = string       
+| Uint8Array
+| Uint8ClampedArray
+| Uint16Array
+| Uint32Array
+| Int8Array
+| Int16Array
+| Int32Array
+| BigUint64Array
+| BigInt64Array
+| Float32Array
+| Float64Array
 
 
 export type defaultMime =
