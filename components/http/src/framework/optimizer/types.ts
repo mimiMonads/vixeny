@@ -2,46 +2,75 @@ import { CyclePluginMap, FunRouterOptions } from "../../../types.ts";
 import { ParamsMethod } from "../builder/types.ts";
 
 // Modified ExtractPluginTypes
-type ExtractPluginTypes<O extends FunRouterOptions> = O['cyclePlugin'] extends CyclePluginMap
-  ? { [K in keyof O['cyclePlugin']]?: O['cyclePlugin'][K] extends { type: infer T } ? T : never }
+type ExtractPluginTypes<O extends FunRouterOptions> = O["cyclePlugin"] extends
+  CyclePluginMap ? {
+    [K in keyof O["cyclePlugin"]]?: O["cyclePlugin"][K] extends
+      { type: infer T } ? T : never;
+  }
   : unknown;
 
 export type Morphism<
-ResMap extends MorphismMap = MorphismMap,
-BraMap extends AnyMorphismMap = AnyMorphismMap,
-Query extends QueryOptions = QueryOptions,
-Param extends ParamOptions = ParamOptions,
-Options extends FunRouterOptions = FunRouterOptions,
+  ResMap extends MorphismMap = MorphismMap,
+  BraMap extends AnyMorphismMap = AnyMorphismMap,
+  Query extends QueryOptions = QueryOptions,
+  Param extends ParamOptions = ParamOptions,
+  Options extends FunRouterOptions = FunRouterOptions,
+  Crypto extends CryptoOptions = CryptoOptions,
 > = {
-resolve?: ResMap;
-branch?: BraMap;
-f: (ctx: WithPlugins<ResMap, BraMap, Query,Param,Options>) => any;
-query?: Query;
-param?: Param;
-options?: PetitionOptions<[keyof Options['cyclePlugin']]>;
-plugins?: ExtractPluginTypes<Options>;
-crypto?: CryptoOptions
+  resolve?: ResMap;
+  branch?: BraMap;
+  f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => any;
+  query?: Query;
+  param?: Param;
+  options?: PetitionOptions<[keyof Options["cyclePlugin"]], Crypto>;
+  plugins?: ExtractPluginTypes<Options>;
+  crypto?: Crypto;
+};
+
+type CryptoContext<CR extends CryptoOptions> = CR extends
+  { globalKey: any; token: infer Token } ? Token extends Record<string, any> ? {
+      token: { [K in keyof Token]: Record<string, unknown> };
+    } & SignerAndVarifier
+  : {}
+  : CR extends { globalKey: any } ? {
+      token: Record<string, Record<string, unknown> | null>;
+    } & SignerAndVarifier
+  : {};
+
+type SignerAndVarifier = {
+  verify: (s: string) => Record<string, unknown> | null;
+  sign: (key: Record<string, unknown>) => string;
 };
 
 export type CryptoOptions = {
-  globalKey: SupportedKeys
-}
+  globalKey: SupportedKeys;
+  token?: {
+    only?: {
+      [key: string]: {};
+    };
+  };
+} | {};
 
 export type AnyMorphism<
-ResMap extends MorphismMap = MorphismMap,
-BraMap extends AnyMorphismMap = AnyMorphismMap,
-Query extends QueryOptions = QueryOptions,
-Param extends ParamOptions = ParamOptions,
-Options extends FunRouterOptions = FunRouterOptions
-> = Omit<Morphism<ResMap, BraMap, Query, Param,Options >, "f"> & {
-f: (ctx: WithPlugins<ResMap, BraMap, Query,Param,Options>) => any;
+  ResMap extends MorphismMap = MorphismMap,
+  BraMap extends AnyMorphismMap = AnyMorphismMap,
+  Query extends QueryOptions = QueryOptions,
+  Param extends ParamOptions = ParamOptions,
+  Options extends FunRouterOptions = FunRouterOptions,
+  Crypto extends CryptoOptions = CryptoOptions,
+> = Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto>, "f"> & {
+  f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => any;
 };
-export type MorphismMap = { [key: string]: Morphism<any, any, any, any,any> };
-export type AnyMorphismMap = { [key: string]: AnyMorphism<any, any, any, any, any> };
+export type MorphismMap = {
+  [key: string]: Morphism<any, any, any, any, any, any>;
+};
+export type AnyMorphismMap = {
+  [key: string]: AnyMorphism<any, any, any, any, any, any>;
+};
 
 // Helper type to extract the functions from CyclePluginMap
 type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
-  [K in keyof CPM]:   Awaited<ReturnType<ReturnType<ReturnType<CPM[K]['f']>>>>;
+  [K in keyof CPM]: Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>>;
 };
 
 type WithPlugins<
@@ -49,19 +78,30 @@ type WithPlugins<
   B extends AnyMorphismMap,
   QS extends QueryOptions,
   PA extends ParamOptions,
-  O extends FunRouterOptions
-> = Ctx<R, B, QS, PA, O> & (O extends { cyclePlugin: infer CPM } ? CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM> : never : {})
+  O extends FunRouterOptions,
+  CR extends CryptoOptions,
+> =
+  & Ctx<R, B, QS, PA, O, CR>
+  & (O extends { cyclePlugin: infer CPM }
+    ? CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM> : never
+    : {})
+  & CryptoContext<CR>;
 
 export interface Ctx<
-R extends MorphismMap,
-B extends AnyMorphismMap,
-QS extends QueryOptions ,
-PA extends ParamOptions ,
-O extends FunRouterOptions,
+  R extends MorphismMap,
+  B extends AnyMorphismMap,
+  QS extends QueryOptions,
+  PA extends ParamOptions,
+  O extends FunRouterOptions,
+  CR extends CryptoOptions,
 > {
   resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
-  branch: { [V in keyof B]: { (ctx: WithPlugins<R,B,QS,PA, O>): ReturnType<B[V]["f"]> } };
-  token: Record<string, Record<string, unknown> | null >
+  branch: {
+    [V in keyof B]: {
+      (ctx: WithPlugins<R, B, QS, PA, O, CR>): ReturnType<B[V]["f"]>;
+    };
+  };
+
   /**
    * Adds with query to the `context`
    *
@@ -96,10 +136,8 @@ O extends FunRouterOptions,
    * };
    * ```
    */
-  query: QS extends { unique: true }
-    ? (string | null)
+  query: QS extends { unique: true } ? (string | null)
     : { [key: string]: string };
-
 
   /**
    * Gets the parameters from the URL
@@ -118,7 +156,7 @@ O extends FunRouterOptions,
    * };
    * ```
    */
-   param: PA extends { unique: true }? string: Record<string, string >;
+  param: PA extends { unique: true } ? string : Record<string, string>;
   /**
    * Adds a Date.now() returning the number of milliseconds elapsed since the epoch.
    *
@@ -283,44 +321,46 @@ O extends FunRouterOptions,
    * }
    * ```
    */
-
-  
 }
 
 export type CommonRequestMorphism<
-ResMap extends MorphismMap = MorphismMap,
-BraMap extends AnyMorphismMap = AnyMorphismMap,
-Query extends QueryOptions = QueryOptions,
-Param extends ParamOptions = ParamOptions,
-Options extends FunRouterOptions = FunRouterOptions
-> =
-  & Omit<Morphism<ResMap, BraMap, Query,Param, Options>, "f">
-  & RawCommonRequest
-  & {
-    headings?: PetitionHeader;
-    f: (ctx: WithPlugins<ResMap, BraMap, Query,Param, Options>) => BodyInit | Promise<BodyInit>;
-  };
-
-  export type RequestMorphism<
   ResMap extends MorphismMap = MorphismMap,
   BraMap extends AnyMorphismMap = AnyMorphismMap,
   Query extends QueryOptions = QueryOptions,
   Param extends ParamOptions = ParamOptions,
-  Options extends FunRouterOptions = FunRouterOptions
+  Options extends FunRouterOptions = FunRouterOptions,
+  Crypto extends CryptoOptions = CryptoOptions,
 > =
-  & Omit<Morphism<ResMap, BraMap, Query, Param, Options>, "f">
-  & ObjectRawCommonRequest
+  & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto>, "f">
+  & RawCommonRequest
   & {
-    f: (ctx: WithPlugins<ResMap, BraMap, Query,Param,Options>) => Response | Promise<Response>;
+    headings?: PetitionHeader;
+    f: (
+      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>,
+    ) => BodyInit | Promise<BodyInit>;
   };
 
+export type RequestMorphism<
+  ResMap extends MorphismMap = MorphismMap,
+  BraMap extends AnyMorphismMap = AnyMorphismMap,
+  Query extends QueryOptions = QueryOptions,
+  Param extends ParamOptions = ParamOptions,
+  Options extends FunRouterOptions = FunRouterOptions,
+  Crypto extends CryptoOptions = CryptoOptions,
+> =
+  & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto>, "f">
+  & ObjectRawCommonRequest
+  & {
+    f: (
+      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>,
+    ) => Response | Promise<Response>;
+  };
 
-
-export type Petition =     
-( RequestMorphism
+export type Petition =
+  | RequestMorphism
   | CommonRequestMorphism
   | ObjectRawResponseReturn
-  | ObjectRawResponseStatic)
+  | ObjectRawResponseStatic;
 
 /**
  * Object for raw response return.
@@ -395,40 +435,25 @@ export type RawCommonRequest = {
   method?: ParamsMethod;
 
   query?: QueryOptions;
-
 } & PathKey;
+
+type ExtendedAddOption<CR extends CryptoOptions> = "globalKey" extends keyof CR
+  ? AddOption | "token" | "sign" | "verify"
+  : AddOption;
 
 /**
  * Options for the petition.
  */
-export type PetitionOptions<T> = {
-  /**
-   * Options for adding.
-   */
-  add?: AddOption[] | T;
-  /**
-   * Options for debugging.
-   */
+export type PetitionOptions<
+  T extends (string | number | symbol)[],
+  CR extends CryptoOptions,
+> = {
+  add?: Array<ExtendedAddOption<CR> | T[number]>;
   debug?: DebugOptions;
-  /**
-   * Options for removing.
-   */
-  remove?: AddOption[] | T;
-  /**
-   * Options for filtering only specified items.
-   */
-  only?: AddOption[] | T;
-  /**
-   * Hash to set.
-   */
+  remove?: Array<ExtendedAddOption<CR> | T[number]>;
+  only?: Array<ExtendedAddOption<CR> | T[number]>;
   setHash?: string;
-  /**
-   * Random number to set.
-   */
   setRandomNumber?: number;
-  /**
-   * Date to set.
-   */
   setDate?: number;
 };
 
@@ -451,14 +476,7 @@ export type AddOption =
   | "resolve"
   | "mutable"
   | "branch"
-  | "arguments"
-  | "token";
-/*
-| "sign"
-| "verify"
-| "jSign"
-| "jVerify"
-*/
+  | "arguments";
 
 export type PathKey = {
   /**
@@ -488,37 +506,6 @@ export type DebugOptions = {
 };
 
 export type MutableKey = {
-  /**
-   * Enables mutable state in Vixeny petitions.
-   *
-   * Vixeny primarily champions immutability, but for instances requiring mutable state, the `mutable` property is at your disposal.
-   *
-   * Use at the petition's onset:
-   * ```ts
-   * {
-   *     path: "/mutable",
-   *     mutable: true,
-   *     resolve: {...example_r_$hello_m_$result_string},
-   *     f: c => c.mutable.result as string,
-   * }
-   * ```
-   *
-   * It's globally accessible, effective at any depth:
-   * ```ts
-   * {
-   *     path: "/mutable",
-   *     mutable: true,
-   *     resolve: {...example_r_$hello_m_$result_string},
-   *     f: c => c.branch.function("Hello") as string,
-   *     branch: {
-   *         name: "function",
-   *         f: c => c.arguments + c.mutable.result as string
-   *     }
-   * }
-   * ```
-   *
-   * `mutable` offers flexibility, letting developers mold Vixeny to diverse needs.
-   */
   mutable?: true;
 };
 
@@ -541,15 +528,15 @@ export type PetitionHeader = {
 };
 
 export type QueryOptions = {
-  unique?: true ; 
-  name: string // 'unique' is an optional boolean    
+  unique?: true;
+  name: string; // 'unique' is an optional boolean
 } | {
-  only?: string[]
-}
+  only?: string[];
+} | {};
 
 export type ParamOptions = {
-  unique?: true;  // 'unique' is an optional boolean    
-} 
+  unique?: true; // 'unique' is an optional boolean
+} | {};
 
 /**
  * Object for raw response static.
@@ -571,19 +558,19 @@ export type ObjectRawResponseStatic = {
   mime: false;
 };
 
-export type SupportedKeys = string       
-| Uint8Array
-| Uint8ClampedArray
-| Uint16Array
-| Uint32Array
-| Int8Array
-| Int16Array
-| Int32Array
-| BigUint64Array
-| BigInt64Array
-| Float32Array
-| Float64Array
-
+export type SupportedKeys =
+  | string
+  | Uint8Array
+  | Uint8ClampedArray
+  | Uint16Array
+  | Uint32Array
+  | Int8Array
+  | Int16Array
+  | Int32Array
+  | BigUint64Array
+  | BigInt64Array
+  | Float32Array
+  | Float64Array;
 
 export type defaultMime =
   | ".aac"
@@ -660,5 +647,3 @@ export type defaultMime =
   | ".3gp"
   | ".3g2"
   | ".7z";
-
-

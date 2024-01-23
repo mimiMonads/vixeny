@@ -4,10 +4,8 @@ import assert from "node:assert";
 import test from "node:test";
 
 // "/test/:id"
-console.log(          
-  
- one(map()({ path: "/test/:id", f: (_) => "hello" }))
-
+console.log(
+  one(map()({ path: "/test/:id", f: (_) => "hello" })),
 );
 
 test(

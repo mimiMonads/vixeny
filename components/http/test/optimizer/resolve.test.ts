@@ -25,8 +25,8 @@ test(
     assert.deepStrictEqual(
       resolveComposer()({
         hi: {
-        f: () => "hello",
-      }
+          f: () => "hello",
+        },
       })(new Request("http://hi.com/")),
       { hi: "hello" },
     ),
@@ -38,9 +38,11 @@ test(
     assert.deepStrictEqual(
       await resolveComposer(
         { mutable: { hi: "hello" } },
-      )({resolve :{
-        f: (f) => f.mutable,
-      }})(new Request("http://hi.com/")),
+      )({
+        resolve: {
+          f: (f) => f.mutable,
+        },
+      })(new Request("http://hi.com/")),
       { resolve: { hi: "hello" } },
     ),
 );
@@ -49,16 +51,18 @@ test(
   async () =>
     assert.deepStrictEqual(
       await resolveComposer()({
-        first :{
-        resolve: {
-          second : {
-          f: async (f) => (await f.req.blob()).text(),
-        }},
-        options: {
-          add: ["resolve"],
+        first: {
+          resolve: {
+            second: {
+              f: async (f) => (await f.req.blob()).text(),
+            },
+          },
+          options: {
+            add: ["resolve"],
+          },
+          f: (f) => f.resolve,
         },
-        f: (f) => f.resolve,
-      }})(new Request("http://hi.com/", { method: "POST", body: "hello" })),
+      })(new Request("http://hi.com/", { method: "POST", body: "hello" })),
       { first: { second: "hello" } },
     ),
 );
@@ -68,12 +72,15 @@ test(
   () =>
     assert.deepStrictEqual(
       resolveComposer()({
-        first : {
-        resolve: { second :{
-          f: (f) => "hello",
-        }},
-        f: (f) => f.resolve,
-      }})(new Request("http://hi.com/")),
+        first: {
+          resolve: {
+            second: {
+              f: (f) => "hello",
+            },
+          },
+          f: (f) => f.resolve,
+        },
+      })(new Request("http://hi.com/")),
       { first: { second: "hello" } },
     ),
 );

@@ -1,8 +1,12 @@
-import { FunRouterOptions } from "../../../types.ts"
-import { CommonRequestMorphism, RequestMorphism } from "./types.ts"
+import { FunRouterOptions } from "../../../types.ts";
+import { CommonRequestMorphism, RequestMorphism } from "./types.ts";
 import checkAsync from "./recursiveCheckAsync.ts";
 
-export default (o?: FunRouterOptions)=>( f:CommonRequestMorphism | RequestMorphism ) => (ar: string[]) =>(mutable:boolean) => ([
+export default (o?: FunRouterOptions) =>
+(f: CommonRequestMorphism | RequestMorphism) =>
+(ar: string[]) =>
+(mutable: boolean) =>
+  ([
     { name: "req", value: mutable ? "r.r" : "r", type: 0 },
     {
       name: "param",
@@ -28,9 +32,7 @@ export default (o?: FunRouterOptions)=>( f:CommonRequestMorphism | RequestMorphi
     },
     {
       name: "hash",
-      value: f.options?.setHash
-        ? f.options.setHash
-        : "crypto.randomUUID()",
+      value: f.options?.setHash ? f.options.setHash : "crypto.randomUUID()",
       type: 0,
     },
     { name: "sign", value: "sign", type: 1 },
@@ -67,9 +69,10 @@ export default (o?: FunRouterOptions)=>( f:CommonRequestMorphism | RequestMorphi
       value: o && "branch" in o ? "b" : null,
       type: 0,
     },
-  ].concat(Object.keys(o?.cyclePlugin || {}).map( x  =>    ( {
-    name: x,
-    value: mutable ? x + "(r.r.url)" :  x + "(r.url)",
-    type: 1,
-  }))
-  )).filter((x) => ar.includes(x.name))
+  ].concat(
+    Object.keys(o?.cyclePlugin || {}).map((x) => ({
+      name: x,
+      value: mutable ? x + "(r.r.url)" : x + "(r.url)",
+      type: 1,
+    })),
+  )).filter((x) => ar.includes(x.name));

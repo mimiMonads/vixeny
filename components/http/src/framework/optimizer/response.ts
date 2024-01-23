@@ -8,22 +8,22 @@ import mime from "../../util/mime.ts";
 import elements from "../../util/elements.ts";
 
 export default (o?: FunRouterOptions) =>
-(f: CommonRequestMorphism  | RequestMorphism) =>
+(f: CommonRequestMorphism | RequestMorphism) =>
   ((elementsUsed) =>
     (
       (table) =>
         ((composition) =>
           (table.headers && table.json)
             ? composition(table.json)(table.headers)(f.f)(
-              aComposer(o)(f )(elementsUsed),
+              aComposer(o)(f)(elementsUsed),
             )
             : table.headers
             ? composition(table.headers)(f.f)(
-              aComposer(o)(f )(elementsUsed),
+              aComposer(o)(f)(elementsUsed),
             )
             : table.json
             ? composition(table.json)(f.f)(
-              aComposer(o)(f )(elementsUsed),
+              aComposer(o)(f)(elementsUsed),
             )
             : composition(f.f)(
               aComposer(o)(f)(elementsUsed),
@@ -73,9 +73,12 @@ export default (o?: FunRouterOptions) =>
           typeof f.options?.only !== "undefined" && f.options.only.length > 0
         )
         ? f.options.only
-        : checker(f.options?.remove || [])(elements)(
-          [...(f.options?.add || []), ...( Object.keys(o?.cyclePlugin || {}) || [])]
-          )(
+        : checker(f.options?.remove || [])(elements(f))(
+          [
+            ...(f.options?.add || []),
+            ...(Object.keys(o?.cyclePlugin || {}) || []),
+          ],
+        )(
           f.f.toString(),
         ),
     );

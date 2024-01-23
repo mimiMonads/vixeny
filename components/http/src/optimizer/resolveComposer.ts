@@ -4,8 +4,7 @@ import { FunRouterOptions } from "../../types.ts";
 
 import { Morphism } from "../framework/optimizer/types.ts";
 
-type ResolveOptions = {[key: string]: ({
-} & Morphism)};
+type ResolveOptions = { [key: string]: {} & Morphism };
 
 type ResolveSetter = {
   mutable?: Record<string, unknown>;

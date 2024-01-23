@@ -1,8 +1,12 @@
 import recursiveCheck from "../checkAsync.ts";
-import {  BranchOptions, ResponseResponse } from "./types.ts";
+import { BranchOptions, ResponseResponse } from "./types.ts";
 import table from "./table.ts";
 import { specialOptions } from "../aComposer.ts";
-import { AnyMorphismMap, CommonRequestMorphism, RequestMorphism } from "../types.ts";
+import {
+  AnyMorphismMap,
+  CommonRequestMorphism,
+  RequestMorphism,
+} from "../types.ts";
 
 export default (o?: specialOptions) =>
 (path: string) =>
@@ -25,7 +29,11 @@ export default (o?: specialOptions) =>
                 }})`,
               )(),
             ))(
-              ar.some((x) => recursiveCheck(x as unknown as CommonRequestMorphism | RequestMorphism)),
+              ar.some((x) =>
+                recursiveCheck(
+                  x as unknown as CommonRequestMorphism | RequestMorphism,
+                )
+              ),
             )
       )(
         table(o ? { ...o, branch: true } : { branch: true })(path)(
@@ -33,5 +41,8 @@ export default (o?: specialOptions) =>
         ),
       )
   )(
-    Object.keys(input).map( x => ({ ...(input[x]) , name: x})) as BranchOptions,
+    Object.keys(input).map((x) => ({
+      ...(input[x]),
+      name: x,
+    })) as BranchOptions,
   );

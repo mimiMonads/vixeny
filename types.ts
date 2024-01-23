@@ -3,7 +3,6 @@
 import { Petition } from "./components/http/src/framework/optimizer/types.ts";
 import { FunRouterOptions } from "./components/http/types.ts";
 
-
 /**
  * Options for the router, it is `optional`
  * ```ts
@@ -18,8 +17,6 @@ import { FunRouterOptions } from "./components/http/types.ts";
  * })(...pettions)
  * ```
  */
-
-
 
 export type Vixeny = (
   o?: FunRouterOptions,
@@ -47,6 +44,3 @@ export type Vixeny = (
  * ```
  */
 export type Petitions = Petition[];
-
-
-

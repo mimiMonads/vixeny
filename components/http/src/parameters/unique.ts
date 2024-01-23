@@ -8,9 +8,7 @@ export default (info: info) =>
       (info.hasName?.length || 0) + info.firstParam
     }, s.indexOf("?") ${info.lastParam === 0 ? "" : " -" + info.lastParam}))`
     : `(n =>s=> n !== -1 ? s.indexOf("?") === -1 ? 
-   s.slice(n ${
-      info.lastParam === 0 ? "" : " , - " + info.lastParam
-    }) : 
+   s.slice(n ${info.lastParam === 0 ? "" : " , - " + info.lastParam}) : 
    s.slice(n , s.indexOf("?") ${
       info.lastParam === 0 ? "" : " -" + info.lastParam
     }) : s.indexOf("?") === -1  ? 

@@ -1,6 +1,9 @@
 import { Morphism, PetitionOptions } from "../types.ts";
 
-export type ResolveOption = (Morphism & { name: string , options?: PetitionOptions<[]>});
+export type ResolveOption = Morphism & {
+  name: string;
+  options?: PetitionOptions<any, any>;
+};
 export type ResolveOptions = ResolveOption[];
 
 export type ResponseResponse = (r: Request) => unknown;

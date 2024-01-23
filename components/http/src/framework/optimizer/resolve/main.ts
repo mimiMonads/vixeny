@@ -1,8 +1,11 @@
 import recursiveCheck from "../checkAsync.ts";
 import { ResolveOptions, ResponseResponse } from "./types.ts";
 import { FunRouterOptions } from "../../../../types.ts";
-import { CommonRequestMorphism, MorphismMap, RequestMorphism } from "../types.ts";
-
+import {
+  CommonRequestMorphism,
+  MorphismMap,
+  RequestMorphism,
+} from "../types.ts";
 
 import table from "./table.ts";
 
@@ -27,7 +30,11 @@ export default (o?: FunRouterOptions) =>
                 }})`,
               )(),
             ) as unknown as ResponseResponse)(
-              ar.some((x) => recursiveCheck(x as unknown as CommonRequestMorphism | RequestMorphism )),
+              ar.some((x) =>
+                recursiveCheck(
+                  x as unknown as CommonRequestMorphism | RequestMorphism,
+                )
+              ),
             )
       )(
         table(o)(path)(
@@ -35,5 +42,5 @@ export default (o?: FunRouterOptions) =>
         ) as ({ name: string; f: (r: Request) => any | Promise<any> })[],
       )
   )(
-    Object.keys(input).map( x => ({ ...input[x] , name: x})) as ResolveOptions,
+    Object.keys(input).map((x) => ({ ...input[x], name: x })) as ResolveOptions,
   );
