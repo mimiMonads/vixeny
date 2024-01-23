@@ -1,6 +1,6 @@
 {
   "name": "vixeny",
-  "version": "0.0.83",
+  "version": "0.0.84",
   "description": "A functional router for Bun and Deno",
   "main": "fun.ts",
   "directories": {
@@ -37,7 +37,7 @@
     "node",
     "functional"
   ],
-  "author": "Antony Vladimir",
+  "author": "Antony",
   "license": "SEE LICENSE IN ReadMe.md",
   "bugs": {
     "url": "https://github.com/mimiMonads/vixeny/issues"

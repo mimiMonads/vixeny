@@ -51,8 +51,6 @@ export default (o?: FunRouterOptions) =>
         : 'token(r.headers.get("Cookie"))',
       type: 1,
     },
-    { name: "jSign", value: "jSign", type: 1 },
-    { name: "jVerify", value: "jVerify", type: 1 },
     {
       name: "resolve",
       value: `${checkAsync(f) ? " await resolve(r)" : "resolve(r)"}`,
