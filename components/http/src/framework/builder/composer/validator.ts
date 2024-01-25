@@ -9,7 +9,7 @@ export default (options?: FunRouterOptions) =>
   (ar.reduce(
     (acc, x, i) =>
       x === "/"
-        ? acc + ` s === "/" ? ${i + base}  : `
+        ? acc + ` s === "/" || s.indexOf("?") === 1 ? ${i + base}  : `
         : x.indexOf("/" + (options?.paramsStartsWith?.at(0) || ":")) ===
             -1
         ? acc + ((x.at(-1) === "/")

@@ -22,7 +22,7 @@ export type Morphism<
   f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => any;
   query?: Query;
   param?: Param;
-  options?: PetitionOptions<[keyof Options["cyclePlugin"]], Crypto>;
+  options?: PetitionOptions<[keyof Options["cyclePlugin"] ], Crypto>;
   plugins?: ExtractPluginTypes<Options>;
   crypto?: Crypto;
 };

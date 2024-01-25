@@ -70,7 +70,7 @@ export default (o?: FunRouterOptions) =>
       },
     ))(
       (
-          typeof f.options?.only !== "undefined" && f.options.only.length > 0
+        f.options && typeof f.options?.only !== "undefined" && f.options.only.length > 0
         )
         ? f.options.only
         : checker(f.options?.remove || [])(elements(f))(
