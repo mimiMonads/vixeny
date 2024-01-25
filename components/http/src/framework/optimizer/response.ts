@@ -30,22 +30,20 @@ export default (o?: FunRouterOptions) =>
             ))(
             "type" in f
               ? new Function(`
-      return ${table.json ? "j=>" : ""}f=>c=>${
-                table.async || table.asyncResolve ? "async " : ""
-              }r=>${table.async || table.asyncResolve ? "await f" : "f"}(${
-                table.asyncResolve ? "await c" : "c"
-              }(${"mutable" in f ? "{r:r,m:{}}" : "r"}))`)()
+      return f=>c=>${table.async || table.asyncResolve ? "async " : ""}r=>${
+                table.async || table.asyncResolve ? "await f" : "f"
+              }(${table.asyncResolve ? "await c" : "c"}(${
+                "mutable" in f ? "[r,{res: new Response()}]" : "r"
+              }))`)()
               : new Function(
-                `return ${table.json ? "j=>" : ""}${
-                  table.headers ? "h=>" : ""
-                }${table.async ? "f=>" : "f=>"}${
-                  table.asyncResolve ? "c=>" : "c=>"
-                }${
+                `return ${table.headers ? "h=>" : ""}${
+                  table.async ? "f=>" : "f=>"
+                }${table.asyncResolve ? "c=>" : "c=>"}${
                   table.async || table.asyncResolve ? "async " : ""
                 }r=> new Response(${
                   table.async || table.asyncResolve ? "await f" : "f"
                 }(${table.asyncResolve ? "await c" : "c"}(${
-                  "mutable" in f ? "{r:r,m:{}}" : "r"
+                  "mutable" in f ? "[r,{res: new Response()}]" : "r"
                 }))${table.headers ? ",h" : ""})`,
               )(),
           )
@@ -70,12 +68,15 @@ export default (o?: FunRouterOptions) =>
       },
     ))(
       (
-        f.options && typeof f.options?.only !== "undefined" && f.options.only.length > 0
+          f.options && typeof f.options?.only !== "undefined" &&
+          f.options.only.length > 0
         )
-        ? f.options.only
-        : checker(f.options?.remove || [])(elements(f))(
+        ? Object.keys(f.options.only)
+        : checker(
+          (f.options && f.options.remove) ? Object.keys(f.options.remove) : [],
+        )(elements(f))(
           [
-            ...(f.options?.add || []),
+            ...((f.options && f.options.add) ? Object.keys(f.options.add) : []),
             ...(Object.keys(o?.cyclePlugin || {}) || []),
           ],
         )(

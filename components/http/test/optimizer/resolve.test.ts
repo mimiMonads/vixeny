@@ -17,7 +17,6 @@ test(
       { first: "hello" },
     ),
 );
-//await (first=>async r =>({first:await first(r)}))((a=>k=>async r=> await k(await a(r)))(r=>({req:r}))(async f => await(await f.req.blob()).text()))(new Request("http://localhost:8080/", {method: "POST", body: "hello"}))
 
 test(
   "check for sync",
@@ -37,13 +36,13 @@ test(
   async () =>
     assert.deepStrictEqual(
       await resolveComposer(
-        { mutable: { hi: "hello" } },
+        { mutable: { hi: "hello", res: new Response() } },
       )({
         resolve: {
-          f: (f) => f.mutable,
+          f: (f) => f.mutable.hi,
         },
       })(new Request("http://hi.com/")),
-      { resolve: { hi: "hello" } },
+      { resolve: "hello" },
     ),
 );
 test(

@@ -6,6 +6,7 @@ import {
   CommonRequestMorphism,
   CryptoOptions,
   MorphismMap,
+  MutableKey,
   ObjectRawResponseReturn,
   ObjectRawResponseStatic,
   ParamOptions,
@@ -76,7 +77,7 @@ export type FunRouterOptions = {
 };
 
 export type CyclePluginMap = {
-  [key: string]: CyclePlugin;
+  [key: string | number | symbol]: CyclePlugin;
 };
 
 export type CyclePlugin = {
@@ -92,10 +93,11 @@ export type Vixeny = <O extends FunRouterOptions>(o?: O) => <
   Q extends QueryOptions,
   P extends ParamOptions,
   CR extends CryptoOptions,
+  _MU extends MutableKey,
 >(
   routes: (
-    | RequestMorphism<T, B, Q, P, O, CR>
-    | CommonRequestMorphism<T, B, Q, P, O, CR>
+    | RequestMorphism<T, B, Q, P, O, CR,{}>
+    | CommonRequestMorphism<T, B, Q, P, O, CR, {}>
     | ObjectRawResponseReturn
     | ObjectRawResponseStatic
   )[],

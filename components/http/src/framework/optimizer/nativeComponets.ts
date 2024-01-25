@@ -38,21 +38,23 @@ export default (o?: FunRouterOptions) =>
       },
       {
         condition: (x: NativeMaps) => x.name === "verify",
-        action: () => 
-        f.crypto && 'globalKey' in f.crypto 
-         ? verifySha256()(f.crypto.globalKey)
-         : void console.error("I don't know you got this message, contact me in discord," +
-         " also verify will always return `false` "
-         ) ??  ((_:any) => false)
+        action: () =>
+          f.crypto && "globalKey" in f.crypto
+            ? verifySha256()(f.crypto.globalKey)
+            : void console.error(
+              "I don't know you got this message, contact me in discord," +
+                " also verify will always return `false` ",
+            ) ?? ((_: any) => false),
       },
       {
         condition: (x: NativeMaps) => x.name === "sign",
-        action: () => 
-        f.crypto && 'globalKey' in f.crypto 
-         ? signSha256()(f.crypto.globalKey)
-         : void console.error("I don't know you got this message, contact me in discord," +
-         " also sign will always return '' "
-         ) ??  ((_:any) => '')
+        action: () =>
+          f.crypto && "globalKey" in f.crypto
+            ? signSha256()(f.crypto.globalKey)
+            : void console.error(
+              "I don't know you got this message, contact me in discord," +
+                " also sign will always return '' ",
+            ) ?? ((_: any) => ""),
       },
       {
         condition: (x: NativeMaps) => x.name === "token",

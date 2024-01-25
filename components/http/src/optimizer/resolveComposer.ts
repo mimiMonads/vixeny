@@ -7,14 +7,18 @@ import { Morphism } from "../framework/optimizer/types.ts";
 type ResolveOptions = { [key: string]: {} & Morphism };
 
 type ResolveSetter = {
-  mutable?: Record<string, unknown>;
+  mutable?: {
+    res: Response;
+    [keys: string]: any;
+  };
 } & FunRouterOptions;
 
 export default (o?: ResolveSetter) => (f: ResolveOptions) =>
   o && "mutable" in o
     ? (
       (m) =>
-        ((f) => async (r: Request) =>
-          await f({ r: r, m: m } as unknown as Request))(resolver(o)("/")(f))
+        ((f) => async (r: Request) => await f([r, m] as unknown as Request))(
+          resolver(o)("/")(f),
+        )
     )({ ...o.mutable })
     : resolver(o)("/")(f);

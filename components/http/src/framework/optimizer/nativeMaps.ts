@@ -7,15 +7,15 @@ export default (o?: FunRouterOptions) =>
 (ar: string[]) =>
 (mutable: boolean) =>
   ([
-    { name: "req", value: mutable ? "r.r" : "r", type: 0 },
+    { name: "req", value: mutable ? "r[0]" : "r", type: 0 },
     {
       name: "param",
-      value: mutable ? "param(r.r.url)" : "param(r.url)",
+      value: mutable ? "param(r[0].url)" : "param(r.url)",
       type: 1,
     },
     {
       name: "query",
-      value: mutable ? "query(r.r.url)" : "query(r.url)",
+      value: mutable ? "query(r[0].url)" : "query(r.url)",
       type: 1,
     },
     {
@@ -40,14 +40,14 @@ export default (o?: FunRouterOptions) =>
     {
       name: "cookie",
       value: mutable
-        ? 'cookie(r.r.headers.get("cookie"))'
+        ? 'cookie(r[0].headers.get("cookie"))'
         : 'cookie(r.headers.get("cookie"))',
       type: 1,
     },
     {
       name: "token",
       value: mutable
-        ? 'token(r.r.headers.get("Cookie"))'
+        ? 'token(r[0].headers.get("Cookie"))'
         : 'token(r.headers.get("Cookie"))',
       type: 1,
     },
@@ -56,7 +56,7 @@ export default (o?: FunRouterOptions) =>
       value: `${checkAsync(f) ? " await resolve(r)" : "resolve(r)"}`,
       type: 1,
     },
-    { name: "mutable", value: mutable ? "r.m" : "{}", type: 0 },
+    { name: "mutable", value: mutable ? "r[1]" : "{}", type: 0 },
     {
       name: "branch",
       value: `${checkAsync(f) ? " await branch(r)" : "branch(r)"}`,
@@ -70,7 +70,7 @@ export default (o?: FunRouterOptions) =>
   ].concat(
     Object.keys(o?.cyclePlugin || {}).map((x) => ({
       name: x,
-      value: mutable ? x + "(r.r.url)" : x + "(r.url)",
+      value: mutable ? x + "(r[0].url)" : x + "(r.url)",
       type: 1,
     })),
   )).filter((x) => ar.includes(x.name));

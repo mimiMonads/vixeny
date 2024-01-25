@@ -16,16 +16,22 @@ export type Morphism<
   Param extends ParamOptions = ParamOptions,
   Options extends FunRouterOptions = FunRouterOptions,
   Crypto extends CryptoOptions = CryptoOptions,
+  Mut extends MutableKey = MutableKey,
 > = {
   resolve?: ResMap;
   branch?: BraMap;
   f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => any;
   query?: Query;
   param?: Param;
-  options?: PetitionOptions<[keyof Options["cyclePlugin"] ], Crypto>;
+  options?: PetitionOptions<[StringKeysOnly<Options["cyclePlugin"]>], Crypto>;
   plugins?: ExtractPluginTypes<Options>;
   crypto?: Crypto;
+  mutable?: Mut;
 };
+
+type StringKeysOnly<T> = {
+  [K in keyof T]: T[K] extends string ? K : never;
+}[keyof T];
 
 type CryptoContext<CR extends CryptoOptions> = CR extends
   { globalKey: any; token: infer Token } ? Token extends Record<string, any> ? {
@@ -58,14 +64,15 @@ export type AnyMorphism<
   Param extends ParamOptions = ParamOptions,
   Options extends FunRouterOptions = FunRouterOptions,
   Crypto extends CryptoOptions = CryptoOptions,
+  Mut extends MutableKey = MutableKey,
 > = Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto>, "f"> & {
   f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => any;
 };
 export type MorphismMap = {
-  [key: string]: Morphism<any, any, any, any, any, any>;
+  [key: string]: Morphism<any, any, any, any, any, any, any>;
 };
 export type AnyMorphismMap = {
-  [key: string]: AnyMorphism<any, any, any, any, any, any>;
+  [key: string]: AnyMorphism<any, any, any, any, any, any, any>;
 };
 
 // Helper type to extract the functions from CyclePluginMap
@@ -80,6 +87,7 @@ type WithPlugins<
   PA extends ParamOptions,
   O extends FunRouterOptions,
   CR extends CryptoOptions,
+
 > =
   & Ctx<R, B, QS, PA, O, CR>
   & (O extends { cyclePlugin: infer CPM }
@@ -94,6 +102,7 @@ export interface Ctx<
   PA extends ParamOptions,
   O extends FunRouterOptions,
   CR extends CryptoOptions,
+
 > {
   resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
   branch: {
@@ -275,7 +284,9 @@ export interface Ctx<
    * ```
    */
 
-  mutable: Record<string, unknown>;
+  mutable: {
+    [keys: string]: any;
+  };
   /**
    * Interacts with the `arguments` property in `ctx.branch` to receive input for branch functions.
    *
@@ -323,6 +334,7 @@ export interface Ctx<
    */
 }
 
+
 export type CommonRequestMorphism<
   ResMap extends MorphismMap = MorphismMap,
   BraMap extends AnyMorphismMap = AnyMorphismMap,
@@ -330,14 +342,16 @@ export type CommonRequestMorphism<
   Param extends ParamOptions = ParamOptions,
   Options extends FunRouterOptions = FunRouterOptions,
   Crypto extends CryptoOptions = CryptoOptions,
+  Mut extends MutableKey = MutableKey,
 > =
-  & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto>, "f">
+  & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f">
   & RawCommonRequest
   & {
     headings?: PetitionHeader;
     f: (
       ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>,
     ) => BodyInit | Promise<BodyInit>;
+ 
   };
 
 export type RequestMorphism<
@@ -347,8 +361,9 @@ export type RequestMorphism<
   Param extends ParamOptions = ParamOptions,
   Options extends FunRouterOptions = FunRouterOptions,
   Crypto extends CryptoOptions = CryptoOptions,
+  Mut extends MutableKey = MutableKey,
 > =
-  & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto>, "f">
+  & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f">
   & ObjectRawCommonRequest
   & {
     f: (
@@ -422,8 +437,7 @@ export type ObjectRawCommonRequest =
      */
     type: "request";
   }
-  & RawCommonRequest
-  & MutableKey;
+  & RawCommonRequest;
 
 /**
  * Common raw request object.
@@ -433,8 +447,6 @@ export type RawCommonRequest = {
    * Route Method
    */
   method?: ParamsMethod;
-
-  query?: QueryOptions;
 } & PathKey;
 
 type ExtendedAddOption<CR extends CryptoOptions> = "globalKey" extends keyof CR
@@ -506,8 +518,10 @@ export type DebugOptions = {
 };
 
 export type MutableKey = {
-  mutable?: true;
-};
+  mutable?: {
+    is: boolean;
+  };
+} | {} ;
 
 /**
  * Headers for the petition.
