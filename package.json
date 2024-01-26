@@ -27,8 +27,7 @@
   },
   "imports": {
     ".": {
-      "bun": "./fun.ts",
-      "deno": "./fun.ts"
+      "bun": "./fun.ts"
     }
   },
   "keywords": [

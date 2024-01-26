@@ -1,7 +1,5 @@
-import elements from "../../../util/elements.ts";
-
 import aComposer, { specialOptions } from "../aComposer.ts";
-import checker from "../checker.ts";
+import isUsing from "../tools/isUsing.ts";
 import { BranchOptions } from "./types.ts";
 
 export default (o?: specialOptions) =>
@@ -22,21 +20,8 @@ export default (o?: specialOptions) =>
             : ((a) => (k: (arg0: any) => any) => (r: Request) => (b: unknown) =>
               k(a(r)(b)))(composed)(x.f)
       )(
-        (typeof x.options?.only !== "undefined" && x.options.only.length > 0)
-          ? aComposer(
-            o ? { ...aComposer, branch: false } : { branch: false },
-          )(x)(x.options.only)
-          : aComposer(
-            o ? { ...aComposer, branch: false } : { branch: false },
-          )(x)(
-            checker(x.options?.remove ?? [])(elements(x))(
-              [
-                ...(x.options?.add || []),
-                ...(Object.keys(o?.cyclePlugin || {}) || []),
-              ],
-            )(
-              x.f.toString(),
-            ),
-          ) as (r: Request) => any | Promise<any>,
+        aComposer(o ? { ...aComposer, branch: false } : { branch: false })(x)(
+          isUsing(o)(x),
+        ),
       ),
     }));

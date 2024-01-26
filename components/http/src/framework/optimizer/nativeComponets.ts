@@ -14,6 +14,7 @@ import {
   MorphismMap,
   RequestMorphism,
 } from "./types.ts";
+import parsingToHexa from "./tools/parsingToHexa.ts";
 
 type NativeMaps = {
   name: string;
@@ -40,7 +41,7 @@ export default (o?: FunRouterOptions) =>
         condition: (x: NativeMaps) => x.name === "verify",
         action: () =>
           f.crypto && "globalKey" in f.crypto
-            ? verifySha256()(f.crypto.globalKey)
+            ? verifySha256()(parsingToHexa(f.crypto as { globalKey: string }))
             : void console.error(
               "I don't know you got this message, contact me in discord," +
                 " also verify will always return `false` ",
@@ -50,7 +51,7 @@ export default (o?: FunRouterOptions) =>
         condition: (x: NativeMaps) => x.name === "sign",
         action: () =>
           f.crypto && "globalKey" in f.crypto
-            ? signSha256()(f.crypto.globalKey)
+            ? signSha256()(parsingToHexa(f.crypto as { globalKey: string }))
             : void console.error(
               "I don't know you got this message, contact me in discord," +
                 " also sign will always return '' ",
@@ -58,7 +59,14 @@ export default (o?: FunRouterOptions) =>
       },
       {
         condition: (x: NativeMaps) => x.name === "token",
-        action: () => cookieToTokenMain(o)(f),
+        action: () =>
+          cookieToTokenMain(o)({
+            ...f,
+            crypto: {
+              ...f.crypto,
+              globalKey: parsingToHexa(f.crypto as { globalKey: string }),
+            },
+          }),
       },
       {
         condition: (x: NativeMaps) => x.name === "cookie",
@@ -84,6 +92,6 @@ export default (o?: FunRouterOptions) =>
       .concat(
         Object.keys(o?.cyclePlugin || {}).map((x) => ({
           condition: ((name) => (x: NativeMaps) => x.name === name)(x),
-          action: () => o!.cyclePlugin![x]!["f"](o)(f),
+          action: () => o!.cyclePlugin![x]!["f"](o)(f as CommonRequestMorphism),
         })),
       ));

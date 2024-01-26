@@ -7,7 +7,7 @@ type ExtractPluginTypes<O extends FunRouterOptions> = O["cyclePlugin"] extends
     [K in keyof O["cyclePlugin"]]?: O["cyclePlugin"][K] extends
       { type: infer T } ? T : never;
   }
-  : unknown;
+  : {};
 
 export type Morphism<
   ResMap extends MorphismMap = MorphismMap,
@@ -87,7 +87,6 @@ type WithPlugins<
   PA extends ParamOptions,
   O extends FunRouterOptions,
   CR extends CryptoOptions,
-
 > =
   & Ctx<R, B, QS, PA, O, CR>
   & (O extends { cyclePlugin: infer CPM }
@@ -102,7 +101,6 @@ export interface Ctx<
   PA extends ParamOptions,
   O extends FunRouterOptions,
   CR extends CryptoOptions,
-
 > {
   resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
   branch: {
@@ -334,7 +332,6 @@ export interface Ctx<
    */
 }
 
-
 export type CommonRequestMorphism<
   ResMap extends MorphismMap = MorphismMap,
   BraMap extends AnyMorphismMap = AnyMorphismMap,
@@ -351,7 +348,6 @@ export type CommonRequestMorphism<
     f: (
       ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>,
     ) => BodyInit | Promise<BodyInit>;
- 
   };
 
 export type RequestMorphism<
@@ -521,7 +517,7 @@ export type MutableKey = {
   mutable?: {
     is: boolean;
   };
-} | {} ;
+} | {};
 
 /**
  * Headers for the petition.

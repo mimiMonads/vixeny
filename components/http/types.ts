@@ -96,8 +96,8 @@ export type Vixeny = <O extends FunRouterOptions>(o?: O) => <
   _MU extends MutableKey,
 >(
   routes: (
-    | RequestMorphism<T, B, Q, P, O, CR,{}>
-    | CommonRequestMorphism<T, B, Q, P, O, CR, {}>
+    | RequestMorphism<T, B, Q, P, O, CR, any>
+    | CommonRequestMorphism<T, B, Q, P, O, CR, any>
     | ObjectRawResponseReturn
     | ObjectRawResponseStatic
   )[],

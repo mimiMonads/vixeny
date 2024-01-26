@@ -1,11 +1,9 @@
 import { FunRouterOptions } from "../../../types.ts";
 import { CommonRequestMorphism, RequestMorphism } from "./types.ts";
 import checkAsync from "./recursiveCheckAsync.ts";
-import checker from "./checker.ts";
 import aComposer from "./aComposer.ts";
 import mime from "../../util/mime.ts";
-
-import elements from "../../util/elements.ts";
+import isUsing from "./tools/isUsing.ts";
 
 export default (o?: FunRouterOptions) =>
 (f: CommonRequestMorphism | RequestMorphism) =>
@@ -67,19 +65,5 @@ export default (o?: FunRouterOptions) =>
           : null,
       },
     ))(
-      (
-          f.options && typeof f.options?.only !== "undefined" &&
-          f.options.only.length > 0
-        )
-        ? Object.keys(f.options.only)
-        : checker(
-          (f.options && f.options.remove) ? Object.keys(f.options.remove) : [],
-        )(elements(f))(
-          [
-            ...((f.options && f.options.add) ? Object.keys(f.options.add) : []),
-            ...(Object.keys(o?.cyclePlugin || {}) || []),
-          ],
-        )(
-          f.f.toString(),
-        ),
+      isUsing(o)(f),
     );

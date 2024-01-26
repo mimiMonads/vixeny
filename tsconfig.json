@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
     "module": "ESNext",
-    "moduleResolution": "node",
     "esModuleInterop": true,
     "target": "ESNext",
-    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
     "allowJs": true,
-    "resolveJsonModule": true,
-    "type": "module",
-    "types": [
-      "bun-types",
-      "deno-types"
-    ]
-  }
+    "allowImportingTsExtensions" : true,
+    "resolveJsonModule": true
+    // Removed "type": "module" as it's not a standard compiler option
+    // Removed "types": ["bun-types"] to align with Deno
+  },
+  "exclude": [
+    "node_modules" // Exclude node_modules if present
+  ]
 }
