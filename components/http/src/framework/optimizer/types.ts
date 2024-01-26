@@ -17,21 +17,19 @@ export type Morphism<
   Options extends FunRouterOptions = FunRouterOptions,
   Crypto extends CryptoOptions = CryptoOptions,
   Mut extends MutableKey = MutableKey,
+  Return = any,
 > = {
   resolve?: ResMap;
   branch?: BraMap;
-  f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => any;
+  f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => Return;
   query?: Query;
   param?: Param;
-  options?: PetitionOptions<[StringKeysOnly<Options["cyclePlugin"]>], Crypto>;
+  options?: PetitionOptions< [Extract<keyof Options["cyclePlugin"], string>], Crypto>;
   plugins?: ExtractPluginTypes<Options>;
   crypto?: Crypto;
   mutable?: Mut;
 };
 
-type StringKeysOnly<T> = {
-  [K in keyof T]: T[K] extends string ? K : never;
-}[keyof T];
 
 type CryptoContext<CR extends CryptoOptions> = CR extends
   { globalKey: any; token: infer Token } ? Token extends Record<string, any> ? {
@@ -65,14 +63,15 @@ export type AnyMorphism<
   Options extends FunRouterOptions = FunRouterOptions,
   Crypto extends CryptoOptions = CryptoOptions,
   Mut extends MutableKey = MutableKey,
-> = Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto>, "f"> & {
-  f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => any;
+  Return = any,
+> = Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f"> & {
+  f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => Return;
 };
 export type MorphismMap = {
-  [key: string]: Morphism<any, any, any, any, any, any, any>;
+  [key: string]: Morphism<any, any, any, any, any, any, any, any>;
 };
 export type AnyMorphismMap = {
-  [key: string]: AnyMorphism<any, any, any, any, any, any, any>;
+  [key: string]: AnyMorphism<any, any, any, any, any, any, any, any>;
 };
 
 // Helper type to extract the functions from CyclePluginMap
@@ -340,6 +339,7 @@ export type CommonRequestMorphism<
   Options extends FunRouterOptions = FunRouterOptions,
   Crypto extends CryptoOptions = CryptoOptions,
   Mut extends MutableKey = MutableKey,
+  _Return = any,
 > =
   & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f">
   & RawCommonRequest
@@ -358,6 +358,7 @@ export type RequestMorphism<
   Options extends FunRouterOptions = FunRouterOptions,
   Crypto extends CryptoOptions = CryptoOptions,
   Mut extends MutableKey = MutableKey,
+  _Return = any,
 > =
   & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f">
   & ObjectRawCommonRequest
@@ -453,7 +454,7 @@ type ExtendedAddOption<CR extends CryptoOptions> = "globalKey" extends keyof CR
  * Options for the petition.
  */
 export type PetitionOptions<
-  T extends (string | number | symbol)[],
+  T extends string[],
   CR extends CryptoOptions,
 > = {
   add?: Array<ExtendedAddOption<CR> | T[number]>;

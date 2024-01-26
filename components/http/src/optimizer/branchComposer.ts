@@ -1,16 +1,15 @@
 import { FunRouterOptions } from "../../types.ts";
-import branch from "../../optimizer/branch/main.ts";
-import { AnyMorphism } from "../framework/optimizer/types.js";
+import branch from "../framework/optimizer/branch/main.ts"
+import { AnyMorphism } from "../framework/optimizer/types.ts";
 
-type BranchOptions = ({
-  path: string;
-} & AnyMorphism)[];
+
+type BranchOptions = { [key: string]: {} & AnyMorphism };
 
 type BranchSetter = {
   mutable?: Record<string, unknown>;
 } & FunRouterOptions;
 
-export default (o?: BranchSetter) => (f: AnyMorphism) =>
+export default (o?: BranchSetter) => (f: BranchOptions) =>
   o && "mutable" in o
     ? (
       (obj) =>

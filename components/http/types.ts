@@ -1,7 +1,6 @@
 ///
 
 import {
-  AddOption,
   AnyMorphismMap,
   CommonRequestMorphism,
   CryptoOptions,
@@ -77,7 +76,7 @@ export type FunRouterOptions = {
 };
 
 export type CyclePluginMap = {
-  [key: string | number | symbol]: CyclePlugin;
+  [key: string]: CyclePlugin;
 };
 
 export type CyclePlugin = {
