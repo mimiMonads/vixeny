@@ -12,10 +12,9 @@ export default (o?: FunRouterOptions) =>
     ? Object.keys(f.options.only)
     : checker(
       (f.options && f.options.remove) ? Object.keys(f.options.remove) : [],
-    )(elements(f))(
+    )( [...elements(f), ...(Object.keys(o?.cyclePlugin || {}) || [])])(
       [
         ...((f.options && f.options.add) ? Object.keys(f.options.add) : []),
-        ...(Object.keys(o?.cyclePlugin || {}) || []),
       ],
     )(
       f.f.toString(),
