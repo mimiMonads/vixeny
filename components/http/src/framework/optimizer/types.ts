@@ -21,15 +21,20 @@ export type Morphism<
 > = {
   resolve?: ResMap;
   branch?: BraMap;
-  f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => Return;
+  f: (
+    ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>,
+  ) => Return;
   query?: Query;
   param?: Param;
-  options?: PetitionOptions< [Extract<keyof Options["cyclePlugin"], string>], Crypto>;
+  options?: PetitionOptions<
+    [Extract<keyof Options["cyclePlugin"], string>],
+    Crypto
+  >;
   plugins?: ExtractPluginTypes<Options>;
   crypto?: Crypto;
   mutable?: Mut;
+  isAsync?: true
 };
-
 
 type CryptoContext<CR extends CryptoOptions> = CR extends
   { globalKey: any; token: infer Token } ? Token extends Record<string, any> ? {
@@ -65,7 +70,9 @@ export type AnyMorphism<
   Mut extends MutableKey = MutableKey,
   Return = any,
 > = Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f"> & {
-  f: (ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>) => Return;
+  f: (
+    ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>,
+  ) => Return;
 };
 export type MorphismMap = {
   [key: string]: Morphism<any, any, any, any, any, any, any, any>;
@@ -76,7 +83,9 @@ export type AnyMorphismMap = {
 
 // Helper type to extract the functions from CyclePluginMap
 type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
-  [K in keyof CPM]: Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>>;
+  [K in keyof CPM]: CPM[K] extends { isFunction: boolean }
+    ? ReturnType<ReturnType<CPM[K]['f']>>
+    : Awaited<ReturnType<ReturnType<ReturnType<CPM[K]['f']>>>>;
 };
 
 type WithPlugins<

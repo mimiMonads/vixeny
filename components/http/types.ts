@@ -81,7 +81,13 @@ export type CyclePluginMap = {
 
 export type CyclePlugin = {
   name: Symbol;
-  f: (o?: FunRouterOptions) => (p: Petition) => (r: Request) => any;
+  f: (o?: FunRouterOptions) => (p: Petition) => (r:Request | [Request,Record<string,unknown>]) => any;
+  type: unknown;
+  options?: { [k: string]: any };
+} |  {
+  name: Symbol;
+  isFunction: true
+  f: (o?: FunRouterOptions) => (p: Petition) => any;
   type: unknown;
   options?: { [k: string]: any };
 };

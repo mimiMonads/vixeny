@@ -10,7 +10,7 @@ import {
   QueryOptions,
 } from "../framework/optimizer/types.ts";
 
-export default <O extends FunRouterOptions>(o?: O) => 
+export default <O extends FunRouterOptions>(o?: O) =>
 <
   R extends MorphismMap,
   B extends AnyMorphismMap,
@@ -19,4 +19,8 @@ export default <O extends FunRouterOptions>(o?: O) =>
   CR extends CryptoOptions,
   MU extends MutableKey,
   Return = any,
->(I: Morphism<R, B, Q, P, O, CR, MU, Return> | AnyMorphism<R, B, Q, P, O, CR, MU, Return>) => ({...I});
+>(
+  I:
+    | Morphism<R, B, Q, P, O, CR, MU, Return>
+    | AnyMorphism<R, B, Q, P, O, CR, MU, Return>,
+) => ({ ...I });

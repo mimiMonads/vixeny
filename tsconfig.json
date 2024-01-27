@@ -5,7 +5,7 @@
     "target": "ESNext",
     "skipLibCheck": true,
     "allowJs": true,
-    "allowImportingTsExtensions" : true,
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true
     // Removed "type": "module" as it's not a standard compiler option
     // Removed "types": ["bun-types"] to align with Deno

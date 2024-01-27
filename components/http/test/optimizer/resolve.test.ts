@@ -2,6 +2,7 @@ import assert from "node:assert";
 import test from "node:test";
 
 import resolveComposer from "../../src/optimizer/resolveComposer.ts";
+import morphism from "../../src/optimizer/morphism.ts";
 
 test(
   "check for async",
@@ -52,9 +53,11 @@ test(
       await resolveComposer()({
         first: {
           resolve: {
-            second: {
-              f: async (f) => (await f.req.blob()).text(),
-            },
+            second: morphism()(
+              {
+                f: async (f) => (await f.req.blob()).text(),
+              },
+            ),
           },
           options: {
             add: ["resolve"],
@@ -73,9 +76,9 @@ test(
       resolveComposer()({
         first: {
           resolve: {
-            second: {
-              f: (f) => "hello",
-            },
+            second: morphism()({
+              f: () => "hello",
+            }),
           },
           f: (f) => f.resolve,
         },

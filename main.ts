@@ -8,6 +8,3 @@ export { default as applyResolver } from "./components/http/src/optimizer/resolv
 export { default as applyBranch } from "./components/http/src/optimizer/branchComposer.ts";
 export { default as assertOptions } from "./components/http/src/optimizer/assertOptions.ts";
 export { default as assertPlugin } from "./components/http/src/optimizer/assertPlugin.ts";
-
-
-

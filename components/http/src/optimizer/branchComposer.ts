@@ -1,7 +1,6 @@
 import { FunRouterOptions } from "../../types.ts";
-import branch from "../framework/optimizer/branch/main.ts"
+import branch from "../framework/optimizer/branch/main.ts";
 import { AnyMorphism } from "../framework/optimizer/types.ts";
-
 
 type BranchOptions = { [key: string]: {} & AnyMorphism };
 

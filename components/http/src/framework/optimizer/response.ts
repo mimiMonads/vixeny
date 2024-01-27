@@ -47,8 +47,18 @@ export default (o?: FunRouterOptions) =>
           )
     )(
       {
-        async: f.f.constructor.name === "AsyncFunction",
-        asyncResolve: checkAsync(f),
+        async: f.f.constructor.name === "AsyncFunction" || 
+            ( 
+              o && o.cyclePlugin && Object.keys(o.cyclePlugin|| {})
+                //@ts-ignore
+                .some(x => elementsUsed.includes(x) ? 'isAsync' in o.cyclePlugin[x] && o.cyclePlugin[x]=== true  : false)
+              ),
+        asyncResolve: checkAsync(f) || 
+        ( 
+          o && o.cyclePlugin && Object.keys(o.cyclePlugin|| {})
+            //@ts-ignore
+            .some(x => elementsUsed.includes(x) ? 'isAsync' in o.cyclePlugin[x] && o.cyclePlugin[x]=== true  : false)
+          ),
         headers: "headings" in f
           ? typeof f.headings?.headers == "string"
             ? {
