@@ -111,12 +111,15 @@ export const wrap = <O extends WrapOptions>(o?: O) =>
   logLastCheck: () =>
     void console.log(isUsing(o)(a.at(-1) as CommonRequestMorphism)) ??
       wrap(o)(a),
-  handleRequest: (s: string) =>
+  handleRequest: (s: string) => (injection: Partial<(
+    | RequestMorphism<any, any, any, any, O, {}, {}, any>
+    | CommonRequestMorphism<any, any, any, any, O, {}, {}, any>
+  )>) =>
     a.some((x) => x.path === s)
       ? (r: Request) =>
         Promise.resolve(
           response(o)(
-            a.find((x) => x.path === s) as unknown as
+            {...a.find((x) => x.path === s),...injection} as unknown as
               | RequestMorphism
               | CommonRequestMorphism,
           )(r),

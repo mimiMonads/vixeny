@@ -113,7 +113,7 @@ export interface Ctx<
   resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
   branch: {
     [V in keyof B]: {
-      (ctx: WithPlugins<R, B, QS, PA, O, CR>): ReturnType<B[V]["f"]>;
+      (ctx: any): ReturnType<B[V]["f"]>;
     };
   };
 
