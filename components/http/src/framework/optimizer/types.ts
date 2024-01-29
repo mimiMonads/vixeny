@@ -33,7 +33,7 @@ export type Morphism<
   plugins?: ExtractPluginTypes<Options>;
   crypto?: Crypto;
   mutable?: Mut;
-  isAsync?: true
+  isAsync?: true;
 };
 
 type CryptoContext<CR extends CryptoOptions> = CR extends
@@ -84,8 +84,8 @@ export type AnyMorphismMap = {
 // Helper type to extract the functions from CyclePluginMap
 type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
   [K in keyof CPM]: CPM[K] extends { isFunction: boolean }
-    ? ReturnType<ReturnType<CPM[K]['f']>>
-    : Awaited<ReturnType<ReturnType<ReturnType<CPM[K]['f']>>>>;
+    ? ReturnType<ReturnType<CPM[K]["f"]>>
+    : Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>>;
 };
 
 type WithPlugins<

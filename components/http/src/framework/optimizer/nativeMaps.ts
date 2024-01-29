@@ -70,20 +70,22 @@ export default (o?: FunRouterOptions) =>
   ].concat(
     Object.keys(o?.cyclePlugin || {}).map((x) => ({
       name: x,
-       //@ts-ignore
-      isAsync: (o && o.cyclePlugin &&  o.cyclePlugin[x] && 'isAsync' in  o.cyclePlugin[x] && o.cyclePlugin[x].isAsync)
+      
+      isAsync: (o && o.cyclePlugin && o.cyclePlugin[x] &&
+        //@ts-ignore
+          "isAsync" in o.cyclePlugin[x] && o.cyclePlugin[x].isAsync)
         ? true
         : undefined,
       //@ts-ignore
-      value:  (o && o.cyclePlugin &&  o.cyclePlugin[x])
-         ? 'isFunction' in o.cyclePlugin[x] || false 
-            //@ts-ignore
-            ? x
-              //@ts-ignore
-            : 'isAsync' in  o.cyclePlugin[x] && o.cyclePlugin[x]['isAsync'] 
-            ?  ' await ' + x  + '(r)'
-            : x + '(r)'
-         : x,
+      value: (o && o.cyclePlugin && o.cyclePlugin[x])
+        ? "isFunction" in o.cyclePlugin[x] || false
+          //@ts-ignore
+          ? x
+          //@ts-ignore
+          : "isAsync" in o.cyclePlugin[x] && o.cyclePlugin[x]["isAsync"]
+          ? " await " + x + "(r)"
+          : x + "(r)"
+        : x,
       type: 1,
     })),
   )).filter((x) => ar.includes(x.name));

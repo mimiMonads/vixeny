@@ -23,12 +23,10 @@ export default (o?: specialOptions) =>
               (s, k) => s(k),
               new Function(
                 ` return ${
-                  table.map((x) => 
-                  x.type === 1 
-                    ?  x.name + "=>" 
-                    : "").join("")
+                  table.map((x) => x.type === 1 ? x.name + "=>" : "").join("")
                 } ${
-                  f.resolve && checkAsync(f) || table.some( x => 'isAsync' in x && x.isAsync === true) 
+                  f.resolve && checkAsync(f) ||
+                    table.some((x) => "isAsync" in x && x.isAsync === true)
                     ? o && "branch" in o ? " r=>async b=> " : " async r=> "
                     : o && "branch" in o
                     ? "r=>b=>"

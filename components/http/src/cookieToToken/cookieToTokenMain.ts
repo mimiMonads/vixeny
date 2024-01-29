@@ -11,14 +11,30 @@ import cookieToTokenFilter from "./cookieToTokenFilter.ts";
 export default (o?: FunRouterOptions) =>
 (f: CommonRequestMorphism | RequestMorphism) =>
   f.crypto && "globalKey" in f.crypto
-    ? ((s: SupportedKeys) => (arr: string[]) =>
-      arr.reduce(
-        (acc, x) => acc(cookieToTokenGets(s)(x)),
-        cookieToTokenBodyParser(arr),
-      ))(f.crypto.globalKey)(
-        cookieToTokenFilter(
-          f.f.toString()
-            .split(" "),
-        )("token"),
-      )
+    ? (
+      (getCookies) =>
+        "token" in f.crypto
+          ? ((s: SupportedKeys) => (arr: string[]) =>
+            arr.reduce(
+              (acc, x) => acc(cookieToTokenGets(s)(x)),
+              cookieToTokenBodyParser(arr),
+            ))(f.crypto.globalKey)(
+              getCookies,
+            )
+          : getCookies.length > 0
+          ? ((s: SupportedKeys) => (arr: string[]) =>
+            arr.reduce(
+              (acc, x) => acc(cookieToTokenGets(s)(x)),
+              cookieToTokenBodyParser(arr),
+            ))(f.crypto.globalKey)(
+              getCookies,
+            )
+          : void console.error("No token found, please use 'token' ") ??
+            (() => null)
+    )(
+      cookieToTokenFilter(
+        f.f.toString()
+          .split(" "),
+      )("token"),
+    )
     : () => ({ SystemError: "Crypto is requieres" });

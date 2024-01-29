@@ -8,7 +8,7 @@ export default ((f: (x: RecFunc) => RecFunc) =>
       f((y: CommonRequestMorphism | RequestMorphism) => x(x)(y))(v),
   ))(
     (solver: RecFunc) => (f: CommonRequestMorphism | RequestMorphism) =>
-      f.f.constructor.name === "AsyncFunction" || ('isAsync' in f && f.isAsync )
+      f.f.constructor.name === "AsyncFunction" || ("isAsync" in f && f.isAsync)
         ? true
         : f.f.constructor.name === "Function" &&
             typeof f.resolve === "undefined"

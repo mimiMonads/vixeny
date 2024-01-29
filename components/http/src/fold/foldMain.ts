@@ -111,15 +111,20 @@ export const wrap = <O extends WrapOptions>(o?: O) =>
   logLastCheck: () =>
     void console.log(isUsing(o)(a.at(-1) as CommonRequestMorphism)) ??
       wrap(o)(a),
-  handleRequest: (s: string) => (injection: Partial<(
-    | RequestMorphism<any, any, any, any, O, {}, {}, any>
-    | CommonRequestMorphism<any, any, any, any, O, {}, {}, any>
-  )>) =>
+  handleRequest: (s: string) =>
+  (
+    injection: Partial<
+      (
+        | RequestMorphism<any, any, any, any, O, {}, {}, any>
+        | CommonRequestMorphism<any, any, any, any, O, {}, {}, any>
+      )
+    >,
+  ) =>
     a.some((x) => x.path === s)
       ? (r: Request) =>
         Promise.resolve(
           response(o)(
-            {...a.find((x) => x.path === s),...injection} as unknown as
+            { ...a.find((x) => x.path === s), ...injection } as unknown as
               | RequestMorphism
               | CommonRequestMorphism,
           )(r),
@@ -146,7 +151,7 @@ export const wrap = <O extends WrapOptions>(o?: O) =>
     ),
   changeOptions: <RA extends WrapOptions>(o?: RA) =>
     wrap({ ...o })(
-       //@ts-ignore
+      //@ts-ignore
       [...a] as unknown as RequestMorphism<
         any,
         any,
@@ -162,15 +167,15 @@ export const wrap = <O extends WrapOptions>(o?: O) =>
     | RequestMorphism<any, any, any, any, O, {}, {}, any>
     | CommonRequestMorphism<any, any, any, any, O, {}, {}, any>
   )[]) => wrap(o)([...a, ...b]),
-  exclude: (list: string[] | string) => (
-    pathsSet => wrap(o)(a.filter(morphism => !pathsSet.has(morphism.path)))
-  )(
-    new Set(Array.isArray(list) ? list : [list])
-  ),
-   unwrap: () =>
+  exclude: (list: string[] | string) =>
+    (
+      (pathsSet) =>
+        wrap(o)(a.filter((morphism) => !pathsSet.has(morphism.path)))
+    )(
+      new Set(Array.isArray(list) ? list : [list]),
+    ),
+  unwrap: () =>
     a.map((x) =>
       o && o.startWith ? { ...x, path: o.startWith + x.path } : { ...x }
     ) as unknown as RequestMorphism<any, any, any, any, O, {}, {}, any>[],
 });
-
-
