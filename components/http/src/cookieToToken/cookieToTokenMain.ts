@@ -19,7 +19,7 @@ export default (o?: FunRouterOptions) =>
               (acc, x) => acc(cookieToTokenGets(s)(x)),
               cookieToTokenBodyParser(arr),
             ))(f.crypto.globalKey)(
-              getCookies,
+              Object.keys(f.crypto.token)
             )
           : getCookies.length > 0
           ? ((s: SupportedKeys) => (arr: string[]) =>
