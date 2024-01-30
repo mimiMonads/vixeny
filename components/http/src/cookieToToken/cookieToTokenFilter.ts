@@ -12,8 +12,8 @@ export default (elements: string[]) => (input: string) =>
           .slice(
             element
               .indexOf(input) + input.length + 1,
-            element
-              .indexOf(".", element.indexOf(input) + input.length + 1) || element.length,
+            (element
+              .indexOf(".", element.indexOf(input) + input.length + 1) + 1 || element.length + 1 ) -1,
           )
         : null
     )

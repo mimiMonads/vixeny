@@ -23,4 +23,4 @@ export default <O extends FunRouterOptions>(o?: O) =>
   I:
     | Morphism<R, B, Q, P, O, CR, MU, Return>
     | AnyMorphism<R, B, Q, P, O, CR, MU, Return>,
-) => ({ ...I });
+) => ({ ...I }) satisfies Morphism<any, any, any, any, any, any, any, any> ;
