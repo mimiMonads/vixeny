@@ -4,12 +4,14 @@
   <img src="misc/logo.png" alt="Vixeny Logo" style="max-width: 100%;">
   <br>
   <b style="font-size:1.2em; font-style:italic; color:darkcyan;">Harness the Power of Pure Functionality</b>
+  <br>
+  <a href="https://vixeny.dev/">Website</a>
 </p>
 
 
 **Introducing Vixeny: A New Era in Web Development**
 
-🌍 A performance-centric, runtime-agnostic library designed for purity,
+🌍 A performance-centric, runtime-agnostic library and framework designed for purity,
 immutability, and controlled effects. Whether you're deep diving into functional
 paradigms or balancing them with others, Vixeny offers the flexibility and
 robustness web developers need.
@@ -26,6 +28,8 @@ robustness web developers need.
 *   **Future-Proof**: Stay ahead in web development with Vixeny's innovative features.
 
 **Start your journey with Vixeny – redefine efficiency and innovation in web development.**
+
+[Website](https://vixeny.dev/)
 
 **Benchmarks**
 
