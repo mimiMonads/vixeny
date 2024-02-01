@@ -6,41 +6,30 @@
   <b style="font-size:1.2em; font-style:italic; color:darkcyan;">Harness the Power of Pure Functionality</b>
 </p>
 
-<p align="center">
-  <br>
-  📢 <b style="font-size:1.5em; color:darkcyan;">Evolution Alert!</b>
-  <br>
-  <span style="font-size:1.2em;">Vixeny is transitioning from a framework to a library. Exciting enhancements ahead. Stay tuned & give us a thumbs up!👍</span>
-  <br><br>
-</p>
 
-🌊 **Vixeny: Harnessing the Power of Functional Programming for Modern Web
-Development**
+**Introducing Vixeny: A New Era in Web Development**
 
 🌍 A performance-centric, runtime-agnostic library designed for purity,
 immutability, and controlled effects. Whether you're deep diving into functional
 paradigms or balancing them with others, Vixeny offers the flexibility and
 robustness web developers need.
 
-🚀 **Features**:
+*   **Unmatched Speed**: Experience the fastest framework in the Deno ecosystem.
+*   **DRY and Functional**: Designed with the principles of DRY (Don't Repeat Yourself) and advanced functional programming, including naitve mocking and code isolation.
+*   **Zero-Dependency Architecture**: Lean and efficient, with a focus on simplicity and performance.
+*   **Native Plugin Support**: Enhance functionality with ease using native plugins.
+*   **Robust Security**: Predictable and deterministc.
+*   **Advanced Type Checking**: Ensures safe, predictable code.
+*   **Versatile Paradigms**: Supports functional programming and other paradigms in a cohesive manner.
+*   **Object-Oriented**: Facilitates easy code manipulation and maintenance.
+*   **Test-Friendly**: Framework designed to be easily testable, end to end.
+*   **Future-Proof**: Stay ahead in web development with Vixeny's innovative features.
 
-- **Functional Purity**: Embrace functional programming without constraints.
-- **Immutable Structures**: Ensure predictability and robustness in your
-  codebase.
-- **Decide Your Effects**: Controlled side effects for enhanced code safety.
-- **Performance-Centric**: Prioritizing speed, safety, and code clarity.
-- **Seamless Testing**: Easy, reproducible, and reliable testing due to its
-  functional nature.
-- **Runtime Agnosticism**: Thrive across various JavaScript runtimes.
-
-✅ Dive into our [Getting Started guide](https://vixeny.dev/) and explore
-Vixeny's capabilities.
-
-🔗 **Documentation**: Under enhancement. We appreciate your patience during this
-transition.
+**Start your journey with Vixeny – redefine efficiency and innovation in web development.**
 
 **Benchmarks**
 
+- [JWT Benchmark](https://github.com/mimiMonads/FrameworkBench)
 - [Bun by SaltyAom](https://github.com/SaltyAom/bun-http-framework-benchmark)
 
 **License:**
