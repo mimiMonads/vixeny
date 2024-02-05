@@ -70,9 +70,9 @@ export default (o?: FunRouterOptions) =>
   ].concat(
     Object.keys(o?.cyclePlugin || {}).map((x) => ({
       name: x,
-      
+
       isAsync: (o && o.cyclePlugin && o.cyclePlugin[x] &&
-        //@ts-ignore
+          //@ts-ignore
           "isAsync" in o.cyclePlugin[x] && o.cyclePlugin[x].isAsync)
         ? true
         : undefined,

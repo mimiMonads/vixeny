@@ -50,10 +50,9 @@ export default (o?: FunRouterOptions) =>
         async: f.f.constructor.name === "AsyncFunction" ||
           (
             o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
-              
               .some((x) =>
                 elementsUsed.includes(x)
-                //@ts-ignore
+                  //@ts-ignore
                   ? "isAsync" in o.cyclePlugin[x] && o.cyclePlugin[x] === true
                   : false
               )
@@ -61,7 +60,6 @@ export default (o?: FunRouterOptions) =>
         asyncResolve: checkAsync(f) ||
           (
             o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
-              
               .some((x) =>
                 elementsUsed.includes(x)
                   //@ts-ignore

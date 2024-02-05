@@ -13,13 +13,14 @@ export default (elements: string[]) => (input: string) =>
             element
               .indexOf(input) + input.length + 1,
             (element
-              .indexOf(".", element.indexOf(input) + input.length + 1) + 1 || element.length + 1 ) -1,
+                  .indexOf(".", element.indexOf(input) + input.length + 1) +
+                1 || element.length + 1) - 1,
           )
         : null
     )
     .filter((x) => x !== null)
-    .filter((x) => x !== '')
-    .sort() 
+    .filter((x) => x !== "")
+    .sort()
     .filter((v, i, a) => !i || v !== a[i - 1])
     .reduce(
       (acc, v) =>
