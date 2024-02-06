@@ -14,7 +14,7 @@ export default (o?: FunRouterOptions) =>
       (f.options && f.options.remove) ? Object.keys(f.options.remove) : [],
     )([...elements(f), ...(Object.keys(o?.cyclePlugin || {}) || [])])(
       [
-        ...((f.options && f.options.add) ? Object.keys(f.options.add) : []),
+        ...((f.options && f.options.add) ? f.options.add : []),
       ],
     )(
       f.f.toString(),
