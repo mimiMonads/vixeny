@@ -111,25 +111,3 @@ export type Vixeny = <O extends FunRouterOptions>(o?: O) => <
     | ObjectRawResponseStatic
   )[],
 ) => (r: Request) => Promise<Response> | Response;
-/**
- * Vixeny takes an array ot `Petitions`
- *
- * ```ts
- * import arrayPetitions from "./someWhere"
- * vixeny(options)(...arrayPetitions)
- * ```
- * ---
- *
- * Also you can use add multiple `Petition`
- *
- * ```ts
- * import arrayPetitions from "./someWhere"
- * vixeny(options)([
- * {
- *    path: "/path",
- *    f: () => "Hello world"
- * },
- *  ...arrayPetitions
- * ])
- * ```
- */
