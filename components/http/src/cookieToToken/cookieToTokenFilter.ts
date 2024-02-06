@@ -5,17 +5,16 @@ export default (elements: string[]) => (input: string) =>
       (!arr[index - 1].startsWith("resolve.") &&
         !arr[index - 1].startsWith("branch."))
     )
-    .map((element, index, arr) =>
+    .map((element) =>
       // If the element matches the input and the next element exists
-      element.includes(input)
-        ? element
-          .slice(
-            element
-              .indexOf(input) + input.length + 1,
-            (element
-                  .indexOf(".", element.indexOf(input) + input.length + 1) +
-                1 || element.length + 1) - 1,
-          )
+    element.indexOf(input) !== -1
+        ?  element.slice(
+              element
+                .indexOf(input) + input.length + 1,
+              (element
+                    .indexOf(".", element.indexOf(input) + input.length + 1) +
+                  1 || element.length + 1) - 1,
+            )
         : null
     )
     .filter((x) => x !== null)
