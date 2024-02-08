@@ -555,7 +555,7 @@ export type QueryOptions = {
 } | {};
 
 export type ParamOptions = {
-  unique?: true; // 'unique' is an optional boolean
+  unique: true; // 'unique' is an optional boolean
 } | {};
 
 /**
