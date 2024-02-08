@@ -81,11 +81,12 @@ export type AnyMorphismMap = {
   [key: string]: AnyMorphism<any, any, any, any, any, any, any, any>;
 };
 
-// Helper type to extract the functions from CyclePluginMap
 type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
-  [K in keyof CPM]: CPM[K] extends { isFunction: boolean }
-    ? ReturnType<ReturnType<CPM[K]["f"]>>
-    : Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>>;
+  [K in keyof CPM]: CPM[K] extends { isFunction: boolean; f: (...args: any) => any }
+    ? ReturnType<ReturnType<CPM[K]['f']>> // Direct function case
+    : CPM[K] extends { f: (...args: any) => any }
+      ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]['f']>>>> // Nested function case
+      : never; // Handle cases that do not match expected structure
 };
 
 type WithPlugins<
@@ -98,7 +99,7 @@ type WithPlugins<
 > =
   & Ctx<R, B, QS, PA, O, CR>
   & (O extends { cyclePlugin: infer CPM }
-    ? CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM> : never
+    ? [keyof CPM] extends [never] ? {} : CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM> : never
     : {})
   & CryptoContext<CR>;
 
@@ -555,7 +556,7 @@ export type QueryOptions = {
 } | {};
 
 export type ParamOptions = {
-  unique: true; // 'unique' is an optional boolean
+  unique?: true; // 'unique' is an optional boolean
 } | {};
 
 /**

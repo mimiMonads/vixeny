@@ -177,5 +177,5 @@ export const wrap = <O extends WrapOptions>(o?: O) =>
   unwrap: () =>
     a.map((x) =>
       o && o.startWith ? { ...x, path: o.startWith + x.path } : { ...x }
-    ) as unknown as RequestMorphism<any, any, any, any, O, {}, {}, any>[],
+    ) as unknown as RequestMorphism<any, any, any, any, {}, {}, {}, any>[],
 });

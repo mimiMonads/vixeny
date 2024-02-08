@@ -92,6 +92,7 @@ export default (o?: FunRouterOptions) =>
       .concat(
         Object.keys(o?.cyclePlugin || {}).map((x) => ({
           condition: ((name) => (x: NativeMaps) => x.name === name)(x),
+          //@ts-ignore
           action: () => o!.cyclePlugin![x]!["f"](o)(f as CommonRequestMorphism),
         })),
       ));
