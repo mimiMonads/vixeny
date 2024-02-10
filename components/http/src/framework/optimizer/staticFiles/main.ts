@@ -6,7 +6,9 @@ import mime from "./mime.ts";
 export default (f: ObjectRawResponseStatic) =>
   (
     (rectify) =>
-      composedPaths(rectify(f.path))(rectify(f.name))(getDir(rectify(f.path)))(
+      composedPaths(f)(rectify(f.path))(rectify(f.name))(
+        getDir(rectify(f.path)),
+      )(
         mime(f),
       )
   )(

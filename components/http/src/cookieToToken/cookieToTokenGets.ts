@@ -18,12 +18,12 @@ export default (secret: SupportedKeys) => (name: string) =>
                   (c.indexOf(",", p) + 1 || c.length + 1) - 1,
                 ),
               ) ??
-              //@ts-ignore
-              c.slice(
-                p + name.length + 1,
-                //@ts-ignore 
-                (c.indexOf(",", p) + 1 || c.length + 1) - 1,
-              ),
+                //@ts-ignore
+                c.slice(
+                  p + name.length + 1,
+                  //@ts-ignore
+                  (c.indexOf(",", p) + 1 || c.length + 1) - 1,
+                ),
             )
             : null
       )(

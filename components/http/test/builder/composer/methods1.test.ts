@@ -41,13 +41,12 @@ test(
       ),
 );
 
-
 test(
   "composer",
   (_) =>
     ((f) =>
       assert.deepStrictEqual(
-       [
+        [
           f[0]("http://localhost:8080/"),
           f[0]("http://localhost:8080/test"),
           f[0]("http://localhost:8080/test/"),

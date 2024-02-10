@@ -82,11 +82,12 @@ export type AnyMorphismMap = {
 };
 
 type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
-  [K in keyof CPM]: CPM[K] extends { isFunction: boolean; f: (...args: any) => any }
-    ? ReturnType<ReturnType<CPM[K]['f']>> // Direct function case
+  [K in keyof CPM]: CPM[K] extends
+    { isFunction: boolean; f: (...args: any) => any }
+    ? ReturnType<ReturnType<CPM[K]["f"]>> // Direct function case
     : CPM[K] extends { f: (...args: any) => any }
-      ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]['f']>>>> // Nested function case
-      : never; // Handle cases that do not match expected structure
+      ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>> // Nested function case
+    : never; // Handle cases that do not match expected structure
 };
 
 type WithPlugins<
@@ -98,8 +99,9 @@ type WithPlugins<
   CR extends CryptoOptions,
 > =
   & Ctx<R, B, QS, PA, O, CR>
-  & (O extends { cyclePlugin: infer CPM }
-    ? [keyof CPM] extends [never] ? {} : CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM> : never
+  & (O extends { cyclePlugin: infer CPM } ? [keyof CPM] extends [never] ? {}
+    : CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM>
+    : never
     : {})
   & CryptoContext<CR>;
 
@@ -559,25 +561,34 @@ export type ParamOptions = {
   unique?: true; // 'unique' is an optional boolean
 } | {};
 
+type StaticFilePlugin = {
+  checker: (path: string) => boolean;
+  r: (path: string) => ObjectRawResponseReturn;
+};
+
 /**
  * Object for raw response static.
  */
-export type ObjectRawResponseStatic = {
-  type: "fileServer";
-  name: string;
-  path: string;
-} | {
-  type: "fileServer";
-  name: string;
-  path: string;
-  mime?: true;
-  extra: [string, string][];
-} | {
-  type: "fileServer";
-  name: string;
-  path: string;
-  mime: false;
-};
+export type ObjectRawResponseStatic =
+  & ({
+    type: "fileServer";
+    name: string;
+    path: string;
+  } | {
+    type: "fileServer";
+    name: string;
+    path: string;
+    mime?: true;
+    extra: [string, string][];
+  } | {
+    type: "fileServer";
+    name: string;
+    path: string;
+    mime: false;
+  })
+  & {
+    plugins?: StaticFilePlugin;
+  };
 
 export type SupportedKeys =
   | string

@@ -35,3 +35,26 @@ test(
       true,
     ),
 );
+
+test(
+  "test",
+  () =>
+    assert.deepStrictEqual(
+      main({
+        type: "fileServer",
+        path: "./misc/",
+        name: "/hello/nested",
+        mime: false,
+        plugins: {
+          checker: (s) => s.includes(".png"),
+          r: (s) => ({
+            type: "response",
+            path: s.slice(0, -4),
+            r: () => new Response(""),
+          }),
+        },
+      })
+        .some((x) => x.path === "/hello/nested/logo"),
+      true,
+    ),
+);

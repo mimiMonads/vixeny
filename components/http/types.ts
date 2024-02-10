@@ -94,7 +94,7 @@ export type CyclePlugin = {
   f: (o?: FunRouterOptions) => (p: Petition) => any;
   type: unknown;
   options?: { [k: string]: any };
-}  | {}
+} | {};
 
 export type Vixeny = <O extends FunRouterOptions>(o?: O) => <
   T extends MorphismMap,
