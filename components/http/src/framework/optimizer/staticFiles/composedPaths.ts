@@ -9,11 +9,16 @@ export default (f: ObjectRawResponseStatic) =>
   mimes.length > 0
     ? (
       (checker) =>
-        f.plugins !== undefined && f.plugins
+        f.template !== undefined && f.template
           ? paths.map(
             (x) =>
-              f.plugins!.checker(root.slice(1, -1) + x.slice(name.length - 1))
-                ? f.plugins!.r(root.slice(1, -1) + x.slice(name.length - 1))
+              f.template!.checker(root.slice(1, -1) + x.slice(name.length - 1))
+                ? f.template!.r(
+                  {
+                    root: root,
+                    path: x,
+                    relativeName: root.slice(1, -1) + x.slice(name.length - 1)
+                  })
                 : ({
                   path: root.slice(1, -1) + x.slice(name.length - 1),
                   type: "response",
@@ -47,11 +52,16 @@ export default (f: ObjectRawResponseStatic) =>
       getMime(mimes),
     )
     //lazy way, fix later
-    : f.plugins !== undefined && f.plugins
+    : f.template !== undefined && f.template
     ? paths.map(
       (x) =>
-        f.plugins!.checker(root.slice(1, -1) + x.slice(name.length - 1))
-          ? f.plugins!.r(root.slice(1, -1) + x.slice(name.length - 1))
+        f.template!.checker(root.slice(1, -1) + x.slice(name.length - 1))
+          ? f.template!.r(
+            {
+              root: root,
+              path: x,
+              relativeName: root.slice(1, -1) + x.slice(name.length - 1)
+            })
           : ({
             path: root.slice(1, -1) + x.slice(name.length - 1),
             type: "response",

@@ -563,7 +563,11 @@ export type ParamOptions = {
 
 type StaticFilePlugin = {
   checker: (path: string) => boolean;
-  r: (path: string) => ObjectRawResponseReturn;
+  r: (options: {
+    root: string;
+    path: string,
+    relativeName: string
+  }) => ObjectRawResponseReturn;
 };
 
 /**
@@ -587,7 +591,7 @@ export type ObjectRawResponseStatic =
     mime: false;
   })
   & {
-    plugins?: StaticFilePlugin;
+    template?: StaticFilePlugin;
   };
 
 export type SupportedKeys =

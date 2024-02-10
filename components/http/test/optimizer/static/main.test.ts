@@ -45,11 +45,11 @@ test(
         path: "./misc/",
         name: "/hello/nested",
         mime: false,
-        plugins: {
+        template: {
           checker: (s) => s.includes(".png"),
-          r: (s) => ({
+          r: (options) => ({
             type: "response",
-            path: s.slice(0, -4),
+            path: options.relativeName.slice(0, -4),
             r: () => new Response(""),
           }),
         },
