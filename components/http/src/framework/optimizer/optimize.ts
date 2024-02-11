@@ -66,4 +66,8 @@ export default (
             : response(o)(x as unknown as CommonRequestMorphism),
             false,
           ] as unknown as RouteTypes,
-    );
+    ).concat(
+  o && o.enableLiveReloading
+      ? [['GET', '/timestamp-for-reload',( t => () => new Response(t))(Date.now().toString()) ,false] ]
+      : []
+    )

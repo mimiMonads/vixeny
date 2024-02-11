@@ -26,10 +26,11 @@ export default  ((appendString:string) => async (aResponse: Response | Promise<R
     fetch('/timestamp-for-reload')
       .then(response => response.text())
       .then(data => {
-        if (lastCheck < new Date(data).getTime()) {
+        if (lastCheck < Number(data)) {
           window.location.reload();
         }
       });
   }, 1000); // Check every second
 </script>
+
 `)
