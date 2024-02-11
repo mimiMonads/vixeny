@@ -30,7 +30,7 @@ export default  ((appendString:string) => async (aResponse: Response | Promise<R
           window.location.reload();
         }
       });
-  }, 1000); // Check every second
+  }, 100); // Check every second
 </script>
 
 `)
