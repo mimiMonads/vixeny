@@ -14,6 +14,7 @@ import {
 import response from "./response.ts";
 import staticFiles from "./staticFiles/main.ts";
 import vixeny from "../../../serve.ts";
+import injectHtml from "./injectHtml.ts";
 
 export default (
   o?: FunRouterOptions,
@@ -36,7 +37,11 @@ export default (
       (x) =>
         "type" in x
           ? x.type === "response"
-            ? [x?.method ? x.method : "GET", x.path, x.r, false] as RouteTypes
+            ? [x?.method ? x.method : "GET", x.path, 
+             o && o.enableLiveReloading
+              ?  async (r:Request) => await injectHtml(x.r(r))
+              : x.r
+            , false] as RouteTypes
             : x.type === "fileServer"
             ? [
               "GET",
@@ -47,13 +52,18 @@ export default (
             : [
               x?.method ? x.method : "GET",
               x.path,
-              response(o)(x as unknown as CommonRequestMorphism),
+              o && o.enableLiveReloading
+              ? async (r:Request)=> await injectHtml(response(o)(x as unknown as CommonRequestMorphism)(r))
+              : response(o)(x as unknown as CommonRequestMorphism),
+   
               false,
             ] as unknown as RouteTypes
           : [
             x?.method ? x.method : "GET",
             x.path,
-            response(o)(x as unknown as CommonRequestMorphism),
+            o && o.enableLiveReloading
+            ? async (r:Request) => await injectHtml(response(o)(x as unknown as CommonRequestMorphism)(r))
+            : response(o)(x as unknown as CommonRequestMorphism),
             false,
           ] as unknown as RouteTypes,
     );

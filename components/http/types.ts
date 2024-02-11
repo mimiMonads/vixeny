@@ -62,7 +62,7 @@ export type FunRouterOptions = {
    * ```
    */
   paramsStartsWith?: string;
-
+  readonly enableLiveReloading?: true
   /**
    * A function that takes a Request and returns a Response for 404 errors.
    */
@@ -72,7 +72,9 @@ export type FunRouterOptions = {
    * A function that takes a Request and returns a Response for 405 errors.
    */
   405?: (x: Request) => Response;
-  cyclePlugin?: CyclePluginMap;
+
+
+  readonly cyclePlugin?: CyclePluginMap;
 };
 
 export type CyclePluginMap = {
@@ -90,7 +92,7 @@ export type CyclePlugin = {
   options?: { [k: string]: any };
 } | {
   name: Symbol;
-  isFunction: true;
+ isFunction: true;
   f: (o?: FunRouterOptions) => (p: Petition) => any;
   type: unknown;
   options?: { [k: string]: any };

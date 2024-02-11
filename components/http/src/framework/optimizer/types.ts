@@ -528,7 +528,7 @@ export type DebugOptions = {
 
 export type MutableKey = {
   mutable?: {
-    is: boolean;
+     readonly is: true;
   };
 } | {};
 
@@ -558,7 +558,7 @@ export type QueryOptions = {
 } | {};
 
 export type ParamOptions = {
-  unique?: true; // 'unique' is an optional boolean
+  readonly unique?: true; // 'unique' is an optional boolean
 } | {};
 
 type StaticFilePlugin = {
