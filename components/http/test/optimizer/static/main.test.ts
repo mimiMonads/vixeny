@@ -16,6 +16,22 @@ test(
   "test",
   () =>
     assert.deepStrictEqual(
+      main({
+        type: "fileServer",
+        path: "./misc/",
+        name: "/hello",
+        mime: false,
+        removeExtensionOf: [".png"],
+      })
+        .some((x) => x.path === "/hello/logo"),
+      true,
+    ),
+);
+
+test(
+  "test",
+  () =>
+    assert.deepStrictEqual(
       main({ type: "fileServer", path: "./misc/", name: "/", mime: false })
         .some((x) => x.path === "/logo.png"),
       true,

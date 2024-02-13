@@ -2,14 +2,17 @@ import { ObjectRawResponseStatic } from "../types.ts";
 import composedPaths from "./composedPaths.ts";
 import getDir from "./getDir.ts";
 import mime from "./mime.ts";
+import removeExtensionOf from "./removeExtensionOf.ts";
 
 export default (f: ObjectRawResponseStatic) =>
   (
     (rectify) =>
-      composedPaths(f)(rectify(f.path))(rectify(f.name))(
-        getDir(rectify(f.path)),
-      )(
-        mime(f),
+      removeExtensionOf(f)(
+        composedPaths(f)(rectify(f.path))(rectify(f.name))(
+          getDir(rectify(f.path)),
+        )(
+          mime(f),
+        ),
       )
   )(
     (s: string) =>

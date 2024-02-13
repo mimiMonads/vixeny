@@ -528,7 +528,7 @@ export type DebugOptions = {
 
 export type MutableKey = {
   mutable?: {
-     readonly is: true;
+    readonly is: true;
   };
 } | {};
 
@@ -565,8 +565,8 @@ type StaticFilePlugin = {
   checker: (path: string) => boolean;
   r: (options: {
     root: string;
-    path: string,
-    relativeName: string
+    path: string;
+    relativeName: string;
   }) => ObjectRawResponseReturn;
 };
 
@@ -592,6 +592,7 @@ export type ObjectRawResponseStatic =
   })
   & {
     template?: StaticFilePlugin;
+    removeExtensionOf?: defaultMime[];
   };
 
 export type SupportedKeys =

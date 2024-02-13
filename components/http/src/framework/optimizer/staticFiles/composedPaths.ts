@@ -17,8 +17,9 @@ export default (f: ObjectRawResponseStatic) =>
                   {
                     root: root,
                     path: x,
-                    relativeName: root.slice(1, -1) + x.slice(name.length - 1)
-                  })
+                    relativeName: root.slice(1, -1) + x.slice(name.length - 1),
+                  },
+                )
                 : ({
                   path: root.slice(1, -1) + x.slice(name.length - 1),
                   type: "response",
@@ -60,8 +61,9 @@ export default (f: ObjectRawResponseStatic) =>
             {
               root: root,
               path: x,
-              relativeName: root.slice(1, -1) + x.slice(name.length - 1)
-            })
+              relativeName: root.slice(1, -1) + x.slice(name.length - 1),
+            },
+          )
           : ({
             path: root.slice(1, -1) + x.slice(name.length - 1),
             type: "response",

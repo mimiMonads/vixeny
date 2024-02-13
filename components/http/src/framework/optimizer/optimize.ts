@@ -37,11 +37,14 @@ export default (
       (x) =>
         "type" in x
           ? x.type === "response"
-            ? [x?.method ? x.method : "GET", x.path, 
-             o && o.enableLiveReloading
-              ?  async (r:Request) => await injectHtml(x.r(r))
-              : x.r
-            , false] as RouteTypes
+            ? [
+              x?.method ? x.method : "GET",
+              x.path,
+              o && o.enableLiveReloading
+                ? async (r: Request) => await injectHtml(x.r(r))
+                : x.r,
+              false,
+            ] as RouteTypes
             : x.type === "fileServer"
             ? [
               "GET",
@@ -53,21 +56,32 @@ export default (
               x?.method ? x.method : "GET",
               x.path,
               o && o.enableLiveReloading
-              ? async (r:Request)=> await injectHtml(response(o)(x as unknown as CommonRequestMorphism)(r))
-              : response(o)(x as unknown as CommonRequestMorphism),
-   
+                ? async (r: Request) =>
+                  await injectHtml(
+                    response(o)(x as unknown as CommonRequestMorphism)(r),
+                  )
+                : response(o)(x as unknown as CommonRequestMorphism),
+
               false,
             ] as unknown as RouteTypes
           : [
             x?.method ? x.method : "GET",
             x.path,
             o && o.enableLiveReloading
-            ? async (r:Request) => await injectHtml(response(o)(x as unknown as CommonRequestMorphism)(r))
-            : response(o)(x as unknown as CommonRequestMorphism),
+              ? async (r: Request) =>
+                await injectHtml(
+                  response(o)(x as unknown as CommonRequestMorphism)(r),
+                )
+              : response(o)(x as unknown as CommonRequestMorphism),
             false,
           ] as unknown as RouteTypes,
     ).concat(
-  o && o.enableLiveReloading
-      ? [['GET', '/timestamp-for-reload',( t => () => new Response(t))(Date.now().toString()) ,false] ]
-      : []
-    )
+      o && o.enableLiveReloading
+        ? [[
+          "GET",
+          "/timestamp-for-reload",
+          ((t) => () => new Response(t))(Date.now().toString()),
+          false,
+        ]]
+        : [],
+    );
