@@ -77,24 +77,24 @@ export type FunRouterOptions = {
 };
 
 export type CyclePluginMap = {
-  [key: string]: CyclePlugin;
+  readonly [key: string]: CyclePlugin;
 };
 
 export type CyclePlugin = {
-  name: Symbol;
-  f: (
+  readonly name: symbol;
+  readonly f: (
     o?: FunRouterOptions,
   ) => (
     p: Petition,
   ) => (r: Request | [Request, Record<string, unknown>]) => any;
-  type: unknown;
-  options?: { [k: string]: any };
+  readonly type: unknown;
+  readonly options?: { [k: string]: any };
 } | {
-  name: Symbol;
-  isFunction: true;
-  f: (o?: FunRouterOptions) => (p: Petition) => any;
-  type: unknown;
-  options?: { [k: string]: any };
+  readonly name: symbol;
+  readonly isFunction: true;
+  readonly f: (o?: FunRouterOptions) => (p: Petition) => any;
+  readonly type: unknown;
+  readonly options?: { [k: string]: any };
 } | {};
 
 export type Vixeny = <O extends FunRouterOptions>(o?: O) => <

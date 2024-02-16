@@ -44,3 +44,4 @@ export type Vixeny = (
  * ```
  */
 export type Petitions = Petition[];
+export type { Petition , FunRouterOptions}

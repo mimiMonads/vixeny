@@ -1,6 +1,12 @@
 // File: vixeny/index.ts
-
+import parseArguments from "./components/runtime/parseArguments.mjs";
+import name from './components/runtime/name.mjs'
 // Re-exporting from each file
+
+export const runtime = {
+    name: name,
+    arguments: parseArguments
+}
 export { default as vixeny } from "./components/http/serve.ts";
 export { wrap } from "./components/http/src/fold/foldMain.ts";
 export { default as morphism } from "./components/http/src/optimizer/morphism.ts";
