@@ -12,7 +12,7 @@
 
 🌍 A performance-centric, runtime-agnostic library and framework designed for purity, immutability, and controlled effects. Whether you're deep diving into functional paradigms or balancing them with others, Vixeny offers the flexibility and robustness web developers need.
 
-Now, getting started with Vixeny has become even easier for developers working in Deno and Bun environments. With the introduction of `npx create-vixeny` and `bun create vixeny` commands, you can quickly scaffold a new project using vanilla templates or Pug, complete with hot reloading. This enhancement is aimed at streamlining the development process and ensuring an efficient workflow.
+Now, getting started with Vixeny has become even easier for developers working in Deno and Bun environments. With the introduction of `npx create-vixeny` and `bun create vixeny` commands, you can quickly scaffold a new project using `vanilla templates` , `Ejs` or `Pug`, complete with hot reloading. This enhancement is aimed at streamlining the development process and ensuring an efficient workflow.
 
 - **Unmatched Speed**: Experience the fastest framework in the Deno ecosystem.
 - **DRY and Functional**: Designed with the principles of DRY (Don't Repeat Yourself) and advanced functional programming, including native mocking and code isolation.
