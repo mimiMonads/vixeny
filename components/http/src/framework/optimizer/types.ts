@@ -591,7 +591,7 @@ export type ObjectRawResponseStatic =
     mime: false;
   })
   & {
-    template?: StaticFilePlugin;
+    template?: StaticFilePlugin[];
     removeExtensionOf?: defaultMime[];
   };
 

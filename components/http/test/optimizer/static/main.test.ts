@@ -61,14 +61,14 @@ test(
         path: "./misc/",
         name: "/hello/nested",
         mime: false,
-        template: {
+        template: [{
           checker: (s) => s.includes(".png"),
           r: (options) => ({
             type: "response",
             path: options.relativeName.slice(0, -4),
             r: () => new Response(""),
           }),
-        },
+        }],
       })
         .some((x) => x.path === "/hello/nested/logo"),
       true,
