@@ -26,13 +26,13 @@ test(
             a(new Request("http://localhost:8080/", { method: "POST" })),
             a(new Request("http://localhost:8080/", { method: "HEAD" })),
             a(new Request("http://localhost:8080/", { method: "DELETE" })),
-            a(new Request("http://localhost:8080/hello/***")),
-            a(new Request("http://localhost:8080/static/fun.test.ts")),
+            a(new Request("http://localhost:8080/hello/nested/hello/***")),
             a(new Request("http://localhost:8080/hello/nested/***")),
+            a(new Request("http://localhost:8080/hello/***")),
             a(new Request("http://localhost:8080/NOTFOUND")),
             a(new Request("http://localhost:8080/", { method: "BAD" })),
           ],
-          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,13,15,14,15,16],
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,15,14,13,16,17],
         )
     )(
       solver({ hasName: "http://localhost:8080/" })(
@@ -40,8 +40,9 @@ test(
           split({ hasName: "http://localhost:8080/" })(
             optimize({ hasName: "http://localhost:8080/" })([
               ...paths,
-              { path: "/hello/*", f: () => "wild" },
+              { path: "/hello/nested/hello/*", f: () => "card" },
               { path: "/hello/nested/*", f: () => "card" },
+              { path: "/hello/*", f: () => "wild" },
             ]),
           ),
         ),

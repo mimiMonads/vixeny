@@ -9,5 +9,7 @@ bun.lockb
 
 node_modules
 
+hi.ts
+
 package-lock.json
 
