@@ -65,6 +65,7 @@ export type FunRouterOptions = {
   readonly stateFlags?: {
     isFileServer?: true
     slashIs?: string
+    isWild?: true
   }
   readonly enableLiveReloading?: true;
   /**

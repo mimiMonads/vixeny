@@ -52,8 +52,12 @@ export default (
               vixeny({
                 ...o,
                 stateFlags:{
-                  ...(o.stateFlags ?? {}),
-                  isFileServer: true
+                  ...( o && o?.stateFlags ? o.stateFlags :  {}),
+                  isFileServer: true,
+                  ...("slashIs" in x &&  typeof  x.slashIs === "string"
+                    ? {slashIs: x.slashIs}
+                    : {}
+                  )
                 }
               })(staticFiles(x)),
               "static",

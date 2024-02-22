@@ -32,7 +32,11 @@ test(
           [0, 0, 1, -1, -1],
         )
     )(
-      parser({})([["/hello", "/other"]])([0])([1])(0)(-1),
+      parser({
+        stateFlags:{
+          isWild: true
+        }
+      })([["/hello", "/other"]])([0])([1])(0)(-1),
     ),
 );
 
