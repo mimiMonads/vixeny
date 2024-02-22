@@ -49,7 +49,13 @@ export default (
             ? [
               "GET",
               x.name + "*",
-              vixeny(o)(staticFiles(x)),
+              vixeny({
+                ...o,
+                stateFlags:{
+                  ...(o.stateFlags ?? {}),
+                  isFileServer: true
+                }
+              })(staticFiles(x)),
               "static",
             ] as RouteTypes
             : [

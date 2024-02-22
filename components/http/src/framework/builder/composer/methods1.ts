@@ -35,7 +35,11 @@ export default (o?: FunRouterOptions) =>
                 )(
                   -1,
                 ))(
-                  parser(o)(atlas[2][i])(position[i])(atlas[1][i])(start)(end),
+                  parser(o)(atlas[2][i])(position[i])(atlas[1][i])(start)( 
+                    o && o.stateFlags && o.stateFlags.isFileServer
+                      ? null as unknown as number
+                      : end
+                  ),
                 ),
         ) as [(s: string) => number],
       () => badMethod,
