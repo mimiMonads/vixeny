@@ -32,7 +32,7 @@ test(
             a(new Request("http://localhost:8080/NOTFOUND")),
             a(new Request("http://localhost:8080/", { method: "BAD" })),
           ],
-          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 14, 15, 16],
+          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,13,15,14,15,16],
         )
     )(
       solver({ hasName: "http://localhost:8080/" })(
