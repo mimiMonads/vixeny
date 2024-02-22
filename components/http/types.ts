@@ -62,6 +62,10 @@ export type FunRouterOptions = {
    * ```
    */
   paramsStartsWith?: string;
+  readonly stateFlags?: {
+    isFileServer?: true
+    slashIs?: string
+  }
   readonly enableLiveReloading?: true;
   /**
    * A function that takes a Request and returns a Response for 404 errors.

@@ -100,8 +100,23 @@ test(
   "cheksplit",
   () => {
     assert.deepStrictEqual(
-      split()(optimize()([{ path: "/", f: () => "hello" }]))[1][2],
+      split({
+      })(optimize()([{ path: "/", f: () => "hello" }]))[1][2],
       [],
+    );
+  },
+);
+
+test(
+  "checkSlashIs",
+  () => {
+    assert.deepStrictEqual(
+      split({
+        stateFlags:{
+          slashIs: '$root'
+        }
+      })(optimize()([{ path: "/$root", f: () => "hello" }]))[0][0][1],
+      '/',
     );
   },
 );

@@ -11,7 +11,15 @@ export default (o?: FunRouterOptions) => (a: RouteTypes[]) =>
         (sp) =>
           [
             fl.map(
-              (x) => [x[1].split("/").length - 1, x[1], x[0], x[2]],
+              (x) => [x[1].split("/").length - 1, 
+              o&&o.stateFlags&&o.stateFlags.slashIs
+                ? (
+                  i => i > -1
+                    ? x[1].slice(0, i)
+                    : x[1]
+                )(x[1].indexOf(o.stateFlags.slashIs))
+                :x[1]
+              , x[0], x[2]],
             ),
             sp,
           ] as [ArraySwap[], PartialAtlas]
