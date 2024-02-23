@@ -593,6 +593,7 @@ export type ObjectRawResponseStatic =
   & {
     template?: StaticFilePlugin[];
     removeExtensionOf?: defaultMime[];
+    slashIs?: string;
   };
 
 export type SupportedKeys =
