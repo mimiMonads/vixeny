@@ -31,7 +31,7 @@ export type Morphism<
     Crypto
   >;
   plugins?: ExtractPluginTypes<Options>;
-  crypto?: Crypto;
+  readonly crypto?: Crypto;
   mutable?: Mut;
   isAsync?: true;
 };
@@ -40,11 +40,19 @@ type CryptoContext<CR extends CryptoOptions> = CR extends
   { globalKey: any; token: infer Token } ? Token extends Record<string, any> ? {
       token: { [K in keyof Token]: Record<string, unknown> };
     } & SignerAndVarifier
-  : {}
+  : {
+    sign: any,
+    verify: any,
+    token: any
+  }
   : CR extends { globalKey: any } ? {
       token: Record<string, Record<string, unknown> | null>;
     } & SignerAndVarifier
-  : {};
+  : {
+    sign: any,
+    verify: any,
+    token: any
+  };
 
 type SignerAndVarifier = {
   verify: (s: string) => Record<string, unknown> | null;
@@ -119,6 +127,8 @@ export interface Ctx<
       (ctx: any): ReturnType<B[V]["f"]>;
     };
   };
+
+
 
   /**
    * Adds with query to the `context`
