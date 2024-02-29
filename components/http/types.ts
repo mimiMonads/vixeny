@@ -44,6 +44,10 @@ export type FunRouterOptions = {
    * ```
    */
   hasName?: string;
+
+  readonly router:{
+    strictTrailingSlash: boolean
+  }
   /**
    * When an URL with a valid URL is detected and used it will be added to yout `context`
    *
