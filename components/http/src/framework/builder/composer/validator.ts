@@ -10,7 +10,7 @@ export default (options?: FunRouterOptions) =>
     (acc, x, i) =>
       x === "/"
         ? acc + ` s === "/" ${
-          options?.router?.strictTrailingSlash === true
+          options?.router?.strictTrailingSlash === false
             ? ""
             : `|| s.indexOf("?") === 1 `
         }|| s.indexOf("?") === 1 ? ${i + base}  : `
@@ -19,7 +19,7 @@ export default (options?: FunRouterOptions) =>
         ? acc + ((x.at(-1) === "/")
           ? ` s.indexOf("${x.slice(1)}") === 1 ? ${(i + base)} : `
           : `  s === "${x}"  ${
-            options?.router?.strictTrailingSlash === true
+            options?.router?.strictTrailingSlash === false
               ? ""
               : `|| s.indexOf("${
                 x.slice(1) + "?"
