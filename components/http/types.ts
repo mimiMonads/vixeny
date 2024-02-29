@@ -45,8 +45,11 @@ export type FunRouterOptions = {
    */
   hasName?: string;
 
-  readonly router:{
-    strictTrailingSlash: boolean
+  readonly router?:{
+    /**
+     * When true, the router treats URLs with a trailing slash as distinct from those without. For example, /hello and /hello/ are considered different routes, and each can have its own handler.
+     */
+    strictTrailingSlash?: boolean
   }
   /**
    * When an URL with a valid URL is detected and used it will be added to yout `context`
