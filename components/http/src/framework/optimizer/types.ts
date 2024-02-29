@@ -41,17 +41,17 @@ type CryptoContext<CR extends CryptoOptions> = CR extends
       token: { [K in keyof Token]: Record<string, unknown> };
     } & SignerAndVarifier
   : {
-    sign: any,
-    verify: any,
-    token: any
+    sign: any;
+    verify: any;
+    token: any;
   }
   : CR extends { globalKey: any } ? {
       token: Record<string, Record<string, unknown> | null>;
     } & SignerAndVarifier
   : {
-    sign: any,
-    verify: any,
-    token: any
+    sign: any;
+    verify: any;
+    token: any;
   };
 
 type SignerAndVarifier = {
@@ -127,8 +127,6 @@ export interface Ctx<
       (ctx: any): ReturnType<B[V]["f"]>;
     };
   };
-
-
 
   /**
    * Adds with query to the `context`
@@ -388,6 +386,26 @@ export type RequestMorphism<
     f: (
       ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>,
     ) => Response | Promise<Response>;
+  };
+
+export type  BodyNull = {
+  [propName: string]: any;
+} | null;
+export type ObjectaAndNullMorphism<
+  ResMap extends MorphismMap = MorphismMap,
+  BraMap extends AnyMorphismMap = AnyMorphismMap,
+  Query extends QueryOptions = QueryOptions,
+  Param extends ParamOptions = ParamOptions,
+  Options extends FunRouterOptions = FunRouterOptions,
+  Crypto extends CryptoOptions = CryptoOptions,
+  Mut extends MutableKey = MutableKey,
+  _Return = any,
+> =
+  & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f">
+  & {
+    f: (
+      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>,
+    ) => Promise<BodyNull> | BodyNull;
   };
 
 export type Petition =

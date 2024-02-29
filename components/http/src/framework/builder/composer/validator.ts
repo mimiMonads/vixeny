@@ -21,9 +21,7 @@ export default (options?: FunRouterOptions) =>
           : `  s === "${x}"  ${
             options?.router?.strictTrailingSlash === false
               ? ""
-              : `|| s.indexOf("${
-                x.slice(1) + "?"
-              }") === 1`
+              : `|| s.indexOf("${x.slice(1) + "?"}") === 1`
           } ? ${(i + base)} :  `)
         : acc + parameters(base + i)(map(options)(x)),
     "",

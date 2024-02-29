@@ -33,9 +33,9 @@ test(
         )
     )(
       parser({
-        stateFlags:{
-          isWild: true
-        }
+        stateFlags: {
+          isWild: true,
+        },
       })([["/hello", "/other"]])([0])([1])(0)(-1),
     ),
 );

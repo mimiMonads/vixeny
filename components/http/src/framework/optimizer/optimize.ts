@@ -51,14 +51,13 @@ export default (
               x.name + "*",
               vixeny({
                 ...o,
-                stateFlags:{
-                  ...( o && o?.stateFlags ? o.stateFlags :  {}),
+                stateFlags: {
+                  ...(o && o?.stateFlags ? o.stateFlags : {}),
                   isFileServer: true,
-                  ...("slashIs" in x &&  typeof  x.slashIs === "string"
-                    ? {slashIs: x.slashIs}
-                    : {}
-                  )
-                }
+                  ...("slashIs" in x && typeof x.slashIs === "string"
+                    ? { slashIs: x.slashIs }
+                    : {}),
+                },
               })(staticFiles(x)),
               "static",
             ] as RouteTypes

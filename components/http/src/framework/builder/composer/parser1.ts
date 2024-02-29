@@ -7,7 +7,7 @@ export default (o?: FunRouterOptions) =>
 (an: number[]) =>
 (start: number) =>
 (notFound: number) =>
-  o&&o.stateFlags&&o.stateFlags.isWild
+  o && o.stateFlags && o.stateFlags.isWild
     ? (
       (nar: [string, number][]) =>
         (new Function(`return s=>${

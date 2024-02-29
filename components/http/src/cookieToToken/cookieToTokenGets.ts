@@ -8,12 +8,12 @@ export default (secret: SupportedKeys) => (name: string) =>
         (p) =>
           p !== -1
             ? sha256(
+              //@ts-ignore
+              c.slice(
+                p + name.length + 1,
                 //@ts-ignore
-                c.slice(
-                  p + name.length + 1,
-                  //@ts-ignore
-                  (c.indexOf(",", p) + 1 || c.length + 1) - 1,
-                ),
+                (c.indexOf(",", p) + 1 || c.length + 1) - 1,
+              ),
             )
             : null
       )(

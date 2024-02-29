@@ -45,12 +45,12 @@ export type FunRouterOptions = {
    */
   hasName?: string;
 
-  readonly router?:{
+  readonly router?: {
     /**
      * When true, the router treats URLs with a trailing slash as distinct from those without. For example, /hello and /hello/ are considered different routes, and each can have its own handler.
      */
-    strictTrailingSlash?: false
-  }
+    strictTrailingSlash?: false;
+  };
   /**
    * When an URL with a valid URL is detected and used it will be added to yout `context`
    *
@@ -70,10 +70,10 @@ export type FunRouterOptions = {
    */
   paramsStartsWith?: string;
   readonly stateFlags?: {
-    isFileServer?: true
-    slashIs?: string
-    isWild?: true
-  }
+    isFileServer?: true;
+    slashIs?: string;
+    isWild?: true;
+  };
   readonly enableLiveReloading?: true;
   /**
    * A function that takes a Request and returns a Response for 404 errors.

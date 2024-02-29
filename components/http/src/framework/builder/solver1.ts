@@ -14,18 +14,17 @@ export default (o?: FunRouterOptions) => (atlas: Atlas1) =>
               (m1) =>
                 (
                   (solve1) => (r: Request) =>
-                    solve[me(r.method)](r.url)  ?? solve1[m1(r.method)](r.url) 
+                    solve[me(r.method)](r.url) ?? solve1[m1(r.method)](r.url)
                 )(
                   solver({
                     ...o,
-                    stateFlags:{
+                    stateFlags: {
                       ...(o && o.stateFlags ? o.stateFlags : {}),
-                      isWild: true
-                    }
+                      isWild: true,
+                    },
                   })(atlas[4] as Atlas1)(
-                    atlas[3].length - (atlas[4][3] as Atlas1[3]).length ,
-                  )(atlas[3].length -2 )
-                  (atlas[3].length -1),
+                    atlas[3].length - (atlas[4][3] as Atlas1[3]).length,
+                  )(atlas[3].length - 2)(atlas[3].length - 1),
                 )
             )(
               finderMethods(
@@ -38,12 +37,12 @@ export default (o?: FunRouterOptions) => (atlas: Atlas1) =>
             //exist wildcards (inluding static server) and server
             ? atlas[3].length - 4 + (atlas[4][3] as Atlas1[3]).length
             //just the server (null)
-            : null as unknown as number 
+            : null as unknown as number,
         )(
           (atlas[4][0] as Atlas1[0]).length === 0
-          ? atlas[3].length - 1
-          : null as unknown as number
-        )
+            ? atlas[3].length - 1
+            : null as unknown as number,
+        ),
       )
   )(
     finderMethods(
