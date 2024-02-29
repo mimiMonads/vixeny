@@ -24,4 +24,4 @@ export default <O extends FunRouterOptions>(o?: O) =>
   Return = any,
 >(
   r: ObjectaAndNullMorphism<R, B, Q, P, O, CR, MU, Return>,
-) => response(o)(r as unknown as RequestMorphism) as (r:Request) => Promise<BodyNull> | BodyNull; 
+) => response(o)({...r, type: "object"} as unknown as RequestMorphism) as (r:Request) => Promise<BodyNull> | BodyNull; 
