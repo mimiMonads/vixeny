@@ -9,14 +9,22 @@ export default (options?: FunRouterOptions) =>
   (ar.reduce(
     (acc, x, i) =>
       x === "/"
-        ? acc + ` s === "/" || s.indexOf("?") === 1 ? ${i + base}  : `
+        ? acc + ` s === "/" ${
+          options?.router?.strictTrailingSlash === true
+            ? ""
+            : `|| s.indexOf("?") === 1 `
+        }|| s.indexOf("?") === 1 ? ${i + base}  : `
         : x.indexOf("/" + (options?.paramsStartsWith?.at(0) || ":")) ===
             -1
         ? acc + ((x.at(-1) === "/")
           ? ` s.indexOf("${x.slice(1)}") === 1 ? ${(i + base)} : `
-          : `  s === "${x}" || s.indexOf("${
-            x.slice(1) + "?"
-          }") === 1 ? ${(i + base)} :  `)
+          : `  s === "${x}"  ${
+            options?.router?.strictTrailingSlash === true
+              ? ""
+              : `|| s.indexOf("${
+                x.slice(1) + "?"
+              }") === 1`
+          } ? ${(i + base)} :  `)
         : acc + parameters(base + i)(map(options)(x)),
     "",
   ) + notFound).trim();

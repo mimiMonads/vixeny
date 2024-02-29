@@ -7,7 +7,7 @@ test(
   (_) =>
     assert.deepStrictEqual(
       validator({})(1)(-1)(["/", "/hello", "/test"]),
-      's === "/" || s.indexOf("?") === 1 ? 1  :   s === "/hello" || s.indexOf("hello?") === 1 ? 2 :    s === "/test" || s.indexOf("test?") === 1 ? 3 :  -1',
+      's === "/" || s.indexOf("?") === 1 || s.indexOf("?") === 1 ? 1  :   s === "/hello"  || s.indexOf("hello?") === 1 ? 2 :    s === "/test"  || s.indexOf("test?") === 1 ? 3 :  -1',
     ),
 );
 
