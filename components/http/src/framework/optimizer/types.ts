@@ -408,6 +408,28 @@ export type ObjectaAndNullMorphism<
     ) => Promise<BodyNull> | BodyNull;
   };
 
+
+ 
+export type ObjectaAnyMorphism<
+  ResMap extends MorphismMap = MorphismMap,
+  BraMap extends AnyMorphismMap = AnyMorphismMap,
+  Query extends QueryOptions = QueryOptions,
+  Param extends ParamOptions = ParamOptions,
+  Options extends FunRouterOptions = FunRouterOptions,
+  Crypto extends CryptoOptions = CryptoOptions,
+  Mut extends MutableKey = MutableKey,
+  T = any, // Add generic type parameter T here
+> =
+  & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f">
+  & {
+    f: (
+      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>,
+    ) =>   T; 
+  };
+
+
+
+
 export type Petition =
   | RequestMorphism
   | CommonRequestMorphism

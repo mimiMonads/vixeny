@@ -74,6 +74,7 @@ export type FunRouterOptions = {
     slashIs?: string;
     isWild?: true;
   };
+  readonly retruns?: any
   readonly enableLiveReloading?: true;
   /**
    * A function that takes a Request and returns a Response for 404 errors.

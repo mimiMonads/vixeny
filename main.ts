@@ -6,6 +6,8 @@ import { assertOptions, asssertPlugin, getName, getOptions } from "./components/
 import checker from "./components/http/src/framework/optimizer/checker.ts";
 import applyResolver from "./components/http/src/optimizer/branchComposer.ts";
 import applyBranch from "./components/http/src/optimizer/branchComposer.ts";
+import anyRequest from "./components/http/src/optimizer/anyRequest.ts";
+
 // Re-exporting from each file
 
 export const runtime = {
@@ -20,6 +22,7 @@ export const plugins = {
   getName,
   getOptions,
   checker: checker,
+  anyRequest: anyRequest
 };
 
 export const testing = {
