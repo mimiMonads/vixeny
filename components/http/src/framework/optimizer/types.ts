@@ -388,7 +388,7 @@ export type RequestMorphism<
     ) => Response | Promise<Response>;
   };
 
-export type  BodyNull = {
+export type BodyNull = {
   [propName: string]: any;
 } | null;
 export type ObjectaAndNullMorphism<
@@ -408,8 +408,6 @@ export type ObjectaAndNullMorphism<
     ) => Promise<BodyNull> | BodyNull;
   };
 
-
- 
 export type ObjectaAnyMorphism<
   ResMap extends MorphismMap = MorphismMap,
   BraMap extends AnyMorphismMap = AnyMorphismMap,
@@ -424,11 +422,8 @@ export type ObjectaAnyMorphism<
   & {
     f: (
       ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto>,
-    ) =>   T; 
+    ) => T;
   };
-
-
-
 
 export type Petition =
   | RequestMorphism

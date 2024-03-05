@@ -1,15 +1,17 @@
 import { FunRouterOptions } from "../../types.ts";
+import response from "../framework/optimizer/response.ts";
 import {
   AnyMorphismMap,
+  CommonRequestMorphism,
   CryptoOptions,
   MorphismMap,
   MutableKey,
+  ObjectaAnyMorphism,
   ParamOptions,
   QueryOptions,
-  ObjectaAnyMorphism
 } from "../framework/optimizer/types.ts";
 
-const a = <O extends FunRouterOptions>(o?: O) =>
+export default <O extends FunRouterOptions>(o?: O) =>
 <
   R extends MorphismMap,
   B extends AnyMorphismMap,
@@ -17,9 +19,10 @@ const a = <O extends FunRouterOptions>(o?: O) =>
   P extends ParamOptions,
   CR extends CryptoOptions,
   MU extends MutableKey,
-  T = any
+  T = any,
 >(
-  r: ObjectaAnyMorphism<R, B, Q, P, O, CR, MU,T>,
-)  => r as unknown as (re: Request) =>  T
-
-
+  r: ObjectaAnyMorphism<R, B, Q, P, O, CR, MU, T>,
+) =>
+  (response(o)(r as unknown as CommonRequestMorphism)) as unknown as (
+    re: Request,
+  ) => T;

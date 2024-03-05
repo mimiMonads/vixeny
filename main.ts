@@ -2,7 +2,12 @@
 import parseArguments from "./components/runtime/parseArguments.mjs";
 import name from "./components/runtime/name.mjs";
 import objectNullRequest from "./components/http/src/optimizer/objectNullRequest.ts";
-import { assertOptions, asssertPlugin, getName, getOptions } from "./components/http/src/optimizer/pluginUtil.ts";
+import {
+  assertOptions,
+  asssertPlugin,
+  getName,
+  getOptions,
+} from "./components/http/src/optimizer/pluginUtil.ts";
 import checker from "./components/http/src/framework/optimizer/checker.ts";
 import applyResolver from "./components/http/src/optimizer/branchComposer.ts";
 import applyBranch from "./components/http/src/optimizer/branchComposer.ts";
@@ -22,17 +27,16 @@ export const plugins = {
   getName,
   getOptions,
   checker: checker,
-  anyRequest: anyRequest
+  anyRequest: anyRequest,
 };
 
 export const testing = {
   resolve: applyResolver,
-  branch: applyBranch
-}
+  branch: applyBranch,
+};
 export { default as vixeny } from "./components/http/serve.ts";
 export { wrap } from "./components/http/src/fold/foldMain.ts";
 export { default as morphism } from "./components/http/src/optimizer/morphism.ts";
-
 
 export { default as applyBranch } from "./components/http/src/optimizer/branchComposer.ts";
 /**
@@ -43,4 +47,3 @@ export { default as assertOptions } from "./components/http/src/optimizer/assert
  * @deprecated use plugins.assertPlugin .
  */
 export { default as assertPlugin } from "./components/http/src/optimizer/assertPlugin.ts";
-
