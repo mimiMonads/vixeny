@@ -14,7 +14,9 @@ export default (o?: BranchSetter) => (f: BranchOptions) =>
       (obj) =>
         ((f) => (r: Request) => async (arg: any) =>
           await (f(r) as unknown as (f: unknown) => unknown)(arg))(
+            //@ts-ignore
             branch(o ? { ...o, mutable: true } : undefined)("/")(f),
           )
     )({ ...o.mutable })
+    //@ts-ignore
     : branch(o ? { ...o, mutable: undefined } : undefined)("/")(f);

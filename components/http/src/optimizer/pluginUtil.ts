@@ -1,4 +1,4 @@
-import { CyclePlugin, FunRouterOptions } from "../../types";
+import { CyclePlugin, FunRouterOptions } from "../../types.ts";
 
 export const getName = (o: FunRouterOptions) => (sym: symbol) =>
   Object
@@ -10,6 +10,7 @@ export const getOptions = (userOptions: unknown) => (currentName: string) =>
   userOptions && typeof userOptions == "object" &&
     !Array.isArray(userOptions) && "plugins" in userOptions &&
     userOptions.plugins
+    //@ts-ignore
     ? userOptions.plugins[currentName]
     : null;
 

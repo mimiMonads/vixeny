@@ -1,4 +1,3 @@
-// File: vixeny/index.ts
 import parseArguments from "./components/runtime/parseArguments.mjs";
 import name from "./components/runtime/name.mjs";
 import objectNullRequest from "./components/http/src/optimizer/objectNullRequest.ts";
@@ -34,7 +33,12 @@ export const testing = {
   resolve: applyResolver,
   branch: applyBranch,
 };
+/**
+ * @deprecated use composeResponse .
+ */
 export { default as vixeny } from "./components/http/serve.ts";
+
+export { default as composeResponse } from "./components/http/serve.ts";
 export { wrap } from "./components/http/src/fold/foldMain.ts";
 export { default as morphism } from "./components/http/src/optimizer/morphism.ts";
 
