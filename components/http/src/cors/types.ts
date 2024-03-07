@@ -5,7 +5,7 @@ type RequestMethod =
 | 'TRACE' | 'UNBIND' | 'UNLINK' | 'UNLOCK' | 'UNSUBSCRIBE';
 
 
-export interface Options {
+export interface CORSOptions {
     allowOrigins?: string | string[];
     allowMethods?: string | RequestMethod | RequestMethod[];
     exposeHeaders?: string | string[];

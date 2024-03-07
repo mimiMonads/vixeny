@@ -1,12 +1,12 @@
-import { Options } from "./types.ts"
+import { CORSOptions } from "./types.ts"
 
 
-const parse = () => (o:Options) => 
+export const parse = () => (o:CORSOptions) => 
     Object.keys(o).reduce(
         (acc,key) =>  ({...acc, key: o[key].toString()}),
         {}
     )
 
 
-const stringToFunction = (obj: {[key: string]:string}) =>
+export const stringToFunction = (obj: {[key: string]:string}) =>
         (new Function(`return () => (${JSON.stringify(obj) })`) )() as () => {[key:string]: string}
