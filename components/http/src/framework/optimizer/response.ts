@@ -1,5 +1,6 @@
 import { FunRouterOptions } from "../../../types.ts";
 import { CommonRequestMorphism, RequestMorphism } from "./types.ts";
+import { stringToFunction , parse } from "../../cors/mainCORS.ts";
 import checkAsync from "./recursiveCheckAsync.ts";
 import aComposer from "./aComposer.ts";
 import mime from "../../util/mime.ts";
@@ -74,9 +75,10 @@ export default (o?: FunRouterOptions) =>
               headers: {
                 "Content-Type":
                   mime.find((x) => x[0] === f.headings?.headers)![1],
+                  ...(o && o.cors ? stringToFunction(parse()(o.cors))(): {}) 
               },
             }
-            : { ...f.headings }
+            : { ...f.headings , ...(o && o.cors ? stringToFunction(parse()(o.cors))(): {}) }
           : null,
         json: "json" in f
           ? null //jsonComposer({ type: "safe" })(f.json.scheme)

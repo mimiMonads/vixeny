@@ -24,6 +24,11 @@ export default (o?: FunRouterOptions) =>
       type: 0,
     },
     {
+      name: "headers",
+      value: f.options?.setDate ? f.options.setDate : "headers()",
+      type: 0,
+    },
+    {
       name: "randomNumber",
       value: f.options?.setRandomNumber
         ? f.options.setRandomNumber

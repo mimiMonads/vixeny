@@ -551,7 +551,9 @@ export type AddOption =
   | "resolve"
   | "mutable"
   | "branch"
-  | "arguments";
+  | "arguments"
+  | "headers"  
+  ;
 
 export type PathKey = {
   /**

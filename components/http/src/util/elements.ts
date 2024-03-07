@@ -7,6 +7,7 @@ export default (f: CommonRequestMorphism | RequestMorphism) =>
   f.crypto && "globalKey" in f.crypto
     ? [
       "cookie",
+      "headers",
       "randomNumber",
       "hash",
       "param",
@@ -23,6 +24,7 @@ export default (f: CommonRequestMorphism | RequestMorphism) =>
     ]
     : [
       "cookie",
+      "headers",
       "randomNumber",
       "hash",
       "param",
