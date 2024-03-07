@@ -111,7 +111,7 @@ type WithPlugins<
   CR extends CryptoOptions,
   UNI extends specialElements
 > =
-  & Ctx<R, B, QS, PA, O, CR , {}>
+  & Ctx<R, B, QS, PA, O, CR , { hasHeaders: true}>
   & (O extends { cyclePlugin: infer CPM } ? [keyof CPM] extends [never] ? {}
     : CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM>
     : never
