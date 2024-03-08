@@ -1,3 +1,8 @@
+<head>
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
 ## Testing: The Keystone of Digital Construction
 
 In building, thorough testing and inspections are non-negotiable, ensuring every part of the structure meets exacting standards. Vixeny embeds this principle deeply within its framework, offering a comprehensive testing suite that simulates various scenarios, ensuring every component functions as intended.

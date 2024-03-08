@@ -1,3 +1,9 @@
+<head>
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+
 <Heading title="Introduction to wrap" size="2" />
 
 In the `versatile` world of JavaScript, wrap plays a key role in harmonizing the language's polymorphic nature with Vixeny's functional approach. It ensures scalability and maintains code purity, crucial for efficient web development.
