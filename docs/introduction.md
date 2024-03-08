@@ -3,6 +3,15 @@
 /// talk about vixeny in general
 
 ## Bateries included:
+
+As simple as:
+```bash
+npx create-vixeny
+```
+or:
+```bash
+bun create vixeny
+```
 Templates for :
 - Pug
 - Ejs
@@ -12,6 +21,7 @@ Templates for :
 - PostCSS
 - Remaker
  and more ...
+
 
 ## Testability end-to-end 
 
@@ -86,21 +96,4 @@ composeResponse()(
         api.unwrap()
     ).unwrap()
 );
-```
-
-## Pure
-
-```ts
-wrap(o)()
-  .stdPetition({
-    path: "/date",
-    resolve: {
-      date: {
-        f: (c) => c.date,
-      },
-    },
-    f: (c) => c.resolve.date !== c.date 
-        ? "Always true" 
-        : "Unreachable",
-  })
 ```
