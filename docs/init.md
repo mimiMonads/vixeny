@@ -1,6 +1,7 @@
 <head>
     <link rel="stylesheet" href="/css/prism.css">
     <link rel="stylesheet" href="/css/main.css">
+    <script src="/mjs/docs.mjs" type="module"></script>
 </head>
 
 
