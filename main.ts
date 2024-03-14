@@ -3,7 +3,7 @@ import name from "./components/runtime/name.mjs";
 import objectNullRequest from "./components/http/src/optimizer/objectNullRequest.ts";
 import {
   assertOptions,
-  asssertPlugin,
+  assertPlugin,
   getName,
   getOptions,
 } from "./components/http/src/optimizer/pluginUtil.ts";
@@ -12,23 +12,32 @@ import applyResolver from "./components/http/src/optimizer/branchComposer.ts";
 import applyBranch from "./components/http/src/optimizer/branchComposer.ts";
 import anyRequest from "./components/http/src/optimizer/anyRequest.ts";
 
-// Re-exporting from each file
+
+/**
+ * Runtime utilities
+ */
 
 export const runtime = {
   name: name,
   arguments: parseArguments,
 };
 
+
+/**
+ * Plugins utilities
+ */
 export const plugins = {
   objectNullRequest,
   assertOptions,
-  asssertPlugin,
+  assertPlugin,
   getName,
   getOptions,
   checker: checker,
   anyRequest: anyRequest,
 };
-
+/**
+ * Testing utilities
+ */
 export const testing = {
   resolve: applyResolver,
   branch: applyBranch,
