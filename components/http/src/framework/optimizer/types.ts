@@ -400,7 +400,7 @@ export type RequestMorphism<
 export type BodyNull = {
   [propName: string]: any;
 } | null;
-export type ObjectaAndNullMorphism<
+export type ObjectAndNullMorphism<
   ResMap extends MorphismMap = MorphismMap,
   BraMap extends AnyMorphismMap = AnyMorphismMap,
   Query extends QueryOptions = QueryOptions,
