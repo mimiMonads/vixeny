@@ -1,4 +1,4 @@
-import parseArguments from "./components/runtime/parseArguments.mjs";
+import parseArguments from "./components/runtime/parseArguments.ts";
 import name from "./components/runtime/name.mjs";
 import objectNullRequest from "./components/http/src/optimizer/objectNullRequest.ts";
 import {
