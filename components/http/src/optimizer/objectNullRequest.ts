@@ -43,7 +43,7 @@ import response from "../framework/optimizer/response.ts";
  *     name: "/serverPath", // It's recommended to use `/` to add it to the root.
  *     path: "./yourDir/",
  *     template: [
- *       pugStaticServerPlugin(pugModule.compileFile)({
+ *       yourPlugin(pluginModule)({
  *         petition: functionForTemplates
  *       }),
  *     ],
@@ -51,7 +51,6 @@ import response from "../framework/optimizer/response.ts";
  * ]);
  * ```
  * 
- * This function wraps a response object with additional processing capabilities, making it easy to integrate with Vixeny's routing and plugin system. It supports a wide range of options for customizing request handling and response generation.
  */
 export default <O extends FunRouterOptions>(o?: O) =>
   <
