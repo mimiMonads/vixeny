@@ -19,11 +19,12 @@ type WrapOptions = FunRouterOptions & {
   startWith?: string;
 };
 /**
+ * 
  * `wrap` is a key function in Vixeny for safeguarding and encapsulating `Petitions`, particularly when 
  * they are exported, composed, mocked, or altered. This encapsulation maintains the purity of your code
  * by ensuring that `Petitions` remain modular and protected from unintended modifications.
  * 
- * Usage example:
+ * @example
  * ```js
  * const options = {...} // Optional<funRouterOptions>
  * // Exporting a standard Petition
@@ -39,7 +40,8 @@ export const wrap = <O extends WrapOptions>(o?: O) =>
  * The second `()` can either be left empty or used to add another `wrap`.
  * This allows for flexible composition of your application's routing and request handling.
  * 
- * Usage example:
+ * 
+ * @example
  * ```js
  * import { api } from './somewhere'
  * const options = {...} // Optional<funRouterOptions>
@@ -129,7 +131,7 @@ export const wrap = <O extends WrapOptions>(o?: O) =>
       { ...ob, type: "request" } as unknown as RequestMorphism,
     )),
     /**
-    * `mutCustomPetition` is similar to `customPetition` but is designed to work with mutable state.
+    * `mutStdPetition` is similar to `stdPetition` but is designed to work with mutable state.
     * This allows the mutation of state within your Petition, enabling complex state management and 
     * interactions within your application's flow.
     * Note: Use with caution to avoid unintended side effects.
@@ -179,6 +181,33 @@ export const wrap = <O extends WrapOptions>(o?: O) =>
         } as unknown as RequestMorphism,
       ),
     ),
+      /**
+    * `mutCustomPetition` is similar to `customPetition` but is designed to work with mutable state.
+    * This allows the mutation of state within your Petition, enabling complex state management and 
+    * interactions within your application's flow.
+    * Note: Use with caution to avoid unintended side effects.
+    * 
+    * @mutable All composed `morphism` share the same mutable key   
+    * 
+    * @example
+    *```js
+    * wrap()()
+    *   .mutCustomPetition({
+    *     path: '/',
+    *     resolve: {
+    *       world: morphism()({
+    *         f: c => {
+    *           c.mutable.hello = "hello ";
+    *           return 'world';
+    *         }
+    *       })
+    *     },
+    *     // Utilizes the mutated state for constructing the response
+    *     f: c => new Response(c.mutable.hello + c.resolve.world)
+    * })
+    *```
+    * 
+    */
   mutCustomPetition: <
     TR extends MorphismMap,
     B extends AnyMorphismMap,
