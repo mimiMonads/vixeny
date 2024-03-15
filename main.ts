@@ -40,7 +40,8 @@ export const plugins = {
  */
 export const testing = {
   resolve: applyResolver,
-  branch: applyBranch,
+  //TODO: Improve it
+  //branch: applyBranch,
 };
 /**
  * @deprecated use composeResponse .
