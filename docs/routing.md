@@ -126,9 +126,8 @@ vixeny(options)(router.unwrap())
 Let's create a Petition without wrap and export it an create new differents routes out of it.
 
 ```ts
-import { Petition } from "vixeny/optimizer/types";
 
-const surprise: Petition = {
+const surprise = {
     path: "/meow",
     headings: {
         status: 307,

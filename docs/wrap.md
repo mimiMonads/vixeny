@@ -72,7 +72,7 @@ export default wrap()(
     // console logging
     // outputs: "/api/"
     //          "/"
-    .logSize()
+    .logPaths()
 ```
 
 ### Optimizer

@@ -51,7 +51,9 @@ export { default as vixeny } from "./components/http/serve.ts";
 export { default as composeResponse } from "./components/http/serve.ts";
 export { wrap } from "./components/http/src/fold/foldMain.ts";
 export { default as morphism } from "./components/http/src/optimizer/morphism.ts";
-
+/**
+ * @deprecated use plugins.assertOptions .
+ */
 export { default as applyBranch } from "./components/http/src/optimizer/branchComposer.ts";
 /**
  * @deprecated use plugins.assertOptions .
