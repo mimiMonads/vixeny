@@ -25,7 +25,7 @@ export default (o?: specialOptions) =>
                 ` return ${
                   table.map((x) => x.type === 1 ? x.name + "=>" : "").join("")
                 } ${
-                  f.resolve && checkAsync(f) ||
+                  f.resolve && checkAsync(f) || f.f.constructor.name === "AsyncFunction" ||
                     table.some((x) => "isAsync" in x && x.isAsync === true)
                     ? o && "branch" in o ? " r=>async b=> " : " async r=> "
                     : o && "branch" in o
