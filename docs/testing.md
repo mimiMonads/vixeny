@@ -6,15 +6,23 @@
 
 ## Testing: The Keystone of Digital Construction
 
-In building, thorough testing and inspections are non-negotiable, ensuring every part of the structure meets exacting standards. Vixeny embeds this principle deeply within its framework, offering a comprehensive testing suite that simulates various scenarios, ensuring every component functions as intended.
+In building, thorough testing and inspections are non-negotiable, ensuring every
+part of the structure meets exacting standards. Vixeny embeds this principle
+deeply within its framework, offering a comprehensive testing suite that
+simulates various scenarios, ensuring every component functions as intended.
 
 ### Case Study: Simulating Conditions
 
-Imagine a feature in our digital architecture that responds to environmental changes, much like a smart home system adjusting to weather variations. Vixeny enables us to test these dynamic responses, ensuring they act precisely under varied simulated conditions.
+Imagine a feature in our digital architecture that responds to environmental
+changes, much like a smart home system adjusting to weather variations. Vixeny
+enables us to test these dynamic responses, ensuring they act precisely under
+varied simulated conditions.
 
 #### Scenario: Predicting Outcomes
 
-Our focus falls on a `/random` feature, designed to yield different outcomes based on a random number generator. This setup mirrors real-life scenarios where outcomes pivot on user interactions or external data.
+Our focus falls on a `/random` feature, designed to yield different outcomes
+based on a random number generator. This setup mirrors real-life scenarios where
+outcomes pivot on user interactions or external data.
 
 ```ts
 const routes = wrap(options)()
@@ -29,7 +37,9 @@ const routes = wrap(options)()
 
 #### Crafting the Tests
 
-To ensure our feature behaves predictably across a range of states, we manipulate the random number generator, crafting scenarios to test the anticipated outcomes.
+To ensure our feature behaves predictably across a range of states, we
+manipulate the random number generator, crafting scenarios to test the
+anticipated outcomes.
 
 ```ts
 test("/random", async () => {
@@ -70,7 +80,9 @@ test("/random", async () => {
 
 ### Refining the Process with Mocked Resolves
 
-For a feature reliant on external APIs, like fetching current weather data, we aim to test without real-time data fetches. Here, we introduce a mocked synchronous function to simulate the data fetching:
+For a feature reliant on external APIs, like fetching current weather data, we
+aim to test without real-time data fetches. Here, we introduce a mocked
+synchronous function to simulate the data fetching:
 
 ```ts
 // Original asynchronous resolve function for fetching weather data
@@ -110,15 +122,27 @@ test("/weather", async () => {
 
 ### The Virtues of Mocked Testing
 
-This approach grants us unparalleled control over the testing environment, mirroring the precision and adaptability seen in the most advanced construction methodologies. It allows for:
+This approach grants us unparalleled control over the testing environment,
+mirroring the precision and adaptability seen in the most advanced construction
+methodologies. It allows for:
 
-- **Precision and Predictability**: Creating a controlled environment that simulates specific conditions, ensuring components react as expected.
-- **Efficiency**: Streamlining the testing process by removing dependencies on external data sources.
-- **Confidence**: Providing assurance in the reliability and functionality of the digital structure, much like the final inspection before a home's completion.
+- **Precision and Predictability**: Creating a controlled environment that
+  simulates specific conditions, ensuring components react as expected.
+- **Efficiency**: Streamlining the testing process by removing dependencies on
+  external data sources.
+- **Confidence**: Providing assurance in the reliability and functionality of
+  the digital structure, much like the final inspection before a home's
+  completion.
 
 ## Conclusion: Building Digital Foundations with Assurance
 
-Just as thorough inspections ensure a home is ready for habitation, Vixeny's testing capabilities, particularly the use of mocked resolves, ensure that every digital component is built to perfection. This meticulous approach to testing empowers developers to construct with confidence, knowing every part of the application is crafted to meet and exceed expectations, ensuring a robust, functional, and adaptable digital experience. Through Resolve, Branch, and precise testing, Vixeny lays the groundwork for web applications that stand the test of time, embodying the principles of a well-constructed home.
-
+Just as thorough inspections ensure a home is ready for habitation, Vixeny's
+testing capabilities, particularly the use of mocked resolves, ensure that every
+digital component is built to perfection. This meticulous approach to testing
+empowers developers to construct with confidence, knowing every part of the
+application is crafted to meet and exceed expectations, ensuring a robust,
+functional, and adaptable digital experience. Through Resolve, Branch, and
+precise testing, Vixeny lays the groundwork for web applications that stand the
+test of time, embodying the principles of a well-constructed home.
 
 Thank you for your time.

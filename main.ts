@@ -12,7 +12,6 @@ import applyResolver from "./components/http/src/optimizer/branchComposer.ts";
 import applyBranch from "./components/http/src/optimizer/branchComposer.ts";
 import anyRequest from "./components/http/src/optimizer/anyRequest.ts";
 
-
 /**
  * Runtime utilities
  */
@@ -21,7 +20,6 @@ export const runtime = {
   name: name,
   arguments: parseArguments,
 };
-
 
 /**
  * Plugins utilities

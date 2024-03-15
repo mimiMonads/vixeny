@@ -4,46 +4,49 @@
     <script src="/mjs/docs.mjs" type="module"></script>
 </head>
 
-# Introduction: 
+# Introduction:
 
 /// talk about vixeny in general
 
 ## Bateries included:
 
 As simple as:
+
 ```bash
 npx create-vixeny
 ```
+
 or:
+
 ```bash
 bun create vixeny
 ```
+
 Templates for :
+
 - Pug
 - Ejs
 - Jsx
 - Tsx
 - Sass
 - PostCSS
-- Remaker
- and more ...
+- Remaker and more ...
 
-
-## Testability end-to-end 
+## Testability end-to-end
 
 Check anything at any state
 
 ```ts
 const router = routes.testRequests();
 
-test("Checking in `/`"  , async () => {
+test("Checking in `/`", async () => {
   expect(
     await router(new Request(serverName))
       .then((res) => res.status),
   ).toStrictEqual(200);
 });
-
 ```
+
 ## Reusable
 
 Make your own life cycle with `resolve`
@@ -70,7 +73,6 @@ export default wrap()()
         ? "Hello: " + c.resolve.user.name
         : "notFound",
   })
-
 ```
 
 ## Clean an easy to transport
@@ -78,7 +80,7 @@ export default wrap()()
 Zero side effets
 
 ```ts
-import api from './api.ts'
+import api from "./api.ts";
 
 const main = wrap(o)()
   .stdPetition({
@@ -96,10 +98,9 @@ const main = wrap(o)()
     f: (c) => c.param,
   });
 
-
 composeResponse()(
-    main.union(
-        api.unwrap()
-    ).unwrap()
+  main.union(
+    api.unwrap(),
+  ).unwrap(),
 );
 ```

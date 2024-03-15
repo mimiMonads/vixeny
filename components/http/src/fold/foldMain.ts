@@ -19,34 +19,39 @@ type WrapOptions = FunRouterOptions & {
   startWith?: string;
 };
 /**
- * One of the most important uses of `wrap` in Vixeny is to protect and modularize `Petitions`, 
- * especially when they are exported , composed, mocked or modified. 
- * This ensures that your code remains pure.
+ * `wrap` is a key function in Vixeny for safeguarding and encapsulating `Petitions`, particularly when 
+ * they are exported, composed, mocked, or altered. This encapsulation maintains the purity of your code
+ * by ensuring that `Petitions` remain modular and protected from unintended modifications.
  * 
- * ```ts
- * const options = {...} //Optional<funRouterOptions>
+ * Usage example:
+ * ```js
+ * const options = {...} // Optional<funRouterOptions>
+ * // Exporting a standard Petition
  * export const root = wrap(options)()
-  .stdPetition({
-    path: "/",
-    f: () => "helloWorld",
-  })
-  ```
+ *   .stdPetition({
+ *     path: "/",
+ *     f: () => "helloWorld",
+ *   })
+ * ```
  */
 export const wrap = <O extends WrapOptions>(o?: O) =>
 /**
- * you can leave the secons `()()` empty on add anohter wrap
+ * The second `()` can either be left empty or used to add another `wrap`.
+ * This allows for flexible composition of your application's routing and request handling.
  * 
- *```ts
- * import {  api } from './somewhere'
- * const options = {...} //Optional<funRouterOptions>
+ * Usage example:
+ * ```js
+ * import { api } from './somewhere'
+ * const options = {...} // Optional<funRouterOptions>
+ * // Composing with another wrap
  * export const root = wrap(options)(
  *   api.unwrap()
  * )
-  .stdPetition({
-    path: "/",
-    f: () => "helloWorld",
-  })
-  ```
+ *   .stdPetition({
+ *     path: "/",
+ *     f: () => "helloWorld",
+ *   })
+ * ```
  */
 <
   R extends MorphismMap,
@@ -61,26 +66,18 @@ export const wrap = <O extends WrapOptions>(o?: O) =>
   | CommonRequestMorphism<any, any, any, any, O, {}, {}, any>
 )[]) => ({
   /**
-   *
-   * A standatd Petition where `f` has as a return type `BodyInit` | `Promise<BodyInit>`
+   * Defines a standard Petition where `f` returns either a `BodyInit` or a `Promise<BodyInit>`.
    * 
+   * Usage example:
    * ```js
-export const root = wrap()()
-    .stdPetition({
-        path: '/',
-        resolve: {
-            world: morphism()({
-                f: c => {
-                    c.mutable.hello = "hello"
-                   return 'world';
-                }
-            })
-        },
-        //hello world
-        f: c =>  c.mutable.hello + c.resolve.world,
-    })
-   *``` 
+   * export const root = wrap()()
+   *   .stdPetition({
+   *     path: "/",
+   *     f: () => "helloWorld",
+   *   })
+   * ``` 
    */
+
   stdPetition: <
     RA extends MorphismMap,
     B extends AnyMorphismMap,
@@ -99,17 +96,19 @@ export const root = wrap()()
       //@ts-ignore
       { ...ob } as unknown as CommonRequestMorphism,
     )),
-    /**
-   *
-   * A cusmtome Petition where `f` has as a return type `Response` | `Promise<Response>`
+ /**
+   * `customPetition` allows for defining a custom Petition where `f` returns either a `Response` 
+   * or a `Promise<Response>`. This method is suitable for scenarios where the standard response 
+   * structure does not fit your needs.
    * 
+   * Usage example:
    * ```js
    * wrap(options)()
-      .customPetition({
-        path: "/response/who/:name",
-        f: (c) =>  new Response(c.param.name)
-      })
-   *``` 
+   *   .customPetition({
+   *     path: "/response/who/:name",
+   *     f: (c) => new Response(c.param.name),
+   *   })
+   * ``` 
    */
   customPetition: <
     TR extends MorphismMap,
@@ -129,19 +128,33 @@ export const root = wrap()()
       //@ts-ignore
       { ...ob, type: "request" } as unknown as RequestMorphism,
     )),
-      /**
-   * A standatd mutable Petition where `f` has as a return type `BodyInit` | `Promise<BodyInit>`
-   * 
-   * @mutable All composed `morphisims` share the same mutable key
-   * 
-   * ```js
-   * wrap(options)()
-      .stdPetition({
-        path: "/",
-        f: () => "hello world",
-      })
-   *``` 
-   */
+    /**
+    * `mutCustomPetition` is similar to `customPetition` but is designed to work with mutable state.
+    * This allows the mutation of state within your Petition, enabling complex state management and 
+    * interactions within your application's flow.
+    * Note: Use with caution to avoid unintended side effects.
+    * 
+    * @mutable All composed `morphism` share the same mutable key   
+    * 
+    * 
+    *```js
+    * wrap()()
+    *   .stdPetition({
+    *     path: '/',
+    *     resolve: {
+    *       world: morphism()({
+    *         f: c => {
+    *           c.mutable.hello = "hello ";
+    *           return 'world';
+    *         }
+    *       })
+    *     },
+    *     // Utilizes the mutated state for constructing the response
+    *     f: c => c.mutable.hello + c.resolve.world,
+    * })
+    *```
+    * 
+    */
   mutStdPetition: <
     RA extends MorphismMap,
     B extends AnyMorphismMap,
@@ -255,3 +268,6 @@ export const root = wrap()()
       o && o.startWith ? { ...x, path: o.startWith + x.path } : { ...x }
     ) as unknown as RequestMorphism<any, any, any, any, {}, {}, {}, any>[],
 });
+
+wrap()()
+  .mutStdPetition

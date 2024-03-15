@@ -14,7 +14,7 @@ import {
   RequestMorphism,
 } from "./src/framework/optimizer/types.ts";
 
-import { CORSOptions } from './src/cors/types.ts'
+import { CORSOptions } from "./src/cors/types.ts";
 
 /**
  * Options for the router, it is `optional`

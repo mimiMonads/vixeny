@@ -99,7 +99,7 @@ type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
 };
 
 type specialElements = {
-  readonly hasHeaders? : true
+  readonly hasHeaders?: true;
 } | {};
 
 type WithPlugins<
@@ -109,9 +109,9 @@ type WithPlugins<
   PA extends ParamOptions,
   O extends FunRouterOptions,
   CR extends CryptoOptions,
-  UNI extends specialElements
+  UNI extends specialElements,
 > =
-  & Ctx<R, B, QS, PA, O, CR , { hasHeaders: true}>
+  & Ctx<R, B, QS, PA, O, CR, { hasHeaders: true }>
   & (O extends { cyclePlugin: infer CPM } ? [keyof CPM] extends [never] ? {}
     : CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM>
     : never
@@ -125,7 +125,7 @@ export interface Ctx<
   PA extends ParamOptions,
   O extends FunRouterOptions,
   CR extends CryptoOptions,
-  UNI extends specialElements
+  UNI extends specialElements,
 > {
   resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
   branch: {
@@ -190,8 +190,9 @@ export interface Ctx<
    */
   param: PA extends { unique: true } ? string : Record<string, string>;
   headers: UNI extends {
-    readonly hasHeaders : true
-  }  ? Record<string, string > : null;
+    readonly hasHeaders: true;
+  } ? Record<string, string>
+    : null;
   /**
    * Adds a Date.now() returning the number of milliseconds elapsed since the epoch.
    *
@@ -375,7 +376,7 @@ export type CommonRequestMorphism<
   & {
     headings?: PetitionHeader;
     f: (
-      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto , {}>,
+      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto, {}>,
     ) => BodyInit | Promise<BodyInit>;
   };
 
@@ -393,7 +394,15 @@ export type RequestMorphism<
   & ObjectRawCommonRequest
   & {
     f: (
-      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto , { hasHeaders: true}>,
+      ctx: WithPlugins<
+        ResMap,
+        BraMap,
+        Query,
+        Param,
+        Options,
+        Crypto,
+        { hasHeaders: true }
+      >,
     ) => Response | Promise<Response>;
   };
 
@@ -413,7 +422,15 @@ export type ObjectAndNullMorphism<
   & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f">
   & {
     f: (
-      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto, {hasHeaders: true}>,
+      ctx: WithPlugins<
+        ResMap,
+        BraMap,
+        Query,
+        Param,
+        Options,
+        Crypto,
+        { hasHeaders: true }
+      >,
     ) => Promise<BodyNull> | BodyNull;
   };
 
@@ -430,7 +447,15 @@ export type ObjectaAnyMorphism<
   & Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f">
   & {
     f: (
-      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto, {hasHeaders: true}>,
+      ctx: WithPlugins<
+        ResMap,
+        BraMap,
+        Query,
+        Param,
+        Options,
+        Crypto,
+        { hasHeaders: true }
+      >,
     ) => T;
   };
 
@@ -552,8 +577,7 @@ export type AddOption =
   | "mutable"
   | "branch"
   | "arguments"
-  | "headers"  
-  ;
+  | "headers";
 
 export type PathKey = {
   /**

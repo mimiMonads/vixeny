@@ -6,7 +6,7 @@ import branch from "./branch/main.ts";
 import cookieToTokenMain from "../../cookieToToken/cookieToTokenMain.ts";
 import signSha256 from "../../../../jwt/signSha256.mjs";
 import verifySha256 from "../../../../jwt/verifySha256.mjs";
-import { stringToFunction, parse } from "../../cors/mainCORS.ts";
+import { parse, stringToFunction } from "../../cors/mainCORS.ts";
 
 import { FunRouterOptions } from "../../../types.ts";
 import {
