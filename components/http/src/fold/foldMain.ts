@@ -136,10 +136,10 @@ export const wrap = <O extends WrapOptions>(o?: O) =>
     * 
     * @mutable All composed `morphism` share the same mutable key   
     * 
-    * 
+    * @example
     *```js
     * wrap()()
-    *   .stdPetition({
+    *   .mutStdPetition({
     *     path: '/',
     *     resolve: {
     *       world: morphism()({
