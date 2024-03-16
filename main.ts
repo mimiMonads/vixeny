@@ -9,7 +9,6 @@ import {
 } from "./components/http/src/optimizer/pluginUtil.ts";
 import checker from "./components/http/src/framework/optimizer/checker.ts";
 import applyResolver from "./components/http/src/optimizer/branchComposer.ts";
-import applyBranch from "./components/http/src/optimizer/branchComposer.ts";
 import anyRequest from "./components/http/src/optimizer/anyRequest.ts";
 
 /**

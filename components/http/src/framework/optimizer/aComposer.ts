@@ -18,7 +18,7 @@ export default (o?: specialOptions) =>
     (
       (table) =>
         (
-          (functions) => 
+          (functions) =>
             functions.reduce(
               (s, k) => s(k),
               new Function(
@@ -36,7 +36,7 @@ export default (o?: specialOptions) =>
               )(),
             )
         )(
-          ((or) =>  nativeComponets(or)(f)(table))(
+          ((or) => nativeComponets(or)(f)(table))(
             "mutable" in f ? { ...o, mutable: true } as FunRouterOptions : o,
           ),
         )

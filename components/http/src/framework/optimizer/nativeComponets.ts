@@ -75,7 +75,7 @@ export default (o?: FunRouterOptions) =>
       },
       {
         condition: (x: NativeMaps) => x.name === "headers",
-        action: () =>  stringToFunction(parse()(o?.cors ?? {})),
+        action: () => stringToFunction(parse()(o?.cors ?? {})),
       },
       {
         condition: (x: NativeMaps) => x.name === "resolve",
