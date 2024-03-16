@@ -59,7 +59,6 @@ core of Vixeny, where both resolves and branches play pivotal roles:
     .stdPetition({
       path: "/withResolve",
       resolve: {
-        // The key name here can be any string
         hi: { c: () => "Hello world" },
       },
       // This petition consistently outputs "Hello world"

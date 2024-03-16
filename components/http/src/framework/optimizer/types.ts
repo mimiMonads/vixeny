@@ -127,12 +127,163 @@ export interface Ctx<
   CR extends CryptoOptions,
   UNI extends specialElements,
 > {
+/**
+ * The `resolve` property is integral to ensuring that all necessary data is fetched or calculations are performed before the main function (`f`) of a morphism is executed. It consists of a map where each key corresponds to a resolve function that is executed prior to `f`. The results of these resolves are then made available in the `CTX` for use in the main function.
+ * 
+ * **Key Features**:
+ * - Ensures data dependencies are resolved beforehand.
+ * - Supports both synchronous and asynchronous operations.
+ * - Maintains the original state, allowing for clean and predictable code execution.
+ * - Executes all resolves before integrating their outputs into the `CTX`.
+ * - Supports an unlimited nesting of resolves and branches (using morphism), providing a flexible structure for complex data handling.
+ * 
+ * **Examples**:
+ * ---
+ * Basic usage with synchronous data fetching:
+ * ```js
+ * wrap(options)()
+ *   .stdPetition({
+ *     path: "/withResolve",
+ *     resolve: {
+ *       hi: { f: () => "Hello world" },
+ *     },
+ *     f: (ctx) => ctx.resolve.hi,
+ *   });
+ * ```
+ * ---
+ * Incorporating asynchronous functions:
+ * ```js
+ * wrap()()
+ *   .stdPetition({
+ *     path: "/withResolveAsync",
+ *     resolve: {
+ *       hi: { async f: () => await Promise.resolve("Hello world") }
+ *     },
+ *     f: (ctx) => ctx.resolve.hi,
+ *   })
+ * ```
+ * ---
+ * Execution order and integration into `CTX`:
+ * ```js
+ * wrap(options)()
+ *   .stdPetition({
+ *     path: "/helloWorld",
+ *     resolve: {
+ *       hello: { async f: () => await Promise.resolve("Hello") }, 
+ *       world: { f: () => 'world' }
+ *     },
+ *     f: ctx => `${ctx.resolve.hello} ${ctx.resolve.world}`,
+ *   })
+ * ```
+ * ---
+ *  Using `morphism` with `resolve`:
+ * 
+ * Suppose you need to fetch user data and perform some preprocessing on it before responding to a request. You can define a `morphism` for fetching and preprocessing the data, and then use it within the `resolve` to ensure the data is ready by the time you need to use it in `f`.
+ * 
+ * ```js
+ * // Define a morphism for fetching and preprocessing user data
+ * const fetchAndProcessUserData = morphism({
+ *   resolve: {
+ *     userData: {
+ *       f: async (c) => {
+ *         // Imagine fetching user data asynchronously
+ *         const userData = await fetchUserData(c.param.userId);
+ *         // Preprocess the fetched data
+ *         const processedData = processData(userData);
+ *         return processedData;
+ *       }
+ *     }
+ *   },
+ *   f: (c) => c.resolve.userData, // This function simply returns the processed user data
+ * });
+ * 
+ * // Use the above morphism in a petition
+ * wrap()()
+ *   .stdPetition({
+ *     path: "/user/:userId",
+ *     resolve: {
+ *       // Utilize the morphism to fetch and preprocess user data before executing the main function
+ *       processedUserData: fetchAndProcessUserData,
+ *     },
+ *     f: (c) => {
+ *       // Access the resolved and processed user data directly in the main function
+ *       const userData = c.resolve.processedUserData;
+ *       // Use the processed user data to construct the response
+ *       return new Response(JSON.stringify(userData));
+ *     }
+ *   });
+ * ```
+ */
   resolve: { [V in keyof R]: Awaited<ReturnType<R[V]["f"]>> };
-  branch: {
-    [V in keyof B]: {
-      (ctx: any): ReturnType<B[V]["f"]>;
-    };
+ /**
+ * The `branch` property allows for additional logic or operations to be executed alongside or within the main function (`f`) of a petition. Each key within the `branch` object maps to a branch function, executed with its context. The results of these branches are then accessible under the `branch` property of the `CTX`, complementing the main logic without overcrowding it.
+ * 
+ * **Key Features**:
+ * - Enables the execution of side operations or additional logic in parallel to the main function.
+ * - Each branch operates with its own context, allowing for independent execution.
+ * - Supports dynamic operations with parameters and asynchronous actions, enhancing flexibility.
+ * 
+ * **Examples**:
+ * ---
+ * Defining a simple branch:
+ * ```typescript
+ * const helloBranch = morphism(options)({
+ *   f: (ctx) => "Hello from branch",
+ * });
+ * 
+ * wrap(options)()
+ *   .stdPetition({
+ *     path: "/helloBranch",
+ *     branch: {
+ *       hello: helloBranch,
+ *     },
+ *     f: (ctx) => new Response(ctx.branch.hello(null)),
+ *   });
+ * ```
+ * ---
+ * Branch with parameters:
+ * ```typescript
+ * const greetUserBranch = morphism()({
+ *   f: (ctx) => `Hello, ${ctc.arguments.name}`,
+ * });
+ * 
+ * wrap(options)()
+ *   .stdPetition({
+ *     path: "/greet/:name",
+ *     branch: {
+ *       greetUser: greetUserBranch,
+ *     },
+ *     f: (ctx) => new Response(c.branch.greetUser({ name: ctx.param.name })),
+ *   });
+ * ```
+ * ---
+ * Asynchronous branch example:
+ * ```js
+ * const fetchUserDataBranch = morphism(options)({
+ *   async f: (ctx) => {
+ *     const userId = ctc.arguments.userId;
+ *     return await fetch(`https://api.example.com/users/${userId}`).then(res => res.json());
+ *   },
+ * });
+ * 
+ * wrap(options)()
+ *   .stdPetition({
+ *     path: "/user/:userId",
+ *     branch: {
+ *       fetchUserData: fetchUserDataBranch,
+ *     },
+ *     f: async (ctx) => {
+ *       const userData = await ctx.branch.fetchUserData({ userId: ctx.param.userId });
+ *       return new Response(JSON.stringify(userData));
+ *     },
+ *   })
+ * ```
+ */
+branch: {
+  [V in keyof B]: {
+    (ctx: any): ReturnType<B[V]["f"]>;
   };
+};
 
   /**
    * Adds with query to the `context`
@@ -143,6 +294,7 @@ export interface Ctx<
    *  path: "/path",
    *  f: async ctx => await ctx.req.blob()
    * }
+   * ---
    * {
    *   path: '/path',
    *   options: {add: ["req"]},
@@ -151,44 +303,66 @@ export interface Ctx<
    * ```
    */
   req: Request;
-  /**
-   * Gets the Queries from the URL, utilize the `ctx.query`.
-   *
-   * ---
-   * ```ts
-   * {
-   *   path: '/path',
-   *   f: ctx => ctx.query?.name
-   * };
-   * // If the `ctx` goes out of context
-   * {
-   *   path: '/path',
-   *   options: {add: ["query"]},
-   *   f: ctx => outOfContext(ctx)
-   * };
-   * ```
-   */
-  query: QS extends { unique: true } ? (string | null)
-    : { [key: string]: string };
+ /**
+ * `query`: Facilitates access to URL query parameters within the petition's execution context.
+ *
+ * **Examples**:
+ *
+ * Accessing a simple query parameter:
+ * ```typescript
+ * {
+ *   path: '/query',
+ *   f: ctx => ctx.query.name ?? "NotFound"
+ * };
+ * ```
+ * In this scenario, `ctx.query.name` directly accesses the `name` query parameter from the URL.
+ * 
+ * ---
+ * 
+ * Using query parameters with optimization for unique queries:
+ * ```typescript
+ * .stdPetition({
+ *   path: "/query",
+ *   query: {
+ *     unique: true,
+ *     name: "hello"
+ *   },
+ *   f: ctx => ctx.query ?? "NotFound"
+ * })
+ * ```
+*/
+query: QS extends { unique: true } ? (string | null) : { [key: string]: string };
 
-  /**
-   * Gets the parameters from the URL
-   *
-   * ```ts
-   * {
-   *   path: '/hello/:name',
-   *   f: ctx => ctx.param.name
-   * };
-   *
-   * // If the `ctx` goes out of context
-   * {
-   *    path: '/hello/:name',
-   *    options: {add: ["param"]},
-   *    f: ctx => outOfContext(ctx)
-   * };
-   * ```
-   */
-  param: PA extends { unique: true } ? string : Record<string, string>;
+/**
+ * `param`: Enables the extraction of URL path parameters within the petition's execution context. This feature simplifies accessing dynamic segments of the URL path, allowing petitions to respond to varied requests efficiently.
+ *
+ * **Examples**:
+ *
+ * Accessing a path parameter:
+ * ```typescript
+ * {
+ *   path: '/user/:userId',
+ *   f: ctx => `User ID: ${ctx.param.userId}`
+ * };
+ * ```
+ * In this example, `ctx.param.userId` retrieves the `userId` path parameter, enabling dynamic response content based on the URL.
+ * 
+ * --- 
+ * 
+ * Using path parameters with optimization for unique paths:
+ * ```typescript
+ * .stdPetition({
+ *   path: "/user/:userId",
+ *   param: {
+ *     unique: true
+ *   },
+ *   f: ctx => `User ID: ${ctx.param}`
+ * })
+ * ```
+ * Here, setting `unique: true` within the `param` configuration optimizes retrieval for a scenario where only one path parameter is expected, allowing direct access to the parameter value as `ctx.param`.
+ *
+ * */
+param: PA extends { unique: true } ? string : Record<string, string>;
   headers: UNI extends {
     readonly hasHeaders: true;
   } ? Record<string, string>
@@ -229,7 +403,11 @@ export interface Ctx<
    * // Example
    * {
    *     path: "/sample",
-   *     resolve: { name: "nestedElement", f: () => "Hello World"},
+   *     resolve: { 
+   *        nestedElement : { 
+   *           f: () => "Hello World"
+   *          }
+   *     },
    *     // 'nestedElement' is set here for the main function to recognize it
    *     f: context => context.resolve.nestedElement
    * }
