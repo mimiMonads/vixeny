@@ -3,7 +3,7 @@ import { CORSOptions } from "./types.ts";
 export const parse = () => (o: CORSOptions) =>
   Object.keys(o).reduce(
     //@ts-ignore
-    (acc, key) => ({ ...acc, key: o[key].toString() }),
+    (acc, key) => ({ ...acc, [key]: o[key].toString() }),
     {},
   );
 
