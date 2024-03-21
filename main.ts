@@ -8,7 +8,7 @@ import {
   getOptions,
 } from "./components/http/src/optimizer/pluginUtil.ts";
 import checker from "./components/http/src/framework/optimizer/checker.ts";
-import applyResolver from "./components/http/src/optimizer/branchComposer.ts";
+import resolveComposer from "./components/http/src/optimizer/resolveComposer.ts.ts";
 import anyRequest from "./components/http/src/optimizer/anyRequest.ts";
 
 /**
@@ -36,7 +36,7 @@ export const plugins = {
  * Testing utilities
  */
 export const testing = {
-  resolve: applyResolver,
+  resolve: resolveComposer,
   //TODO: Improve it
   //branch: applyBranch,
 };
