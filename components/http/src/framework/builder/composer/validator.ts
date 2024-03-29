@@ -12,12 +12,12 @@ export default (options?: FunRouterOptions) =>
         ? acc + ` s === "/" ${
           options?.router?.strictTrailingSlash === false
             ? ""
-            : `|| s.indexOf("?") === 1 `
-        }|| s.indexOf("?") === 1 ? ${i + base}  : `
+            : `|| s.startsWith("/?")`
+        } ? ${i + base}  : `
         : x.indexOf("/" + (options?.paramsStartsWith?.at(0) || ":")) ===
             -1
         ? acc + ((x.at(-1) === "/")
-          ? ` s.indexOf("${x.slice(1)}") === 1 ? ${(i + base)} : `
+          ? ` s.startsWith("${x}") ? ${(i + base)} : `
           : `  s === "${x}"  ${
             options?.router?.strictTrailingSlash === false
               ? ""
@@ -26,4 +26,3 @@ export default (options?: FunRouterOptions) =>
         : acc + parameters(base + i)(map(options)(x)),
     "",
   ) + notFound).trim();
-// `(s.length > ${x.length - 1 } &&  s.indexOf("${x.slice(1) + "?" }") === 1  || s.indexOf("${x.slice(1)}") === 1 ? ${(i + base)} :  `
