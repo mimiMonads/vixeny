@@ -8,7 +8,7 @@ import {
   getOptions,
 } from "./components/http/src/optimizer/pluginUtil.ts";
 import checker from "./components/http/src/framework/optimizer/checker.ts";
-import resolveComposer from "./components/http/src/optimizer/resolveComposer.ts.ts";
+import resolveComposer from "./components/http/src/optimizer/resolveComposer.ts";
 import anyRequest from "./components/http/src/optimizer/anyRequest.ts";
 
 /**

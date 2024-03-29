@@ -19,21 +19,24 @@ export type Morphism<
   Mut extends MutableKey = MutableKey,
   Return = any,
 > = {
-  resolve?: ResMap;
-  branch?: BraMap;
+  readonly resolve?: ResMap;
+  readonly branch?: BraMap;
   f: (
-    ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto, {}>,
+    ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto, {} , PetitionOptions<
+    [Extract<keyof Options["cyclePlugin"], string>],
+    Crypto
+  >>,
   ) => Return;
-  query?: Query;
-  param?: Param;
-  options?: PetitionOptions<
+  readonly query?: Query;
+  readonly param?: Param;
+  readonly options?: PetitionOptions<
     [Extract<keyof Options["cyclePlugin"], string>],
     Crypto
   >;
-  plugins?: ExtractPluginTypes<Options>;
+  readonly plugins?: ExtractPluginTypes<Options>;
   readonly crypto?: Crypto;
-  mutable?: Mut;
-  isAsync?: true;
+  readonly mutable?: Mut;
+  readonly isAsync?: true;
 };
 
 type CryptoContext<CR extends CryptoOptions> = CR extends
@@ -79,7 +82,10 @@ export type AnyMorphism<
   Return = any,
 > = Omit<Morphism<ResMap, BraMap, Query, Param, Options, Crypto, Mut>, "f"> & {
   f: (
-    ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto, {}>,
+    ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto, {} , PetitionOptions<
+    [Extract<keyof Options["cyclePlugin"], string>],
+    Crypto
+  >>,
   ) => Return;
 };
 export type MorphismMap = {
@@ -110,8 +116,9 @@ type WithPlugins<
   O extends FunRouterOptions,
   CR extends CryptoOptions,
   UNI extends specialElements,
+  OPT extends PetitionOptions<any,any>
 > =
-  & Ctx<R, B, QS, PA, O, CR, { hasHeaders: true }>
+  & Ctx<R, B, QS, PA, O, CR, { hasHeaders: true } , OPT>
   & (O extends { cyclePlugin: infer CPM } ? [keyof CPM] extends [never] ? {}
     : CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM>
     : never
@@ -126,6 +133,7 @@ export interface Ctx<
   O extends FunRouterOptions,
   CR extends CryptoOptions,
   UNI extends specialElements,
+  OPT extends PetitionOptions<any,any>
 > {
   /**
    * The `resolve` property is integral to ensuring that all necessary data is fetched or calculations are performed before the main function (`f`) of a morphism is executed. It consists of a map where each key corresponds to a resolve function that is executed prior to `f`. The results of these resolves are then made available in the `CTX` for use in the main function.
@@ -280,9 +288,9 @@ export interface Ctx<
    * ```
    */
   branch: {
-    [V in keyof B]: {
-      (ctx: any): ReturnType<B[V]["f"]>;
-    };
+      [V in keyof B]: B[V]['options'] extends { arguments: infer Args } 
+        ? (ctx: Args) => ReturnType<B[V]["f"]>
+        : (ctx: any) => ReturnType<B[V]["f"]>;
   };
 
   /**
@@ -535,7 +543,7 @@ export interface Ctx<
    * ```
    * In this example, multiple arguments are passed to the branch function, and they're accessed via index in the branch.
    */
-  arguments: unknown;
+  readonly arguments: OPT extends { arguments: infer A } ? A : any
 }
 
 export type CommonRequestMorphism<
@@ -553,7 +561,10 @@ export type CommonRequestMorphism<
   & {
     headings?: PetitionHeader;
     f: (
-      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto, {}>,
+      ctx: WithPlugins<ResMap, BraMap, Query, Param, Options, Crypto, {} , PetitionOptions<
+      [Extract<keyof Options["cyclePlugin"], string>],
+      Crypto
+    >>,
     ) => BodyInit | Promise<BodyInit>;
   };
 
@@ -578,7 +589,11 @@ export type RequestMorphism<
         Param,
         Options,
         Crypto,
-        { hasHeaders: true }
+        { hasHeaders: true },
+        PetitionOptions<
+    [Extract<keyof Options["cyclePlugin"], string>],
+    Crypto
+  >
       >,
     ) => Response | Promise<Response>;
   };
@@ -606,7 +621,11 @@ export type ObjectAndNullMorphism<
         Param,
         Options,
         Crypto,
-        { hasHeaders: true }
+        { hasHeaders: true } ,
+        PetitionOptions<
+    [Extract<keyof Options["cyclePlugin"], string>],
+    Crypto
+  >
       >,
     ) => Promise<BodyNull> | BodyNull;
   };
@@ -631,7 +650,11 @@ export type ObjectaAnyMorphism<
         Param,
         Options,
         Crypto,
-        { hasHeaders: true }
+        { hasHeaders: true } , 
+        PetitionOptions<
+    [Extract<keyof Options["cyclePlugin"], string>],
+    Crypto
+  >
       >,
     ) => T;
   };
@@ -725,14 +748,15 @@ export type PetitionOptions<
   T extends string[],
   CR extends CryptoOptions,
 > = {
-  add?: Array<ExtendedAddOption<CR> | T[number]>;
-  debug?: DebugOptions;
-  remove?: Array<ExtendedAddOption<CR> | T[number]>;
-  only?: Array<ExtendedAddOption<CR> | T[number]>;
-  setHash?: string;
-  setRandomNumber?: number;
-  setDate?: number;
-};
+  readonly add?: Array<ExtendedAddOption<CR> | T[number]>;
+  readonly debug?: DebugOptions;
+  readonly remove?: Array<ExtendedAddOption<CR> | T[number]>;
+  readonly only?: Array<ExtendedAddOption<CR> | T[number]>;
+  readonly setHash?: string;
+  readonly setRandomNumber?: number;
+  readonly setDate?: number;
+  readonly arguments?: any
+} ;
 
 /**
  * List of options for adding.
