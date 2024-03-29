@@ -35,7 +35,7 @@ export default (o?: FunRouterOptions) =>
             _,
             i,
           ) => [
-            `(a${i}=>(a${i}<1?${
+            `(a${i}=>(a${i}===0?${
               an.includes(i + 1)
                 ? validator(o)(position[an.indexOf(i + 1)] + start)(notFound)(
                   routes[an.indexOf(i + 1)],
