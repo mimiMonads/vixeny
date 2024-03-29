@@ -17,7 +17,7 @@ export default (o?: FunRouterOptions) => (max: number) => (ar: RouteTypes[]) =>
             (ar: string[]) =>
               (new Function(`return s=>${
                 ar.reduceRight(
-                  (acc, v, i) => `s.indexOf("${v}")===0?${i + max - 2}:` + acc,
+                  (acc, v, i) => `s.startsWith("${v}") ?${i + max - 2}:` + acc,
                   "-1",
                 )
               }`))() as (s: string) => number,
