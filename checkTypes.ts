@@ -74,8 +74,15 @@ const a = resolve({
             f: () => "hello"
         }
     },
+    branch:{
+      hello: {
+        arguments: 'hello',
+        f: (x) => 'hello'
+      }
+    },
     f(ctx) {
-        ctx.resolve
+      ctx.branch.hello('hello')
+        
         return new Response()
     },
 })
@@ -260,7 +267,7 @@ type ParamOptions = {
    * ```
    */
   branch: {
-      [V in keyof B]: (ctx: AR) => ReturnType<B[V]["f"]>;
+      [V in keyof B]: (ctx:  B[V]['arguments']) => ReturnType<B[V]["f"]>;
   };
 
 
