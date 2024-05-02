@@ -11,8 +11,7 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AR = any,
-    R = any,
-  >(
+    R = any > (
     I: Morphism<
       {
         type: "request";
@@ -42,8 +41,7 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AR = any,
-    R = any,
-  >(
+    R = any>(
     I: Morphism<
       {
         type: "base";
@@ -74,12 +72,15 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AR = any,
-    R = any,
-  >(I: {
-    f: { (ctx: Request): Response | Promise<Response> };
+    R = any >(I: {
+    path: string,
+    f: { 
+      (ctx: Request): Response | Promise<Response> 
+    };
   }): Morphism<
     {
       type: "response";
+      hasPath: true
     },
     RM,
     BM,
@@ -99,8 +100,7 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AT = any,
-    R = any,
-  >(
+    R = any >(
     I: Morphism<
       {
         type: "morphism";
@@ -124,8 +124,7 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AT = any,
-    R = any,
-  >(
+    R = any >(
     I: Morphism<
       {
         type: "morphism";
@@ -143,10 +142,10 @@ export const petitions = {
   ) => I,
 };
 
-petitions.common()({
+petitions.response()({
   path: '/',
   f(ctx) {
-      return null
+      return new Response()
   },
 })
 
