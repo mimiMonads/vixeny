@@ -1,166 +1,245 @@
 import { CyclePluginMap } from "./components/http/types";
 import { FunRouterOptions } from "./types";
 
+export const petitions = {
+  standart: <RO extends FunRouterOptions>(O?: RO) =>
+  <
+    RM extends ResolveMap,
+    BM extends BranchMap,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    RO extends FunRouterOptions,
+    CO extends CryptoOptions,
+    AR = any,
+    R = any,
+  >(
+    I: Morphism<
+      {
+        type: "request";
+        typeNotNeeded: true;
+        hasPath: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AR,
+      R
+    >,
+  ): Morphism<{
+    type: "request";
+    hasPath: true;
+    isAPetition: true;
+  }> => ({ ...I, type: "request" }),
+  common: <RO extends FunRouterOptions>(O?: RO) =>
+  <
+    RM extends ResolveMap,
+    BM extends BranchMap,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    RO extends FunRouterOptions,
+    CO extends CryptoOptions,
+    AR = any,
+    R = any,
+  >(
+    I: Morphism<
+      {
+        type: "base";
+        typeNotNeeded: true;
+        hasPath: true;
+        isAPetition: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AR,
+      R
+    >,
+  ): Morphism<{
+    type: "base";
+    hasPath: true;
+    isAPetition: true;
+  }> => ({ ...I, type: "base" }),
+  response: <RO extends FunRouterOptions>(O?: RO) =>
+  <
+    RM extends ResolveMap,
+    BM extends BranchMap,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    RO extends FunRouterOptions,
+    CO extends CryptoOptions,
+    AR = any,
+    R = any,
+  >(I: {
+    f: { (ctx: Request): Response | Promise<Response> };
+  }): Morphism<
+    {
+      type: "response";
+    },
+    RM,
+    BM,
+    QO,
+    PO,
+    RO,
+    CO,
+    AR,
+    R
+  > => ({ ...I, type: "response" }),
+  resolve: <RO extends FunRouterOptions>(O?: RO) =>
+  <
+    RM extends ResolveMap,
+    BM extends BranchMap,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    RO extends FunRouterOptions,
+    CO extends CryptoOptions,
+    AT = any,
+    R = any,
+  >(
+    I: Morphism<
+      {
+        type: "morphism";
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AT,
+      R
+    >,
+  ) => I,
+  branch: <RO extends FunRouterOptions>(O?: RO) =>
+  <
+    RM extends ResolveMap,
+    BM extends BranchMap,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    RO extends FunRouterOptions,
+    CO extends CryptoOptions,
+    AT = any,
+    R = any,
+  >(
+    I: Morphism<
+      {
+        type: "morphism";
+        branch: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AT,
+      R
+    >,
+  ) => I,
+};
 
-const petitions = {
-    response :  <RO extends FunRouterOptions>(O?: RO)=><
-   RM extends ResolveMap,
-   BM extends BranchMap,
-   QO extends QueryOptions,
-   PO extends ParamOptions ,
-   RO extends FunRouterOptions,
-   CO extends CryptoOptions ,
-   AT = any,
-   R = any
-      >(I: {
-        path: string,
-        f: { (ctx: Request) : Response | Promise<Response>}
-      }):Morphism<{
-        type: 'response',
-        hasPath: true
-    },RM,BM,QO,PO,RO,CO,AT,R> => ({ ...I , type: 'response' }),
-   resolve:  <RO extends FunRouterOptions>(O?: RO)=><
-   RM extends ResolveMap,
-   BM extends BranchMap,
-   QO extends QueryOptions,
-   PO extends ParamOptions ,
-   RO extends FunRouterOptions,
-   CO extends CryptoOptions ,
-   AT = any,
-   R = any
-      >(I: Morphism<{
-          type: 'morphism',
-      },RM,BM,QO,PO,RO,CO,AT,R>) => I,
-  branch:  <RO extends FunRouterOptions>(O?: RO)=><
-  RM extends ResolveMap,
-  BM extends BranchMap,
-  QO extends QueryOptions,
-  PO extends ParamOptions ,
-  RO extends FunRouterOptions,
-  CO extends CryptoOptions ,
-  AT = any,
-  R = any
-      >(I: Morphism<{
-          type: 'morphism',
-          branch: true
-      },RM,BM,QO,PO,RO,CO,AT,R>) => I
-}
-
-
-const branchType = petitions.branch()({
-  arguments: 'string',
-  f:(ctx) => ctx
-})
-
-
-const resolveType = petitions.resolve()({
-  branch: {
-      hello: branchType
-
-  },
+petitions.common()({
+  path: '/',
   f(ctx) {
-      return ctx.branch.hello('')
+      return null
   },
 })
 
-const responseType = petitions.response()({
-  path: 'hello',
-  f(ctx) {    
-      return new Response()
-  },
-})
-
-const resolveTye2 = petitions.resolve()({
-  resolve: {
-    hello: resolveType
-  },
-  f(ctx) {
-      return ctx.resolve.hello
-  },
-})
-
-
-
-
-
-
-type typeMorphisim = 'response' | 'request' | 'morphism' | 'base' ;
+type typeMorphisim = "response" | "request" | "morphism" | "base";
 
 type ResolveMap = {
-    [key: string]: Morphism<{
-        type: 'morphism',
-    }, any, any, any, any>
-  };
+  [key: string]: Morphism<
+    {
+      type: "morphism";
+    }
+  >;
+};
 
 type BranchMap = {
-    [key: string ]: Morphism<{
-        type: 'morphism',
-        branch: true
-    }, any, any, any, any>
-  };
+  [key: string]: Morphism<
+    {
+      type: "morphism";
+      branch: true;
+    }
+  >;
+};
 
 type MapOptions = {
-    hasPath?: true
-    type?: typeMorphisim
-    branch?: true
-} 
+  hasPath?: true;
+  typeNotNeeded?: true;
+  type?: typeMorphisim;
+  branch?: true;
+  isAPetition?: true
+};
 
+type HasPath<P extends MapOptions> = P extends { hasPath: true }
+  ? { readonly path: string }
+  : {};
 
+type HasType<P extends MapOptions> = P extends { type: typeMorphisim }
+  ? P extends { typeNotNeeded: true } ? {}
+  : P extends { type: "morphism" } ? {}
+  : { readonly type: P["type"] }
+  : {};
 
-type HasPath<P extends MapOptions> = P extends { hasPath: true } ? { readonly path: string} : {};
-type HasType<P extends MapOptions> = P extends { type: typeMorphisim } ?
-        P extends { type: 'morphism' }  ? {} :{ readonly type: P['type']} 
- 
- : {};
+type ExtraKeys<P extends MapOptions> = HasPath<P> & HasType<P>;
 
-
-type ExtraKeys<P extends MapOptions> = HasPath<P> & HasType<P> 
-
-
-type Morphism <
-    MO extends MapOptions = MapOptions,
-    RM extends ResolveMap = ResolveMap,
-    BM extends BranchMap = BranchMap,
-    QO extends QueryOptions = QueryOptions,
-    PO extends ParamOptions = ParamOptions,
-    RO extends FunRouterOptions = FunRouterOptions,
-    CO extends CryptoOptions = CryptoOptions,
-    AT = any,
-    R = any
+type Morphism<
+  MO extends MapOptions = MapOptions,
+  RM extends ResolveMap = ResolveMap,
+  BM extends BranchMap = BranchMap,
+  QO extends QueryOptions = QueryOptions,
+  PO extends ParamOptions = ParamOptions,
+  RO extends FunRouterOptions = FunRouterOptions,
+  CO extends CryptoOptions = CryptoOptions,
+  AT = any,
+  R = any,
 > = {
-    readonly resolve?: RM
-    readonly branch?: BM;
-    readonly arguments?: MO extends { branch: true } ? AT : never
-    readonly query?: QO;
-    readonly param?: PO;
-    readonly options?: PetitionOptions<
+  readonly resolve?: RM;
+  readonly branch?: BM;
+  readonly arguments?: MO extends { branch: true } ? AT : never;
+  readonly query?: QO;
+  readonly param?: PO;
+  readonly isAsync?: MO['isAPetition'] extends true ? true : never;
+  readonly options?: PetitionOptions<
     [Extract<keyof RO["cyclePlugin"], string>],
-    Crypto
+    CO
   >;
-    readonly f: { (ctx: 
-        MO extends { branch: true } ? AT :
-         WithPlugins<RM,BM,QO,PO,RO,CO,PetitionOptions<
-        [Extract<keyof RO["cyclePlugin"], string>],
-        Crypto
-      >,AT>
-        ): MO['type'] extends 'response'
-        ? Response | Promise<Response>
-        : MO['type'] extends 'request'
-            ? Response | Promise<Response>
-            : MO['type'] extends 'morphism'
-                ? R
-                : MO['type'] extends 'base'
-                    ? BodyInit | Promise<Response>
-                    : R
-    };
-} & ExtraKeys<MO>
+  readonly f: {
+    (
+      ctx: MO["type"] extends "response" ? Request
+        : WithPlugins<
+          RM,
+          BM,
+          QO,
+          PO,
+          RO,
+          CO,
+          {},
+          PetitionOptions<
+            [Extract<keyof RO["cyclePlugin"], string>],
+            CO
+          >,
+          AT
+        >,
+    ): MO["type"] extends "response" ? Response | Promise<Response>
+      : MO["type"] extends "request" ? Response | Promise<Response>
+      : MO["type"] extends "morphism" ? R
+      : MO["type"] extends "base" ? BodyInit | Promise<Response>
+      : R;
+  };
+} & ExtraKeys<MO>;
 
 type ExtendedAddOption<CR extends CryptoOptions> = "globalKey" extends keyof CR
   ? AddOption | "token" | "sign" | "verify"
   : AddOption;
 
-
-  type AddOption =
+type AddOption =
   | "req"
   | "query"
   | "param"
@@ -185,35 +264,30 @@ type PetitionOptions<
   readonly setHash?: string;
   readonly setRandomNumber?: number;
   readonly setDate?: number;
-  readonly arguments?: any
-} ;
-
-
-
+  readonly arguments?: any;
+};
 
 type DebugOptions = {
   type: "list";
   name: string;
 };
 
- type QueryOptions = {
-    unique?: true;
-    name: string; 
-  } | {
-    only?: string[];
-  } | {};
-  
+type QueryOptions = {
+  unique?: true;
+  name: string;
+} | {
+  only?: string[];
+} | {};
+
 type ParamOptions = {
-    readonly unique?: true;
-  } | {};
-  
-  type specialElements = {
-    readonly hasHeaders?: true;
-  } | {};
+  readonly unique?: true;
+} | {};
 
-  
+type specialElements = {
+  readonly hasHeaders?: true;
+} | {};
 
-  type WithPlugins<
+type WithPlugins<
   R extends ResolveMap,
   B extends BranchMap,
   QS extends QueryOptions,
@@ -221,31 +295,31 @@ type ParamOptions = {
   O extends FunRouterOptions,
   CR extends CryptoOptions,
   UNI extends specialElements,
-  OPT extends PetitionOptions<any,any>
+  OPT extends PetitionOptions<any, any>,
+  AR = any,
 > =
-  & Ctx<R, B, QS, PA, O, CR, { hasHeaders: true } , OPT>
+  & Ctx<R, B, QS, PA, O, CR, { hasHeaders: true }, OPT, AR>
   & (O extends { cyclePlugin: infer CPM } ? [keyof CPM] extends [never] ? {}
     : CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM>
     : never
     : {})
   & CryptoContext<CR>;
 
-  type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
-    [K in keyof CPM]: CPM[K] extends
-      { isFunction: boolean; f: (...args: any) => any }
-      ? ReturnType<ReturnType<CPM[K]["f"]>> // Direct function case
-      : CPM[K] extends { f: (...args: any) => any }
-        ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>> // Nested function case
-      : never; // Handle cases that do not match expected structure
-  };
-  
+type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
+  [K in keyof CPM]: CPM[K] extends
+    { isFunction: boolean; f: (...args: any) => any }
+    ? ReturnType<ReturnType<CPM[K]["f"]>> // Direct function case
+    : CPM[K] extends { f: (...args: any) => any }
+      ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>> // Nested function case
+    : never; // Handle cases that do not match expected structure
+};
 
-  type SignerAndVarifier = {
-    verify: (s: string) => Record<string, unknown> | null;
-    sign: (key: Record<string, unknown>) => string;
-  };
+type SignerAndVarifier = {
+  verify: (s: string) => Record<string, unknown> | null;
+  sign: (key: Record<string, unknown>) => string;
+};
 
-  type CryptoContext<CR extends CryptoOptions> = CR extends
+type CryptoContext<CR extends CryptoOptions> = CR extends
   { globalKey: any; token: infer Token } ? Token extends Record<string, any> ? {
       token: { [K in keyof Token]: Record<string, unknown> };
     } & SignerAndVarifier
@@ -263,7 +337,7 @@ type ParamOptions = {
     token: any;
   };
 
- interface Ctx<
+interface Ctx<
   R extends ResolveMap,
   B extends BranchMap,
   QS extends QueryOptions,
@@ -271,8 +345,10 @@ type ParamOptions = {
   O extends FunRouterOptions,
   CR extends CryptoOptions,
   UNI extends specialElements,
-  AR = any
+  OPT extends PetitionOptions<any, any>,
+  AR = any,
 > {
+  arguments: AR;
   /**
    * The `resolve` property is integral to ensuring that all necessary data is fetched or calculations are performed before the main function (`f`) of a morphism is executed. It consists of a map where each key corresponds to a resolve function that is executed prior to `f`. The results of these resolves are then made available in the `CTX` for use in the main function.
    *
@@ -426,11 +502,9 @@ type ParamOptions = {
    * ```
    */
   branch: {
-      [V in keyof B]: (ctx:  B[V]['arguments']) => ReturnType<B[V]["f"]>;
+    [V in keyof B]: (ctx: B[V]["arguments"]) => ReturnType<B[V]["f"]>;
   };
 
-
-  
   /**
    * Adds with query to the `context`
    *
@@ -681,20 +755,18 @@ type ParamOptions = {
    * ```
    * In this example, multiple arguments are passed to the branch function, and they're accessed via index in the branch.
    */
-
 }
 
-
 type CryptoOptions = {
-    globalKey: SupportedKeys;
-    token?: {
-      only?: {
-        [key: string]: {};
-      };
+  globalKey: SupportedKeys;
+  token?: {
+    only?: {
+      [key: string]: {};
     };
-  } | {};
+  };
+} | {};
 
-  type SupportedKeys =
+type SupportedKeys =
   | string
   | Uint8Array
   | Uint8ClampedArray
@@ -706,4 +778,4 @@ type CryptoOptions = {
   | BigUint64Array
   | BigInt64Array
   | Float32Array
-  | Float64Array; 
+  | Float64Array;
