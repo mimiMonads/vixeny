@@ -1,4 +1,88 @@
+import { CyclePluginMap } from "./components/http/types";
 import { FunRouterOptions } from "./types";
+
+
+const petitions = {
+    response :  <RO extends FunRouterOptions>(O?: RO)=><
+   RM extends ResolveMap,
+   BM extends BranchMap,
+   QO extends QueryOptions,
+   PO extends ParamOptions ,
+   RO extends FunRouterOptions,
+   CO extends CryptoOptions ,
+   AT = any,
+   R = any
+      >(I: {
+        path: string,
+        f: { (ctx: Request) : Response | Promise<Response>}
+      }):Morphism<{
+        type: 'response',
+        hasPath: true
+    },RM,BM,QO,PO,RO,CO,AT,R> => ({ ...I , type: 'response' }),
+   resolve:  <RO extends FunRouterOptions>(O?: RO)=><
+   RM extends ResolveMap,
+   BM extends BranchMap,
+   QO extends QueryOptions,
+   PO extends ParamOptions ,
+   RO extends FunRouterOptions,
+   CO extends CryptoOptions ,
+   AT = any,
+   R = any
+      >(I: Morphism<{
+          type: 'morphism',
+      },RM,BM,QO,PO,RO,CO,AT,R>) => I,
+  branch:  <RO extends FunRouterOptions>(O?: RO)=><
+  RM extends ResolveMap,
+  BM extends BranchMap,
+  QO extends QueryOptions,
+  PO extends ParamOptions ,
+  RO extends FunRouterOptions,
+  CO extends CryptoOptions ,
+  AT = any,
+  R = any
+      >(I: Morphism<{
+          type: 'morphism',
+          branch: true
+      },RM,BM,QO,PO,RO,CO,AT,R>) => I
+}
+
+
+const branchType = petitions.branch()({
+  arguments: 'string',
+  f:(ctx) => ctx
+})
+
+
+const resolveType = petitions.resolve()({
+  branch: {
+      hello: branchType
+
+  },
+  f(ctx) {
+      return ctx.branch.hello('')
+  },
+})
+
+const responseType = petitions.response()({
+  path: 'hello',
+  f(ctx) {    
+      return new Response()
+  },
+})
+
+const resolveTye2 = petitions.resolve()({
+  resolve: {
+    hello: resolveType
+  },
+  f(ctx) {
+      return ctx.resolve.hello
+  },
+})
+
+
+
+
+
 
 type typeMorphisim = 'response' | 'request' | 'morphism' | 'base' ;
 
@@ -32,19 +116,33 @@ type HasType<P extends MapOptions> = P extends { type: typeMorphisim } ?
 
 type ExtraKeys<P extends MapOptions> = HasPath<P> & HasType<P> 
 
+
 type Morphism <
     MO extends MapOptions = MapOptions,
     RM extends ResolveMap = ResolveMap,
     BM extends BranchMap = BranchMap,
+    QO extends QueryOptions = QueryOptions,
+    PO extends ParamOptions = ParamOptions,
+    RO extends FunRouterOptions = FunRouterOptions,
+    CO extends CryptoOptions = CryptoOptions,
     AT = any,
     R = any
 > = {
-    readonly resolve?: RM;
-    readonly branch?: BM
+    readonly resolve?: RM
+    readonly branch?: BM;
     readonly arguments?: MO extends { branch: true } ? AT : never
-    readonly options?: any
+    readonly query?: QO;
+    readonly param?: PO;
+    readonly options?: PetitionOptions<
+    [Extract<keyof RO["cyclePlugin"], string>],
+    Crypto
+  >;
     readonly f: { (ctx: 
-        MO extends { branch: true } ? AT : Ctx<RM,BM,any,any,any,any,any,AT>
+        MO extends { branch: true } ? AT :
+         WithPlugins<RM,BM,QO,PO,RO,CO,PetitionOptions<
+        [Extract<keyof RO["cyclePlugin"], string>],
+        Crypto
+      >,AT>
         ): MO['type'] extends 'response'
         ? Response | Promise<Response>
         : MO['type'] extends 'request'
@@ -57,35 +155,46 @@ type Morphism <
     };
 } & ExtraKeys<MO>
 
-
-const resolve = <
-    RM extends ResolveMap ,
-    BM extends BranchMap ,
-    AT = any,
-    R = any
->(I: Morphism<{
-    type: 'morphism',
-},RM,BM,AT,R>) => I;
+type ExtendedAddOption<CR extends CryptoOptions> = "globalKey" extends keyof CR
+  ? AddOption | "token" | "sign" | "verify"
+  : AddOption;
 
 
-const a = resolve({
-    resolve:{
-        hello: {
-            f: () => "hello"
-        }
-    },
-    branch:{
-      hello: {
-        arguments: 'hello',
-        f: (x) => 'hello'
-      }
-    },
-    f(ctx) {
-      ctx.branch.hello('hello')
-        
-        return new Response()
-    },
-})
+  type AddOption =
+  | "req"
+  | "query"
+  | "param"
+  | "date"
+  | "randomNumber"
+  | "hash"
+  | "cookie"
+  | "resolve"
+  | "mutable"
+  | "branch"
+  | "arguments"
+  | "headers";
+
+type PetitionOptions<
+  T extends string[],
+  CR extends CryptoOptions,
+> = {
+  readonly add?: Array<ExtendedAddOption<CR> | T[number]>;
+  readonly debug?: DebugOptions;
+  readonly remove?: Array<ExtendedAddOption<CR> | T[number]>;
+  readonly only?: Array<ExtendedAddOption<CR> | T[number]>;
+  readonly setHash?: string;
+  readonly setRandomNumber?: number;
+  readonly setDate?: number;
+  readonly arguments?: any
+} ;
+
+
+
+
+type DebugOptions = {
+  type: "list";
+  name: string;
+};
 
  type QueryOptions = {
     unique?: true;
@@ -103,6 +212,56 @@ type ParamOptions = {
   } | {};
 
   
+
+  type WithPlugins<
+  R extends ResolveMap,
+  B extends BranchMap,
+  QS extends QueryOptions,
+  PA extends ParamOptions,
+  O extends FunRouterOptions,
+  CR extends CryptoOptions,
+  UNI extends specialElements,
+  OPT extends PetitionOptions<any,any>
+> =
+  & Ctx<R, B, QS, PA, O, CR, { hasHeaders: true } , OPT>
+  & (O extends { cyclePlugin: infer CPM } ? [keyof CPM] extends [never] ? {}
+    : CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM>
+    : never
+    : {})
+  & CryptoContext<CR>;
+
+  type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
+    [K in keyof CPM]: CPM[K] extends
+      { isFunction: boolean; f: (...args: any) => any }
+      ? ReturnType<ReturnType<CPM[K]["f"]>> // Direct function case
+      : CPM[K] extends { f: (...args: any) => any }
+        ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>> // Nested function case
+      : never; // Handle cases that do not match expected structure
+  };
+  
+
+  type SignerAndVarifier = {
+    verify: (s: string) => Record<string, unknown> | null;
+    sign: (key: Record<string, unknown>) => string;
+  };
+
+  type CryptoContext<CR extends CryptoOptions> = CR extends
+  { globalKey: any; token: infer Token } ? Token extends Record<string, any> ? {
+      token: { [K in keyof Token]: Record<string, unknown> };
+    } & SignerAndVarifier
+  : {
+    sign: any;
+    verify: any;
+    token: any;
+  }
+  : CR extends { globalKey: any } ? {
+      token: Record<string, Record<string, unknown> | null>;
+    } & SignerAndVarifier
+  : {
+    sign: any;
+    verify: any;
+    token: any;
+  };
 
  interface Ctx<
   R extends ResolveMap,
