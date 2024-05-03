@@ -1,7 +1,6 @@
-import response from "./components/http/src/framework/optimizer/response";
-import { CyclePluginMap } from "./components/http/types";
-import test from "./components/util/test.mjs";
-import { FunRouterOptions } from "./types";
+
+import { CyclePluginMap } from "../components/http/types.ts";
+import { FunRouterOptions } from "../types.ts";
 
 export const petitions = {
   standart: <RO extends FunRouterOptions>(O?: RO) => <

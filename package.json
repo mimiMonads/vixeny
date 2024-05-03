@@ -1,6 +1,6 @@
 {
   "name": "vixeny",
-  "version": "0.0.955",
+  "version": "0.1.0",
   "description": "A functional router for Bun and Deno",
   "main": "main.ts",
   "directories": {
@@ -34,5 +34,8 @@
     "bun-types": "^1.0.2",
     "jose": "^4.14.6",
     "mitata": "^0.1.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }
