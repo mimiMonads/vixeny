@@ -1,9 +1,10 @@
+import response from "./components/http/src/framework/optimizer/response";
 import { CyclePluginMap } from "./components/http/types";
+import test from "./components/util/test.mjs";
 import { FunRouterOptions } from "./types";
 
 export const petitions = {
-  standart: <RO extends FunRouterOptions>(O?: RO) =>
-  <
+  standart: <RO extends FunRouterOptions>(O?: RO) => <
     RM extends ResolveMap,
     BM extends BranchMap,
     QO extends QueryOptions,
@@ -11,12 +12,13 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AR = any,
-    R = any > (
+    R = any >(
     I: Morphism<
       {
         type: "request";
-        typeNotNeeded: true;
         hasPath: true;
+        isAPetition: true;
+        typeNotNeeded: true
       },
       RM,
       BM,
@@ -31,9 +33,17 @@ export const petitions = {
     type: "request";
     hasPath: true;
     isAPetition: true;
-  }> => ({ ...I, type: "request" }),
-  common: <RO extends FunRouterOptions>(O?: RO) =>
-  <
+  },
+  RM,
+  BM,
+  QO,
+  PO,
+  RO,
+  CO,
+  AR,
+  R
+  > => ({ ...I, type: "request" }),
+  common: <RO extends FunRouterOptions>(O?: RO) => <
     RM extends ResolveMap,
     BM extends BranchMap,
     QO extends QueryOptions,
@@ -41,7 +51,8 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AR = any,
-    R = any>(
+    R = any,
+  >(
     I: Morphism<
       {
         type: "base";
@@ -62,7 +73,15 @@ export const petitions = {
     type: "base";
     hasPath: true;
     isAPetition: true;
-  }> => ({ ...I, type: "base" }),
+  },
+  RM,
+  BM,
+  QO,
+  PO,
+  RO,
+  CO,
+  AR,
+  R> => ({ ...I, type: "base" }),
   response: <RO extends FunRouterOptions>(O?: RO) =>
   <
     RM extends ResolveMap,
@@ -72,15 +91,16 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AR = any,
-    R = any >(I: {
-    path: string,
-    f: { 
-      (ctx: Request): Response | Promise<Response> 
+    R = any,
+  >(I: {
+    path: string;
+    f: {
+      (ctx: Request): Response | Promise<Response>;
     };
   }): Morphism<
     {
       type: "response";
-      hasPath: true
+      hasPath: true;
     },
     RM,
     BM,
@@ -100,7 +120,8 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AT = any,
-    R = any >(
+    R = any,
+  >(
     I: Morphism<
       {
         type: "morphism";
@@ -124,7 +145,8 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AT = any,
-    R = any >(
+    R = any,
+  >(
     I: Morphism<
       {
         type: "morphism";
@@ -142,12 +164,31 @@ export const petitions = {
   ) => I,
 };
 
-petitions.response()({
-  path: '/',
-  f(ctx) {
-      return new Response()
+const a = petitions.branch()({
+  arguments: 'string',
+  crypto: {
+    globalKey: 'hello'
   },
+  f(ctx) {
+    return new Response(ctx.arguments);
+  },
+});
+
+
+const b = petitions.standart()({
+  path: '/string',
+  branch: {
+    test: a
+  },
+  f(ctx) {
+   
+      return ctx.branch.test('hello')
+  }
 })
+const c:Morphism<{
+  isAPetition: true
+},any,any,any,any,any,any,any,any>[] = [b]
+
 
 type typeMorphisim = "response" | "request" | "morphism" | "base";
 
@@ -155,7 +196,15 @@ type ResolveMap = {
   [key: string]: Morphism<
     {
       type: "morphism";
-    }
+    },
+    any,
+    any,
+    any,
+    any,
+    any,
+    any,
+    any,
+    any
   >;
 };
 
@@ -164,7 +213,15 @@ type BranchMap = {
     {
       type: "morphism";
       branch: true;
-    }
+    },
+    any,
+    any,
+    any,
+    any,
+    any,
+    any,
+    any,
+    any
   >;
 };
 
@@ -173,7 +230,7 @@ type MapOptions = {
   typeNotNeeded?: true;
   type?: typeMorphisim;
   branch?: true;
-  isAPetition?: true
+  isAPetition?: true;
 };
 
 type HasPath<P extends MapOptions> = P extends { hasPath: true }
@@ -201,10 +258,11 @@ type Morphism<
 > = {
   readonly resolve?: RM;
   readonly branch?: BM;
+  readonly crypto?: CO;
   readonly arguments?: MO extends { branch: true } ? AT : never;
   readonly query?: QO;
   readonly param?: PO;
-  readonly isAsync?: MO['isAPetition'] extends true ? true : never;
+  readonly isAsync?: MO["isAPetition"] extends true ? true : never;
   readonly options?: PetitionOptions<
     [Extract<keyof RO["cyclePlugin"], string>],
     CO
@@ -307,10 +365,10 @@ type WithPlugins<
 type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
   [K in keyof CPM]: CPM[K] extends
     { isFunction: boolean; f: (...args: any) => any }
-    ? ReturnType<ReturnType<CPM[K]["f"]>> // Direct function case
+    ? ReturnType<ReturnType<CPM[K]["f"]>>
     : CPM[K] extends { f: (...args: any) => any }
-      ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>> // Nested function case
-    : never; // Handle cases that do not match expected structure
+      ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>> 
+    : never; 
 };
 
 type SignerAndVarifier = {
@@ -323,17 +381,17 @@ type CryptoContext<CR extends CryptoOptions> = CR extends
       token: { [K in keyof Token]: Record<string, unknown> };
     } & SignerAndVarifier
   : {
-    sign: any;
-    verify: any;
-    token: any;
+    sign?: never;
+    verify?: never;
+    token?: never;
   }
   : CR extends { globalKey: any } ? {
       token: Record<string, Record<string, unknown> | null>;
     } & SignerAndVarifier
   : {
-    sign: any;
-    verify: any;
-    token: any;
+    sign?: never;
+    verify?: never;
+    token?: never;
   };
 
 interface Ctx<
