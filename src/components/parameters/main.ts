@@ -1,17 +1,14 @@
-import {
-  CommonRequestMorphism,
-  RequestMorphism,
-} from "../framework/optimizer/types.ts";
-import { FunRouterOptions } from "../../types.ts";
+
+import type { FunRouterOptions } from "../../options.ts";
+import type { Petition } from "../../morphism.ts";
 import multi from "./multi.ts";
 import one from "./one.ts";
 import map from "./map.ts";
 import unique from "./unique.ts";
 
-type ParamsResult = { (s: string): Record<string, string> };
 
 export default (options?: FunRouterOptions) =>
-(f: CommonRequestMorphism | RequestMorphism) =>
+(f: Petition ) =>
   (
     (info) =>
       f.param && "unique" in f.param && typeof f.param.unique === "boolean" &&

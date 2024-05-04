@@ -1,4 +1,4 @@
-import { info } from "./types.ts";
+import type { info } from "./types.ts";
 
 import finder from "./finder.ts";
 import slicer from "./slicer.ts";

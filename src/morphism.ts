@@ -3,6 +3,19 @@ import type { FunRouterOptions , CyclePluginMap } from "./options.ts";
 
 export type Petition = Morphism<{
   isAPetition: true;
+  hasPath: true
+},
+any,
+any,
+any,
+any,
+any,
+any,
+any,
+any
+>
+export type ResolveMorphism = Morphism<{
+  type: 'morphism'
 },
 any,
 any,
@@ -104,14 +117,10 @@ export const petitions = {
     AR = any,
     R = any,
   >(I: {
-    path: string;
-    f: {
-      (ctx: Request): Response | Promise<Response>;
-    };
+    f: { (ctx: Request): Response | Promise<Response> };
   }): Morphism<
     {
       type: "response";
-      hasPath: true;
     },
     RM,
     BM,
@@ -173,13 +182,88 @@ export const petitions = {
       R
     >,
   ) => I,
+  join: <RO extends FunRouterOptions>(O?: RO) =>
+  <
+    RM extends ResolveMap,
+    BM extends BranchMap,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    RO extends FunRouterOptions,
+    CO extends CryptoOptions,
+    AT = any,
+    R = any,
+  >(
+    A: Morphism<
+      {
+        isAPetition: true
+        hasPath: true
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AT,
+      R
+    > [],
+  ) =>
+  <
+  RM extends ResolveMap,
+  BM extends BranchMap,
+  QO extends QueryOptions,
+  PO extends ParamOptions,
+  RO extends FunRouterOptions,
+  CO extends CryptoOptions,
+  AT = any,
+  R = any,
+>(
+  B: Morphism<
+    {
+      isAPetition: true
+      hasPath: true
+    },
+    RM,
+    BM,
+    QO,
+    PO,
+    RO,
+    CO,
+    AT,
+    R
+  > | {
+    type:typeMorphisim,
+    path: string,
+    f: any
+  },
+) => [ ...A, B as  Morphism<
+  {
+    isAPetition: true
+    hasPath: true
+  },
+  RM,
+  BM,
+  QO,
+  PO,
+  RO,
+  CO,
+  AT,
+  R
+>]
+  ,
 };
 
 const a = petitions.branch()({
-  arguments: 'string',
   crypto: {
-    globalKey: 'hello'
+    globalKey: 'sdsds'
   },
+  arguments: 'string',
+  f(ctx) {
+    return new Response(ctx.arguments);
+  },
+});
+
+const c = petitions.resolve()({
   f(ctx) {
     return new Response(ctx.arguments);
   },
@@ -188,60 +272,44 @@ const a = petitions.branch()({
 
 const b = petitions.standart()({
   path: '/string',
+  resolve:{
+    test: c
+  },
   branch: {
     test: a
   },
   f(ctx) {
-   
       return ctx.branch.test('hello')
   }
 })
-const c:Morphism<{
-  isAPetition: true
-},any,any,any,any,any,any,any,any>[] = [b]
+
 
 
 type typeMorphisim = "response" | "request" | "morphism" | "base";
 
-type ResolveMap = {
+export type ResolveMap = {
   [key: string]: Morphism<
     {
       type: "morphism";
-    },
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any
-  >;
+    }
+  >
 };
 
-type BranchMap = {
-  [key: string]: Morphism<
+export type BranchMap = {
+  [key: string ]: Morphism<
     {
       type: "morphism";
       branch: true;
-    },
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any
+    }
   >;
 };
 
 type MapOptions = {
-  hasPath?: true;
-  typeNotNeeded?: true;
+  hasPath?: boolean;
+  typeNotNeeded?: boolean;
   type?: typeMorphisim;
-  branch?: true;
-  isAPetition?: true;
+  branch?: boolean;
+  isAPetition?: boolean;
 };
 
 type HasPath<P extends MapOptions> = P extends { hasPath: true }
@@ -255,6 +323,21 @@ type HasType<P extends MapOptions> = P extends { type: typeMorphisim }
   : {};
 
 type ExtraKeys<P extends MapOptions> = HasPath<P> & HasType<P>;
+
+ type PetitionHeader = {
+  /**
+   * The headers initialization.
+   */
+  headers?: HeadersInit | defaultMime;
+  /**
+   * The status text.
+   */
+  statusText?: string;
+  /**
+   * The status number.
+   */
+  status?: number;
+};
 
 type Morphism<
   MO extends MapOptions = MapOptions,
@@ -273,7 +356,8 @@ type Morphism<
   readonly arguments?: MO extends { branch: true } ? AT : never;
   readonly query?: QO;
   readonly param?: PO;
-  readonly isAsync?: MO["isAPetition"] extends true ? true : never;
+  readonly headings?: PetitionHeader;
+  readonly isAsync?: MO['isAPetition'] extends true ? true : never;
   readonly options?: PetitionOptions<
     [Extract<keyof RO["cyclePlugin"], string>],
     CO
@@ -321,7 +405,7 @@ type AddOption =
   | "arguments"
   | "headers";
 
-type PetitionOptions<
+export type PetitionOptions<
   T extends string[],
   CR extends CryptoOptions,
 > = {
@@ -334,6 +418,7 @@ type PetitionOptions<
   readonly setDate?: number;
   readonly arguments?: any;
 };
+
 
 type DebugOptions = {
   type: "list";
@@ -376,10 +461,10 @@ type WithPlugins<
 type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
   [K in keyof CPM]: CPM[K] extends
     { isFunction: boolean; f: (...args: any) => any }
-    ? ReturnType<ReturnType<CPM[K]["f"]>>
+    ? ReturnType<ReturnType<CPM[K]["f"]>> // Direct function case
     : CPM[K] extends { f: (...args: any) => any }
-      ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>> 
-    : never; 
+      ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>> // Nested function case
+    : never; // Handle cases that do not match expected structure
 };
 
 type SignerAndVarifier = {
@@ -392,17 +477,17 @@ type CryptoContext<CR extends CryptoOptions> = CR extends
       token: { [K in keyof Token]: Record<string, unknown> };
     } & SignerAndVarifier
   : {
-    sign?: never;
-    verify?: never;
-    token?: never;
+    sign: any;
+    verify: any;
+    token: any;
   }
   : CR extends { globalKey: any } ? {
       token: Record<string, Record<string, unknown> | null>;
     } & SignerAndVarifier
   : {
-    sign?: never;
-    verify?: never;
-    token?: never;
+    sign: any;
+    verify: any;
+    token: any;
   };
 
 interface Ctx<
@@ -416,7 +501,7 @@ interface Ctx<
   OPT extends PetitionOptions<any, any>,
   AR = any,
 > {
-  arguments: AR;
+  arguments: AR ;
   /**
    * The `resolve` property is integral to ensuring that all necessary data is fetched or calculations are performed before the main function (`f`) of a morphism is executed. It consists of a map where each key corresponds to a resolve function that is executed prior to `f`. The results of these resolves are then made available in the `CTX` for use in the main function.
    *
@@ -834,7 +919,7 @@ type CryptoOptions = {
   };
 } | {};
 
-type SupportedKeys =
+export type SupportedKeys =
   | string
   | Uint8Array
   | Uint8ClampedArray
@@ -847,3 +932,79 @@ type SupportedKeys =
   | BigInt64Array
   | Float32Array
   | Float64Array;
+
+  export type defaultMime =
+  | ".aac"
+  | ".abw"
+  | ".arc"
+  | ".avif"
+  | ".avi"
+  | ".azw"
+  | ".azw"
+  | ".bmp"
+  | ".bz"
+  | ".bz2"
+  | ".cda"
+  | ".csh"
+  | ".css"
+  | ".csv"
+  | ".doc"
+  | ".docx"
+  | ".eot"
+  | ".epub"
+  | ".gz"
+  | ".gif"
+  | ".htm"
+  | ".html"
+  | ".ico"
+  | ".ics"
+  | ".jar"
+  | ".jpeg"
+  | ".js"
+  | ".json"
+  | ".jsonld"
+  | ".mid"
+  | ".mjs"
+  | ".mp3"
+  | ".mp4"
+  | ".mpeg"
+  | ".mpkg"
+  | ".odp"
+  | ".ods"
+  | ".odt"
+  | ".oga"
+  | ".ogv"
+  | ".ogx"
+  | ".opus"
+  | ".otf"
+  | ".png"
+  | ".pdf"
+  | ".php"
+  | ".ppt"
+  | ".pptx"
+  | ".rar"
+  | ".rtf"
+  | ".sh"
+  | ".svg"
+  | ".tar"
+  | ".tif"
+  | ".tiff"
+  | ".ts"
+  | ".ttf"
+  | ".txt"
+  | ".vsd"
+  | ".wav"
+  | ".weba"
+  | ".webm"
+  | ".webp"
+  | ".woff"
+  | ".woff2"
+  | ".xhtml"
+  | ".xls"
+  | ".xlsx"
+  | ".xml"
+  | ".xul"
+  | ".zip"
+  | ".3gp"
+  | ".3g2"
+  | ".7z";

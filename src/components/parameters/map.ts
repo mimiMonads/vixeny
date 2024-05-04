@@ -1,12 +1,9 @@
-import {
-  CommonRequestMorphism,
-  RequestMorphism,
-} from "../framework/optimizer/types.ts";
-import { FunRouterOptions } from "../../types.ts";
-import { info } from "./types.ts";
+import type { FunRouterOptions } from "../../options.ts";
+import type { Petition } from "../../morphism.ts";
+import type { info } from "./types.ts";
 
 export default (options?: FunRouterOptions) =>
-(f: CommonRequestMorphism | RequestMorphism): info =>
+(f: Petition): info =>
   (
     (list) => (
       ((startsWith) =>

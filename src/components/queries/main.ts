@@ -1,15 +1,12 @@
-import { FunRouterOptions } from "../../types.ts";
-import {
-  CommonRequestMorphism,
-  RequestMorphism,
-} from "../framework/optimizer/types.ts";
+import type { FunRouterOptions } from "../../options.ts";
+import type { Petition } from "../../morphism.ts";
 import common from "./common.ts";
 import elements from "./elements.ts";
 
 import filter from "./filter.ts";
 import unique from "./unique.ts";
 export default (o?: FunRouterOptions) =>
-(f: CommonRequestMorphism | RequestMorphism) =>
+(f: Petition) =>
   f.query && "name" in f.query
     ? new Function(`return ${unique([f.query.name])}`)()
     : f.query && "only" in f.query && Array.isArray(f.query.only)

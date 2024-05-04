@@ -1,4 +1,4 @@
-import { CORSOptions } from "./types.ts";
+import type { CORSOptions } from "./types.ts";
 
 export const parse = () => (o: CORSOptions) =>
   Object.keys(o).reduce(

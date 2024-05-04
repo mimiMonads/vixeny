@@ -1,4 +1,4 @@
-import { info } from "./types.ts";
+import type { info } from "./types.ts";
 
 export default (info: info) =>
   info && "hasName" in info && typeof info.hasName === "string"

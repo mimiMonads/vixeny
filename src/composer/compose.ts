@@ -1,31 +1,31 @@
-import  type { FunRouterOptions } from "../../../types.ts";
-import { CommonRequestMorphism, RequestMorphism } from "./types.ts";
-import { parse, stringToFunction } from "../../cors/mainCORS.ts";
-import checkAsync from "./recursiveCheckAsync.ts";
-import aComposer from "./aComposer.ts";
-import mime from "../../util/mime.ts";
-import isUsing from "./tools/isUsing.ts";
+import  type { FunRouterOptions } from "../options.ts";
+import type { Petition } from "../morphism.ts";
+import { parse, stringToFunction } from "../components/cors/mainCORS.ts";
+import tools from './composerTools.ts'
+import linker from "./linker.ts";
+import mime from "../util/mime.ts";
+
 
 export default (o?: FunRouterOptions) =>
-(f: CommonRequestMorphism | RequestMorphism) =>
+(f: Petition) =>
   ((elementsUsed) =>
     (
       (table) =>
         ((composition) =>
           (table.headers && table.json)
             ? composition(table.json)(table.headers)(f.f)(
-              aComposer(o)(f)(elementsUsed),
+              linker(o)(f)(elementsUsed),
             )
             : table.headers
             ? composition(table.headers)(f.f)(
-              aComposer(o)(f)(elementsUsed),
+              linker(o)(f)(elementsUsed),
             )
             : table.json
             ? composition(table.json)(f.f)(
-              aComposer(o)(f)(elementsUsed),
+              linker(o)(f)(elementsUsed),
             )
             : composition(f.f)(
-              aComposer(o)(f)(elementsUsed),
+              linker(o)(f)(elementsUsed),
             ))(
             "type" in f
               ? new Function(`
@@ -47,6 +47,7 @@ export default (o?: FunRouterOptions) =>
               )(),
           )
     )(
+        //elements int table
       {
         async: f.f.constructor.name === "AsyncFunction" ||
           (
@@ -58,7 +59,7 @@ export default (o?: FunRouterOptions) =>
                   : false
               )
           ),
-        asyncResolve: checkAsync(f) ||
+        asyncResolve: tools.recursiveCheckAsync(f) ||
           (
             o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
               .some((x) =>
@@ -88,5 +89,5 @@ export default (o?: FunRouterOptions) =>
           : null,
       },
     ))(
-      isUsing(o)(f),
+      tools.isUsing(o)(f)(tools.elements),
     );
