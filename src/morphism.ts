@@ -1,6 +1,18 @@
 
-import { CyclePluginMap } from "../components/http/types.ts";
-import { FunRouterOptions } from "../types.ts";
+import type { FunRouterOptions , CyclePluginMap } from "./options.ts";
+
+export type Petition = Morphism<{
+  isAPetition: true;
+},
+any,
+any,
+any,
+any,
+any,
+any,
+any,
+any
+>
 
 export const petitions = {
   standart: <RO extends FunRouterOptions>(O?: RO) => <
