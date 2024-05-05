@@ -1,4 +1,3 @@
-import elements from "../components/queries/elements.ts";
 import type { Petition } from "../morphism.ts";
 import  type { FunRouterOptions  } from "../options.ts";
 import checker from './checker.ts'

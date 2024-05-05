@@ -4,8 +4,8 @@ import cookies from "../components/cookies/main.ts";
 import resolve from "./resolve/main.ts";
 import branch from "./branch/main.ts";
 import cookieToTokenMain from "../components/cookieToToken/cookieToTokenMain.ts";
-// import signSha256 from "../../../../jwt/signSha256.mjs";
-// import verifySha256 from "../../../../jwt/verifySha256.mjs";
+import signSha256 from "../components/jwt/signSha256.mjs";
+import verifySha256 from "../components/jwt/verifySha256.mjs";
 import { parse, stringToFunction } from "../components/cors/mainCORS.ts";
 
 import type { FunRouterOptions } from "../options.ts";
@@ -36,26 +36,26 @@ export default (o?: FunRouterOptions) =>
         condition: (x: NativeMaps) => x.name === "query",
         action: () => query(o)(f),
       },
-    //   {
-    //     condition: (x: NativeMaps) => x.name === "verify",
-    //     action: () =>
-    //       f.crypto && "globalKey" in f.crypto
-    //         ? verifySha256()(parsingToHexa(f.crypto as { globalKey: string }))
-    //         : void console.error(
-    //           "I don't know you got this message, contact me in discord," +
-    //             " also verify will always return `false` ",
-    //         ) ?? ((_: any) => false),
-    //   },
-    //   {
-    //     condition: (x: NativeMaps) => x.name === "sign",
-    //     action: () =>
-    //       f.crypto && "globalKey" in f.crypto
-    //         ? signSha256()(parsingToHexa(f.crypto as { globalKey: string }))
-    //         : void console.error(
-    //           "I don't know you got this message, contact me in discord," +
-    //             " also sign will always return '' ",
-    //         ) ?? ((_: any) => ""),
-    //   },
+      {
+        condition: (x: NativeMaps) => x.name === "verify",
+        action: () =>
+          f.crypto && "globalKey" in f.crypto
+            ? verifySha256()(tools.parsingToHexa(f.crypto as { globalKey: string }))
+            : void console.error(
+              "I don't know you got this message, contact me in discord," +
+                " also verify will always return `false` ",
+            ) ?? ((_: any) => false),
+      },
+      {
+        condition: (x: NativeMaps) => x.name === "sign",
+        action: () =>
+          f.crypto && "globalKey" in f.crypto
+            ? signSha256()(tools.parsingToHexa(f.crypto as { globalKey: string }))
+            : void console.error(
+              "I don't know you got this message, contact me in discord," +
+                " also sign will always return '' ",
+            ) ?? ((_: any) => ""),
+      },
       {
         condition: (x: NativeMaps) => x.name === "token",
         action: () =>
