@@ -2,7 +2,7 @@ import params from "../components/parameters/main.ts";
 import query from "../components/queries/main.ts";
 import cookies from "../components/cookies/main.ts";
 import resolve from "./resolve/main.ts";
-// import branch from "./branch/main.ts";
+import branch from "./branch/main.ts";
 import cookieToTokenMain from "../components/cookieToToken/cookieToTokenMain.ts";
 // import signSha256 from "../../../../jwt/signSha256.mjs";
 // import verifySha256 from "../../../../jwt/verifySha256.mjs";
@@ -82,15 +82,15 @@ export default (o?: FunRouterOptions) =>
             ? resolve(o)(f.path as string)(f.resolve)
             : null,
       },
-    //   {
-    //     condition: (x: NativeMaps) => x.name === "branch",
-    //     action: () =>
-    //       ("branch" in f)
-    //         ? branch({ ...o, branch: true })(f.path)(
-    //           f!.branch as AnyMorphismMap,
-    //         )
-    //         : null,
-    //   },
+      {
+        condition: (x: NativeMaps) => x.name === "branch",
+        action: () =>
+          ("branch" in f)
+            ? branch({ ...o, branch: true })(f.path)(
+              f!.branch,
+            )
+            : null,
+      },
     ]
       .concat(
         Object.keys(o?.cyclePlugin || {}).map((x) => ({

@@ -29,8 +29,8 @@ export type FunRouterOptions = {
      * }
      * ```
      */
-    hasName?: string;
-    cors?: CORSOptions;
+    readonly hasName?: string;
+    readonly cors?: CORSOptions;
     readonly router?: {
       /**
        * When true, the router treats URLs with a trailing slash as distinct from those without. For example, /hello and /hello/ are considered different routes, and each can have its own handler.
@@ -54,7 +54,7 @@ export type FunRouterOptions = {
      * // assuming that `paramsStartsWith` was set to `-`, this option only takes the first character
      * ```
      */
-    paramsStartsWith?: string;
+    readonly paramsStartsWith?: string;
     readonly stateFlags?: {
       isFileServer?: true;
       slashIs?: string;

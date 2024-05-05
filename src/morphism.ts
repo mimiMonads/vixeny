@@ -253,17 +253,14 @@ export const petitions = {
   ,
 };
 
-const a = petitions.branch()({
-  crypto: {
-    globalKey: 'sdsds'
-  },
+const typeSafeBranch = petitions.branch()({
   arguments: 'string',
   f(ctx) {
     return new Response(ctx.arguments);
   },
 });
 
-const c = petitions.resolve()({
+const typeSafeResponse = petitions.resolve()({
   f(ctx) {
     return new Response(ctx.arguments);
   },
@@ -273,10 +270,10 @@ const c = petitions.resolve()({
 const b = petitions.standart()({
   path: '/string',
   resolve:{
-    test: c
+    test: typeSafeResponse
   },
   branch: {
-    test: a
+    test: typeSafeBranch
   },
   f(ctx) {
       return ctx.branch.test('hello')
