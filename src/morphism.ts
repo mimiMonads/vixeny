@@ -916,6 +916,44 @@ type CryptoOptions = {
   };
 } | {};
 
+
+type StaticFilePlugin = {
+  checker: (path: string) => boolean;
+  async?: boolean;
+  r: (options: {
+    root: string;
+    path: string;
+    relativeName: string;
+  }) => typeof petitions.response;
+};
+
+/**
+ * Object for raw response static.
+ */
+export type fileServerPetition =
+  & ({
+    type: "fileServer";
+    name: string;
+    path: string;
+  } | {
+    type: "fileServer";
+    name: string;
+    path: string;
+    mime?: true;
+    extra: [string, string][];
+  } | {
+    type: "fileServer";
+    name: string;
+    path: string;
+    mime: false;
+  })
+  & {
+    template?: StaticFilePlugin[];
+    removeExtensionOf?: defaultMime[];
+    slashIs?: string;
+  };
+
+
 export type SupportedKeys =
   | string
   | Uint8Array
