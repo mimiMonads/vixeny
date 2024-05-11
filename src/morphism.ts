@@ -30,8 +30,8 @@ any
 
 export const petitions = {
   standart: <RO extends FunRouterOptions>(O?: RO) => <
-    RM extends ResolveMap,
-    BM extends BranchMap,
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
     RO extends FunRouterOptions,
@@ -56,8 +56,8 @@ export const petitions = {
     >,
   ) => ({ ...I, type: "request" }) as unknown as Petition,
   common: <RO extends FunRouterOptions>(O?: RO) => <
-    RM extends ResolveMap,
-    BM extends BranchMap,
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
     RO extends FunRouterOptions,
@@ -84,8 +84,8 @@ export const petitions = {
   ) => ({ ...I, type: "base" }) as unknown as Petition,
   response: <RO extends FunRouterOptions>(O?: RO) =>
   <
-    RM extends ResolveMap,
-    BM extends BranchMap,
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
     RO extends FunRouterOptions,
@@ -109,8 +109,8 @@ export const petitions = {
   > => ({ ...I, type: "response" }),
   resolve: <RO extends FunRouterOptions>(O?: RO) =>
   <
-    RM extends ResolveMap,
-    BM extends BranchMap,
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
     RO extends FunRouterOptions,
@@ -134,8 +134,8 @@ export const petitions = {
   ) => I ,
   branch: <RO extends FunRouterOptions>(O?: RO) =>
   <
-    RM extends ResolveMap,
-    BM extends BranchMap,
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
     RO extends FunRouterOptions,
@@ -160,8 +160,8 @@ export const petitions = {
   ) => I,
   join: <RO extends FunRouterOptions>(O?: RO) =>
   <
-    RM extends ResolveMap,
-    BM extends BranchMap,
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
     RO extends FunRouterOptions,
@@ -185,8 +185,8 @@ export const petitions = {
     > [],
   ) =>
   <
-  RM extends ResolveMap,
-  BM extends BranchMap,
+  RM extends ResolveMap<any>,
+  BM extends BranchMap<any>,
   QO extends QueryOptions,
   PO extends ParamOptions,
   RO extends FunRouterOptions,
@@ -234,22 +234,38 @@ export const petitions = {
 
 type typeMorphisim = "response" | "request" | "morphism" | "base";
 
-export type ResolveMap = {
-  [key: string]: Morphism<
-    {
-      type: "morphism";
-    }
-  >  | any
+export type ResolveMap<T> = {
+  [K in keyof T]: T[K] extends Morphism<
+  {
+    type: "morphism";
+  }
+  >  ?  Morphism<
+  {
+    type: "morphism";
+  }
+  > : T[K] extends { f: any} 
+    ? any
+    :never;
 } 
 
-export type BranchMap = {
-  [key: string ]: Morphism<
-    {
-      type: "morphism";
-      branch: true;
-    }
-  > | any;
-};
+
+
+
+export type BranchMap<T> = {
+  [K in keyof T]: T[K] extends Morphism<
+  {
+    type: "morphism";
+    branch: true;
+  }
+  >  ?  Morphism<
+  {
+    type: "morphism";
+    branch: true;
+  }
+  > : T[K] extends { f: any} 
+    ? any
+    :never;
+} 
 
 type MapOptions = {
   hasPath?: boolean;
@@ -288,8 +304,8 @@ type ExtraKeys<P extends MapOptions> = HasPath<P> & HasType<P>;
 
 type Morphism<
   MO extends MapOptions = MapOptions,
-  RM extends ResolveMap = any,
-  BM extends BranchMap = BranchMap,
+  RM extends ResolveMap<any> = any,
+  BM extends BranchMap<any> = any,
   QO extends QueryOptions = QueryOptions,
   PO extends ParamOptions = ParamOptions,
   RO extends FunRouterOptions = FunRouterOptions,
@@ -388,8 +404,8 @@ type specialElements = {
 } | {};
 
 type WithPlugins<
-  R extends ResolveMap,
-  B extends BranchMap,
+  R extends ResolveMap<any>,
+  B extends BranchMap<any>,
   QS extends QueryOptions,
   PA extends ParamOptions,
   O extends FunRouterOptions,
@@ -438,8 +454,8 @@ type CryptoContext<CR extends CryptoOptions> = CR extends
   };
 
 interface Ctx<
-  R extends ResolveMap,
-  B extends BranchMap,
+  R extends ResolveMap<any>,
+  B extends BranchMap<any>,
   QS extends QueryOptions,
   PA extends ParamOptions,
   O extends FunRouterOptions,
