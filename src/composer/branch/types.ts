@@ -1,4 +1,4 @@
-import type { Petition , PetitionOptions} from "../../morphism.ts";
+import type { Petition, PetitionOptions } from "../../morphism.ts";
 
 export type BranchOption = Petition & {
   name: string;

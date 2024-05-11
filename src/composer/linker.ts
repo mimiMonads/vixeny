@@ -1,6 +1,6 @@
 import tools from "./composerTools.ts";
 import type { FunRouterOptions } from "../options.ts";
-import type  { Petition } from "../morphism.ts";
+import type { Petition } from "../morphism.ts";
 import nativeComponets from "./nativeComponents.ts";
 import nativeMaps from "./nativeMaps.ts";
 
@@ -9,9 +9,7 @@ export type specialOptions = {
   branch?: boolean;
 } & FunRouterOptions;
 
-export default (o?: specialOptions) =>
-(f: Petition) =>
-(ar: string[]) =>
+export default (o?: specialOptions) => (f: Petition) => (ar: string[]) =>
   ar.length === 0 && !(o && "branch" in o) ? ((r: Request) => r) : (
     (el) => el
   )(

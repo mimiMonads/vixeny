@@ -1,18 +1,17 @@
-import  type { FunRouterOptions } from "../options.ts";
+import type { FunRouterOptions } from "../options.ts";
 import type { Petition } from "../morphism.ts";
 import { parse, stringToFunction } from "../components/cors/mainCORS.ts";
-import tools from './composerTools.ts'
+import tools from "./composerTools.ts";
 import linker from "./linker.ts";
 import mime from "../util/mime.ts";
 
-
 export default (o?: FunRouterOptions) =>
-(f: Petition): (ctx:Request) => Promise<Response>  | Response=>
+(f: Petition): (ctx: Request) => Promise<Response> | Response =>
   ((elementsUsed) =>
     (
       (table) =>
         ((composition) =>
-        (table.headers && table.json && f.type !== 'request')
+          (table.headers && table.json && f.type !== "request")
             ? composition(table.json)(table.headers)(f.f)(
               linker(o)(f)(elementsUsed),
             )
@@ -27,13 +26,13 @@ export default (o?: FunRouterOptions) =>
             : composition(f.f)(
               linker(o)(f)(elementsUsed),
             ))(
-               f.type === 'request'
+            f.type === "request"
               ? new Function(`
-      return ${table.headers ? "h=>" : ""}f=>c=>${table.async || table.asyncResolve ? "async " : ""}r=>${
-                table.async || table.asyncResolve ? "await f" : "f"
-              }(${table.asyncResolve ? "await c" : "c"}(${
-                "mutable" in f ? "[r,{res: new Response()}]" : "r"
-              }))`)() 
+      return ${table.headers ? "h=>" : ""}f=>c=>${
+                table.async || table.asyncResolve ? "async " : ""
+              }r=>${table.async || table.asyncResolve ? "await f" : "f"}(${
+                table.asyncResolve ? "await c" : "c"
+              }(${"mutable" in f ? "[r,{res: new Response()}]" : "r"}))`)()
               : new Function(
                 `return ${table.headers ? "h=>" : ""}${
                   table.async ? "f=>" : "f=>"
@@ -44,10 +43,10 @@ export default (o?: FunRouterOptions) =>
                 }(${table.asyncResolve ? "await c" : "c"}(${
                   "mutable" in f ? "[r,{res: new Response()}]" : "r"
                 }))${table.headers ? ",h" : ""})`,
-              )() ,
+              )(),
           )
     )(
-        //elements int table
+      //elements int table
       {
         async: f.f.constructor.name === "AsyncFunction" ||
           (
@@ -74,8 +73,9 @@ export default (o?: FunRouterOptions) =>
             ? {
               ...f.headings,
               headers: {
-                "Content-Type":
-                  mime.find((x) => x[0] === f.headings?.headers)![1],
+                "Content-Type": mime.find((x) =>
+                  x[0] === f.headings?.headers
+                )![1],
                 ...(o && o.cors ? stringToFunction(parse()(o.cors))() : {}),
               },
             }

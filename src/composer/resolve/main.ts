@@ -1,16 +1,13 @@
 import tools from "../composerTools.ts";
 import type { ResolveOptions, ResponseResponse } from "./types.ts";
-import type  { FunRouterOptions } from "../../options.ts";
-import type {
-   ResolveMap , Petition
-} from "../../morphism.ts";
+import type { FunRouterOptions } from "../../options.ts";
+import type { Petition, ResolveMap } from "../../morphism.ts";
 
 import table from "./table.ts";
 
-
 export default (o?: FunRouterOptions) =>
 (path: string) =>
-(input: ResolveMap): ResponseResponse =>
+(input: ResolveMap<any>): ResponseResponse =>
   (
     (ar) =>
       (
@@ -30,8 +27,8 @@ export default (o?: FunRouterOptions) =>
               )(),
             ) as unknown as ResponseResponse)(
               ar.some((x) =>
-                 tools.recursiveCheckAsync(
-                  x as unknown as Petition
+                tools.recursiveCheckAsync(
+                  x as unknown as Petition,
                 )
               ),
             )

@@ -1,4 +1,4 @@
-import  type { FunRouterOptions } from "../../../types.ts";
+import type { FunRouterOptions } from "../../../types.ts";
 import { CommonRequestMorphism, RequestMorphism } from "./types.ts";
 import { parse, stringToFunction } from "../../cors/mainCORS.ts";
 import checkAsync from "./recursiveCheckAsync.ts";

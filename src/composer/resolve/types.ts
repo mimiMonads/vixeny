@@ -1,4 +1,4 @@
-import type { ResolveMorphism, PetitionOptions } from "../../morphism.ts";
+import type { PetitionOptions, ResolveMorphism } from "../../morphism.ts";
 
 export type ResolveOption = ResolveMorphism & {
   name: string;

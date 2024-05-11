@@ -1,5 +1,3 @@
-
-
 export default (joiner: (base: string) => (target: string) => string) =>
 (readdir: (directoryPath: string) => string[]) =>
 (stat: (directoryPath: string) => { isDirectory: () => boolean }) =>

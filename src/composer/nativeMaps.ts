@@ -1,7 +1,7 @@
-import  type { FunRouterOptions } from "../options.ts"
+import type { FunRouterOptions } from "../options.ts";
 import type { Petition } from "../morphism.ts";
 
-import tools from './composerTools.ts'
+import tools from "./composerTools.ts";
 
 export default (o?: FunRouterOptions) =>
 (f: Petition) =>
@@ -59,13 +59,17 @@ export default (o?: FunRouterOptions) =>
     },
     {
       name: "resolve",
-      value: `${tools.recursiveCheckAsync(f) ? " await resolve(r)" : "resolve(r)"}`,
+      value: `${
+        tools.recursiveCheckAsync(f) ? " await resolve(r)" : "resolve(r)"
+      }`,
       type: 1,
     },
     { name: "mutable", value: mutable ? "r[1]" : "{}", type: 0 },
     {
       name: "branch",
-      value: `${tools.recursiveCheckAsync(f) ? " await branch(r)" : "branch(r)"}`,
+      value: `${
+        tools.recursiveCheckAsync(f) ? " await branch(r)" : "branch(r)"
+      }`,
       type: 1,
     },
     {

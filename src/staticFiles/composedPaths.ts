@@ -1,4 +1,4 @@
-import type { fileServerPetition , Petition } from "../morphism.ts";
+import type { fileServerPetition, Petition } from "../morphism.ts";
 import getMime from "./getMime.ts";
 
 //TODO: make it more redable 🙏
@@ -7,7 +7,7 @@ export default (f: fileServerPetition) =>
 (name: string) =>
 (root: string) =>
 (paths: string[]) =>
-(mimes: [string, string][]):Petition[]=>
+(mimes: [string, string][]): Petition[] =>
   mimes.length > 0
     ? (
       (checker) =>
@@ -101,4 +101,4 @@ export default (f: fileServerPetition) =>
             : `return async ()=>  new Response(await ( Bun.file("${x}")).arrayBuffer())`,
         ))() as () => Promise<Response>,
       }),
-    )  as unknown as Petition[];
+    ) as unknown as Petition[];

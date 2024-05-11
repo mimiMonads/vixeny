@@ -2,8 +2,7 @@ import type { FunRouterOptions } from "../../options.ts";
 import type { Petition } from "../../morphism.ts";
 import type { info } from "./types.ts";
 
-export default (options?: FunRouterOptions) =>
-(f: Petition): info =>
+export default (options?: FunRouterOptions) => (f: Petition): info =>
   (
     (list) => (
       ((startsWith) =>

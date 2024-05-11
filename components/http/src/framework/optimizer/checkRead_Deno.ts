@@ -6,7 +6,7 @@ type FsPromisesType = {
 export default await (async () =>
   // deno-lint-ignore no-async-promise-executor
   await new Promise<FsPromisesType>(async (resolve, err) =>
-  //@ts-ignore
+    //@ts-ignore
     typeof Deno === "object"
       ? err()
       //@ts-ignore

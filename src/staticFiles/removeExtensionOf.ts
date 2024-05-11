@@ -1,6 +1,4 @@
-
-
-import type {  defaultMime, fileServerPetition  , Petition} from "../morphism.ts";
+import type { defaultMime, fileServerPetition, Petition } from "../morphism.ts";
 
 export default (f: fileServerPetition) => (petitions: Petition[]) =>
   f.removeExtensionOf && Array.isArray(f.removeExtensionOf)

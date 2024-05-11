@@ -1,11 +1,10 @@
 import type { FunRouterOptions } from "../../options.ts";
-import type { Petition ,  SupportedKeys} from "../../morphism.ts";
+import type { Petition, SupportedKeys } from "../../morphism.ts";
 import cookieToTokenBodyParser from "./cookieToTokenBodyParser.ts";
 import cookieToTokenGets from "./cookieToTokenGets.ts";
 import cookieToTokenFilter from "./cookieToTokenFilter.ts";
 
-export default (o?: FunRouterOptions) =>
-(f: Petition) =>
+export default (o?: FunRouterOptions) => (f: Petition) =>
   f.crypto && "globalKey" in f.crypto
     ? (
       (getCookies) =>

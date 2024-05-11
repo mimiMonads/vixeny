@@ -6,8 +6,8 @@ type FsPromisesType = {
 export default await (async () =>
   // deno-lint-ignore no-async-promise-executor
   await new Promise<FsPromisesType>(async (resolve, err) =>
-      //@ts-ignore
-       resolve(await import("fs"))
+    //@ts-ignore
+    resolve(await import("fs"))
   ))().then((x: unknown) =>
     ({
       getFiles: (x as {

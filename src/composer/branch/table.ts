@@ -1,6 +1,6 @@
 import aComposer, { type specialOptions } from "../linker.ts";
-import tools from '../composerTools.ts'
-import  type { BranchOptions } from "./types.ts";
+import tools from "../composerTools.ts";
+import type { BranchOptions } from "./types.ts";
 
 export default (o?: specialOptions) =>
 (path: string) =>

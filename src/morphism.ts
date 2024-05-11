@@ -1,35 +1,38 @@
+import type { CyclePluginMap, FunRouterOptions } from "./options.ts";
+import compose from "./composer/compose.ts";
 
-import type { FunRouterOptions , CyclePluginMap } from "./options.ts";
-
-export type Petition = Morphism<{
-  isAPetition: true;
-  type: typeMorphisim;
-  hasPath: true
-},
-any,
-any,
-any,
-any,
-any,
-any,
-any,
-any
->
-export type ResolveMorphism = Morphism<{
-  type: 'morphism'
-},
-any,
-any,
-any,
-any,
-any,
-any,
-any,
-any
->
+export type Petition = Morphism<
+  {
+    isAPetition: true;
+    type: typeMorphisim;
+    hasPath: true;
+  },
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+>;
+export type ResolveMorphism = Morphism<
+  {
+    type: "morphism";
+  },
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+>;
 
 export const petitions = {
-  standart: <RO extends FunRouterOptions>(O?: RO) => <
+  standart: <RO extends FunRouterOptions>(O?: RO) =>
+  <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
@@ -37,13 +40,14 @@ export const petitions = {
     RO extends FunRouterOptions,
     CO extends CryptoOptions,
     AR = any,
-    R = any >(
+    R = any,
+  >(
     I: Morphism<
       {
         type: "request";
         hasPath: true;
         isAPetition: true;
-        typeNotNeeded: true
+        typeNotNeeded: true;
       },
       RM,
       BM,
@@ -55,7 +59,8 @@ export const petitions = {
       R
     >,
   ) => ({ ...I, type: "request" }) as unknown as Petition,
-  common: <RO extends FunRouterOptions>(O?: RO) => <
+  common: <RO extends FunRouterOptions>(O?: RO) =>
+  <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
@@ -131,7 +136,7 @@ export const petitions = {
       AT,
       R
     >,
-  ) => I ,
+  ) => I,
   branch: <RO extends FunRouterOptions>(O?: RO) =>
   <
     RM extends ResolveMap<any>,
@@ -171,8 +176,8 @@ export const petitions = {
   >(
     A: Morphism<
       {
-        isAPetition: true
-        hasPath: true
+        isAPetition: true;
+        hasPath: true;
       },
       RM,
       BM,
@@ -182,90 +187,93 @@ export const petitions = {
       CO,
       AT,
       R
-    > [],
+    >[],
   ) =>
   <
-  RM extends ResolveMap<any>,
-  BM extends BranchMap<any>,
-  QO extends QueryOptions,
-  PO extends ParamOptions,
-  RO extends FunRouterOptions,
-  CO extends CryptoOptions,
-  AT = any,
-  R = any,
->(
-  B: Morphism<
-    {
-      isAPetition: true
-      hasPath: true
-    },
-    RM,
-    BM,
-    QO,
-    PO,
-    RO,
-    CO,
-    AT,
-    R
-  > | {
-    type:typeMorphisim,
-    path: string,
-    f: any
-  },
-) => [ ...A, B as  Morphism<
-  {
-    isAPetition: true
-    hasPath: true
-  },
-  RM,
-  BM,
-  QO,
-  PO,
-  RO,
-  CO,
-  AT,
-  R
->]
-  ,
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    RO extends FunRouterOptions,
+    CO extends CryptoOptions,
+    AT = any,
+    R = any,
+  >(
+    B:
+      | Morphism<
+        {
+          isAPetition: true;
+          hasPath: true;
+        },
+        RM,
+        BM,
+        QO,
+        PO,
+        RO,
+        CO,
+        AT,
+        R
+      >
+      | {
+        type: typeMorphisim;
+        path: string;
+        f: any;
+      },
+  ) => [
+    ...A,
+    B as Morphism<
+      {
+        isAPetition: true;
+        hasPath: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AT,
+      R
+    >,
+  ],
 };
-
-
-
 
 type typeMorphisim = "response" | "request" | "morphism" | "base";
 
 export type ResolveMap<T> = {
   [K in keyof T]: T[K] extends Morphism<
-  {
-    type: "morphism";
-  }
-  >  ?  Morphism<
-  {
-    type: "morphism";
-  }
-  > : T[K] extends { f: any} 
-    ? any
-    :never;
-} 
+    {
+      type: "morphism";
+    }
+  > ? Morphism<
+      {
+        type: "morphism";
+      }
+    >
+    : T[K] extends { f: any } ? any
+    : never;
+};
 
-
-
+const composed = {
+  resolve: 1,
+  branch: 1,
+};
 
 export type BranchMap<T> = {
   [K in keyof T]: T[K] extends Morphism<
-  {
-    type: "morphism";
-    branch: true;
-  }
-  >  ?  Morphism<
-  {
-    type: "morphism";
-    branch: true;
-  }
-  > : T[K] extends { f: any} 
-    ? any
-    :never;
-} 
+    {
+      type: "morphism";
+      branch: true;
+    }
+  > ? Morphism<
+      {
+        type: "morphism";
+        branch: true;
+      }
+    >
+    : T[K] extends { f: any } ? any
+    : never;
+};
 
 type MapOptions = {
   hasPath?: boolean;
@@ -287,7 +295,7 @@ type HasType<P extends MapOptions> = P extends { type: typeMorphisim }
 
 type ExtraKeys<P extends MapOptions> = HasPath<P> & HasType<P>;
 
- type PetitionHeader = {
+type PetitionHeader = {
   /**
    * The headers initialization.
    */
@@ -320,7 +328,7 @@ type Morphism<
   readonly query?: QO;
   readonly param?: PO;
   readonly headings?: PetitionHeader;
-  readonly isAsync?: MO['isAPetition'] extends true ? true : never;
+  readonly isAsync?: MO["isAPetition"] extends true ? true : never;
   readonly options?: PetitionOptions<
     [Extract<keyof RO["cyclePlugin"], string>],
     CO
@@ -381,7 +389,6 @@ export type PetitionOptions<
   readonly setDate?: number;
   readonly arguments?: any;
 };
-
 
 type DebugOptions = {
   type: "list";
@@ -464,7 +471,7 @@ interface Ctx<
   OPT extends PetitionOptions<any, any>,
   AR = any,
 > {
-  arguments: AR ;
+  arguments: AR;
   /**
    * The `resolve` property is integral to ensuring that all necessary data is fetched or calculations are performed before the main function (`f`) of a morphism is executed. It consists of a map where each key corresponds to a resolve function that is executed prior to `f`. The results of these resolves are then made available in the `CTX` for use in the main function.
    *
@@ -882,7 +889,6 @@ type CryptoOptions = {
   };
 } | {};
 
-
 type StaticFilePlugin = {
   checker: (path: string) => boolean;
   async?: boolean;
@@ -919,7 +925,6 @@ export type fileServerPetition =
     slashIs?: string;
   };
 
-
 export type SupportedKeys =
   | string
   | Uint8Array
@@ -934,7 +939,7 @@ export type SupportedKeys =
   | Float32Array
   | Float64Array;
 
-  export type defaultMime =
+export type defaultMime =
   | ".aac"
   | ".abw"
   | ".arc"

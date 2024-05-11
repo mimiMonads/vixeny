@@ -1,10 +1,11 @@
 import type { Petition } from "../morphism.ts";
-import  type { FunRouterOptions  } from "../options.ts";
-import checker from './checker.ts'
-type RecFunc = (f: Petition ) => boolean;
+import type { FunRouterOptions } from "../options.ts";
+import checker from "./checker.ts";
+type RecFunc = (f: Petition) => boolean;
 
 export default {
-    syncCheckerDir : (joiner: (base: string) => (target: string) => string) =>
+  syncCheckerDir:
+    (joiner: (base: string) => (target: string) => string) =>
     (readdir: (directoryPath: string) => string[]) =>
     (stat: (directoryPath: string) => { isDirectory: () => boolean }) =>
     (dir: string): [string, boolean][] =>
@@ -26,41 +27,44 @@ export default {
             f((y: any) => x(x)(y))
           ),
       ),
-    recursiveCheckAsync: ((f: (x: RecFunc) => RecFunc) =>
-    ((x: (arg: any) => any) => (v: any) => x(x)(v))(
-      (x: (arg: any) => any) => (v: any) =>
-        f((y: Petition) => x(x)(y))(v),
-    ))(
-      (solver: RecFunc) => (f: Petition ) =>
-        f.f.constructor.name === "AsyncFunction" || ("isAsync" in f && f.isAsync)
-          ? true
-          : f.f.constructor.name === "Function" &&
-              typeof f.resolve === "undefined"
-          ? false
-          : ("resolve" in f && f.resolve &&
-            Object.keys(f.resolve).some((ob) =>
-              f.resolve &&
-              solver(
-                f.resolve[ob] as unknown as Petition
-              )
-            )) ??
-            ("branch" in f && f.branch &&
-              Object.keys(f.branch).some((ob) =>
-                f.branch &&
+  recursiveCheckAsync:
+    ((f: (x: RecFunc) => RecFunc) =>
+      ((x: (arg: any) => any) => (v: any) => x(x)(v))(
+        (x: (arg: any) => any) => (v: any) => f((y: Petition) => x(x)(y))(v),
+      ))(
+        (solver: RecFunc) => (f: Petition) =>
+          f.f.constructor.name === "AsyncFunction" ||
+            ("isAsync" in f && f.isAsync)
+            ? true
+            : f.f.constructor.name === "Function" &&
+                typeof f.resolve === "undefined"
+            ? false
+            : ("resolve" in f && f.resolve &&
+              Object.keys(f.resolve).some((ob) =>
+                f.resolve &&
                 solver(
-                  f.branch[ob] as unknown as Petition
+                  f.resolve[ob] as unknown as Petition,
                 )
               )) ??
-            false,
-    ) as unknown as (f:Petition ) => boolean,
-    parsingToHexa : (crypto: { globalKey: string }) =>
-  typeof crypto.globalKey === "string"
-    ? /^[0-9a-fA-F]+$/g.test(crypto.globalKey) 
-      ? new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
-      : new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
-    : crypto.globalKey,
-    isUsing: (o?: FunRouterOptions) =>
-    (f: Petition) => (elements: {(f: Petition): string[]}) =>
+              ("branch" in f && f.branch &&
+                Object.keys(f.branch).some((ob) =>
+                  f.branch &&
+                  solver(
+                    f.branch[ob] as unknown as Petition,
+                  )
+                )) ??
+              false,
+      ) as unknown as (f: Petition) => boolean,
+  parsingToHexa: (crypto: { globalKey: string }) =>
+    typeof crypto.globalKey === "string"
+      ? /^[0-9a-fA-F]+$/g.test(crypto.globalKey)
+        ? new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
+        : new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
+      : crypto.globalKey,
+  isUsing:
+    (o?: FunRouterOptions) =>
+    (f: Petition) =>
+    (elements: { (f: Petition): string[] }) =>
       (
           f.options && typeof f.options?.only !== "undefined" &&
           f.options.only.length > 0
@@ -75,7 +79,7 @@ export default {
         )(
           f.f.toString(),
         ),
-    elements: (f: Petition) =>
+  elements: (f: Petition) =>
     f.crypto && "globalKey" in f.crypto
       ? [
         "cookie",
@@ -107,5 +111,5 @@ export default {
         "mutable",
         "branch",
         "arguments",
-      ]
-}
+      ],
+};

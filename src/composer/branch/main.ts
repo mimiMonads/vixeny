@@ -1,15 +1,13 @@
 import tools from "../composerTools.ts";
-import  type { BranchOptions, ResponseResponse } from "./types.ts";
+import type { BranchOptions, ResponseResponse } from "./types.ts";
 import table from "./table.ts";
 import type { specialOptions } from "../linker.ts";
-import type {
-  BranchMap,
-} from "../../morphism.ts";
+import type { BranchMap } from "../../morphism.ts";
 import type { Petition } from "../../morphism.ts";
 
 export default (o?: specialOptions) =>
 (path: string) =>
-(input: BranchMap): ResponseResponse =>
+(input: BranchMap<any>): ResponseResponse =>
   (
     (ar) =>
       (
@@ -29,7 +27,7 @@ export default (o?: specialOptions) =>
               )(),
             ))(
               ar.some((x) =>
-              tools.recursiveCheckAsync(
+                tools.recursiveCheckAsync(
                   x as unknown as Petition,
                 )
               ),
@@ -43,5 +41,5 @@ export default (o?: specialOptions) =>
     Object.keys(input).map((x) => ({
       ...(input[x]),
       name: x,
-    })) as  BranchOptions,
+    })) as BranchOptions,
   );

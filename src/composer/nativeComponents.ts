@@ -9,9 +9,7 @@ import verifySha256 from "../components/jwt/verifySha256.mjs";
 import { parse, stringToFunction } from "../components/cors/mainCORS.ts";
 
 import type { FunRouterOptions } from "../options.ts";
-import type {
-  Petition
-} from "../morphism.ts";
+import type { Petition } from "../morphism.ts";
 
 import tools from "./composerTools.ts";
 
@@ -40,7 +38,9 @@ export default (o?: FunRouterOptions) =>
         condition: (x: NativeMaps) => x.name === "verify",
         action: () =>
           f.crypto && "globalKey" in f.crypto
-            ? verifySha256()(tools.parsingToHexa(f.crypto as { globalKey: string }))
+            ? verifySha256()(
+              tools.parsingToHexa(f.crypto as { globalKey: string }),
+            )
             : void console.error(
               "I don't know you got this message, contact me in discord," +
                 " also verify will always return `false` ",
@@ -50,7 +50,9 @@ export default (o?: FunRouterOptions) =>
         condition: (x: NativeMaps) => x.name === "sign",
         action: () =>
           f.crypto && "globalKey" in f.crypto
-            ? signSha256()(tools.parsingToHexa(f.crypto as { globalKey: string }))
+            ? signSha256()(
+              tools.parsingToHexa(f.crypto as { globalKey: string }),
+            )
             : void console.error(
               "I don't know you got this message, contact me in discord," +
                 " also sign will always return '' ",
@@ -78,9 +80,7 @@ export default (o?: FunRouterOptions) =>
       {
         condition: (x: NativeMaps) => x.name === "resolve",
         action: () =>
-          ("resolve" in f)
-            ? resolve(o)(f.path as string)(f.resolve)
-            : null,
+          ("resolve" in f) ? resolve(o)(f.path as string)(f.resolve) : null,
       },
       {
         condition: (x: NativeMaps) => x.name === "branch",
