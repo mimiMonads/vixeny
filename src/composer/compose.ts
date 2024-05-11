@@ -7,12 +7,12 @@ import mime from "../util/mime.ts";
 
 
 export default (o?: FunRouterOptions) =>
-(f: Petition) =>
+(f: Petition): (ctx:Request) => Promise<Response>  | Response=>
   ((elementsUsed) =>
     (
       (table) =>
         ((composition) =>
-          (table.headers && table.json)
+        (table.headers && table.json && f.type !== 'request')
             ? composition(table.json)(table.headers)(f.f)(
               linker(o)(f)(elementsUsed),
             )
@@ -27,13 +27,13 @@ export default (o?: FunRouterOptions) =>
             : composition(f.f)(
               linker(o)(f)(elementsUsed),
             ))(
-            "type" in f
+               f.type === 'request'
               ? new Function(`
-      return f=>c=>${table.async || table.asyncResolve ? "async " : ""}r=>${
+      return ${table.headers ? "h=>" : ""}f=>c=>${table.async || table.asyncResolve ? "async " : ""}r=>${
                 table.async || table.asyncResolve ? "await f" : "f"
               }(${table.asyncResolve ? "await c" : "c"}(${
                 "mutable" in f ? "[r,{res: new Response()}]" : "r"
-              }))`)()
+              }))`)() 
               : new Function(
                 `return ${table.headers ? "h=>" : ""}${
                   table.async ? "f=>" : "f=>"
@@ -44,7 +44,7 @@ export default (o?: FunRouterOptions) =>
                 }(${table.asyncResolve ? "await c" : "c"}(${
                   "mutable" in f ? "[r,{res: new Response()}]" : "r"
                 }))${table.headers ? ",h" : ""})`,
-              )(),
+              )() ,
           )
     )(
         //elements int table

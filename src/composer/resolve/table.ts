@@ -22,5 +22,5 @@ export default (o?: FunRouterOptions) =>
             : ((a) => (k: (arg0: any) => any) => (r:any) => k(a(r)))(
               composed,
             )(x.f)
-      )(aComposer(o)(x)(tools.isUsing(o)(x)(tools.elements))),
+      )(aComposer(o)(x as unknown as Petition)(tools.isUsing(o)(x as unknown as Petition)(tools.elements))),
     }));

@@ -3,6 +3,7 @@ import type { FunRouterOptions , CyclePluginMap } from "./options.ts";
 
 export type Petition = Morphism<{
   isAPetition: true;
+  type: typeMorphisim;
   hasPath: true
 },
 any,
@@ -253,32 +254,6 @@ export const petitions = {
   ,
 };
 
-const typeSafeBranch = petitions.branch()({
-  arguments: 'string',
-  f(ctx) {
-    return new Response(ctx.arguments);
-  },
-});
-
-const typeSafeResponse = petitions.resolve()({
-  f(ctx) {
-    return new Response(ctx.arguments);
-  },
-});
-
-
-const b = petitions.standart()({
-  path: '/string',
-  resolve:{
-    test: typeSafeResponse
-  },
-  branch: {
-    test: typeSafeBranch
-  },
-  f(ctx) {
-      return ctx.branch.test('hello')
-  }
-})
 
 
 

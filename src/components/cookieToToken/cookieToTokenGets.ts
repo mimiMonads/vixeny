@@ -1,5 +1,5 @@
-import verifySha256 from "../../../jwt/verifySha256.mjs";
-import { SupportedKeys } from "../framework/optimizer/types.ts";
+import verifySha256 from "../jwt/verifySha256.mjs";
+import type { SupportedKeys } from "../../morphism.ts";
 
 export default (secret: SupportedKeys) => (name: string) =>
   (
