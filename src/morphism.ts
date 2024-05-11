@@ -54,20 +54,7 @@ export const petitions = {
       AR,
       R
     >,
-  ): Morphism<{
-    type: "request";
-    hasPath: true;
-    isAPetition: true;
-  },
-  RM,
-  BM,
-  QO,
-  PO,
-  RO,
-  CO,
-  AR,
-  R
-  > => ({ ...I, type: "request" }),
+  ) => ({ ...I, type: "request" }) as unknown as Petition,
   common: <RO extends FunRouterOptions>(O?: RO) => <
     RM extends ResolveMap,
     BM extends BranchMap,
@@ -94,19 +81,7 @@ export const petitions = {
       AR,
       R
     >,
-  ): Morphism<{
-    type: "base";
-    hasPath: true;
-    isAPetition: true;
-  },
-  RM,
-  BM,
-  QO,
-  PO,
-  RO,
-  CO,
-  AR,
-  R> => ({ ...I, type: "base" }),
+  ) => ({ ...I, type: "base" }) as unknown as Petition,
   response: <RO extends FunRouterOptions>(O?: RO) =>
   <
     RM extends ResolveMap,
@@ -156,7 +131,7 @@ export const petitions = {
       AT,
       R
     >,
-  ) => I,
+  ) => I ,
   branch: <RO extends FunRouterOptions>(O?: RO) =>
   <
     RM extends ResolveMap,
@@ -264,8 +239,8 @@ export type ResolveMap = {
     {
       type: "morphism";
     }
-  >
-};
+  >  | any
+} 
 
 export type BranchMap = {
   [key: string ]: Morphism<
@@ -273,7 +248,7 @@ export type BranchMap = {
       type: "morphism";
       branch: true;
     }
-  >;
+  > | any;
 };
 
 type MapOptions = {
@@ -313,7 +288,7 @@ type ExtraKeys<P extends MapOptions> = HasPath<P> & HasType<P>;
 
 type Morphism<
   MO extends MapOptions = MapOptions,
-  RM extends ResolveMap = ResolveMap,
+  RM extends ResolveMap = any,
   BM extends BranchMap = BranchMap,
   QO extends QueryOptions = QueryOptions,
   PO extends ParamOptions = ParamOptions,

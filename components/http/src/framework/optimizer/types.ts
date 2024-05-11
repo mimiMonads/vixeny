@@ -107,7 +107,7 @@ export type AnyMorphism<
   ) => Return;
 };
 export type MorphismMap = {
-  [key: string]: Morphism<any, any, any, any, any, any, any, any>;
+  [key: string]: Morphism<any, any, any, any, any, any, any, any> ;
 };
 export type AnyMorphismMap = {
   [key: string]: AnyMorphism<any, any, any, any, any, any, any, any>;
