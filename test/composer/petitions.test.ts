@@ -13,7 +13,11 @@ const syncResolve = petitions.resolve()({
 });
 
 const asyncNestedResolve = petitions.resolve()({
-  f: async (_) => await Promise.resolve("syncResolve"),
+  f: async (_) => await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("foo");
+    }, 300);
+  }).then( _ => 'hello')
 });
 
 const asyncResolve = petitions.resolve()({
@@ -76,10 +80,11 @@ Deno.test("request case with resolve", async () => {
     f: (ctx) => new Response(ctx.resolve.sync),
   });
 
-  const request = await compose()(stdResponse)(
-    new Request("http://hello.com/"),
-  );
+  const request = await compose()(stdResponse)(new Request("http://hello.com/"))
+
 
   assertEquals(await request.text(), "syncResolve");
-  assertEquals(request.status, 200);
+   assertEquals(request.status, 200);
 });
+
+
