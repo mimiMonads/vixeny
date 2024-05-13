@@ -2,10 +2,12 @@ import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import resolve from "../../src/composer/resolve/main.ts"
 import { petitions } from "../../src/morphism.ts";
 
+// Resolve
 
 const nestedResolve = petitions.resolve()({
   f: (_) => "syncResolve",
 });
+
 const syncResolve = petitions.resolve()({
   resolve: {
     sync: nestedResolve,
@@ -24,7 +26,11 @@ const asyncResolve = petitions.resolve()({
   f: (ctx) => ctx.resolve.async,
 });
 
-Deno.test("sync morpishim", async () => {
+// Branch
+
+
+// Test 
+Deno.test("sync resolve", async () => {
 
   const map = await resolve()("test")({
     nestedResolve : nestedResolve,
@@ -36,7 +42,7 @@ Deno.test("sync morpishim", async () => {
   assertEquals(map.sync,map.nestedResolve)
 })
 
-Deno.test("async morpishim", async () => {
+Deno.test("async resolve", async () => {
 
   const map = await resolve()("test")({
     nestedResolve:asyncResolve

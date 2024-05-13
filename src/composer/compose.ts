@@ -26,13 +26,13 @@ export default (o?: FunRouterOptions) =>
             : composition(f.f)(
               linker(o)(f)(elementsUsed),
             ))(
-            f.type === "request"
+            f.type === "request" || f.type === 'morphism'
               ? new Function(`
       return ${table.headers ? "h=>" : ""}f=>c=>${
                 table.async || table.asyncResolve ? "async " : ""
               }r=>${table.async || table.asyncResolve ? "await f" : "f"}(${
                 table.asyncResolve ? "await c" : "c"
-              }(${"mutable" in f ? "[r,{res: new Response()}]" : "r"}))`)()
+              }(${"mutable" in f ? "[r,{res: {}}]" : "r"}))`)()
               : new Function(
                 `return ${table.headers ? "h=>" : ""}${
                   table.async ? "f=>" : "f=>"
@@ -41,7 +41,7 @@ export default (o?: FunRouterOptions) =>
                 }r=> new Response(${
                   table.async || table.asyncResolve ? "await f" : "f"
                 }(${table.asyncResolve ? "await c" : "c"}(${
-                  "mutable" in f ? "[r,{res: new Response()}]" : "r"
+                  "mutable" in f ? "[r,{res: {}}]" : "r"
                 }))${table.headers ? ",h" : ""})`,
               )(),
           )
