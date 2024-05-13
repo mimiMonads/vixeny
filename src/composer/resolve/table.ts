@@ -15,8 +15,8 @@ export default (o?: FunRouterOptions) =>
         (composed: Petition["f"]) =>
           x.f.constructor.name === "AsyncFunction" || composed.constructor.name === "AsyncFunction"
             ? ((a) => (k: (arg0: any) => any) => async (r: any) =>
-               void console.log(a.toString())?? await k(await a(r)))(composed)(x.f)
-            : ((a) => (k: (arg0: any) => any) => (r: any) => void console.log(composed.toString())?? k(a(r)))(
+                await k(await a(r)))(composed)(x.f)
+            : ((a) => (k: (arg0: any) => any) => (r: any) =>  k(a(r)))(
               composed,
             )(x.f)
       )(
