@@ -26,7 +26,7 @@ export default (o?: FunRouterOptions) =>
             : composition(f.f)(
               linker(o)(f)(elementsUsed),
             ))(
-            f.type === "request" || f.type === 'morphism'
+            f.type === "request" || f.type === 'morphism' || typeof f.type === 'undefined'
               ? new Function(`
       return ${table.headers ? "h=>" : ""}f=>c=>${
                 table.async || table.asyncResolve ? "async " : ""

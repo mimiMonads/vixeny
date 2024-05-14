@@ -1,5 +1,6 @@
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import resolve from "../../src/composer/resolve/main.ts"
+import branch from "../../src/composer/branch/main.ts"
 import { petitions } from "../../src/morphism.ts";
 
 // Resolve
@@ -28,6 +29,16 @@ const asyncResolve = petitions.resolve()({
 
 // Branch
 
+const nestedBranch = petitions.branch()({
+  arguments: 'string',
+  f: (ctx) => ctx.arguments,
+});
+
+const asyncNestedBranch = petitions.branch()({
+  arguments: 'string',
+  f: async (ctx) => Promise.resolve(ctx.arguments),
+});
+
 
 // Test 
 Deno.test("sync resolve", async () => {
@@ -53,4 +64,27 @@ Deno.test("async resolve", async () => {
 
 
   assertEquals(map.nestedResolve.hello, 1)
+})
+
+// Branch
+
+Deno.test("sync branch", async () => {
+
+  const map = await branch()("test")({
+    sync : nestedBranch,
+  })(new Request('http://test/'))
+
+
+  assertEquals(map.sync('sync'),'sync')
+})
+
+
+Deno.test("async branch", async () => {
+
+  const map = await branch()("test")({
+    async : asyncNestedBranch,
+  })(new Request('http://test/'))
+
+
+  assertEquals( await map.async('async'),'async')
 })

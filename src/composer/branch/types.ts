@@ -6,4 +6,4 @@ export type BranchOption = Petition & {
 };
 export type BranchOptions = BranchOption[];
 
-export type ResponseResponse = (r: Request) => unknown;
+export type ResponseResponse = (r: Request) => { [key: string]: (arg:any) => any}
