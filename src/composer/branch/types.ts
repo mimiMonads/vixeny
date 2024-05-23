@@ -8,4 +8,4 @@ export type BranchOptions = BranchOption[];
 
 export type ResponseResponse = (
   r: Request,
-) => { [key: string]: (arg: any) => any };
+) => { [key: string]: (arg?: any) => any };
