@@ -53,4 +53,39 @@ Deno.test("check only behaivour", async () => {
         }))
     ,['query']);     
 
+    assertEquals(
+        mainCheck()(petitions.common()({
+            path:'/test',
+            options: {
+                remove: ["query"],
+                only: ['query']
+            },
+            f: ctx => ctx.query.hello ?? 'hello'
+        }))
+    ,['query']);     
+
+    assertEquals(
+        mainCheck()(petitions.common()({
+            path:'/test',
+            options: {
+                add: ["query"],
+                only: ['query']
+            },
+            f: ctx => ctx.query.hello ?? 'hello'
+        }))
+    ,['query']);    
+
+    assertEquals(
+        mainCheck()(petitions.common()({
+            path:'/test',
+            options: {
+                remove: ["query"],
+                add: ['query'],
+                only: ['query']
+            },
+            f: ctx => ctx.query.hello ?? 'hello'
+        }))
+    ,['query']);     
+
+
   });

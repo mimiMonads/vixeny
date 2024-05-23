@@ -1,3 +1,4 @@
+
 import type { Petition } from "../../morphism.ts";
 
 export default {
@@ -24,4 +25,33 @@ export default {
         .filter((element) =>
           new RegExp(`\\b${element}\\b`).test(filteredString)
         ),
+
+    updateListOfAddAndRemove:  (f: Petition) => (elements: string[]) => (plugins : {[key: string]: any}) =>
+    (
+      listOfElements =>
+        (
+          keysOnMorphisim =>
+            (addRemove => 
+              ({
+                add: addRemove,
+                remove: addRemove
+              })
+              )(
+              [...new Set(keysOnMorphisim.reduce(
+                (acc,val) => 
+                  listOfElements.includes(val)
+                    ? [...acc , val]
+                    : acc
+                  ,
+                f.options?.add ?? []
+              ))
+            ]
+            )
+
+        ) (
+          Object.keys(f)
+        )
+    )(
+      [...elements, ... Object.keys(plugins)]
+    )
 };

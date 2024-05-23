@@ -1,6 +1,6 @@
 import type { Petition } from "../morphism.ts";
 import type { FunRouterOptions } from "../options.ts";
-import checker from "./checker.ts";
+import mainCheck from "./checkPetition/mainCheck.ts";
 type RecFunc = (f: Petition) => boolean;
 
 export default {
@@ -65,20 +65,7 @@ export default {
     (o?: FunRouterOptions) =>
     (f: Petition) =>
     (elements: { (f: Petition): string[] }) =>
-      (
-          f.options && typeof f.options?.only !== "undefined" &&
-          f.options.only.length > 0
-        )
-        ? Object.keys(f.options.only)
-        : checker(
-          (f.options && f.options.remove) ? Object.keys(f.options.remove) : [],
-        )([...elements(f), ...(Object.keys(o?.cyclePlugin || {}) || [])])(
-          [
-            ...((f.options && f.options.add) ? f.options.add : []),
-          ],
-        )(
-          f.f.toString(),
-        ),
+        mainCheck(o)(f),
   elements: (f: Petition) =>
     f.crypto && "globalKey" in f.crypto
       ? [
