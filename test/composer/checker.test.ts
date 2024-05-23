@@ -89,3 +89,86 @@ Deno.test("check only behaivour", async () => {
 
 
   });
+
+  Deno.test("check remove behaivour", async () => {
+    assertEquals(
+        mainCheck()(petitions.common()({
+            path:'/test',
+            options: {
+                remove: ["query"],
+            },
+            f: ctx => ctx.query.param ?? 'hello'
+        })),
+        ['param']
+    )
+    assertEquals(
+        mainCheck()(petitions.common()({
+            path:'/test',
+            options: {
+                remove: ["query","param"],
+            },
+            f: ctx => ctx.query.param ?? 'hello'
+        })),
+        []
+    )
+    //duplicate
+    assertEquals(
+        mainCheck()(petitions.common()({
+            path:'/test',
+            options: {
+                remove: ["query","param","query"],
+            },
+            f: ctx => ctx.query.param ?? 'hello'
+        })),
+        []
+    )
+    //value not needed
+    assertEquals(
+        mainCheck()(petitions.common()({
+            path:'/test',
+            options: {
+                remove: ["query","param","query", "req"],
+            },
+            f: ctx => ctx.query.param ?? 'hello'
+        })),
+        []
+    )
+  })
+
+
+  Deno.test("check remove behaivour", async () => {
+    assertEquals(
+        mainCheck()(petitions.common()({
+            path:'/test',
+            options: {
+                add: ['req'],
+            },
+            f: () => 'hello'
+        })),
+        ['req']
+    )
+    //duplicates
+    assertEquals(
+        mainCheck()(petitions.common()({
+            path:'/test',
+            options: {
+                add: ['req','req'],
+            },
+            f: () => 'hello'
+        })),
+        ['req']
+    )
+        //overrides remove and it's unique
+        assertEquals(
+            mainCheck()(petitions.common()({
+                path:'/test',
+                options: {
+                    remove: ['req'],
+                    add: ['req','req'],
+                },
+                f: () => 'hello'
+            })),
+            ['req']
+        )
+  })
+

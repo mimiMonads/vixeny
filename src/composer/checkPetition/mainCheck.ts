@@ -10,8 +10,8 @@ export default  (o?: FunRouterOptions) => (f: Petition) =>
     ? f.options.only
       ? f.options.only
       : (
-        newAddRemove =>
-        checkParse(composerTools.elements(f))(newAddRemove.remove)(newAddRemove.add)(f)
+        newOptions =>
+        checkParse(newOptions.elements)(newOptions.remove)(newOptions.add)(f)
 
       )(
         checkTool.updateListOfAddAndRemove(f)(composerTools.elements(f))(o?.cyclePlugin ?? {})

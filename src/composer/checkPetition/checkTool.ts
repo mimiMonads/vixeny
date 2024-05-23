@@ -24,32 +24,30 @@ export default {
         // Second filter: Match elements against the code string for exact matches
         .filter((element) =>
           new RegExp(`\\b${element}\\b`).test(filteredString)
-        ),
-
+        )
+    ,
     updateListOfAddAndRemove:  (f: Petition) => (elements: string[]) => (plugins : {[key: string]: any}) =>
     (
       listOfElements =>
         (
           keysOnMorphisim =>
-            (addRemove => 
               ({
-                add: addRemove,
-                remove: addRemove
+                add: [...new Set(keysOnMorphisim.reduce(
+                  (acc,val) => 
+                    listOfElements.includes(val)
+                      ? [...acc , val]
+                      : acc
+                    ,
+                  f.options?.add ?? []
+                ))
+              ],
+                remove: f.options?.remove ?? [],
+                elements: listOfElements.filter(s => listOfElements.includes(s))
               })
-              )(
-              [...new Set(keysOnMorphisim.reduce(
-                (acc,val) => 
-                  listOfElements.includes(val)
-                    ? [...acc , val]
-                    : acc
-                  ,
-                f.options?.add ?? []
-              ))
-            ]
-            )
+
 
         ) (
-          Object.keys(f)
+           Object.keys(f)
         )
     )(
       [...elements, ... Object.keys(plugins)]
