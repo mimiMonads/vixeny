@@ -13,11 +13,11 @@ export default (o?: specialOptions) =>
         (composed) =>
           x.f.constructor.name === "AsyncFunction" ||
             composed.constructor.name === "AsyncFunction"
-            ? void console.log(composed.toString()) ??
+            ? //void console.log(composed.toString()) ??
               ((a) =>
               (k: (arg0: any) => any) =>
               (r: Request) =>
-              async (b: unknown) => await k(a(r)(b)))(composed)(x.f)
+              async (b: unknown) =>  k(await a( r)(b)))(composed)(x.f)
             : ((a) => (k: (arg0: any) => any) => (r: Request) => (b: unknown) =>
               k(a(r)(b)))(composed)(x.f)
       )(
