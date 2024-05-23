@@ -11,11 +11,14 @@ export default (o?: specialOptions) =>
       name: x.name,
       f: (
         (composed) =>
-          x.f.constructor.name === "AsyncFunction" ||  composed.constructor.name === "AsyncFunction"
-            ?  void console.log(composed.toString()) ?? ((a) =>
-            (k: (arg0: any) => any) =>
-            (r: Request) => async (b: unknown) => await k(a(r)(b)))(composed)(x.f)
-            : void console.log(composed.toString()) ?? ((a) => (k: (arg0: any) => any) => (r: Request) => (b: unknown) =>
+          x.f.constructor.name === "AsyncFunction" ||
+            composed.constructor.name === "AsyncFunction"
+            ? void console.log(composed.toString()) ??
+              ((a) =>
+              (k: (arg0: any) => any) =>
+              (r: Request) =>
+              async (b: unknown) => await k(a(r)(b)))(composed)(x.f)
+            : ((a) => (k: (arg0: any) => any) => (r: Request) => (b: unknown) =>
               k(a(r)(b)))(composed)(x.f)
       )(
         aComposer(o ? { ...o, branch: false } : { branch: false })(x)(

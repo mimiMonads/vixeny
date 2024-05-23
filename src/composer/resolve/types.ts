@@ -6,7 +6,7 @@ export type ResolveOption = ResolveMorphism & {
 };
 export type ResolveOptions = ResolveOption[];
 
-export type ResponseResponse = (r: Request) => { [key: string]: any};
+export type ResponseResponse = (r: Request) => { [key: string]: any };
 
 export type TypeResolveOptions =
   | ({ async: false; f: (f: any) => BodyInit })[]

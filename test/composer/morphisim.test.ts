@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
-import resolve from "../../src/composer/resolve/main.ts"
-import branch from "../../src/composer/branch/main.ts"
+import resolve from "../../src/composer/resolve/main.ts";
+import branch from "../../src/composer/branch/main.ts";
 import { petitions } from "../../src/morphism.ts";
 
 // Resolve
@@ -17,7 +17,7 @@ const syncResolve = petitions.resolve()({
 });
 
 const asyncNestedResolve = petitions.resolve()({
-  f: async f=> await f.req.json(),
+  f: async (f) => await f.req.json(),
 });
 
 const asyncResolve = petitions.resolve()({
@@ -30,61 +30,53 @@ const asyncResolve = petitions.resolve()({
 // Branch
 
 const nestedBranch = petitions.branch()({
-  arguments: 'string',
+  arguments: "string",
   f: (ctx) => ctx.arguments,
 });
 
 const asyncNestedBranch = petitions.branch()({
-  arguments: 'string',
-  f: async (ctx) => Promise.resolve(ctx.arguments),
+  arguments: "string",
+  f: async (ctx) => ctx.arguments,
 });
 
-
-// Test 
+// Test
 Deno.test("sync resolve", async () => {
-
   const map = await resolve()("test")({
-    nestedResolve : nestedResolve,
-    sync: syncResolve
-  })(new Request('http://test/'))
+    nestedResolve: nestedResolve,
+    sync: syncResolve,
+  })(new Request("http://test/"));
 
-
-
-  assertEquals(map.sync,map.nestedResolve)
-})
+  assertEquals(map.sync, map.nestedResolve);
+});
 
 Deno.test("async resolve", async () => {
-
   const map = await resolve()("test")({
-    nestedResolve:asyncResolve
-  })(new Request('http://test/', {
-    body: '{"hello":1}',
-    method: "POST"
-  }))
+    nestedResolve: asyncResolve,
+  })(
+    new Request("http://test/", {
+      body: '{"hello":1}',
+      method: "POST",
+    }),
+  );
 
-
-  assertEquals(map.nestedResolve.hello, 1)
-})
+  assertEquals(map.nestedResolve.hello, 1);
+});
 
 // Branch
 
 Deno.test("sync branch", async () => {
-
   const map = await branch()("test")({
-    sync : nestedBranch,
-  })(new Request('http://test/'))
+    sync: nestedBranch,
+  })(new Request("http://test/"));
 
-
-  assertEquals(map.sync('sync'),'sync')
-})
-
+  assertEquals(map.sync("sync"), "sync");
+});
 
 Deno.test("async branch", async () => {
-
   const map = await branch()("test")({
-    async : asyncNestedBranch,
-  })(new Request('http://test/'))
+    async: asyncNestedBranch,
+  })(new Request("http://test/"));
 
-
-  assertEquals( await map.async('async'),'async')
-})
+  console.log(map.async.toString());
+  assertEquals(await map.async("async"), "async");
+});
