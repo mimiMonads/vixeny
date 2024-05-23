@@ -88,3 +88,76 @@ Deno.test("base case with async resolve", async () => {
   assertEquals(await base.json(), { "hello": 1 });
   assertEquals(base.status, 200);
 });
+
+Deno.test("standart case", async () => {
+  const base = await compose()({
+    type: "request",
+    path: "/",
+    f: (_) => new Response("request"),
+  })(new Request("http://hello.com/"));
+
+
+
+  assertEquals(await base.text(), "request");
+  assertEquals(base.status, 200);
+
+
+});
+
+
+Deno.test("standart case with resolve", async () => {
+  const baseResponse = petitions.standart()({
+    path: "/",
+    resolve: {
+      sync: syncResolve,
+    },
+    f: (ctx) => new Response(ctx.resolve.sync),
+  });
+
+  const base = await compose()(
+    baseResponse,
+  )(new Request("http://hello.com/"));
+
+  assertEquals(await base.text(), "syncResolve");
+  assertEquals(base.status, 200);
+});
+
+Deno.test("standart case with resolve", async () => {
+  const baseResponse = petitions.standart()({
+    path: "/",
+    resolve: {
+      sync: syncResolve,
+    },
+    f: (ctx) => new Response(ctx.resolve.sync),
+  });
+
+  const base = await compose()(
+    baseResponse,
+  )(new Request("http://hello.com/"));
+
+  assertEquals(await base.text(), "syncResolve");
+  assertEquals(base.status, 200);
+});
+
+
+Deno.test("standart case with async resolve", async () => {
+  const baseResponse = petitions.standart()({
+    path: "/",
+    resolve: {
+      async: asyncResolve,
+    },
+    f: (ctx) => new Response(JSON.stringify(ctx.resolve.async)),
+  });
+
+  const base = await compose()(
+    baseResponse,
+  )(
+    new Request("http://test/", {
+      body: '{"hello":1}',
+      method: "POST",
+    }),
+  );
+
+  assertEquals(await base.json(), { "hello": 1 });
+  assertEquals(base.status, 200);
+});
