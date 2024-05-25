@@ -911,14 +911,14 @@ export type StaticFilePluginExtensions<
       root: string;
       path: string;
       relativeName: string;
-    }) => typeof petitions.standart;
+    }) =>  ReturnType < ReturnType< typeof petitions.standart>>;
   }
   : {
     r: (options: {
       root: string;
       path: string;
       relativeName: string;
-    }) => typeof petitions.response;
+    }) => ReturnType < ReturnType< typeof petitions.response >>;
   };
 
 /**

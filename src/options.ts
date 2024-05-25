@@ -30,6 +30,16 @@ export type FunRouterOptions = {
    * ```
    */
   readonly hasName?: string;
+    /**
+   * @experimental To be implemented.
+   */
+  readonly base?:{
+    index: string
+  }  | {
+    wildIndex: true
+  } | {
+    at: number
+  }
   readonly cors?: CORSOptions;
   readonly router?: {
     /**

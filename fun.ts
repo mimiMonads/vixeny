@@ -11,8 +11,24 @@
  *  Thanks and have fun and remember that we are in alhpa
  */
 
-import serve from "./components/http/serve.ts";
+import type { FunRouterOptions} from "./src/options.ts";
 
-import { Vixeny } from "./components/http/types.ts";
+import optimizer from "./src/composer/mainComposer.ts";
+import atlas from "./src/framework/builder/atlas/main1.ts";
+import split from "./src/framework/builder/atlas/splitter.ts";
+import solver from "./src/framework/builder/solver1.ts";
 
-export default serve as Vixeny;
+export default ((o?: FunRouterOptions) => (routes) =>
+  ((re) =>
+    ((map) =>
+      ((s) => (r: Request) => map[s(r)](r))(
+        solver(o)(re),
+      ))([...re[3]]))(
+      atlas(o)(
+        split(o)(
+          optimizer(o)(routes),
+        ),
+      ),
+    )) 
+
+
