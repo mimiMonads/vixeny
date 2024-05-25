@@ -1,5 +1,7 @@
 **Welcome to Vixeny: Revolutionize Your Web Development**
 
+`Status : Currectly restructuring the project for the beta`
+
 <p align="center">
   <img src="misc/logo.png" alt="Vixeny Logo"  style="max-width: 100%;">
   <br>
