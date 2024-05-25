@@ -4,17 +4,22 @@ import main from "../../src/staticFiles/staticFileMain.ts";
 import { petitions } from "../../src/morphism.ts";
 
 test(
-  "test",
+  "static file cheking logo",
   () =>
     assert.deepStrictEqual(
-      main()({ type: "fileServer", path: "./misc/", name: "/hello", mime: false })
+      main()({
+        type: "fileServer",
+        path: "./misc/",
+        name: "/hello",
+        mime: false,
+      })
         .some((x) => x.path === "/hello/logo.png"),
       true,
     ),
 );
 
 test(
-  "test",
+  "static file cheking extension",
   () =>
     assert.deepStrictEqual(
       main()({
@@ -30,7 +35,7 @@ test(
 );
 
 test(
-  "test",
+  "static file has path",
   () =>
     assert.deepStrictEqual(
       main()({ type: "fileServer", path: "./misc/", name: "/", mime: false })
@@ -40,7 +45,7 @@ test(
 );
 
 test(
-  "test",
+  "static file has nested path",
   () =>
     assert.deepStrictEqual(
       main()({
@@ -54,7 +59,7 @@ test(
 );
 
 test(
-  "test",
+  "static file plugin",
   () =>
     assert.deepStrictEqual(
       main()({
@@ -64,12 +69,12 @@ test(
         mime: false,
         template: [{
           checker: (s) => s.includes(".png"),
-          type: 'response',
-          r: (options) => petitions.response()({
-            path: options.relativeName.slice(0, -4),
-            r: () => new Response(""),
-          }),
-
+          type: "response",
+          r: (options) =>
+            petitions.response()({
+              path: options.relativeName.slice(0, -4),
+              r: () => new Response(""),
+            }),
         }],
       })
         .some((x) => x.path === "/hello/nested/logo"),

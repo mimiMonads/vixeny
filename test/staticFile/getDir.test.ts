@@ -7,7 +7,9 @@ test(
   "static",
   () =>
     assert.deepStrictEqual(
-      staticFileTools.getDir("./misc/").every((x) => x[0] === "." && x[1] === "/"),
+      staticFileTools.getDir("./misc/").every((x) =>
+        x[0] === "." && x[1] === "/"
+      ),
       true,
     ),
 );

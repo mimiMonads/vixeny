@@ -11,7 +11,7 @@
  *  Thanks and have fun and remember that we are in alhpa
  */
 
-import type { FunRouterOptions} from "./src/options.ts";
+import type { FunRouterOptions } from "./src/options.ts";
 
 import optimizer from "./src/composer/mainComposer.ts";
 import atlas from "./src/framework/builder/atlas/main1.ts";
@@ -29,6 +29,4 @@ export default ((o?: FunRouterOptions) => (routes) =>
           optimizer(o)(routes),
         ),
       ),
-    )) 
-
-
+    ));

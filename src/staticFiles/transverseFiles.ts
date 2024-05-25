@@ -1,14 +1,13 @@
-import poly from './denoBunFS.ts'
+import poly from "./denoBunFS.ts";
 import staticFileTools from "./staticFileTools.ts";
-
 
 export default (dir: string): [string, boolean][] =>
   (
     (Y) => (
       Y((f: (arg0: string) => [string, boolean][]) => (
         (dir: string): [string, boolean][] =>
-        poly.getFiles(dir).flatMap((item) =>
-          poly.stats(staticFileTools.join(dir)(item)).isDirectory()
+          poly.getFiles(dir).flatMap((item) =>
+            poly.stats(staticFileTools.join(dir)(item)).isDirectory()
               ? [
                 [staticFileTools.join(dir)(item), true],
                 ...f(staticFileTools.join(dir)(item)),
