@@ -35,7 +35,7 @@ const nestedBranch = petitions.branch()({
 });
 
 const asyncNestedBranch = petitions.branch()({
-  f: async (ctx) =>  await ctx.req.json(),
+  f: async (ctx) => await ctx.req.json(),
 });
 
 // Test
@@ -79,7 +79,7 @@ Deno.test("async branch", async () => {
       body: '{"hello":1}',
       method: "POST",
     }),
-  )
+  );
 
-  assertEquals(await map.async(), {hello: 1});
+  assertEquals(await map.async(), { hello: 1 });
 });

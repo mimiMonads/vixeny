@@ -1,15 +1,18 @@
-export default (joiner: (base: string) => (target: string) => string) =>
-(readdir: (directoryPath: string) => string[]) =>
-(stat: (directoryPath: string) => { isDirectory: () => boolean }) =>
-(dir: string): [string, boolean][] =>
+import { readdirSync, statSync } from "fs";
+import staticFileTools from "./staticFileTools.ts";
+
+export default (dir: string): [string, boolean][] =>
   (
     (Y) => (
       Y((f: (arg0: string) => [string, boolean][]) => (
         (dir: string): [string, boolean][] =>
-          readdir(dir).flatMap((item) =>
-            stat(joiner(dir)(item)).isDirectory()
-              ? [[joiner(dir)(item), true], ...f(joiner(dir)(item))]
-              : [[joiner(dir)(item), false]]
+          readdirSync(dir).flatMap((item) =>
+            statSync(staticFileTools.join(dir)(item)).isDirectory()
+              ? [
+                [staticFileTools.join(dir)(item), true],
+                ...f(staticFileTools.join(dir)(item)),
+              ]
+              : [[staticFileTools.join(dir)(item), false]]
           ) as [string, boolean][]
       ))(dir)
     )

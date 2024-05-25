@@ -64,8 +64,7 @@ export default {
   isUsing:
     (o?: FunRouterOptions) =>
     (f: Petition) =>
-    (elements: { (f: Petition): string[] }) =>
-        mainCheck(o)(f),
+    (elements: { (f: Petition): string[] }) => mainCheck(o)(f),
   elements: (f: Petition) =>
     f.crypto && "globalKey" in f.crypto
       ? [

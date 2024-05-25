@@ -1,5 +1,5 @@
 import type { CyclePluginMap, FunRouterOptions } from "./options.ts";
-import compose from "./composer/compose.ts";
+import type { ParamsMethod } from "./router/types.ts";
 
 export type Petition = Morphism<
   {
@@ -98,7 +98,8 @@ export const petitions = {
     AR = any,
     R = any,
   >(I: {
-    f: { (ctx: Request): Response | Promise<Response> };
+    path: string;
+    r: { (ctx: Request): Response | Promise<Response> };
   }): Morphism<
     {
       type: "response";
@@ -111,7 +112,14 @@ export const petitions = {
     CO,
     AR,
     R
-  > => ({ ...I, type: "response" }),
+  > => {
+    return ({
+      ...I,
+      f: () =>
+        new Response("Unreachable: TODO: make response work without an f"),
+      type: "response",
+    });
+  },
   resolve: <RO extends FunRouterOptions>(O?: RO) =>
   <
     RM extends ResolveMap<any>,
@@ -254,11 +262,6 @@ export type ResolveMap<T> = {
     : never;
 };
 
-const composed = {
-  resolve: 1,
-  branch: 1,
-};
-
 export type BranchMap<T> = {
   [K in keyof T]: T[K] extends Morphism<
     {
@@ -323,6 +326,7 @@ type Morphism<
 > = {
   readonly resolve?: RM;
   readonly branch?: BM;
+  readonly method?: ParamsMethod;
   readonly crypto?: CO;
   readonly arguments?: MO extends { branch: true } ? AT : never;
   readonly query?: QO;
@@ -333,6 +337,9 @@ type Morphism<
     [Extract<keyof RO["cyclePlugin"], string>],
     CO
   >;
+  readonly r?: MO["type"] extends "response"
+    ? (r: Request) => Promise<Response> | Response
+    : never;
   readonly f: {
     (
       ctx: MO["type"] extends "response" ? Request
@@ -889,15 +896,30 @@ type CryptoOptions = {
   };
 } | {};
 
-type StaticFilePlugin = {
+type StaticFilePlugin<
+  TP extends "response" | "request" | undefined,
+> = {
   checker: (path: string) => boolean;
+  type?: TP;
   async?: boolean;
-  r: (options: {
-    root: string;
-    path: string;
-    relativeName: string;
-  }) => typeof petitions.response;
-};
+} & StaticFilePluginExtensions<TP>;
+
+export type StaticFilePluginExtensions<
+  TP extends "response" | "request" | undefined,
+> = TP extends "request" ? {
+    f: (options: {
+      root: string;
+      path: string;
+      relativeName: string;
+    }) => typeof petitions.standart;
+  }
+  : {
+    r: (options: {
+      root: string;
+      path: string;
+      relativeName: string;
+    }) => typeof petitions.response;
+  };
 
 /**
  * Object for raw response static.
@@ -920,7 +942,7 @@ export type fileServerPetition =
     mime: false;
   })
   & {
-    template?: StaticFilePlugin[];
+    template?: StaticFilePlugin<any>[];
     removeExtensionOf?: defaultMime[];
     slashIs?: string;
   };

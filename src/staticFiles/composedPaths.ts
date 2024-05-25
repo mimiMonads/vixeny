@@ -1,5 +1,5 @@
 import type { fileServerPetition, Petition } from "../morphism.ts";
-import getMime from "./getMime.ts";
+import staticFileTools from "./staticFileTools.ts";
 
 //TODO: make it more redable 🙏
 
@@ -16,18 +16,13 @@ export default (f: fileServerPetition) =>
             (x) =>
               ((checks) =>
                 checks
-                  ? checks!.r(
-                    {
-                      root: root,
-                      path: x,
-                      relativeName: root.slice(1, -1) +
-                        x.slice(name.length - 1),
-                    },
+                  ? staticFileTools.getValidPetitionFromPlugin(checks)(root)(x)(
+                    name,
                   )
                   : ({
                     path: root.slice(1, -1) + x.slice(name.length - 1),
                     type: "response",
-                    r: (new Function(
+                    r: staticFileTools.fromStringToPetition(
                       //@ts-ignore
                       typeof Deno === "object"
                         ? `return async () => new Response( await Deno.readFile("${x}"), {headers:  {'Content-Type': '${
@@ -36,7 +31,7 @@ export default (f: fileServerPetition) =>
                         : `return async _=> new Response( await ( Bun.file("${x}")).arrayBuffer(), {headers:  {'Content-Type': '${
                           checker("." + x.split(".").at(-1))
                         }'}})`,
-                    ))() as () => Promise<Response>,
+                    ),
                   }))(
                   f.template!.find((y) =>
                     y.checker(root.slice(1, -1) + x.slice(name.length - 1))
@@ -47,7 +42,7 @@ export default (f: fileServerPetition) =>
             (x) => ({
               path: root.slice(1, -1) + x.slice(name.length - 1),
               type: "response",
-              r: (new Function(
+              r: staticFileTools.fromStringToPetition(
                 //@ts-ignore
                 typeof Deno === "object"
                   ? `return async () => new Response( await Deno.readFile("${x}"), {headers:  {'Content-Type': '${
@@ -56,34 +51,28 @@ export default (f: fileServerPetition) =>
                   : `return async _=> new Response( await ( Bun.file("${x}")).arrayBuffer(), {headers:  {'Content-Type': '${
                     checker("." + x.split(".").at(-1))
                   }'}})`,
-              ))() as () => Promise<Response>,
+              ),
             }),
           ) as unknown as Petition[]
     )(
-      getMime(mimes),
+      staticFileTools.getMime(mimes),
     )
     //lazy way, fix later
-    : f.template !== undefined && f.template && f.template.length > 0
+    : "template" in f && f.template && f.template.length > 0
     ? paths.map(
       (x) =>
         ((checks) =>
           checks
-            ? checks!.r(
-              {
-                root: root,
-                path: x,
-                relativeName: root.slice(1, -1) + x.slice(name.length - 1),
-              },
-            )
+            ? staticFileTools.getValidPetitionFromPlugin(checks)(root)(x)(name)
             : ({
               path: root.slice(1, -1) + x.slice(name.length - 1),
               type: "response",
-              r: (new Function(
+              r: staticFileTools.fromStringToPetition(
                 //@ts-ignore
                 typeof Deno === "object"
                   ? `return async () => new Response( await Deno.readFile("${x}"))`
                   : `return async ()=>  new Response(await ( Bun.file("${x}")).arrayBuffer())`,
-              ))() as () => Promise<Response>,
+              ),
             }))(
             f.template!.find((y) =>
               y.checker(root.slice(1, -1) + x.slice(name.length - 1))
@@ -94,11 +83,11 @@ export default (f: fileServerPetition) =>
       (x) => ({
         path: root.slice(1, -1) + x.slice(name.length - 1),
         type: "response",
-        r: (new Function(
+        r: staticFileTools.fromStringToPetition(
           //@ts-ignore
           typeof Deno === "object"
             ? `return async () => new Response( await Deno.readFile("${x}"))`
             : `return async ()=>  new Response(await ( Bun.file("${x}")).arrayBuffer())`,
-        ))() as () => Promise<Response>,
+        ),
       }),
     ) as unknown as Petition[];

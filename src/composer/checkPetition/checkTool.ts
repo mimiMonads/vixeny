@@ -1,4 +1,3 @@
-
 import type { Petition } from "../../morphism.ts";
 
 export default {
@@ -24,32 +23,31 @@ export default {
         // Second filter: Match elements against the code string for exact matches
         .filter((element) =>
           new RegExp(`\\b${element}\\b`).test(filteredString)
-        )
-    ,
-    updateListOfAddAndRemove:  (f: Petition) => (elements: string[]) => (plugins : {[key: string]: any}) =>
-    (
-      listOfElements =>
-        (
-          keysOnMorphisim =>
-              ({
-                add: [...new Set(keysOnMorphisim.reduce(
-                  (acc,val) => 
-                    listOfElements.includes(val)
-                      ? [...acc , val]
-                      : acc
-                    ,
-                  f.options?.add ?? []
-                ))
+        ),
+  updateListOfAddAndRemove:
+    (f: Petition) =>
+    (elements: string[]) =>
+    (plugins: { [key: string]: any }) =>
+      (
+        (listOfElements) =>
+          (
+            (keysOnMorphisim) => ({
+              add: [
+                ...new Set(keysOnMorphisim.reduce(
+                  (acc, val) =>
+                    listOfElements.includes(val) ? [...acc, val] : acc,
+                  f.options?.add ?? [],
+                )),
               ],
-                remove: f.options?.remove ?? [],
-                elements: listOfElements.filter(s => listOfElements.includes(s))
-              })
-
-
-        ) (
-           Object.keys(f)
-        )
-    )(
-      [...elements, ... Object.keys(plugins)]
-    )
+              remove: f.options?.remove ?? [],
+              elements: listOfElements.filter((s) =>
+                listOfElements.includes(s)
+              ),
+            })
+          )(
+            Object.keys(f),
+          )
+      )(
+        [...elements, ...Object.keys(plugins)],
+      ),
 };
