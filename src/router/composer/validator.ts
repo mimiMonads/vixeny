@@ -1,4 +1,4 @@
-import { FunRouterOptions } from "../../../../types.ts";
+import type { FunRouterOptions } from "../../options.ts";
 import map from "./map.ts";
 import parameters from "./parameters.ts";
 

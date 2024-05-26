@@ -1,4 +1,4 @@
-import { FunRouterOptions } from "../../../../types.ts";
+import type { FunRouterOptions } from "../../options.ts";
 import validator from "./validator.ts";
 
 export default (o?: FunRouterOptions<any>) =>

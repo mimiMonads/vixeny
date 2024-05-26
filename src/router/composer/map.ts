@@ -1,6 +1,6 @@
-import { FunRouterOptions } from "../../../../types.ts";
+import type { FunRouterOptions } from "../../options.ts";
 
-import { info } from "./types.ts";
+import type { info } from "./types.ts";
 export default (options?: FunRouterOptions<any>) => (s: string): info =>
   (
     (list) => (

@@ -1,10 +1,7 @@
 ///
 
-import {
-  ObjectRawResponseStatic,
-  Petition,
-} from "./components/http/src/framework/optimizer/types.ts";
-import { FunRouterOptions } from "./components/http/types.ts";
+import type { Petition } from "./src/morphism.ts";
+import type { FunRouterOptions } from "./src/options.ts";
 
 /**
  * Options for the router, it is `optional`
@@ -47,4 +44,3 @@ export type Vixeny = (
  * ```
  */
 export type Petitions = Petition[];
-export type { FunRouterOptions, ObjectRawResponseStatic, Petition };

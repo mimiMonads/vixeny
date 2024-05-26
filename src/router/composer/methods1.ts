@@ -1,8 +1,8 @@
-import { FunRouterOptions } from "../../../../types.ts";
+import type { FunRouterOptions } from "../../options.ts";
 import parser from "./parser1.ts";
 import map from "../atlas/map.ts";
 
-import { Atlas as Atlas1 } from "../atlas/main1.ts";
+import type { Atlas as Atlas1 } from "../atlas/main1.ts";
 
 export default (o?: FunRouterOptions<any>) =>
 (atlas: Atlas1) =>
