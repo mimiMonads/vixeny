@@ -313,7 +313,7 @@ type PetitionHeader = {
   status?: number;
 };
 
-type Morphism<
+export type Morphism<
   MO extends MapOptions = MapOptions,
   RM extends ResolveMap<any> = any,
   BM extends BranchMap<any> = any,
@@ -402,14 +402,14 @@ type DebugOptions = {
   name: string;
 };
 
-type QueryOptions = {
+export type QueryOptions = {
   unique?: true;
   name: string;
 } | {
   only?: string[];
 } | {};
 
-type ParamOptions = {
+export type ParamOptions = {
   readonly unique?: true;
 } | {};
 
@@ -887,7 +887,7 @@ interface Ctx<
    */
 }
 
-type CryptoOptions = {
+export type CryptoOptions = {
   globalKey: SupportedKeys;
   token?: {
     only?: {

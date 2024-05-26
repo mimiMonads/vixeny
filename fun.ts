@@ -14,11 +14,12 @@
 import type { FunRouterOptions } from "./src/options.ts";
 
 import optimizer from "./src/composer/mainComposer.ts";
-import atlas from "./src/framework/builder/atlas/main1.ts";
-import split from "./src/framework/builder/atlas/splitter.ts";
-import solver from "./src/framework/builder/solver1.ts";
+import atlas from "./src/router/atlas/main1.ts";
+import split from "./src/router/atlas/splitter.ts";
+import solver from "./src/router/solver1.ts";
+import type { Petition } from "./src/morphism.ts";
 
-export default ((o?: FunRouterOptions<any>) => (routes) =>
+export default ((o?: FunRouterOptions<any>) => (routes: Petition[]) =>
   ((re) =>
     ((map) =>
       ((s) => (r: Request) => map[s(r)](r))(
