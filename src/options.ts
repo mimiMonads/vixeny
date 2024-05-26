@@ -14,7 +14,9 @@ import type { Petition } from "./morphism.ts";
  * })(...pettions)
  * ```
  */
-export type FunRouterOptions = {
+export type FunRouterOptions<
+  PI extends CyclePluginMap,
+> = {
   /**
    * Optimize the router. It always has to end with "/"
    *
@@ -30,16 +32,6 @@ export type FunRouterOptions = {
    * ```
    */
   readonly hasName?: string;
-  /**
-   * @experimental To be implemented.
-   */
-  readonly base?: {
-    index: string;
-  } | {
-    wildIndex: true;
-  } | {
-    at: number;
-  };
   readonly cors?: CORSOptions;
   readonly router?: {
     /**
@@ -82,26 +74,29 @@ export type FunRouterOptions = {
    */
   405?: (x: Request) => Response;
 
-  readonly cyclePlugin?: CyclePluginMap;
+  readonly cyclePlugin?: PI;
 };
 
 export type CyclePluginMap = {
-  readonly [key: string]: CyclePlugin;
+  readonly [key: string]: CyclePlugin<any>;
 };
 
-export type CyclePlugin = {
+export type CyclePlugin<
+  FC extends true,
+> = {
   readonly name: symbol;
-  readonly f: (
-    o?: FunRouterOptions,
-  ) => (
-    p: Petition,
-  ) => (r: Request | [Request, Record<string, unknown>]) => any;
+  readonly isFunction?: FC;
+  readonly f: FC extends true
+    ? (o?: FunRouterOptions<any>) => (p: Petition) => any
+    : (
+      o?: FunRouterOptions<any>,
+    ) => (
+      p: Petition,
+    ) => (r: Request | [Request, Record<string, unknown>]) => any;
   readonly type: unknown;
   readonly options?: { [k: string]: any };
-} | {
-  readonly name: symbol;
-  readonly isFunction: true;
-  readonly f: (o?: FunRouterOptions) => (p: Petition) => any;
-  readonly type: unknown;
-  readonly options?: { [k: string]: any };
-} | {};
+};
+
+export const globalOptions = <FC extends CyclePluginMap>(
+  o?: FunRouterOptions<FC>,
+) => o;

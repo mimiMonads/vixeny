@@ -4,7 +4,7 @@ import composerTools from "../composerTools.ts";
 import checkParse from "./checkParse.ts";
 import checkTool from "./checkTool.ts";
 
-export default (o?: FunRouterOptions) => (f: Petition) =>
+export default (o?: FunRouterOptions<any>) => (f: Petition) =>
   "options" in f && f.options
     ? f.options.only ? f.options.only : (
       (newOptions) =>

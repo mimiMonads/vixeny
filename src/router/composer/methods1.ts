@@ -4,7 +4,7 @@ import map from "../atlas/map.ts";
 
 import { Atlas as Atlas1 } from "../atlas/main1.ts";
 
-export default (o?: FunRouterOptions) =>
+export default (o?: FunRouterOptions<any>) =>
 (atlas: Atlas1) =>
 (start: number) =>
 (end: number) =>

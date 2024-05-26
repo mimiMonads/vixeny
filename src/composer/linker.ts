@@ -7,7 +7,7 @@ import nativeMaps from "./nativeMaps.ts";
 export type specialOptions = {
   mutable?: true;
   branch?: boolean;
-} & FunRouterOptions;
+} & FunRouterOptions<any>;
 
 export default (o?: specialOptions) => (f: Petition) => (ar: string[]) =>
   ar.length === 0 && !(o && "branch" in o) ? ((r: Request) => r) : (
@@ -35,7 +35,9 @@ export default (o?: specialOptions) => (f: Petition) => (ar: string[]) =>
             )
         )(
           ((or) => nativeComponets(or)(f)(table))(
-            "mutable" in f ? { ...o, mutable: true } as FunRouterOptions : o,
+            "mutable" in f
+              ? { ...o, mutable: true } as FunRouterOptions<any>
+              : o,
           ),
         )
     )(

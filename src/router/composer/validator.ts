@@ -2,7 +2,7 @@ import { FunRouterOptions } from "../../../../types.ts";
 import map from "./map.ts";
 import parameters from "./parameters.ts";
 
-export default (options?: FunRouterOptions) =>
+export default (options?: FunRouterOptions<any>) =>
 (base: number) =>
 (notFound: number) =>
 (ar: string[]) =>

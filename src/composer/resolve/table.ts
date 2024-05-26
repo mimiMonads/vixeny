@@ -4,7 +4,7 @@ import type { ResolveOptions } from "./types.ts";
 import type { FunRouterOptions } from "../../options.ts";
 import type { Petition } from "../../morphism.ts";
 
-export default (o?: FunRouterOptions) =>
+export default (o?: FunRouterOptions<any>) =>
 (path: string) =>
 (table: ResolveOptions) =>
   table

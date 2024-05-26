@@ -31,13 +31,13 @@ export type ResolveMorphism = Morphism<
 >;
 
 export const petitions = {
-  standart: <RO extends FunRouterOptions>(O?: RO) =>
+  standart: <RO extends FunRouterOptions<any>>(O?: RO) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions,
+    RO extends FunRouterOptions<any>,
     CO extends CryptoOptions,
     AR = any,
     R = any,
@@ -59,13 +59,13 @@ export const petitions = {
       R
     >,
   ) => ({ ...I, type: "request" }) as unknown as Petition,
-  common: <RO extends FunRouterOptions>(O?: RO) =>
+  common: <RO extends FunRouterOptions<any>>(O?: RO) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions,
+    RO extends FunRouterOptions<any>,
     CO extends CryptoOptions,
     AR = any,
     R = any,
@@ -87,13 +87,13 @@ export const petitions = {
       R
     >,
   ) => ({ ...I, type: "base" }) as unknown as Petition,
-  response: <RO extends FunRouterOptions>(O?: RO) =>
+  response: <RO extends FunRouterOptions<any>>(O?: RO) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions,
+    RO extends FunRouterOptions<any>,
     CO extends CryptoOptions,
     AR = any,
     R = any,
@@ -120,13 +120,13 @@ export const petitions = {
       type: "response",
     });
   },
-  resolve: <RO extends FunRouterOptions>(O?: RO) =>
+  resolve: <RO extends FunRouterOptions<any>>(O?: RO) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions,
+    RO extends FunRouterOptions<any>,
     CO extends CryptoOptions,
     AT = any,
     R = any,
@@ -145,13 +145,13 @@ export const petitions = {
       R
     >,
   ) => I,
-  branch: <RO extends FunRouterOptions>(O?: RO) =>
+  branch: <RO extends FunRouterOptions<any>>(O?: RO) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions,
+    RO extends FunRouterOptions<any>,
     CO extends CryptoOptions,
     AT = any,
     R = any,
@@ -171,13 +171,13 @@ export const petitions = {
       R
     >,
   ) => I,
-  join: <RO extends FunRouterOptions>(O?: RO) =>
+  join: <RO extends FunRouterOptions<any>>(O?: RO) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions,
+    RO extends FunRouterOptions<any>,
     CO extends CryptoOptions,
     AT = any,
     R = any,
@@ -202,7 +202,7 @@ export const petitions = {
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions,
+    RO extends FunRouterOptions<any>,
     CO extends CryptoOptions,
     AT = any,
     R = any,
@@ -319,7 +319,7 @@ type Morphism<
   BM extends BranchMap<any> = any,
   QO extends QueryOptions = QueryOptions,
   PO extends ParamOptions = ParamOptions,
-  RO extends FunRouterOptions = FunRouterOptions,
+  RO extends FunRouterOptions<any> = FunRouterOptions<any>,
   CO extends CryptoOptions = CryptoOptions,
   AT = any,
   R = any,
@@ -422,7 +422,7 @@ type WithPlugins<
   B extends BranchMap<any>,
   QS extends QueryOptions,
   PA extends ParamOptions,
-  O extends FunRouterOptions,
+  O extends FunRouterOptions<any>,
   CR extends CryptoOptions,
   UNI extends specialElements,
   OPT extends PetitionOptions<any, any>,
@@ -472,7 +472,7 @@ interface Ctx<
   B extends BranchMap<any>,
   QS extends QueryOptions,
   PA extends ParamOptions,
-  O extends FunRouterOptions,
+  O extends FunRouterOptions<any>,
   CR extends CryptoOptions,
   UNI extends specialElements,
   OPT extends PetitionOptions<any, any>,

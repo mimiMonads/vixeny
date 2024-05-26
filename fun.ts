@@ -18,7 +18,7 @@ import atlas from "./src/framework/builder/atlas/main1.ts";
 import split from "./src/framework/builder/atlas/splitter.ts";
 import solver from "./src/framework/builder/solver1.ts";
 
-export default ((o?: FunRouterOptions) => (routes) =>
+export default ((o?: FunRouterOptions<any>) => (routes) =>
   ((re) =>
     ((map) =>
       ((s) => (r: Request) => map[s(r)](r))(

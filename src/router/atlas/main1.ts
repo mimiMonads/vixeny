@@ -20,7 +20,7 @@ export type Atlas = [
   (Atlas | []),
 ];
 
-export default (o?: FunRouterOptions) =>
+export default (o?: FunRouterOptions<any>) =>
 (a: [ArraySwap[], PartialAtlas]): Atlas =>
   (
     (ParamsMethod) =>

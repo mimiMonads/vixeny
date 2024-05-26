@@ -19,7 +19,7 @@ type NativeMaps = {
   type: number;
 };
 
-export default (o?: FunRouterOptions) =>
+export default (o?: FunRouterOptions<any>) =>
 (f: Petition) =>
 (native: NativeMaps[]) =>
   ((list) =>

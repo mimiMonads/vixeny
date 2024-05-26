@@ -22,7 +22,7 @@ import { FunRouterOptions } from "./components/http/types.ts";
  */
 
 export type Vixeny = (
-  o?: FunRouterOptions,
+  o?: FunRouterOptions<any>,
 ) => (routes: Petition[]) => (r: Request) => Promise<Response> | Response;
 /**
  * Vixeny takes an array ot `Petitions`

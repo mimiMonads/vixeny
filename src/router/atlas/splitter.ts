@@ -4,7 +4,7 @@ import main1 from "./main1.ts";
 import { ArraySwap } from "../types.ts";
 import { PartialAtlas } from "./main1.ts";
 
-export default (o?: FunRouterOptions) => (a: RouteTypes[]) =>
+export default (o?: FunRouterOptions<any>) => (a: RouteTypes[]) =>
   (
     (fl) =>
       (

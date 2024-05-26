@@ -5,7 +5,7 @@ import type { Petition, ResolveMap } from "../../morphism.ts";
 
 import table from "./table.ts";
 
-export default (o?: FunRouterOptions) =>
+export default (o?: FunRouterOptions<any>) =>
 (path: string) =>
 (input: ResolveMap<any>): ResponseResponse =>
   (

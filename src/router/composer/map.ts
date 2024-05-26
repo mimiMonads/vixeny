@@ -1,7 +1,7 @@
 import { FunRouterOptions } from "../../../../types.ts";
 
 import { info } from "./types.ts";
-export default (options?: FunRouterOptions) => (s: string): info =>
+export default (options?: FunRouterOptions<any>) => (s: string): info =>
   (
     (list) => (
       ((startsWith) =>

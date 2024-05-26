@@ -5,7 +5,7 @@ import elements from "./elements.ts";
 
 import filter from "./filter.ts";
 import unique from "./unique.ts";
-export default (o?: FunRouterOptions) => (f: Petition) =>
+export default (o?: FunRouterOptions<any>) => (f: Petition) =>
   f.query && "name" in f.query
     ? new Function(`return ${unique([f.query.name])}`)()
     : f.query && "only" in f.query && Array.isArray(f.query.only)

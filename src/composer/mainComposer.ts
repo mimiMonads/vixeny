@@ -8,7 +8,7 @@ import injectHtml from "./injectHtml.ts";
 import type { fileServerPetition, Petition } from "../morphism.ts";
 
 export default (
-  o?: FunRouterOptions,
+  o?: FunRouterOptions<any>,
 ): (routes: (Petition)[]) => RouteTypes[] =>
 (ar) =>
   ar

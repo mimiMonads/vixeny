@@ -62,7 +62,7 @@ export default {
         : new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
       : crypto.globalKey,
   isUsing:
-    (o?: FunRouterOptions) =>
+    (o?: FunRouterOptions<any>) =>
     (f: Petition) =>
     (elements: { (f: Petition): string[] }) => mainCheck(o)(f),
   elements: (f: Petition) =>

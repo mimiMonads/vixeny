@@ -1,7 +1,7 @@
 import { FunRouterOptions } from "../../../../types.ts";
 import validator from "./validator.ts";
 
-export default (o?: FunRouterOptions) =>
+export default (o?: FunRouterOptions<any>) =>
 (routes: string[][]) =>
 (position: number[]) =>
 (an: number[]) =>
