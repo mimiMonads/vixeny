@@ -112,14 +112,13 @@ export const petitions = {
     CO,
     AR,
     R
-  > => {
-    return ({
+  > =>  ({
       ...I,
       f: () =>
         new Response("Unreachable: TODO: make response work without an f"),
       type: "response",
-    });
-  },
+    })
+  ,
   resolve: <RO extends FunRouterOptions<any>>(O?: RO) =>
   <
     RM extends ResolveMap<any>,
@@ -284,6 +283,7 @@ type MapOptions = {
   type?: typeMorphisim;
   branch?: boolean;
   isAPetition?: boolean;
+  mutable?: true;
 };
 
 type HasPath<P extends MapOptions> = P extends { hasPath: true }
@@ -333,6 +333,7 @@ export type Morphism<
   readonly param?: PO;
   readonly headings?: PetitionHeader;
   readonly isAsync?: MO["isAPetition"] extends true ? true : never;
+  readonly mutable?: MO extends { mutable: true } ? true : never;
   readonly options?: PetitionOptions<
     [Extract<keyof RO["cyclePlugin"], string>],
     CO
@@ -342,7 +343,7 @@ export type Morphism<
     : never;
   readonly f: {
     (
-      ctx: MO["type"] extends "response" ? Request
+      ctx: MO["type"] extends "response" ? never
         : WithPlugins<
           RM,
           BM,
