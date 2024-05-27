@@ -1,7 +1,7 @@
-import type { CyclePluginMap, FunRouterOptions } from "./options.ts";
-import response from "./composer/compose.ts";
-import composerTools from "./composer/composerTools.ts";
-import vixeny from "../fun.ts";
+import type { CyclePluginMap, FunRouterOptions } from "../options.ts";
+import response from "../composer/compose.ts";
+import composerTools from "../composer/composerTools.ts";
+import vixeny from "../../fun.ts";
 import type {
   BranchMap,
   CryptoOptions,
@@ -10,7 +10,7 @@ import type {
   Petition,
   QueryOptions,
   ResolveMap,
-} from "./morphism.ts";
+} from "../morphism.ts";
 type WrapOptions<
   T extends CyclePluginMap,
 > = FunRouterOptions<T> & {
@@ -111,7 +111,7 @@ export const wrap = <
   >(
     ob: Morphism<
       {
-        type: "request";
+        type: "base";
         hasPath: true;
         isAPetition: true;
         typeNotNeeded: true;
@@ -447,42 +447,41 @@ export const wrap = <
       o && o.startWith ? { ...x, path: o.startWith + x.path } : { ...x }
     ) as Petition[],
   /**
-    * 
-    *  ```typescript
-    * / Define an identity element for the monoid
-    *   const identity = wrap({})();* 
-    *   // Testing closure
-    *   const a = wrap({})().stdPetition({
-    *       path: '/a',
-    *       f: () => 'test'
-    *   });
-    *   const b = wrap({})().stdPetition({
-    *       path: '/b',
-    *       f: () => 'test'
-    *   });
-    *   const c = a.union(b.unwrap());
-    *   console.log(c.unwrap()); // Should log [{ path: '/a' , ...}, { path: '/b' , ...}]* 
-    *   // Testing associativity
-    *   const d = wrap({})().stdPetition({
-    *       path: '/d',
-    *       f: () => 'test'
-    *   });
-    *   const assoc1 = a.union(b.unwrap()).union(d.unwrap());
-    *   const assoc2 = a.union(b.union(d.unwrap()).unwrap());
-    *   console.log(assoc1.unwrap()); // Should log [{ path: '/a' , ... }, { path: '/b' , ...}, { path: '/d' , ...}]
-    *   console.log(assoc2.unwrap()); // Should log [{ path: '/a' , ...}, { path: '/b' , ...}, { path: '/d', ...}]* 
-    *   // Testing identity
-    *   const idTest1 = a.union(identity.unwrap());
-    *   const idTest2 = identity.union(a.unwrap());
-    *   console.log(idTest1.unwrap()); // Should log [{ path: '/a' , ...}]
-    *   console.log(idTest2.unwrap()); // Should log [{ path: '/a' , ...}]
-    *  ```
-    */
-  pure: (petition: Petition) => wrap(o)([petition]),
-  /**
-   * In theory we should use `ReturnType<ReturnType< typeof wrap>>` but typescript things that's a bug ¯\_(ツ)_/¯
-   * 
+   *  ```typescript
+   * / Define an identity element for the monoid
+   *   const identity = wrap({})();*
+   *   // Testing closure
+   *   const a = wrap({})().stdPetition({
+   *       path: '/a',
+   *       f: () => 'test'
+   *   });
+   *   const b = wrap({})().stdPetition({
+   *       path: '/b',
+   *       f: () => 'test'
+   *   });
+   *   const c = a.union(b.unwrap());
+   *   console.log(c.unwrap()); // Should log [{ path: '/a' , ...}, { path: '/b' , ...}]*
+   *   // Testing associativity
+   *   const d = wrap({})().stdPetition({
+   *       path: '/d',
+   *       f: () => 'test'
+   *   });
+   *   const assoc1 = a.union(b.unwrap()).union(d.unwrap());
+   *   const assoc2 = a.union(b.union(d.unwrap()).unwrap());
+   *   console.log(assoc1.unwrap()); // Should log [{ path: '/a' , ... }, { path: '/b' , ...}, { path: '/d' , ...}]
+   *   console.log(assoc2.unwrap()); // Should log [{ path: '/a' , ...}, { path: '/b' , ...}, { path: '/d', ...}]*
+   *   // Testing identity
+   *   const idTest1 = a.union(identity.unwrap());
+   *   const idTest2 = identity.union(a.unwrap());
+   *   console.log(idTest1.unwrap()); // Should log [{ path: '/a' , ...}]
+   *   console.log(idTest2.unwrap()); // Should log [{ path: '/a' , ...}]
+   *  ```
    */
-  flatMap: (fn: (arg: Petition) => Petition) => a.reduce((acc, x) => acc.addAnyPettition(fn(x)), wrap(o)([])),
+  pure: (petition: Petition) => wrap(o)([petition]),
   addAnyPettition: (petition: Petition) => wrap(o)([...a, petition]),
+  /**
+   * In theory we should use `ReturnType< typeof wrap>` instead of Petition but typescript things that's a bug ¯\_(ツ)_/¯.
+   * So, our flatmap / bind is union.
+   */
+  //flatMap: (fn: (arg: Petition) => Petition) => a.reduce((acc, x) => acc.addAnyPettition(fn(x)), wrap(o)([])),
 });
