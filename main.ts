@@ -1,5 +1,5 @@
-import parseArguments from "./components/runtime/parseArguments.ts";
-import name from "./components/runtime/name.mjs";
+import parseArguments from "./src/runtime/parseArguments.ts";
+import name from "./src/runtime/name.mjs";
 import objectNullRequest from "./components/http/src/optimizer/objectNullRequest.ts";
 import {
   assertOptions,
@@ -43,20 +43,8 @@ export const testing = {
 /**
  * @deprecated use composeResponse .
  */
-export { default as vixeny } from "./components/http/serve.ts";
+export { default as vixeny } from "./fun.ts";
 
-export { default as composeResponse } from "./components/http/serve.ts";
-export { wrap } from "./components/http/src/fold/foldMain.ts";
-export { default as morphism } from "./components/http/src/optimizer/morphism.ts";
-/**
- * @deprecated use plugins.assertOptions .
- */
-export { default as applyBranch } from "./components/http/src/optimizer/branchComposer.ts";
-/**
- * @deprecated use plugins.assertOptions .
- */
-export { default as assertOptions } from "./components/http/src/optimizer/assertOptions.ts";
-/**
- * @deprecated use plugins.assertPlugin .
- */
-export { default as assertPlugin } from "./components/http/src/optimizer/assertPlugin.ts";
+export { default as composeResponse } from "./fun.ts";
+export { wrap } from "./src/exportable/wrap.ts";
+export { petitions } from "./src/morphism.ts";
