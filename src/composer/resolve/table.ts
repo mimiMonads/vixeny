@@ -22,7 +22,7 @@ export default (o?: FunRouterOptions<any>) =>
             )(x.f)
       )(
         aComposer(o)(x as unknown as Petition)(
-          tools.isUsing(o)(x as unknown as Petition)(tools.elements),
+          tools.isUsing(o)(x as unknown as Petition),
         ),
       ),
     }));

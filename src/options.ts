@@ -82,10 +82,10 @@ export type CyclePluginMap = {
 };
 
 export type CyclePlugin<
-  FC extends true,
+  FC extends boolean ,
 > = {
   readonly name: symbol;
-  readonly isFunction?: FC;
+  readonly isFunction: FC;
   readonly f: FC extends true
     ? (o?: FunRouterOptions<any>) => (p: Petition) => any
     : (

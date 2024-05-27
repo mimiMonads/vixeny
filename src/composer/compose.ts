@@ -90,5 +90,5 @@ export default (o?: FunRouterOptions<any>) =>
           : null,
       },
     ))(
-      tools.isUsing(o)(f)(tools.elements),
+      tools.isUsing(o)(f),
     );

@@ -1,12 +1,8 @@
 import parseArguments from "./src/runtime/parseArguments.ts";
 import name from "./src/runtime/name.mjs";
+
 import objectNullRequest from "./components/http/src/optimizer/objectNullRequest.ts";
-import {
-  assertOptions,
-  assertPlugin,
-  getName,
-  getOptions,
-} from "./components/http/src/optimizer/pluginUtil.ts";
+
 import checker from "./components/http/src/framework/optimizer/checker.ts";
 import resolveComposer from "./components/http/src/optimizer/resolveComposer.ts";
 import anyRequest from "./components/http/src/optimizer/anyRequest.ts";
@@ -14,7 +10,6 @@ import anyRequest from "./components/http/src/optimizer/anyRequest.ts";
 /**
  * Runtime utilities
  */
-
 export const runtime = {
   name: name,
   arguments: parseArguments,
@@ -23,22 +18,12 @@ export const runtime = {
 /**
  * Plugins utilities
  */
-export const plugins = {
-  objectNullRequest,
-  assertOptions,
-  assertPlugin,
-  getName,
-  getOptions,
-  checker: checker,
-  anyRequest: anyRequest,
-};
+export { default as plugins } from './src/exportable/plugin.ts'
 /**
  * Testing utilities
  */
 export const testing = {
   resolve: resolveComposer,
-  //TODO: Improve it
-  //branch: applyBranch,
 };
 /**
  * @deprecated use composeResponse .
