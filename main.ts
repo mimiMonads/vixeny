@@ -18,7 +18,7 @@ export const runtime = {
 /**
  * Plugins utilities
  */
-export { default as plugins } from './src/exportable/plugin.ts'
+export { default as plugins } from "./src/exportable/plugin.ts";
 /**
  * Testing utilities
  */

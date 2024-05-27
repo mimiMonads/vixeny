@@ -112,13 +112,11 @@ export const petitions = {
     CO,
     AR,
     R
-  > =>  ({
-      ...I,
-      f: () =>
-        new Response("Unreachable: TODO: make response work without an f"),
-      type: "response",
-    })
-  ,
+  > => ({
+    ...I,
+    f: () => new Response("Unreachable: TODO: make response work without an f"),
+    type: "response",
+  }),
   resolve: <RO extends FunRouterOptions<any>>(O?: RO) =>
   <
     RM extends ResolveMap<any>,

@@ -82,7 +82,7 @@ export type CyclePluginMap = {
 };
 
 export type CyclePlugin<
-  FC extends boolean ,
+  FC extends boolean,
 > = {
   readonly name: symbol;
   readonly isFunction: FC;
