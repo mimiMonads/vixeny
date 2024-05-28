@@ -39,9 +39,9 @@ export default {
                   f.options?.add ?? [],
                 )),
               ],
-              remove: f.options?.remove ?? [],
+              remove: (f.options?.remove ?? []),
               elements: [
-                ...listOfElements.filter((s) => listOfElements.includes(s)),
+                ...listOfElements,
                 ...Object.keys(plugins),
               ],
             })

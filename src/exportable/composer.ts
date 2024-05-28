@@ -30,7 +30,7 @@ export default {
   >(
     r: Morphism<
       {
-        type: "base";
+        type: "morphism";
         typeNotNeeded: true;
       },
       RM,
@@ -47,7 +47,7 @@ export default {
       { ...r, type: "request" } as unknown as Petition,
     )) as unknown as (
       re: Request,
-    ) => Promise<R> | R,
+    ) => R,
   objectNullRequest: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,

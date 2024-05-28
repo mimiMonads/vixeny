@@ -83,30 +83,30 @@ Deno.test("wrap checking costum", async () => {
   );
 });
 
-const identity = wrap({})();
-const f = () => "test";
-
-const a = wrap({})().stdPetition({
-  path: "/a",
-  f,
-});
-const b = wrap({})().stdPetition({
-  path: "/b",
-  f,
-});
-const c = a.union(b.unwrap());
-
-const d = wrap({})().stdPetition({
-  path: "/d",
-  f,
-});
-const assoc1 = a.union(b.unwrap()).union(d.unwrap());
-const assoc2 = a.union(b.union(d.unwrap()).unwrap());
-
-const idTest1 = a.union(identity.unwrap());
-const idTest2 = identity.union(a.unwrap());
-
 Deno.test("wrap monoidal properties", async () => {
+  const identity = wrap({})();
+  const f = () => "test";
+
+  const a = wrap({})().stdPetition({
+    path: "/a",
+    f,
+  });
+  const b = wrap({})().stdPetition({
+    path: "/b",
+    f,
+  });
+  const c = a.union(b.unwrap());
+
+  const d = wrap({})().stdPetition({
+    path: "/d",
+    f,
+  });
+  const assoc1 = a.union(b.unwrap()).union(d.unwrap());
+  const assoc2 = a.union(b.union(d.unwrap()).unwrap());
+
+  const idTest1 = a.union(identity.unwrap());
+  const idTest2 = identity.union(a.unwrap());
+
   assertEquals(
     c.unwrap(),
     [{ path: "/a", f, type: "base" }, {
