@@ -4,7 +4,13 @@ import { petitions } from "../../src/morphism.ts";
 
 const pluginHello = {
   name: Symbol.for("hello"),
-  isFunction: false,
+  isFunction: true,
+  type: "string",
+  f: () => () => () => "pluging",
+};
+
+const pluginMethod = {
+  name: Symbol.for("method"),
   type: "string",
   f: () => () => () => "pluging",
 };
@@ -12,6 +18,7 @@ const pluginHello = {
 const opt = {
   cyclePlugin: {
     hello: pluginHello,
+    method: pluginMethod,
   },
 };
 

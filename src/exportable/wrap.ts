@@ -111,7 +111,7 @@ export const wrap = <
   >(
     ob: Morphism<
       {
-        type: "base";
+        type: "request";
         hasPath: true;
         isAPetition: true;
         typeNotNeeded: true;
