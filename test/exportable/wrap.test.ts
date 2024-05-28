@@ -3,25 +3,25 @@ import { plugins } from "../../main.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import type { Petition } from "../../src/morphism.ts";
 
-const pluginHello = {
+const pluginHello = plugins.type({
   name: Symbol.for("hello"),
   isFunction: false,
   type: "string",
   f: () => () => () => "function",
-};
+});
 
-const pluginMethod = {
+const pluginMethod = plugins.type({
   name: Symbol.for("method"),
   type: "string",
   f: () => () => () => " inCycle",
-};
+});
 
-const opt = {
+const opt = plugins.globalOptions({
   cyclePlugin: {
     hello: pluginHello,
     method: pluginMethod,
   },
-};
+});
 
 plugins.globalOptions(opt);
 

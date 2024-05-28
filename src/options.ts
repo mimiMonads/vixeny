@@ -98,6 +98,9 @@ export type CyclePlugin<
   readonly options?: { [k: string]: any };
 };
 
-export const globalOptions = <FC extends CyclePluginMap>(
-  o?: FunRouterOptions<FC>,
+export const globalOptions = <
+FC extends CyclePluginMap,
+O extends FunRouterOptions<FC>
+>(
+  o?: O,
 ) => o;
