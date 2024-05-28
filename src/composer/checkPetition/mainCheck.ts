@@ -5,8 +5,10 @@ import checkParse from "./checkParse.ts";
 import checkTool from "./checkTool.ts";
 
 export default (o?: FunRouterOptions<any>) => (f: Petition) =>
-  "options" in f && f.options
-    ? f.options.only ? f.options.only : (
+  "options" in f && f.options && 'only' in f.options && Array.isArray(f.options.only)
+    ? f.options.only
+    : f.options || o?.cyclePlugin
+    ? (
       (newOptions) =>
         checkParse(newOptions.elements)(newOptions.remove)(newOptions.add)(f)
     )(

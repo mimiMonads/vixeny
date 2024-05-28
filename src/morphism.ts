@@ -31,13 +31,16 @@ export type ResolveMorphism = Morphism<
 >;
 
 export const petitions = {
-  standart: <RO extends FunRouterOptions<any>>(O?: RO) =>
+  standart: <
+    FC extends CyclePluginMap,
+    O extends FunRouterOptions<FC>,
+  >(O?: O) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions<any>,
+    RO extends O,
     CO extends CryptoOptions,
     AR = any,
     R = any,
@@ -59,13 +62,16 @@ export const petitions = {
       R
     >,
   ) => ({ ...I, type: "request" }) as unknown as Petition,
-  common: <RO extends FunRouterOptions<any>>(O?: RO) =>
+  common: <
+    FC extends CyclePluginMap,
+    O extends FunRouterOptions<FC>,
+  >(O?: O) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions<any>,
+    RO extends O,
     CO extends CryptoOptions,
     AR = any,
     R = any,
@@ -87,13 +93,16 @@ export const petitions = {
       R
     >,
   ) => ({ ...I, type: "base" }) as unknown as Petition,
-  response: <RO extends FunRouterOptions<any>>(O?: RO) =>
+  response: <
+    FC extends CyclePluginMap,
+    O extends FunRouterOptions<FC>,
+  >(O?: O) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions<any>,
+    RO extends O,
     CO extends CryptoOptions,
     AR = any,
     R = any,
@@ -117,13 +126,16 @@ export const petitions = {
     f: () => new Response("Unreachable: TODO: make response work without an f"),
     type: "response",
   }),
-  resolve: <RO extends FunRouterOptions<any>>(O?: RO) =>
+  resolve: <
+    FC extends CyclePluginMap,
+    O extends FunRouterOptions<FC>,
+  >(O?: O) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions<any>,
+    RO extends O,
     CO extends CryptoOptions,
     AT = any,
     R = any,
@@ -142,13 +154,16 @@ export const petitions = {
       R
     >,
   ) => I,
-  branch: <RO extends FunRouterOptions<any>>(O?: RO) =>
+  branch: <
+    FC extends CyclePluginMap,
+    O extends FunRouterOptions<FC>,
+  >(O?: O) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions<any>,
+    RO extends O,
     CO extends CryptoOptions,
     AT = any,
     R = any,
@@ -168,13 +183,16 @@ export const petitions = {
       R
     >,
   ) => I,
-  join: <RO extends FunRouterOptions<any>>(O?: RO) =>
+  join: <
+    FC extends CyclePluginMap,
+    O extends FunRouterOptions<FC>,
+  >(O?: O) =>
   <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions<any>,
+    RO extends O,
     CO extends CryptoOptions,
     AT = any,
     R = any,
@@ -199,7 +217,7 @@ export const petitions = {
     BM extends BranchMap<any>,
     QO extends QueryOptions,
     PO extends ParamOptions,
-    RO extends FunRouterOptions<any>,
+    RO extends O,
     CO extends CryptoOptions,
     AT = any,
     R = any,

@@ -1,10 +1,10 @@
 //TODO: add
-import composerTools from "../composer/composerTools";
+import composerTools from "../composer/composerTools.ts";
 import {
   type CyclePlugin,
   type FunRouterOptions,
   globalOptions,
-} from "../options";
+} from "../options.ts";
 
 export default {
   globalOptions,

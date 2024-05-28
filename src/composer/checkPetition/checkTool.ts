@@ -40,14 +40,15 @@ export default {
                 )),
               ],
               remove: f.options?.remove ?? [],
-              elements: listOfElements.filter((s) =>
-                listOfElements.includes(s)
-              ),
+              elements: [
+                ...listOfElements.filter((s) => listOfElements.includes(s)),
+                ...Object.keys(plugins),
+              ],
             })
           )(
             Object.keys(f),
           )
       )(
-        [...elements, ...Object.keys(plugins)],
+        [...elements],
       ),
 };

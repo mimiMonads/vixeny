@@ -83,7 +83,7 @@ export const wrap = <
   BM extends BranchMap<any>,
   QO extends QueryOptions,
   PO extends ParamOptions,
-  RO extends FunRouterOptions<any>,
+  RO extends O,
   CO extends CryptoOptions,
   AR = any,
   R = any,
@@ -172,7 +172,7 @@ export const wrap = <
   ) =>
     wrap(o)(a.concat(
       //@ts-ignore
-      { ...ob, type: "request" } as unknown as RequestMorphism,
+      { ...ob, type: "base" } as unknown as RequestMorphism,
     )),
   /**
    * `logSize` is a utility method that logs the current number of petitions wrapped by this instance.
@@ -448,8 +448,8 @@ export const wrap = <
     ) as Petition[],
   /**
    *  ```typescript
-   * / Define an identity element for the monoid
-   *   const identity = wrap({})();*
+   * // Define an identity element for the monoid
+   *   const identity = wrap({})();
    *   // Testing closure
    *   const a = wrap({})().stdPetition({
    *       path: '/a',
