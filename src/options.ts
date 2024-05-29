@@ -99,8 +99,8 @@ export type CyclePlugin<
 };
 
 export const globalOptions = <
-FC extends CyclePluginMap,
-O extends FunRouterOptions<FC>
+  FC extends CyclePluginMap,
+  O extends FunRouterOptions<FC>,
 >(
   o?: O,
 ) => o;

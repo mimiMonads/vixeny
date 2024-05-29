@@ -1,5 +1,5 @@
 import { type Petition, petitions } from "../../src/morphism.ts";
-export default [
+export default ([
   { type: "response", path: "/", r: () => new Response("GET:main") },
   { type: "response", path: "/one", r: () => new Response("1") },
   { type: "response", path: "/two", r: () => new Response("2") },
@@ -32,6 +32,6 @@ export default [
     path: "/",
     r: () => new Response("DELETE:main"),
   },
-].map(
+] as const).map(
   (x) => petitions.response()(x),
 ) as unknown as Petition[];

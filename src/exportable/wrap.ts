@@ -89,7 +89,7 @@ export const wrap = <
   AR = any,
   R = any,
 >(a = [] as Petition[]) => ({
-    petitionWithoutCTX: <
+  petitionWithoutCTX: <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
@@ -100,19 +100,20 @@ export const wrap = <
     R = any,
   >(I: {
     path: string;
-    method?: ParamsMethod
+    method?: ParamsMethod;
     r: { (ctx: Request): Response | Promise<Response> };
   }) =>
-
     //@ts-ignore
     wrap(o)(a.concat(
       //@ts-ignore
-      { ...I,
-        f: () => new Response("Unreachable: TODO: make response work without an f")
-        ,type: "response" 
+      {
+        ...I,
+        f: () =>
+          new Response("Unreachable: TODO: make response work without an f"),
+        type: "response",
       },
     )),
-  
+
   /**
    * Defines a standard Petition where `f` returns either a `BodyInit` or a `Promise<BodyInit>`.
    *
@@ -153,7 +154,7 @@ export const wrap = <
   ) =>
     wrap(o)(a.concat(
       //@ts-ignore
-      { ...ob, type: 'request' } as Petition,
+      { ...ob, type: "request" } as Petition,
     )),
   /**
    * `customPetition` allows for defining a custom Petition where `f` returns either a `Response`
@@ -504,7 +505,7 @@ export const wrap = <
    */
   pure: (petition: Petition) => wrap(o)([petition]),
   addAnyPettition: (petition: Petition) => wrap(o)([...a, petition]),
-  compose: () => vixeny(o)(a)
+  compose: () => vixeny(o)(a),
   /**
    * In theory we should use `ReturnType< typeof wrap>` instead of Petition but typescript things that's a bug ¯\_(ツ)_/¯.
    * So, our flatmap / bind is union.

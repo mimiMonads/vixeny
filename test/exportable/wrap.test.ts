@@ -1,7 +1,12 @@
-import { wrap } from "../../main.ts";
+import { petitions, wrap } from "../../main.ts";
 import { plugins } from "../../main.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import type { Petition } from "../../src/morphism.ts";
+
+const normalPetition = petitions.common()({
+  path: "/addAny",
+  f: () => "addAny",
+});
 
 const pluginHello = plugins.type({
   name: Symbol.for("hello"),
@@ -41,9 +46,9 @@ const wrapped = wrap(opt)()
     f: (ctx) => new Response(ctx.hello() + ctx.method),
   })
   .petitionWithoutCTX({
-    path: '/withoutCTX',
-    r: () => new Response('withoutCTX')
-  });
+    path: "/withoutCTX",
+    r: () => new Response("withoutCTX"),
+  }).addAnyPettition(normalPetition);
 
 const serve = wrapped.testRequests();
 
@@ -94,7 +99,17 @@ Deno.test("wrap checking withoutCTX", async () => {
     ),
     "withoutCTX",
   );
+});
 
+Deno.test("wrap checking addAny", async () => {
+  assertEquals(
+    await serve(
+      new Request("http://example.com/addAny"),
+    ).then(
+      (x) => x.text(),
+    ),
+    "addAny",
+  );
 });
 
 Deno.test("wrap monoidal properties", async () => {
@@ -150,3 +165,38 @@ Deno.test("wrap monoidal properties", async () => {
     type: "base",
   }]) as unknown as Petition[];
 });
+
+//check if your token is valid, return null if it's invalid, otherwise retruns the token
+// const validToken = petitions.resolve()({
+//   crypto: {
+//     globalKey: 'Secret!',
+//     token: { jwtToken: {} },
+//   },
+//   f: (c) =>
+//     c.token.jwtToken &&
+//       (c.token.jwtToken as { name: string; iat: number }).iat > Date.now()
+//       ? c.token.jwtToken
+//       : null,
+// });
+
+// const text = {
+//   getText: petitions.resolve()({
+//     resolve:{
+//       isValidUser: validToken
+//     },
+//     f:async f => f.resolve.isValidUser
+//         ? await f.req.text()
+//         : "not_a_valid_user"
+//   }),
+// };
+
+// const server = wrap()()
+//   .stdPetition({
+//     resolve: {
+//       ...text,
+//     },
+//     path: "/stdHello",
+//     f: (ctx) => ctx.resolve.getText,
+//   })
+//   //makes a server
+//.compose();

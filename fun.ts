@@ -17,12 +17,13 @@ import optimizer from "./src/composer/mainComposer.ts";
 import atlas from "./src/router/atlas/main1.ts";
 import split from "./src/router/atlas/splitter.ts";
 import solver from "./src/router/solver1.ts";
-import type { Petition, fileServerPetition } from "./src/morphism.ts";
+import type { fileServerPetition, Petition } from "./src/morphism.ts";
 
-export default ((o?: FunRouterOptions<any>) => (routes: (Petition | fileServerPetition)[]) =>
+export default ((o?: FunRouterOptions<any>) =>
+(routes: (Petition | fileServerPetition)[]) =>
   ((re) =>
     ((map) =>
-      ((s) => (r: Request):Promise<Response>|Response => map[s(r)](r))(
+      ((s) => (r: Request): Promise<Response> | Response => map[s(r)](r))(
         solver(o)(re),
       ))([...re[3]]))(
       atlas(o)(
@@ -31,5 +32,3 @@ export default ((o?: FunRouterOptions<any>) => (routes: (Petition | fileServerPe
         ),
       ),
     ));
-
-

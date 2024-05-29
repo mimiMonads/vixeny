@@ -97,37 +97,17 @@ export const petitions = {
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
   >(O?: O) =>
-  <
-    RM extends ResolveMap<any>,
-    BM extends BranchMap<any>,
-    QO extends QueryOptions,
-    PO extends ParamOptions,
-    RO extends O,
-    CO extends CryptoOptions,
-    AR = any,
-    R = any,
-  >(I: {
+  (I: {
     path: string;
+    method?: ParamsMethod;
     r: { (ctx: Request): Response | Promise<Response> };
-  }): Morphism<
-    {
-      type: "response";
-      hasPath: true;
-      isAPetition: true;
-    },
-    RM,
-    BM,
-    QO,
-    PO,
-    RO,
-    CO,
-    AR,
-    R
-  > => ({
-    ...I,
-    f: () => new Response("Unreachable: TODO: make response work without an f"),
-    type: "response",
-  }),
+  }) =>
+    ({
+      ...I,
+      f: () =>
+        new Response("Unreachable: TODO: make response work without an f"),
+      type: "response",
+    }) as unknown as Petition,
   resolve: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
@@ -302,6 +282,8 @@ type MapOptions = {
   branch?: boolean;
   isAPetition?: boolean;
   mutable?: true;
+  specificReturnType?: boolean;
+  retunType?: any;
 };
 
 type HasPath<P extends MapOptions> = P extends { hasPath: true }
@@ -361,22 +343,22 @@ export type Morphism<
     : never;
   readonly f: {
     (
-      ctx: MO["type"] extends "response" ? never
-        : WithPlugins<
-          RM,
-          BM,
-          QO,
-          PO,
-          RO,
-          CO,
-          {},
-          PetitionOptions<
-            [Extract<keyof RO["cyclePlugin"], string>],
-            CO
-          >,
-          AT
+      ctx: WithPlugins<
+        RM,
+        BM,
+        QO,
+        PO,
+        RO,
+        CO,
+        {},
+        PetitionOptions<
+          [Extract<keyof RO["cyclePlugin"], string>],
+          CO
         >,
-    ): MO["type"] extends "response" ? Response | Promise<Response>
+        AT
+      >,
+    ): MO["specificReturnType"] extends true ? MO["retunType"]
+      : MO["type"] extends "response" ? Response | Promise<Response>
       : MO["type"] extends "request" ? Response | Promise<Response>
       : MO["type"] extends "morphism" ? R
       : MO["type"] extends "base" ? BodyInit | Promise<Response>

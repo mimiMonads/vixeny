@@ -3,13 +3,13 @@ import type { RouteTypes } from "../router/types.ts";
 
 import compose from "./compose.ts";
 import staticFiles from "../staticFiles/staticFileMain.ts";
-import {vixeny} from "../../main.ts";
+import { vixeny } from "../../main.ts";
 import injectHtml from "./injectHtml.ts";
 import type { fileServerPetition, Petition } from "../morphism.ts";
 
 export default (
   o?: FunRouterOptions<any>,
-): (routes: (Petition| fileServerPetition)[]) => RouteTypes[] =>
+): (routes: (Petition | fileServerPetition)[]) => RouteTypes[] =>
 (ar) =>
   ar
     .map(
@@ -24,7 +24,8 @@ export default (
               : x.r,
             false,
           ] as unknown as RouteTypes
-          : x.type === 'fileServer' ?          [
+          : x.type === "fileServer"
+          ? [
             "GET",
             x.name + "*",
             vixeny({
@@ -36,12 +37,13 @@ export default (
                   ? { slashIs: x.slashIs }
                   : {}),
               },
-            })(staticFiles(
-              //this curried is for debbuing purposes
-            )(x)),
+            })(
+              staticFiles(
+                //this curried is for debbuing purposes
+              )(x),
+            ),
             "static",
           ] as RouteTypes
-          
           : [
             x?.method ? x.method : "GET",
             x.path,

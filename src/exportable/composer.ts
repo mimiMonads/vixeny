@@ -1,12 +1,12 @@
 import compose from "../composer/compose.ts";
-import type {
-  BranchMap,
-  CryptoOptions,
-  Morphism,
-  ParamOptions,
-  Petition,
-  QueryOptions,
-  ResolveMap,
+import {
+  type BranchMap,
+  type CryptoOptions,
+  type Morphism,
+  type ParamOptions,
+  type Petition,
+  type QueryOptions,
+  type ResolveMap,
 } from "../morphism.ts";
 import type { CyclePluginMap, FunRouterOptions } from "../options.ts";
 
@@ -65,6 +65,8 @@ export default {
       {
         type: "base";
         typeNotNeeded: true;
+        specificReturnType: true;
+        retunType: Promise<BodyNull> | BodyNull;
       },
       RM,
       BM,
@@ -78,9 +80,7 @@ export default {
   ) =>
     (compose(o)(
       { ...r, type: "request" } as unknown as Petition,
-    )) as unknown as (
-      re: Request,
-    ) => Promise<BodyNull> | BodyNull,
+    )) as unknown as (re: Request) => R,
   petition: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
@@ -88,9 +88,9 @@ export default {
   (
     r: Petition,
   ) =>
-    (compose(o)(
-      { ...r, type: "request" } as unknown as Petition,
-    )) as unknown as (
+    (r.type === "response" ? r.r : (compose(o)(
+      { ...r },
+    ))) as unknown as (
       re: Request,
     ) => Promise<Request> | Request,
 };
