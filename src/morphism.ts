@@ -112,6 +112,8 @@ export const petitions = {
   }): Morphism<
     {
       type: "response";
+      hasPath: true;
+      isAPetition: true;
     },
     RM,
     BM,

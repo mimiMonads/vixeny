@@ -11,6 +11,7 @@ import type {
   QueryOptions,
   ResolveMap,
 } from "../morphism.ts";
+import type { ParamsMethod } from "../router/types.ts";
 type WrapOptions<
   T extends CyclePluginMap,
 > = FunRouterOptions<T> & {
@@ -88,6 +89,38 @@ export const wrap = <
   AR = any,
   R = any,
 >(a = [] as Petition[]) => ({
+  response: <
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    RO extends O,
+    CO extends CryptoOptions,
+    AR = any,
+    R = any,
+  >(I: {
+    path: string;
+    method: ParamsMethod
+    r: { (ctx: Request): Response | Promise<Response> };
+  }): Morphism<
+    {
+      type: "response";
+      hasPath: true;
+      isAPetition: true;
+    },
+    RM,
+    BM,
+    QO,
+    PO,
+    RO,
+    CO,
+    AR,
+    R
+  > => ({
+    ...I,
+    f: () => new Response("Unreachable: TODO: make response work without an f"),
+    type: "response",
+  }),
   /**
    * Defines a standard Petition where `f` returns either a `BodyInit` or a `Promise<BodyInit>`.
    *
