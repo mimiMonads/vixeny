@@ -89,7 +89,7 @@ export const wrap = <
   AR = any,
   R = any,
 >(a = [] as Petition[]) => ({
-  response: <
+    petitionWithoutCTX: <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
@@ -100,27 +100,19 @@ export const wrap = <
     R = any,
   >(I: {
     path: string;
-    method: ParamsMethod
+    method?: ParamsMethod
     r: { (ctx: Request): Response | Promise<Response> };
-  }): Morphism<
-    {
-      type: "response";
-      hasPath: true;
-      isAPetition: true;
-    },
-    RM,
-    BM,
-    QO,
-    PO,
-    RO,
-    CO,
-    AR,
-    R
-  > => ({
-    ...I,
-    f: () => new Response("Unreachable: TODO: make response work without an f"),
-    type: "response",
-  }),
+  }) =>
+
+    //@ts-ignore
+    wrap(o)(a.concat(
+      //@ts-ignore
+      { ...I,
+        f: () => new Response("Unreachable: TODO: make response work without an f")
+        ,type: "response" 
+      },
+    )),
+  
   /**
    * Defines a standard Petition where `f` returns either a `BodyInit` or a `Promise<BodyInit>`.
    *
@@ -161,7 +153,7 @@ export const wrap = <
   ) =>
     wrap(o)(a.concat(
       //@ts-ignore
-      { ...ob },
+      { ...ob, type: 'request' } as Petition,
     )),
   /**
    * `customPetition` allows for defining a custom Petition where `f` returns either a `Response`
@@ -205,7 +197,7 @@ export const wrap = <
   ) =>
     wrap(o)(a.concat(
       //@ts-ignore
-      { ...ob, type: "base" } as unknown as RequestMorphism,
+      { ...ob, type: "base" } as Petition,
     )),
   /**
    * `logSize` is a utility method that logs the current number of petitions wrapped by this instance.

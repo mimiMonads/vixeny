@@ -41,7 +41,13 @@ const wrapped = wrap(opt)()
   .customPetition({
     path: "/customsPlugin",
     f: (ctx) => new Response(ctx.hello() + ctx.method),
-  });
+  })
+  .petitionWithoutCTX({
+    path: '/withoutCTX',
+    r: () => new Response('withoutCTX')
+  })
+  
+  ;
 
 const serve = wrapped.testRequests();
 
@@ -81,6 +87,18 @@ Deno.test("wrap checking costum", async () => {
     ),
     "function inCycle",
   );
+});
+
+Deno.test("wrap checking withoutCTX", async () => {
+  assertEquals(
+    await serve(
+      new Request("http://example.com/withoutCTX"),
+    ).then(
+      (x) => x.text(),
+    ),
+    "withoutCTX",
+  );
+
 });
 
 Deno.test("wrap monoidal properties", async () => {
