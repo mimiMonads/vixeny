@@ -504,6 +504,7 @@ export const wrap = <
    */
   pure: (petition: Petition) => wrap(o)([petition]),
   addAnyPettition: (petition: Petition) => wrap(o)([...a, petition]),
+  compose: () => vixeny(o)(a)
   /**
    * In theory we should use `ReturnType< typeof wrap>` instead of Petition but typescript things that's a bug ¯\_(ツ)_/¯.
    * So, our flatmap / bind is union.

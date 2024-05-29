@@ -1,5 +1,7 @@
 import { composer, plugins } from "../../main.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { petitions } from "../../main.ts";
+
 
 const dummyRequest = new Request("http://heyINeedTOGoToSleep.com/");
 const opt = plugins.globalOptions({
@@ -13,6 +15,8 @@ const opt = plugins.globalOptions({
     },
   })
 
+
+  
 
 Deno.test("exportable composer any", async () => {
   assertEquals(

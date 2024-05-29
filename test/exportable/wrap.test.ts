@@ -5,14 +5,14 @@ import type { Petition } from "../../src/morphism.ts";
 
 const pluginHello = plugins.type({
   name: Symbol.for("hello"),
-  isFunction: false,
-  type: "string",
+  isFunction: true,
+  type: undefined,
   f: () => () => () => "function",
 });
 
 const pluginMethod = plugins.type({
   name: Symbol.for("method"),
-  type: "string",
+  type: undefined,
   f: () => () => () => " inCycle",
 });
 
@@ -22,8 +22,6 @@ const opt = plugins.globalOptions({
     method: pluginMethod,
   },
 });
-
-plugins.globalOptions(opt);
 
 const wrapped = wrap(opt)()
   .stdPetition({
@@ -45,9 +43,7 @@ const wrapped = wrap(opt)()
   .petitionWithoutCTX({
     path: '/withoutCTX',
     r: () => new Response('withoutCTX')
-  })
-  
-  ;
+  });
 
 const serve = wrapped.testRequests();
 

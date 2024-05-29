@@ -22,7 +22,7 @@ import type { Petition, fileServerPetition } from "./src/morphism.ts";
 export default ((o?: FunRouterOptions<any>) => (routes: (Petition | fileServerPetition)[]) =>
   ((re) =>
     ((map) =>
-      ((s) => (r: Request) => map[s(r)](r))(
+      ((s) => (r: Request):Promise<Response>|Response => map[s(r)](r))(
         solver(o)(re),
       ))([...re[3]]))(
       atlas(o)(
