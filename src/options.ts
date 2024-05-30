@@ -6,7 +6,6 @@ import type { Petition } from "./morphism.ts";
  * import vixeny from "vixeny/fun"
  * import pettitions from "./someWhere"
  * vixeny({
- *  hasName: "http://127.0.0.1:8080/",
  *  404: r => new Response("Insert Not Found"),
  *  405: r => new Response("Insert Bad Method"),
  *  //default
@@ -18,6 +17,7 @@ export type FunRouterOptions<
   PI extends CyclePluginMap,
 > = {
   /**
+   * @deprecated
    * Optimize the router. It always has to end with "/"
    *
    * ```ts
@@ -40,6 +40,8 @@ export type FunRouterOptions<
     strictTrailingSlash?: false;
   };
   /**
+   * @deprecated
+   * 
    * When an URL with a valid URL is detected and used it will be added to yout `context`
    *
    * ```ts
@@ -62,7 +64,9 @@ export type FunRouterOptions<
     slashIs?: string;
     isWild?: true;
   };
-  readonly retruns?: any;
+  readonly runtimeOptions?:{
+    returns?: any;
+  }
   readonly enableLiveReloading?: true;
   /**
    * A function that takes a Request and returns a Response for 404 errors.

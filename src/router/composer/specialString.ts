@@ -1,5 +1,5 @@
 import { FunRouterOptions } from "../../../../types.ts";
-import { RouteTypes } from "../types.ts";
+import type { RouteTypes } from "../types.ts";
 
 export default (o?: FunRouterOptions<any>) =>
 (max: number) =>

@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import resolve from "../../src/composer/resolve/main.ts";
-import branch from "../../src/composer/branch/main.ts";
+import branch from "../../src/composer/branch/branchMain.ts";
 import { petitions } from "../../src/morphism.ts";
 
 // Resolve

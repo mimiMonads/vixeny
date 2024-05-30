@@ -9,7 +9,6 @@ import type { FunRouterOptions } from "./src/options.ts";
  * import vixeny from "vixeny/fun"
  * import pettitions from "./someWhere"
  * vixeny({
- *  hasName: "http://127.0.0.1:8080/",
  *  404: r => new Response("Insert Not Found"),
  *  405: r => new Response("Insert Bad Method"),
  *  //default

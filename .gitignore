@@ -13,3 +13,5 @@ hi.ts
 
 package-lock.json
 
+deno.lock
+

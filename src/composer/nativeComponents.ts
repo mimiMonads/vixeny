@@ -2,7 +2,7 @@ import params from "../components/parameters/main.ts";
 import query from "../components/queries/main.ts";
 import cookies from "../components/cookies/main.ts";
 import resolve from "./resolve/main.ts";
-import branch from "./branch/main.ts";
+import branch from "./branch/branchMain.ts";
 import cookieToTokenMain from "../components/cookieToToken/cookieToTokenMain.ts";
 import signSha256 from "../components/jwt/signSha256.mjs";
 import verifySha256 from "../components/jwt/verifySha256.mjs";
