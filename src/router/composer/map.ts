@@ -22,7 +22,7 @@ export default (options?: FunRouterOptions<any>) => (s: string): info =>
                 ),
                 path: s,
                 endsInSlash: endsInSlash,
-                hasName: options?.hasName,
+                bind: options?.indexBase?.bind,
               })
             )({
               tail: list.reduce(

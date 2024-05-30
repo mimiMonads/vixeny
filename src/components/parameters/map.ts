@@ -22,7 +22,7 @@ export default (options?: FunRouterOptions<any>) => (f: Petition): info =>
                   0,
                 ) + (endsInSlash ? 1 : 0),
                 endsInSlash: endsInSlash,
-                hasName: options?.hasName ,
+                bind: options?.indexBase?.bind,
               })
             )({
               tail: list.reduce(

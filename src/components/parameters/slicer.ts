@@ -1,13 +1,13 @@
 import type { info } from "./types.ts";
 
 export default (info: info) =>
-  info && "hasName" in info && typeof info.hasName === "string"
+  info && "bind" in info && typeof info.bind === "string"
     ? `(u =>  u.indexOf("?") === -1 
-        ? u.slice(${(info.hasName?.length || 0) + info.firstParam} ${
+        ? u.slice(${(info.bind?.length || 0) + info.firstParam} ${
       info.lastParam === 0 ? "" : ", -" + info.lastParam
     }) 
         : u.slice(${
-      (info.hasName?.length || 0) + info.firstParam
+      (info.bind?.length || 0) + info.firstParam
     }, u.indexOf("?") ${info.lastParam === 0 ? "" : " -" + info.lastParam})
         )`
     : `(n => u =>

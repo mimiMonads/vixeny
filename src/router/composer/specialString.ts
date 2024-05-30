@@ -25,22 +25,9 @@ export default (o?: FunRouterOptions<any>) =>
               }`))() as (s: string) => number,
           )
       )(
-        o && "hasName" in o && typeof o.hasName === "string"
-          ? (s: string) => s.slice(o!.hasName!.length - 1)
-          : (
-            (n) => (s: string) =>
-              n !== -1 ? s.slice(n) : s.slice(
-                n = s
-                  .split("/")
-                  .filter((x) => x !== "")
-                  .reduce(
-                    (acc, x, u) => u <= 1 ? acc + x.length : acc,
-                    3,
-                  ) - 1,
-              )
-          )(
-            -1,
-          ),
+         o?.indexBase?.bind ?? false
+          ? (s: string) => s.slice(o.indexBase.bind .length - 1)
+          : (s:string) => s.slice(s.indexOf('/', s.indexOf('.') ))
       )
   )(
     ar.map(([_, a]) => a)

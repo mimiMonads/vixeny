@@ -32,6 +32,10 @@ export type FunRouterOptions<
    * ```
    */
   readonly hasName?: string;
+  readonly indexBase?: {
+    bind?: string
+    at?: number
+  },
   readonly cors?: CORSOptions;
   readonly router?: {
     /**

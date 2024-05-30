@@ -6,5 +6,5 @@ export type info = {
   firstParam: number;
   lastParam: number;
   endsInSlash: boolean;
-  hasName: string | undefined;
+  bind: string | undefined;
 };

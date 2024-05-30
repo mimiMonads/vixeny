@@ -37,5 +37,5 @@ export default (o?: FunRouterOptions<any>) => (f: Petition) =>
           : f.path.length,
       )
   )(
-    typeof o?.hasName === "string" ? o.hasName.length : -1,
+    o?.indexBase?.bind ? o.indexBase.bind.length : -1,
   );
