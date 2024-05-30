@@ -31,8 +31,8 @@ const requestPetition = petitions.standart()({
 
 const branchMo = petitions.branch()({
   arguments: "string",
-  f: ctx => 'hi' ?? 'notFOund'
-})
+  f: (ctx) => "hi" ?? "notFOund",
+});
 
 Deno.test("exportable composer any", async () => {
   assertEquals(
@@ -101,5 +101,3 @@ Deno.test("exportable composer petition", async () => {
     "response",
   );
 });
-
-

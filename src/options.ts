@@ -33,9 +33,9 @@ export type FunRouterOptions<
    */
   readonly hasName?: string;
   readonly indexBase?: {
-    bind?: string
-    at?: number
-  },
+    bind?: string;
+    at?: number;
+  };
   readonly cors?: CORSOptions;
   readonly router?: {
     /**
@@ -45,7 +45,7 @@ export type FunRouterOptions<
   };
   /**
    * @deprecated
-   * 
+   *
    * When an URL with a valid URL is detected and used it will be added to yout `context`
    *
    * ```ts
@@ -68,9 +68,9 @@ export type FunRouterOptions<
     slashIs?: string;
     isWild?: true;
   };
-  readonly runtimeOptions?:{
+  readonly runtimeOptions?: {
     returns?: any;
-  }
+  };
   readonly enableLiveReloading?: true;
   /**
    * A function that takes a Request and returns a Response for 404 errors.

@@ -6,9 +6,9 @@ export default (info: info) =>
           ${(info.bind?.length || 0) + info.firstParam} 
           ${info.lastParam === 0 ? "" : ", -" + info.lastParam})}): ({${
       info.elements[0].slice(1)
-    }: s.slice(${
-      (info.bind?.length || 0) + info.firstParam
-    }, s.indexOf("?") ${info.lastParam === 0 ? "" : " -" + info.lastParam})})
+    }: s.slice(${(info.bind?.length || 0) + info.firstParam}, s.indexOf("?") ${
+      info.lastParam === 0 ? "" : " -" + info.lastParam
+    })})
 )`
     : `(n =>s=> n !== -1 ? s.indexOf("?") === -1 ? 
   ({${info.elements[0].slice(1)}: s.slice(n ${

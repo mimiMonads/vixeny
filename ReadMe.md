@@ -1,7 +1,5 @@
 **Welcome to Vixeny: Revolutionize Your Web Development**
 
-`Status : Currently restructuring the project for the beta`
-
 <p align="center">
   <img src="misc/logo.png" alt="Vixeny Logo"  style="max-width: 100%;">
   <br>
@@ -9,6 +7,9 @@
   <br>
   <code>npx create-vixeny</code> | <code>bun create vixeny</code>
 </p>
+
+`Status : Currently restructuring the project for the beta!`
+
 
 **Vixeny: Pioneering Functional Web Development**
 

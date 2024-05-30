@@ -11,7 +11,6 @@ import {
 } from "../morphism.ts";
 import type { CyclePluginMap, FunRouterOptions } from "../options.ts";
 
-
 type BodyNull = {
   [propName: string]: any;
 } | null;
@@ -96,4 +95,3 @@ export default {
       re: Request,
     ) => Promise<Request> | Request,
 };
-
