@@ -34,14 +34,19 @@ export default (o?: FunRouterOptions<any>) =>
               )
               : o && o.router && o.router.strictTrailingSlash &&
                   o.router.strictTrailingSlash === false
-              ? ((p) => (url: string) =>
-                p(
-                  url.slice(
-                    url.indexOf("/", url.indexOf("//") + 2),
-                    (url.indexOf("/?") + 1 || url.indexOf("?") + 1 ||
-                      url.length + 1) - 1,
-                  ) || "/",
-                ))(
+              ?   (p =>(url:string)=> (
+                (start) =>
+                  p(url.slice(
+                    start,
+                    (url.indexOf("/?", start) !== -1
+                      ? url.indexOf("/?", start)
+                      : (url.indexOf("?", start) !== -1
+                          ? url.indexOf("?", start)
+                          : url.length))
+                  ) || '/')
+              )(url.indexOf("/", url.indexOf("//") + 2))
+              
+            )(
                   parser(o)(atlas[2][i])(position[i])(atlas[1][i])(start)(end),
                 )
               : ((p) => (s: string) =>
@@ -54,3 +59,4 @@ export default (o?: FunRouterOptions<any>) =>
   )(
     map(atlas[2]),
   );
+

@@ -10,7 +10,6 @@
 
 `Status : Currently restructuring the project for the beta!`
 
-
 **Vixeny: Pioneering Functional Web Development**
 
 Vixeny is not just another framework; it's a comprehensive solution designed for

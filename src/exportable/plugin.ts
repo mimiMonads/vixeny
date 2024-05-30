@@ -9,21 +9,19 @@ import {
 export default {
   globalOptions,
   /**
-   * Validates a plugin's configuration to ensure it meets Vixeny's requirements. As with global options, it's important to refrain from explicitly typing plugins to avoid losing type inference. This preservation is vital for the functionality of the `warp` function, which relies on dynamic type inference to operate effectively within Vixeny's plugin system.
+   * Types a plugin's configuration to ensure it meets Vixeny's requirements.
    *
    * Example usage:
    * ```js
    * import { plugins } from 'vixeny';
    *
    * // Define a simple plugin
-   * const hello = {
+   * const pluginHello = plugins.type({
    *   name: Symbol.for("hello"),
    *   type: undefined,
    *   f: (_) => (_) => (_) => "hello world",
-   * };
+   * });
    *
-   * // Validate the plugin without compromising type inference
-   * plugins.type(hello);
    * ```
    */
   type: <FC extends boolean>(I: CyclePlugin<FC>) => I,

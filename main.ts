@@ -1,5 +1,5 @@
 import parseArguments from "./src/runtime/parseArguments.ts";
-import name from "./src/runtime/name.mjs";
+import name from "./src/runtime/name.ts";
 
 /**
  * Runtime utilities
