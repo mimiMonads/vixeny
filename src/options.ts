@@ -106,9 +106,40 @@ export type CyclePlugin<
   readonly options?: { [k: string]: any };
 };
 
+/**
+ * Provides a function to configure global options for Vixeny's plugins.
+ * This allows setting options based on the provided plugin configuration map.
+ *
+ * @template FC - Specifies the type for the cycle plugin map.
+ * @template O - Specifies the type for the functional router options.
+ * @param {O} [options] - Optional configuration options to initialize plugins.
+ * @returns {O} Returns the passed configuration options or undefined.
+ *
+ * Example usage:
+ * @example
+ * ```ts
+ * import { plugins } from 'vixeny';
+ *
+ * // Define a plugin method with nested function returns.
+ * const pluginMethod = plugins.type({
+ *   name: Symbol.for("example"),
+ *   type: undefined,
+ *   f: () => () => () => " inCycle",
+ * });
+ *
+ * // Set global options using the defined plugin method.
+ * const options = plugins.globalOptions({
+ *   cyclePlugin: {
+ *     example: pluginMethod,
+ *   },
+ * });
+ *
+ * ```
+ */
+   
 export const globalOptions = <
   FC extends CyclePluginMap,
   O extends FunRouterOptions<FC>,
 >(
-  o?: O,
-) => o;
+  options?: O,
+) => options;
