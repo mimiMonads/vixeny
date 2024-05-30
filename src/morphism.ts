@@ -4,7 +4,7 @@ import type { ParamsMethod } from "./router/types.ts";
 export type Petition = Morphism<
   {
     isAPetition: true;
-    type: typeMorphisim;
+    type: typeMorphism;
     hasPath: true;
   },
   any,
@@ -30,8 +30,30 @@ export type ResolveMorphism = Morphism<
   any
 >;
 
+/**
+ * Types Morphisims
+ */
 export const petitions = {
-  standart: <
+  /**
+   * Enhances a function with additional typings for handling HTTP requests within the 'vixeny' framework.
+   * This function binds the provided Morphism to the rules set by `composer`, producing a typed `Petition`.
+   * The resulting function can be used with `wrap` or can be `composed`, and it's guaranteed to return a `Response` or `Promise<Response>`.
+   *
+   * @param {O} [options] - Optional configuration options that may include plugin settings.
+   * @returns {Function} A function that accepts a Morphism defining an HTTP petition.
+   *
+   * @example
+   * Example usage:
+   * ```typescript
+   * import { petitions } from 'vixeny';
+   *
+   * const standard = petitions.standard()({
+   *   path: '/yourPath',
+   *   f: ctx => new Response(ctx.query.hello ?? 'queryNotFound')
+   * });
+   * ```
+   */
+  standard: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
   >(O?: O) =>
@@ -62,6 +84,26 @@ export const petitions = {
       R
     >,
   ) => ({ ...I, type: "request" }) as unknown as Petition,
+  /**
+   * Configures and types a basic petition to be used with `wrap` or `compose`.
+   * The `f` function in the petition configuration returns either a `BodyInit` or `Promise<BodyInit>`,
+   * which should eventually be wrapped in a `Response` object.
+   * This function is bound by `composer` rules, aligning with configured system behaviors.
+   *
+   * @param {O} [options] - Optional configuration options that may include plugin settings.
+   * @returns {Function} A function that accepts a Morphism defining an HTTP petition.
+   *
+   * @example
+   * Example usage:
+   * ```typescript
+   * import { petitions } from 'vixeny';
+   *
+   * const standard = petitions.common()({
+   *   path: '/yourPath',
+   *   f: ctx => ctx.query.hello ?? 'queryNotFound'
+   * });
+   * ```
+   */
   common: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
@@ -93,6 +135,24 @@ export const petitions = {
       R
     >,
   ) => ({ ...I, type: "base" }) as unknown as Petition,
+  /**
+   * Configures and types a response petition to be used directly or in higher-order functions such as `wrap` or `compose`.
+   * The `r` function in the petition configuration returns either a `Response` or `Promise<Response>`.
+   * This function is not bound by `composer` rules.
+   * @param {O} [options] - Optional configuration options that may include plugin settings.
+   * @returns {Function} A function that accepts a Morphism defining an HTTP petition.
+   *
+   * @example
+   * Example usage:
+   * ```typescript
+   * import { petitions } from 'vixeny';
+   *
+   * const standard = petitions.response()({
+   *   path: '/yourPath',
+   *   r: () => new Response("Hello World!")
+   * });
+   * ```
+   */
   response: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
@@ -108,6 +168,39 @@ export const petitions = {
         new Response("Unreachable: TODO: make response work without an f"),
       type: "response",
     }) as unknown as Petition,
+  /**
+   * Configures a morphism that can be composed into a petition. This function accepts a configuration
+   * for a morphism, which can include both asynchronous and synchronous functions, treating both types
+   * equally in the execution context. This is particularly useful for integrating various data resolutions
+   * that may or may not require asynchronous operations.
+   *
+   * This function is bound to `compose` rules.
+   *
+   * @param {O} [options] - Optional configuration options that may include plugin settings.
+   * @returns {Function} A function that accepts a configuration object for a morphism and returns it unmodified, suitable for composition.
+   *
+   * @example
+   * Example usage:
+   * ```typescript
+   * import { petitions } from 'vixeny';
+   *
+   * const hello = petitions.resolve()({
+   *   f: async () => await Promise.resolve("Hello")
+   * });
+   * const world = petitions.resolve()({
+   *   f: () => 'world'
+   * });
+   *
+   * const stdPetition = petitions.standard()({
+   *   path: "/example",
+   *   resolve: {
+   *     hello: hello,
+   *     world: world
+   *   },
+   *   f: c => new Response(`${c.resolve.hello} ${c.resolve.world}`),
+   * });
+   * ```
+   */
   resolve: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
@@ -136,6 +229,35 @@ export const petitions = {
       R
     >,
   ) => I,
+  /**
+   * Configures and types a branch morphism to be used within a petition. Branch morphisms are designed to execute
+   * alongside or within the main function (`f`) of a petition, allowing for the extension of functionality through
+   * additional logic or operations without cluttering the primary business logic.
+   *
+   * Branches can handle both static and dynamic content, and may perform synchronous or asynchronous operations,
+   * potentially modifying a mutable context that persists across transformations within the execution of a petition.
+   *
+   * @param {O} [options] - Optional configuration options that may include plugin settings.
+   * @returns {Function} A function that accepts a configuration object for a branch morphism and returns it unmodified.
+   *
+   * Example usage:
+   * ```typescript
+   * import { petitions, wrap } from 'vixeny';
+   *
+   * const helloBranch = petitions.branch()({
+   *   arguments: 'string',
+   *   f: (c) => c.arguments, //string
+   * });
+   * wrap()()
+   *   .stdPetition({
+   *     path: "/helloBranch",
+   *     branch: {
+   *       hello: helloBranch,
+   *     },
+   *     f: (c) => new Response(c.branch.hello(null)),
+   *   });
+   * ```
+   */
   branch: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
@@ -165,6 +287,37 @@ export const petitions = {
       R
     >,
   ) => I,
+  /**
+   * Joins multiple Morphisms or Petitions into a single unified array, ensuring that each component adheres to
+   * the specifications of being a valid petition with a designated path. This function is particularly useful
+   * for scenarios where multiple petitions need to be handled or executed in a sequence or simultaneously,
+   * maintaining the structure and constraints necessary for each to function correctly within the system.
+   *
+   * It could be passed to a `wrap` for further processing.
+   *
+   * @param {O} [options] - Optional configuration options that may include plugin settings.
+   * @returns {Function} A function that takes an array of Morphisms/Petitions and a single Morphism/Petition or configuration object,
+   *                     and returns a new array combining them, all conforming to petition requirements.
+   *
+   * @example
+   * Example usage:
+   * ```typescript
+   * import { petitions } from 'vixeny';
+   *
+   * // Define individual petitions
+   * const petitionA = petitions.standard()({
+   *   path: '/pathA',
+   *   f: ctx => new Response('Response A')
+   * });
+   * const petitionB = petitions.standard()({
+   *   path: '/pathB',
+   *   f: ctx => new Response('Response B')
+   * });
+   *
+   * // Join petitions into a unified structure
+   * const combinedPetitions = petitions.join()([petitionA], petitionB);
+   * ```
+   */
   join: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
@@ -220,30 +373,31 @@ export const petitions = {
         R
       >
       | {
-        type: typeMorphisim;
+        type: typeMorphism;
         path: string;
         f: any;
       },
-  ) => [
-    ...A,
-    B as Morphism<
-      {
-        isAPetition: true;
-        hasPath: true;
-      },
-      RM,
-      BM,
-      QO,
-      PO,
-      RO,
-      CO,
-      AT,
-      R
-    >,
-  ],
+  ) =>
+    [
+      ...A,
+      B as Morphism<
+        {
+          isAPetition: true;
+          hasPath: true;
+        },
+        RM,
+        BM,
+        QO,
+        PO,
+        RO,
+        CO,
+        AT,
+        R
+      >,
+    ] as Petition[],
 };
 
-type typeMorphisim = "response" | "request" | "morphism" | "base";
+type typeMorphism = "response" | "request" | "morphism" | "base";
 
 export type ResolveMap<T> = {
   [K in keyof T]: T[K] extends Morphism<
@@ -278,7 +432,7 @@ export type BranchMap<T> = {
 type MapOptions = {
   hasPath?: boolean;
   typeNotNeeded?: boolean;
-  type?: typeMorphisim;
+  type?: typeMorphism;
   branch?: boolean;
   isAPetition?: boolean;
   mutable?: true;
@@ -290,7 +444,7 @@ type HasPath<P extends MapOptions> = P extends { hasPath: true }
   ? { readonly path: string }
   : {};
 
-type HasType<P extends MapOptions> = P extends { type: typeMorphisim }
+type HasType<P extends MapOptions> = P extends { type: typeMorphism }
   ? P extends { typeNotNeeded: true } ? {}
   : P extends { type: "morphism" } ? {}
   : { readonly type: P["type"] }
@@ -912,7 +1066,7 @@ export type StaticFilePluginExtensions<
       root: string;
       path: string;
       relativeName: string;
-    }) => ReturnType<ReturnType<typeof petitions.standart>>;
+    }) => ReturnType<ReturnType<typeof petitions.standard>>;
   }
   : {
     r: (options: {

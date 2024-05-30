@@ -19,7 +19,7 @@
  */
 
 export default () =>
- //@ts-ignore
+  //@ts-ignore
   typeof Bun !== "undefined"
     ? "Bun"
     //@ts-ignore

@@ -24,9 +24,9 @@ const responsePetition = petitions.response()({
   r: () => new Response("response"),
 });
 
-const requestPetition = petitions.standart()({
+const requestPetition = petitions.standard()({
   path: "/response",
-  f: () => new Response("standart"),
+  f: () => new Response("standard"),
 });
 
 const branchMo = petitions.branch()({
@@ -93,7 +93,7 @@ Deno.test("exportable composer petition", async () => {
   assertEquals(
     await Promise.resolve(composer.petition()(requestPetition)(dummyRequest))
       .then((x) => x.text()),
-    "standart",
+    "standard",
   );
   assertEquals(
     await Promise.resolve(composer.petition()(responsePetition)(dummyRequest))

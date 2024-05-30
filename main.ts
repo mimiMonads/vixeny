@@ -15,8 +15,15 @@ export const runtime = {
 export { default as plugins } from "./src/exportable/plugin.ts";
 
 /**
+ * Petition utilities
+ */
+
+export { petitions } from "./src/morphism.ts";
+
+/**
  * Composer utilities
  */
+
 export { default as composer } from "./src/exportable/composer.ts";
 
 /**
@@ -25,4 +32,3 @@ export { default as composer } from "./src/exportable/composer.ts";
 export { default as vixeny } from "./fun.ts";
 export { default as composeResponse } from "./fun.ts";
 export { wrap } from "./src/exportable/wrap.ts";
-export { petitions } from "./src/morphism.ts";

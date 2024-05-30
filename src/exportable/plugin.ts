@@ -8,28 +8,28 @@ import {
 
 export default {
   globalOptions,
-/**
- * Types a plugin's configuration to ensure it meets Vixeny's requirements.
- * This function validates and possibly transforms the plugin configuration using TypeScript types.
- *
- * @template FC - Specifies the type constraint for the plugin configurations.
- * @param {CyclePlugin<FC>} config - The plugin configuration to be typed.
- * @returns {CyclePlugin<FC>} The typed plugin configuration, unchanged if valid.
- *
- * @example
- * Example usage:
- * ```typescript
- * import { plugins } from 'vixeny';
- *
- * // Define a simple plugin
- * const pluginHello = plugins.type({
- *   name: Symbol.for("hello"),
- *   type: undefined,
- *   f: () => () => () => "hello world",
- * });
- * ```
- */
- type: <FC extends boolean>(config: CyclePlugin<FC>) => config,
+  /**
+   * Types a plugin's configuration to ensure it meets Vixeny's requirements.
+   * This function validates and possibly transforms the plugin configuration using TypeScript types.
+   *
+   * @template FC - Specifies the type constraint for the plugin configurations.
+   * @param {CyclePlugin<FC>} config - The plugin configuration to be typed.
+   * @returns {CyclePlugin<FC>} The typed plugin configuration, unchanged if valid.
+   *
+   * @example
+   * Example usage:
+   * ```typescript
+   * import { plugins } from 'vixeny';
+   *
+   * // Define a simple plugin
+   * const pluginHello = plugins.type({
+   *   name: Symbol.for("hello"),
+   *   type: undefined,
+   *   f: () => () => () => "hello world",
+   * });
+   * ```
+   */
+  type: <FC extends boolean>(config: CyclePlugin<FC>) => config,
 
   /**
    * Retrieves specific plugin options using the current name of the plugin.
@@ -61,11 +61,11 @@ export default {
    */
   getOptions: (userOptions: unknown) => (currentName: string) =>
     userOptions && typeof userOptions === "object" &&
-    !Array.isArray(userOptions) && "plugins" in userOptions &&
-    userOptions.plugins
-    //@ts-ignore
-    ? userOptions.plugins[currentName]
-    : null,
+      !Array.isArray(userOptions) && "plugins" in userOptions &&
+      userOptions.plugins
+      //@ts-ignore
+      ? userOptions.plugins[currentName]
+      : null,
 
   /**
    * Retrieves the current name of a plugin using its symbol, accounting for possible changes in naming conventions.

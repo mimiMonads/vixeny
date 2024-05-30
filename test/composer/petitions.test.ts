@@ -89,7 +89,7 @@ Deno.test("base case with async resolve", async () => {
   assertEquals(base.status, 200);
 });
 
-Deno.test("standart case", async () => {
+Deno.test("standard case", async () => {
   const base = await compose()({
     type: "request",
     path: "/",
@@ -100,8 +100,8 @@ Deno.test("standart case", async () => {
   assertEquals(base.status, 200);
 });
 
-Deno.test("standart case with resolve", async () => {
-  const baseResponse = petitions.standart()({
+Deno.test("standard case with resolve", async () => {
+  const baseResponse = petitions.standard()({
     path: "/",
     resolve: {
       sync: syncResolve,
@@ -117,8 +117,8 @@ Deno.test("standart case with resolve", async () => {
   assertEquals(base.status, 200);
 });
 
-Deno.test("standart case with resolve", async () => {
-  const baseResponse = petitions.standart()({
+Deno.test("standard case with resolve", async () => {
+  const baseResponse = petitions.standard()({
     path: "/",
     resolve: {
       sync: syncResolve,
@@ -134,8 +134,8 @@ Deno.test("standart case with resolve", async () => {
   assertEquals(base.status, 200);
 });
 
-Deno.test("standart case with async resolve", async () => {
-  const baseResponse = petitions.standart()({
+Deno.test("standard case with async resolve", async () => {
+  const baseResponse = petitions.standard()({
     path: "/",
     resolve: {
       async: asyncResolve,
