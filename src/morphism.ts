@@ -609,17 +609,17 @@ type CryptoContext<CR extends CryptoOptions> = CR extends
       token: { [K in keyof Token]: Record<string, unknown> };
     } & SignerAndVarifier
   : {
-    sign: any;
-    verify: any;
-    token: any;
+    // sign: any;
+    // verify: any;
+    // token: any;
   }
   : CR extends { globalKey: any } ? {
       token: Record<string, Record<string, unknown> | null>;
     } & SignerAndVarifier
   : {
-    sign: any;
-    verify: any;
-    token: any;
+    // sign: any;
+    // verify: any;
+    // token: any;
   };
 
 interface Ctx<
@@ -904,6 +904,8 @@ interface Ctx<
     : null;
 
   /**
+   * @deprecated
+   *
    * Adds a Date.now() returning the number of milliseconds elapsed since the epoch.
    *
    * ```ts
@@ -929,8 +931,13 @@ interface Ctx<
    * ```
    */
   date: number;
+  /**
+   * @deprecated
+   */
   randomNumber: number;
   /**
+   * @deprecated
+   *
    * Generates a unique ID using `crypto.randomUUID()`.
    *
    * ```ts
@@ -976,6 +983,8 @@ interface Ctx<
   cookie: null | { [key: string]: string | undefined };
 
   /**
+   * @deprecated
+   *
    * `mutable`: A property designed to facilitate state mutation within the execution context of a petition. It enables the dynamic alteration of state across different parts of your application's flow, allowing for sophisticated state management strategies and interactions.
    *
    * **Caution**: Mutable state should be handled with care to prevent unintended side effects. It's recommended to use this feature judiciously, ensuring that state mutations are predictable and well-understood within your application's context.
@@ -1006,40 +1015,6 @@ interface Ctx<
   mutable: {
     [keys: string]: any;
   };
-
-  /**
-   * Interacts with the `arguments` property in `ctx.branch` to receive input for branch functions.
-   *
-   * ---
-   * ```ts
-   * {
-   *   path: '/path',
-   *   f: ctx => ctx.branch.hello("Greetings!"),
-   *   branch: {
-   *     hello: {
-   *     f: c => c.arguments
-   *    }
-   *   }
-   * };
-   * ```
-   *
-   * ---
-   *
-   * When invoking a branch function, any parameters passed are accessible as `arguments` within the branch function.
-   *
-   * ```ts
-   * {
-   *   path: '/multipleArgs',
-   *   f: ctx => ctx.branch.greet("Hello", "world!"),
-   *   branch: {
-   *     greet: {
-   *     f: c => `${c.arguments[0]} ${c.arguments[1]}`
-   *    }
-   *   }
-   * };
-   * ```
-   * In this example, multiple arguments are passed to the branch function, and they're accessed via index in the branch.
-   */
 }
 
 export type CryptoOptions = {
