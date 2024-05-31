@@ -485,6 +485,7 @@ export type Morphism<
   readonly arguments?: MO extends { branch: true } ? AT : never;
   readonly query?: QO;
   readonly param?: PO;
+  readonly plugins?: ExtractPluginTypes<RO>;
   readonly headings?: PetitionHeader;
   readonly isAsync?: MO["isAPetition"] extends true ? true : never;
   readonly mutable?: MO extends { mutable: true } ? true : never;
@@ -551,6 +552,14 @@ export type PetitionOptions<
   readonly setDate?: number;
   readonly arguments?: any;
 };
+
+// Modified ExtractPluginTypes
+type ExtractPluginTypes<O extends FunRouterOptions<any>> =
+  O["cyclePlugin"] extends CyclePluginMap ? {
+      [K in keyof O["cyclePlugin"]]?: O["cyclePlugin"][K] extends
+        { type: infer T } ? T : never;
+    }
+    : {};
 
 type DebugOptions = {
   type: "list";
@@ -1017,7 +1026,7 @@ export type CryptoOptions = {
   };
 } | {};
 
-type StaticFilePlugin<
+export type StaticFilePlugin<
   TP extends "response" | "request" | undefined,
 > = {
   checker: (path: string) => boolean;
