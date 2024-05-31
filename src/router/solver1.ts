@@ -3,7 +3,7 @@ import type { FunRouterOptions } from "../options.ts";
 import solver from "./composer/methods1.ts";
 import finderMethods from "./composer/finderMethods.ts";
 
-export default (o?: FunRouterOptions) => (atlas: Atlas1) =>
+export default (o?: FunRouterOptions<any>) => (atlas: Atlas1) =>
   (
     (me) =>
       (

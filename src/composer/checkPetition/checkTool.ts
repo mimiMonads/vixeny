@@ -39,15 +39,16 @@ export default {
                   f.options?.add ?? [],
                 )),
               ],
-              remove: f.options?.remove ?? [],
-              elements: listOfElements.filter((s) =>
-                listOfElements.includes(s)
-              ),
+              remove: (f.options?.remove ?? []),
+              elements: [
+                ...listOfElements,
+                ...Object.keys(plugins),
+              ],
             })
           )(
             Object.keys(f),
           )
       )(
-        [...elements, ...Object.keys(plugins)],
+        [...elements],
       ),
 };

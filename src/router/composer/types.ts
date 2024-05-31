@@ -7,5 +7,5 @@ export type info = {
   path: string;
   lastParam: number;
   endsInSlash: boolean;
-  hasName: string | undefined;
+  bind: string | undefined;
 };

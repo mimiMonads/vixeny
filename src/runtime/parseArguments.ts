@@ -21,6 +21,7 @@
  */
 
 //TODO: introduce `name` and add , interface
+
 type ParsedArgs = {
   [key: string]: string | boolean;
 };

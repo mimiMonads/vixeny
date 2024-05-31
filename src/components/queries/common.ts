@@ -1,7 +1,7 @@
 import type { FunRouterOptions } from "../../options.ts";
 import type { Petition } from "../../morphism.ts";
 
-export default (o?: FunRouterOptions) => (f: Petition) =>
+export default (o?: FunRouterOptions<any>) => (f: Petition) =>
   (
     (b) =>
       (
@@ -37,5 +37,5 @@ export default (o?: FunRouterOptions) => (f: Petition) =>
           : f.path.length,
       )
   )(
-    typeof o?.hasName === "string" ? o.hasName.length : -1,
+    o?.indexBase?.bind ? o.indexBase.bind.length : -1,
   );

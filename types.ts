@@ -1,10 +1,7 @@
 ///
 
-import {
-  ObjectRawResponseStatic,
-  Petition,
-} from "./components/http/src/framework/optimizer/types.ts";
-import { FunRouterOptions } from "./components/http/types.ts";
+import type { Petition } from "./src/morphism.ts";
+import type { FunRouterOptions } from "./src/options.ts";
 
 /**
  * Options for the router, it is `optional`
@@ -12,7 +9,6 @@ import { FunRouterOptions } from "./components/http/types.ts";
  * import vixeny from "vixeny/fun"
  * import pettitions from "./someWhere"
  * vixeny({
- *  hasName: "http://127.0.0.1:8080/",
  *  404: r => new Response("Insert Not Found"),
  *  405: r => new Response("Insert Bad Method"),
  *  //default
@@ -22,7 +18,7 @@ import { FunRouterOptions } from "./components/http/types.ts";
  */
 
 export type Vixeny = (
-  o?: FunRouterOptions,
+  o?: FunRouterOptions<any>,
 ) => (routes: Petition[]) => (r: Request) => Promise<Response> | Response;
 /**
  * Vixeny takes an array ot `Petitions`
@@ -47,4 +43,3 @@ export type Vixeny = (
  * ```
  */
 export type Petitions = Petition[];
-export type { FunRouterOptions, ObjectRawResponseStatic, Petition };

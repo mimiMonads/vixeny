@@ -1,7 +1,7 @@
-import { FunRouterOptions } from "../../../../types.ts";
+import type { FunRouterOptions } from "../../options.ts";
 
-import { info } from "./types.ts";
-export default (options?: FunRouterOptions) => (s: string): info =>
+import type { info } from "./types.ts";
+export default (options?: FunRouterOptions<any>) => (s: string): info =>
   (
     (list) => (
       ((startsWith) =>
@@ -22,7 +22,7 @@ export default (options?: FunRouterOptions) => (s: string): info =>
                 ),
                 path: s,
                 endsInSlash: endsInSlash,
-                hasName: options?.hasName,
+                bind: options?.indexBase?.bind,
               })
             )({
               tail: list.reduce(

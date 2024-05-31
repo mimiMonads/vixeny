@@ -2,6 +2,26 @@ import mainCheck from "../../src/composer/checkPetition/mainCheck.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import { petitions } from "../../src/morphism.ts";
 
+const pluginHello = {
+  name: Symbol.for("hello"),
+  isFunction: true,
+  type: "string",
+  f: () => () => () => "pluging",
+};
+
+const pluginMethod = {
+  name: Symbol.for("method"),
+  type: "string",
+  f: () => () => () => "pluging",
+};
+
+const opt = {
+  cyclePlugin: {
+    hello: pluginHello,
+    method: pluginMethod,
+  },
+};
+
 // Test
 Deno.test("check behaivour", async () => {
   assertEquals(
@@ -200,5 +220,29 @@ Deno.test("check remove behaivour", async () => {
       }),
     ),
     ["req"],
+  );
+});
+
+Deno.test("check plugins", async () => {
+  assertEquals(
+    mainCheck(opt)(
+      petitions.common(opt)({
+        path: "/test",
+        f: (ctx) => ctx.hello(),
+      }),
+    ),
+    ["hello"],
+  );
+  assertEquals(
+    mainCheck(opt)(
+      petitions.common(opt)({
+        path: "/test",
+        f: (ctx) => ctx.hello(),
+        options: {
+          add: ["hello"],
+        },
+      }),
+    ),
+    ["hello"],
   );
 });

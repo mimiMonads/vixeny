@@ -61,41 +61,42 @@ export default {
         ? new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
         : new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
       : crypto.globalKey,
-  isUsing:
-    (o?: FunRouterOptions) =>
-    (f: Petition) =>
-    (elements: { (f: Petition): string[] }) => mainCheck(o)(f),
+  isUsing: (o?: FunRouterOptions<any>) => (f: Petition) => mainCheck(o)(f),
   elements: (f: Petition) =>
-    f.crypto && "globalKey" in f.crypto
-      ? [
-        "cookie",
-        "headers",
-        "randomNumber",
-        "hash",
-        "param",
-        "query",
-        "req",
-        "date",
-        "resolve",
-        "mutable",
-        "branch",
-        "arguments",
-        "token",
-        "verify",
-        "sign",
-      ]
-      : [
-        "cookie",
-        "headers",
-        "randomNumber",
-        "hash",
-        "param",
-        "query",
-        "req",
-        "date",
-        "resolve",
-        "mutable",
-        "branch",
-        "arguments",
-      ],
+    (
+      f.crypto && "globalKey" in f.crypto
+        ? [
+          "cookie",
+          "headers",
+          "randomNumber",
+          "hash",
+          "param",
+          "query",
+          "req",
+          "date",
+          f.resolve ? "resolve" : undefined,
+          "mutable",
+          f.branch ? "branch" : undefined,
+          f.arguments ? "arguments" : undefined,
+          ,
+          "token",
+          "verify",
+          "sign",
+        ]
+        : [
+          "cookie",
+          "headers",
+          "randomNumber",
+          "hash",
+          "param",
+          "query",
+          "req",
+          "date",
+          f.resolve ? "resolve" : undefined,
+          "mutable",
+          f.branch ? "branch" : undefined,
+          f.arguments ? "arguments" : undefined,
+          ,
+        ]
+    ).filter(Boolean) as string[],
 };

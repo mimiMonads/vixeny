@@ -22,7 +22,7 @@ export default (o?: specialOptions) =>
               k(a(r)(b)))(composed)(x.f)
       )(
         aComposer(o ? { ...o, branch: false } : { branch: false })(x)(
-          tools.isUsing(o)(x)(tools.elements),
+          tools.isUsing(o)(x),
         ),
       ),
     }));

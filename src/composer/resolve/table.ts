@@ -4,7 +4,7 @@ import type { ResolveOptions } from "./types.ts";
 import type { FunRouterOptions } from "../../options.ts";
 import type { Petition } from "../../morphism.ts";
 
-export default (o?: FunRouterOptions) =>
+export default (o?: FunRouterOptions<any>) =>
 (path: string) =>
 (table: ResolveOptions) =>
   table
@@ -22,7 +22,7 @@ export default (o?: FunRouterOptions) =>
             )(x.f)
       )(
         aComposer(o)(x as unknown as Petition)(
-          tools.isUsing(o)(x as unknown as Petition)(tools.elements),
+          tools.isUsing(o)(x as unknown as Petition),
         ),
       ),
     }));

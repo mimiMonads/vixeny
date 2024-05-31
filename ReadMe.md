@@ -1,7 +1,5 @@
 **Welcome to Vixeny: Revolutionize Your Web Development**
 
-`Status : Currently restructuring the project for the beta`
-
 <p align="center">
   <img src="misc/logo.png" alt="Vixeny Logo"  style="max-width: 100%;">
   <br>
@@ -9,6 +7,8 @@
   <br>
   <code>npx create-vixeny</code> | <code>bun create vixeny</code>
 </p>
+
+`Status : Currently restructuring the project for the beta!`
 
 **Vixeny: Pioneering Functional Web Development**
 
@@ -39,11 +39,9 @@ workflow efficiency.
 - **Ironclad Security**: Designed with security at its heart, Vixeny ensures
   your applications are safe and sound.
 - **Sophisticated Type Checking**: Advanced type system integration for
-  bulletproof code reliability.
+  bulletproof code reliability emd-to-end.
 - **Harmony of Paradigms**: While rooted in functional programming, Vixeny
   gracefully supports a spectrum of programming paradigms.
-- **Object-Oriented Features**: Offers the flexibility of object-oriented
-  principles for straightforward code management.
 - **Seamless Testing**: Built from the ground up to accommodate easy and
   comprehensive testing strategies.
 - **Future-Ready**: Stay at the forefront of web development with cutting-edge

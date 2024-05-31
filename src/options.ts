@@ -6,7 +6,6 @@ import type { Petition } from "./morphism.ts";
  * import vixeny from "vixeny/fun"
  * import pettitions from "./someWhere"
  * vixeny({
- *  hasName: "http://127.0.0.1:8080/",
  *  404: r => new Response("Insert Not Found"),
  *  405: r => new Response("Insert Bad Method"),
  *  //default
@@ -14,8 +13,11 @@ import type { Petition } from "./morphism.ts";
  * })(...pettions)
  * ```
  */
-export type FunRouterOptions = {
+export type FunRouterOptions<
+  PI extends CyclePluginMap,
+> = {
   /**
+   * @deprecated
    * Optimize the router. It always has to end with "/"
    *
    * ```ts
@@ -30,15 +32,9 @@ export type FunRouterOptions = {
    * ```
    */
   readonly hasName?: string;
-  /**
-   * @experimental To be implemented.
-   */
-  readonly base?: {
-    index: string;
-  } | {
-    wildIndex: true;
-  } | {
-    at: number;
+  readonly indexBase?: {
+    bind?: string;
+    at?: number;
   };
   readonly cors?: CORSOptions;
   readonly router?: {
@@ -48,6 +44,8 @@ export type FunRouterOptions = {
     strictTrailingSlash?: false;
   };
   /**
+   * @deprecated
+   *
    * When an URL with a valid URL is detected and used it will be added to yout `context`
    *
    * ```ts
@@ -70,7 +68,9 @@ export type FunRouterOptions = {
     slashIs?: string;
     isWild?: true;
   };
-  readonly retruns?: any;
+  readonly runtimeOptions?: {
+    returns?: any;
+  };
   readonly enableLiveReloading?: true;
   /**
    * A function that takes a Request and returns a Response for 404 errors.
@@ -82,26 +82,64 @@ export type FunRouterOptions = {
    */
   405?: (x: Request) => Response;
 
-  readonly cyclePlugin?: CyclePluginMap;
+  readonly cyclePlugin?: PI;
 };
 
 export type CyclePluginMap = {
-  readonly [key: string]: CyclePlugin;
+  readonly [key: string]: CyclePlugin<any>;
 };
 
-export type CyclePlugin = {
+export type CyclePlugin<
+  FC extends boolean,
+> = {
   readonly name: symbol;
-  readonly f: (
-    o?: FunRouterOptions,
-  ) => (
-    p: Petition,
-  ) => (r: Request | [Request, Record<string, unknown>]) => any;
+  // Do not use false
+  readonly isFunction?: FC;
+  readonly f: FC extends true
+    ? (o?: FunRouterOptions<any>) => (p: Petition) => any
+    : (
+      o?: FunRouterOptions<any>,
+    ) => (
+      p: Petition,
+    ) => (r: Request | [Request, Record<string, unknown>]) => any;
   readonly type: unknown;
   readonly options?: { [k: string]: any };
-} | {
-  readonly name: symbol;
-  readonly isFunction: true;
-  readonly f: (o?: FunRouterOptions) => (p: Petition) => any;
-  readonly type: unknown;
-  readonly options?: { [k: string]: any };
-} | {};
+};
+
+/**
+ * Provides a function to configure global options for Vixeny's plugins.
+ * This allows setting options based on the provided plugin configuration map.
+ *
+ * @template FC - Specifies the type for the cycle plugin map.
+ * @template O - Specifies the type for the functional router options.
+ * @param {O} [options] - Optional configuration options to initialize plugins.
+ * @returns {O} Returns the passed configuration options or undefined.
+ *
+ * Example usage:
+ * @example
+ * ```ts
+ * import { plugins } from 'vixeny';
+ *
+ * // Define a plugin method with nested function returns.
+ * const pluginMethod = plugins.type({
+ *   name: Symbol.for("example"),
+ *   type: undefined,
+ *   f: () => () => () => " inCycle",
+ * });
+ *
+ * // Set global options using the defined plugin method.
+ * const options = plugins.globalOptions({
+ *   cyclePlugin: {
+ *     example: pluginMethod,
+ *   },
+ * });
+ *
+ * ```
+ */
+
+export const globalOptions = <
+  FC extends CyclePluginMap,
+  O extends FunRouterOptions<FC>,
+>(
+  options?: O,
+) => options;

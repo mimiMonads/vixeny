@@ -3,7 +3,7 @@ import type { Petition } from "../morphism.ts";
 
 import tools from "./composerTools.ts";
 
-export default (o?: FunRouterOptions) =>
+export default (o?: FunRouterOptions<any>) =>
 (f: Petition) =>
 (ar: string[]) =>
 (mutable: boolean) =>

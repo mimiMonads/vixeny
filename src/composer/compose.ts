@@ -5,7 +5,7 @@ import tools from "./composerTools.ts";
 import linker from "./linker.ts";
 import mime from "../util/mime.ts";
 
-export default (o?: FunRouterOptions) =>
+export default (o?: FunRouterOptions<any>) =>
 (f: Petition): (ctx: Request) => Promise<Response> | Response =>
   ((elementsUsed) =>
     (
@@ -90,5 +90,5 @@ export default (o?: FunRouterOptions) =>
           : null,
       },
     ))(
-      tools.isUsing(o)(f)(tools.elements),
+      tools.isUsing(o)(f),
     );

@@ -1,10 +1,10 @@
-import { ArraySwap, ParamsMethod, RequestFunction } from "../types.ts";
+import type { ArraySwap, ParamsMethod, RequestFunction } from "../types.ts";
 
-import { FunRouterOptions } from "../../../../types.ts";
+import type { FunRouterOptions } from "../../options.ts";
 
-import badMethod from "../../../util/badMethod.ts";
+import badMethod from "../../util/badMethod.ts";
 
-import notFound from "../../../util/notFound.ts";
+import notFound from "../../util/notFound.ts";
 
 type InnerObj = [string, RequestFunction] | [];
 type InnerObjEmpty = [string, RequestFunction];
@@ -20,7 +20,7 @@ export type Atlas = [
   (Atlas | []),
 ];
 
-export default (o?: FunRouterOptions) =>
+export default (o?: FunRouterOptions<any>) =>
 (a: [ArraySwap[], PartialAtlas]): Atlas =>
   (
     (ParamsMethod) =>
