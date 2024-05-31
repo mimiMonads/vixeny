@@ -7,7 +7,7 @@ import solver from "./src/router/solver1.ts";
 import type { fileServerPetition, Petition } from "./src/morphism.ts";
 
 /**
- * Main function , use in wrap 
+ * Main function , use in wrap
  */
 
 export default ((o?: FunRouterOptions<any>) =>

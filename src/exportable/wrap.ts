@@ -93,7 +93,7 @@ export const wrap = <
   AR = any,
   R = any,
 >(a = [] as Petition[]) => ({
-    /**
+  /**
    * `petitionWithoutCTX` allows to bypass the `composer` and it is not bind to it's rules, keeping the function untouched.
    *
    * @param {Petition} petition - The petition to be added.
@@ -248,8 +248,8 @@ export const wrap = <
   /**
    * `logPaths` is a utility method that logs the paths of all the petitions wrapped by this instance.
    * It helps in debugging by providing a quick overview of the defined petition paths at any given moment.
-   * 
-   *@example
+   *
+   * @example
    * Example usage:
    * ```javascript
    * wrap()()
@@ -528,9 +528,9 @@ export const wrap = <
    *  ```
    */
   pure: (petition: Petition) => wrap(o)([petition]),
-  
+
   /**
-   * `addAnyPetition` allows for adding a petition of any type to the current wrap instance, 
+   * `addAnyPetition` allows for adding a petition of any type to the current wrap instance,
    * increasing flexibility in handling different Petitions as HTTP requests.
    *
    * @param {Petition} petition - The petition to be added.
@@ -538,17 +538,17 @@ export const wrap = <
    *
    * @example
    * ```js
-   * 
+   *
    *  const requestPetition = petitions.standard()({
    *    path: "/response",
    *    f: () => new Response("standard"),
    *  });
-   * 
+   *
    * const api = wrap()().addAnyPetition(requestPetition);
    * ```
    */
   addAnyPetition: (petition: Petition) => wrap(o)([...a, petition]),
-    /**
+  /**
    * `compose` consolidates all petitions within the wrap instance into a cohesive, operational unit,
    * ready for execution or further configuration. This method is pivotal for finalizing the setup
    * of routing and request handling mechanisms before application deployment.
@@ -563,25 +563,20 @@ export const wrap = <
    * ```
    */
   compose: () => vixeny(o)(a),
-/**
- * TODO: delete this and don't push it, just complaining
- * Theoretically, we should be using `ReturnType<typeof wrap>` instead of our trusty old `Petition` for `(arg: Petition) => Petition`. But hey, TypeScript throws a tantrum and starts yelling at me UwU. Classic TypeScript, am I right? ¯\_(ツ)_/¯
- * So, instead of a slick flatmap, we're stuck with union—because JavaScript loves to keep us on our toes and begging for more!
- * Honestly, if this piece of code runs without conjuring a horde of elder demons, consider it a tiny everyday miracle in the vast programming wilderness. <3
- * And yes, I'm ticked off because I can't use `pure` and `flatMap` like a proper disfunctional programmer. Don't even get me started on why I'm using `pure` instead of `unit`—that's a whole other level of nerd rage.
- *
- * It was supposed to be a 10-hour project for a query parser, like, what the actual f*ck, I've been dealing with this nonsensical language for 2 years. Like,
- * I'm super used to the abstract nonsense of category theory, but now, everything has to be type-safe. Having to develop an entire type system as a layer of abstraction, for another layer of abstraction in a layer of abstraction that interacts with yet another abstraction is just ludicrous. Go touch some grass.
- *
- * Having to make a framework in a framework on top of another framework that interacts with other tools (that I had to make from scratch), the level of abstraction is over 9000! But somehow, it's really nice to use and it makes `categorical` sense, did you get it? `Categorical` as in `category` theory (I need to let it go (yes, too many hours poured into this (God help me))).
- * IDK why I lose it so badly but I can't stop writing, have you seen `wrap`? Well, it's nothing; this function is just a layer of abstraction to make interacting with Vixeny more comfy. You need to jump with me and check out the trampoline recursion in `composer` and all the weird combinatorics. Dive into this rabbit hole with me. And yeah, I didn't need to use the Y or Z combinator but it looks nice ~(˘▾˘~).
- *
- * Anyway, it's finally over, yay!
- * 
- * */
-//flatMap: (fn: (arg: Petition) => Petition) => a.reduce((acc, x) => acc.addAnyPetition(fn(x)), wrap(o)([])),
-
-
-
-
+  /**
+   * TODO: delete this and don't push it, just complaining
+   * Theoretically, we should be using `ReturnType<typeof wrap>` instead of our trusty old `Petition` for `(arg: Petition) => Petition`. But hey, TypeScript throws a tantrum and starts yelling at me UwU. Classic TypeScript, am I right? ¯\_(ツ)_/¯
+   * So, instead of a slick flatmap, we're stuck with union—because JavaScript loves to keep us on our toes and begging for more!
+   * Honestly, if this piece of code runs without conjuring a horde of elder demons, consider it a tiny everyday miracle in the vast programming wilderness. <3
+   * And yes, I'm ticked off because I can't use `pure` and `flatMap` like a proper disfunctional programmer. Don't even get me started on why I'm using `pure` instead of `unit`—that's a whole other level of nerd rage.
+   *
+   * It was supposed to be a 10-hour project for a query parser, like, what the actual f*ck, I've been dealing with this nonsensical language for 2 years. Like,
+   * I'm super used to the abstract nonsense of category theory, but now, everything has to be type-safe. Having to develop an entire type system as a layer of abstraction, for another layer of abstraction in a layer of abstraction that interacts with yet another abstraction is just ludicrous. Go touch some grass.
+   *
+   * Having to make a framework in a framework on top of another framework that interacts with other tools (that I had to make from scratch), the level of abstraction is over 9000! But somehow, it's really nice to use and it makes `categorical` sense, did you get it? `Categorical` as in `category` theory (I need to let it go (yes, too many hours poured into this (God help me))).
+   * IDK why I lose it so badly but I can't stop writing, have you seen `wrap`? Well, it's nothing; this function is just a layer of abstraction to make interacting with Vixeny more comfy. You need to jump with me and check out the trampoline recursion in `composer` and all the weird combinatorics. Dive into this rabbit hole with me. And yeah, I didn't need to use the Y or Z combinator but it looks nice ~(˘▾˘~).
+   *
+   * Anyway, it's finally over, yay!
+   */
+  //flatMap: (fn: (arg: Petition) => Petition) => a.reduce((acc, x) => acc.addAnyPetition(fn(x)), wrap(o)([])),
 });

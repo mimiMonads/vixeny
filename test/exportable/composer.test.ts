@@ -26,7 +26,7 @@ const responsePetition = petitions.response()({
 
 const requestPetition = petitions.standard()({
   path: "/response",
-  f: ctx => new Response("standard"),
+  f: (ctx) => new Response("standard"),
 });
 
 Deno.test("exportable composer any", async () => {

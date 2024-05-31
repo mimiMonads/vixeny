@@ -645,7 +645,7 @@ interface Ctx<
    * - Supports an unlimited nesting of resolves and branches (using `petitions` typing), providing a flexible structure for complex data handling.
    *
    * @example
-   * 
+   *
    * ---
    * Basic usage with synchronous data fetching:
    * ```js
@@ -799,7 +799,7 @@ interface Ctx<
    *  path: "/path",
    *  f: async ctx => await ctx.req.blob()
    * }
-   * 
+   *
    * ```
    */
   req: Request;
@@ -959,7 +959,6 @@ interface Ctx<
    */
   hash: string;
   /**
-   * 
    * (it hasn't been fully optimized btw)
    * Retrieves cookies sent with the request using `ctx.cookie`.
    *
