@@ -554,12 +554,12 @@ export type PetitionOptions<
 };
 
 // Modified ExtractPluginTypes
-type ExtractPluginTypes<O extends FunRouterOptions<any>> = O["cyclePlugin"] extends
-  CyclePluginMap ? {
-    [K in keyof O["cyclePlugin"]]?: O["cyclePlugin"][K] extends
-      { type: infer T } ? T : never;
-  }
-  : {};
+type ExtractPluginTypes<O extends FunRouterOptions<any>> =
+  O["cyclePlugin"] extends CyclePluginMap ? {
+      [K in keyof O["cyclePlugin"]]?: O["cyclePlugin"][K] extends
+        { type: infer T } ? T : never;
+    }
+    : {};
 
 type DebugOptions = {
   type: "list";

@@ -35,9 +35,9 @@ const wrapped = wrap(opt)()
   })
   .stdPetition({
     path: "/stdPlugin",
-    plugins:{
-      hello: 'string',
-      method: 'string'
+    plugins: {
+      hello: "string",
+      method: "string",
     },
     f: (ctx) => ctx.hello() + ctx.method,
   })

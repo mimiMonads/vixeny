@@ -10,7 +10,6 @@ import {
 export default {
   globalOptions,
   /**
-   * 
    * Types a plugin's configuration to ensure it meets Vixeny's requirements.
    * This function validates and possibly transforms the plugin configuration using TypeScript types.
    *
@@ -32,8 +31,8 @@ export default {
    * ```
    */
   type: <
-  FC extends boolean,
-  O extends CyclePlugin<FC>
+    FC extends boolean,
+    O extends CyclePlugin<FC>,
   >(config: O) => config,
 
   /**
@@ -109,7 +108,7 @@ export default {
    */
   isUsing: composerTools.isUsing,
   staticFilePlugin: <
-  TP extends "response" | "request" | undefined,
-    O extends StaticFilePlugin<TP>
-  > ( config : O) => config
+    TP extends "response" | "request" | undefined,
+    O extends StaticFilePlugin<TP>,
+  >(config: O) => config,
 };
