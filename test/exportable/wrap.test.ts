@@ -48,7 +48,7 @@ const wrapped = wrap(opt)()
   .petitionWithoutCTX({
     path: "/withoutCTX",
     r: () => new Response("withoutCTX"),
-  }).addAnyPettition(normalPetition);
+  }).addAnyPetition(normalPetition);
 
 const serve = wrapped.testRequests();
 

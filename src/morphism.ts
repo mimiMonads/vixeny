@@ -642,9 +642,10 @@ interface Ctx<
    * - Supports both synchronous and asynchronous operations.
    * - Maintains the original state, allowing for clean and predictable code execution.
    * - Executes all resolves before integrating their outputs into the `CTX`.
-   * - Supports an unlimited nesting of resolves and branches (using morphism), providing a flexible structure for complex data handling.
+   * - Supports an unlimited nesting of resolves and branches (using `petitions` typing), providing a flexible structure for complex data handling.
    *
-   * **Examples**:
+   * @example
+   * 
    * ---
    * Basic usage with synchronous data fetching:
    * ```js
@@ -683,25 +684,21 @@ interface Ctx<
    *   })
    * ```
    * ---
-   *  Using `morphism` with `resolve`:
+   *  Using `morphism`(petitions) with `resolve`:
    *
    * Suppose you need to fetch user data and perform some preprocessing on it before responding to a request. You can define a `morphism` for fetching and preprocessing the data, and then use it within the `resolve` to ensure the data is ready by the time you need to use it in `f`.
    *
    * ```js
    * // Define a morphism for fetching and preprocessing user data
-   * const fetchAndProcessUserData = morphism({
-   *   resolve: {
-   *     userData: {
-   *       f: async (c) => {
-   *         // Imagine fetching user data asynchronously
-   *         const userData = await fetchUserData(c.param.userId);
-   *         // Preprocess the fetched data
-   *         const processedData = processData(userData);
-   *         return processedData;
-   *       }
-   *     }
-   *   },
-   *   f: (c) => c.resolve.userData, // This function simply returns the processed user data
+   * const fetchAndProcessUserData = petitions.resolve({
+   *    f: async (c) => {
+   *      // Imagine fetching user data asynchronously
+   *      const userData = await fetchUserData(c.param.userId);
+   *      // Preprocess the fetched data
+   *      const processedData = processData(userData);
+   *      return processedData;
+   *    }
+   *  }
    * });
    *
    * // Use the above morphism in a petition
@@ -728,14 +725,16 @@ interface Ctx<
    * **Key Features**:
    * - Enables the execution of side operations or additional logic in parallel to the main function.
    * - Each branch operates with its own context, allowing for independent execution.
-   * - Supports dynamic operations with parameters and asynchronous actions, enhancing flexibility.
+   * - Supports dynamic operations with parameters and asynchronous actions.
+   * - upports an unlimited nesting of resolves and branches (using `petitions` typing), providing a flexible structure for complex data handling.
    *
    * **Examples**:
    * ---
    * Defining a simple branch:
    * ```typescript
-   * const helloBranch = morphism(options)({
-   *   f: (ctx) => "Hello from branch",
+   * const helloBranch = petitions.branch(options)({
+   *   arguments: {} as string,
+   *   f: () => "Hello from branch",
    * });
    *
    * wrap(options)()
@@ -744,24 +743,24 @@ interface Ctx<
    *     branch: {
    *       hello: helloBranch,
    *     },
-   *     f: (ctx) => new Response(ctx.branch.hello(null)),
+   *     f: (ctx) => new Response(ctx.branch.hello()),
    *   });
    * ```
    * ---
    * Branch with parameters:
    * ```typescript
-   * const greetUserBranch = morphism()({
-   *   f: (ctx) => `Hello, ${ctc.arguments.name}`,
+   * const greetUserBranch = petitions.branch()({
+   *   arguments: {} as Record<string, string>,
+   *   f: (ctx) => `Hello, ${ctx.arguments.name}`,
    * });
-   *
    * wrap(options)()
    *   .stdPetition({
    *     path: "/greet/:name",
    *     branch: {
    *       greetUser: greetUserBranch,
    *     },
-   *     f: (ctx) => new Response(c.branch.greetUser({ name: ctx.param.name })),
-   *   });
+   *     f:  (ctx) => ctx.branch.greetUser({ name: ctx.param.name }),
+   *    });
    * ```
    * ---
    * Asynchronous branch example:
@@ -793,18 +792,14 @@ interface Ctx<
   /**
    * Adds with query to the `context`
    *
+   * @example
    * ---
    * ```ts
    * {
    *  path: "/path",
    *  f: async ctx => await ctx.req.blob()
    * }
-   * ---
-   * {
-   *   path: '/path',
-   *   options: {add: ["req"]},
-   *   f: ctx => outOfContext(ctx)
-   * };
+   * 
    * ```
    */
   req: Request;
@@ -964,19 +959,16 @@ interface Ctx<
    */
   hash: string;
   /**
+   * 
+   * (it hasn't been fully optimized btw)
    * Retrieves cookies sent with the request using `ctx.cookie`.
    *
+   * @example
    * ---
    * ```ts
    * {
    *   path: '/path',
    *   f: ctx => ctx.cookie?.sessionID
-   * };
-   * // If the `ctx` goes out of context
-   * {
-   *   path: '/path',
-   *   options: {add: ["cookie"]},
-   *   f: ctx => outOfContext(ctx)
    * };
    * ```
    */
