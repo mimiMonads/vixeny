@@ -11,13 +11,13 @@ const normalPetition = petitions.common()({
 const pluginHello = plugins.type({
   name: Symbol.for("hello"),
   isFunction: true,
-  type: undefined,
+  type: {} as string,
   f: () => () => () => "function",
 });
 
 const pluginMethod = plugins.type({
   name: Symbol.for("method"),
-  type: undefined,
+  type: {} as string,
   f: () => () => () => " inCycle",
 });
 
@@ -35,6 +35,10 @@ const wrapped = wrap(opt)()
   })
   .stdPetition({
     path: "/stdPlugin",
+    plugins:{
+      hello: 'string',
+      method: 'string'
+    },
     f: (ctx) => ctx.hello() + ctx.method,
   })
   .customPetition({

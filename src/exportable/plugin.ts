@@ -1,5 +1,6 @@
 //TODO: add
 import composerTools from "../composer/composerTools.ts";
+import type { StaticFilePlugin } from "../morphism.ts";
 import {
   type CyclePlugin,
   type FunRouterOptions,
@@ -9,6 +10,7 @@ import {
 export default {
   globalOptions,
   /**
+   * 
    * Types a plugin's configuration to ensure it meets Vixeny's requirements.
    * This function validates and possibly transforms the plugin configuration using TypeScript types.
    *
@@ -29,7 +31,10 @@ export default {
    * });
    * ```
    */
-  type: <FC extends boolean>(config: CyclePlugin<FC>) => config,
+  type: <
+  FC extends boolean,
+  O extends CyclePlugin<FC>
+  >(config: O) => config,
 
   /**
    * Retrieves specific plugin options using the current name of the plugin.
@@ -92,7 +97,7 @@ export default {
    * }))(Symbol("myPlugin"));
    * ```
    */
-  getName: (o: FunRouterOptions<any>) => (sym: symbol) =>
+  getName: (o?: FunRouterOptions<any>) => (sym: symbol) =>
     Object
       .keys(o?.cyclePlugin ?? [])
       // @ts-ignore
@@ -103,4 +108,8 @@ export default {
    * only the relevant context elements are included
    */
   isUsing: composerTools.isUsing,
+  staticFilePlugin: <
+  TP extends "response" | "request" | undefined,
+    O extends StaticFilePlugin<TP>
+  > ( config : O) => config
 };
