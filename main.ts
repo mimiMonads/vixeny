@@ -24,7 +24,7 @@ export { petitions } from "./src/morphism.ts";
  * Composer utilities
  */
 
-export { default as composer } from "./src/exportable/composer.ts";
+export { composer } from "./src/exportable/composer.ts";
 
 /**
  * @deprecated use composeResponse .

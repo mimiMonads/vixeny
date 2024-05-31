@@ -29,11 +29,6 @@ const requestPetition = petitions.standard()({
   f: () => new Response("standard"),
 });
 
-const branchMo = petitions.branch()({
-  arguments: "string",
-  f: (ctx) => "hi" ?? "notFOund",
-});
-
 Deno.test("exportable composer any", async () => {
   assertEquals(
     composer.anyRequest()({
