@@ -20,7 +20,7 @@ export default (
             x.path,
             o && o.enableLiveReloading
               //@ts-ignore
-              ? async (r: Request) => await injectHtml(x.r(r))
+              ? async (r: Request) => await injectHtml()(x.r(r))
               : x.r,
             false,
           ] as unknown as RouteTypes
