@@ -515,7 +515,6 @@ export type Morphism<
     ): MO["specificReturnType"] extends true ? MO["retunType"]
       : MO["type"] extends "response" ? Response | Promise<Response>
       : MO["type"] extends "request" ? Response | Promise<Response>
-      : MO["type"] extends "morphism" ? R
       : MO["type"] extends "base" ? BodyInit | Promise<Response>
       : R;
   };
