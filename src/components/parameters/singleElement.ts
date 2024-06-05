@@ -47,7 +47,7 @@ export default {
   fixElementAtTheEnd: (offsett: number) => (string: string) =>
     string.slice(
       offsett,
-      string.indexOf("?") ? string.indexOf("?") : string.length,
+      string.indexOf("?") !== -1 ? string.indexOf("?") : string.length,
     ),
   fixElementAndSlashAtTheEnd: (offsett: number) => (string: string) =>
     string.slice(offsett, string.indexOf("/", offsett + 1)),

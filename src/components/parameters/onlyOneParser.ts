@@ -12,8 +12,8 @@ export default (map: info) =>
       )
     : map.endsInSlash
     ? singleElement.creatingAnObjectWith(map.elements[0].slice(1))(
-      singleElement.elementAndSlashAtTheEnd(map.firstParam),
+      singleElement.elementAndSlashAtTheEnd(map.firstParam + 1),
     )
     : singleElement.creatingAnObjectWith(map.elements[0].slice(1))(
-      singleElement.elementWithNoSlashAtTheEnd(map.firstParam),
+      singleElement.elementWithNoSlashAtTheEnd(map.firstParam + 1),
     );
