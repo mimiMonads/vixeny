@@ -22,9 +22,9 @@ export default {
    * @returns {string} - The resulting substring.
    */
   elementWithNoSlashAtTheEnd: (offset: number) => (string: string) =>
-     string.slice(
+    string.slice(
       string.indexOf("/", string.indexOf("/") + 2) + offset,
-      string.indexOf("?") !== -1 ? string.indexOf("?")  : string.length,
+      string.indexOf("?") !== -1 ? string.indexOf("?") : string.length,
     ),
 
   /**

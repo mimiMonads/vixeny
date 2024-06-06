@@ -2,13 +2,13 @@ import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import mainParameters from "../../../src/components/parameters/mainParameters.ts";
 import { petitions, plugins } from "../../../main.ts";
 
-const base = "http://hello.com"
+const base = "http://hello.com";
 
 const options = plugins.globalOptions({
-  indexBase:{
-    bind: base + '/'
-  }
-})
+  indexBase: {
+    bind: base + "/",
+  },
+});
 
 Deno.test("parameters unique", () => {
   assertEquals(
@@ -16,7 +16,7 @@ Deno.test("parameters unique", () => {
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
-          unique: true
+          unique: true,
         },
         f: (ctx) => ctx.param,
       }),
@@ -28,11 +28,11 @@ Deno.test("parameters unique", () => {
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
-          unique: true
+          unique: true,
         },
         f: (ctx) => ctx.param,
       }),
-    )(base +  "/hello/nested/helloWorld2?hi=hi"),
+    )(base + "/hello/nested/helloWorld2?hi=hi"),
     "helloWorld2",
   );
   assertEquals(
@@ -40,7 +40,7 @@ Deno.test("parameters unique", () => {
       petitions.common()({
         path: "/hello/nested/:hi/",
         param: {
-          unique: true
+          unique: true,
         },
         f: (ctx) => ctx.param,
       }),
@@ -52,11 +52,11 @@ Deno.test("parameters unique", () => {
       petitions.common()({
         path: "/hello/nested/:hi/",
         param: {
-          unique: true
+          unique: true,
         },
         f: (ctx) => ctx.param,
       }),
-    )(base +  "/hello/nested/helloWorld4/"),
+    )(base + "/hello/nested/helloWorld4/"),
     "helloWorld4",
   );
   assertEquals(
@@ -64,7 +64,7 @@ Deno.test("parameters unique", () => {
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
-          unique: true
+          unique: true,
         },
         f: (ctx) => ctx.param,
       }),
@@ -76,11 +76,11 @@ Deno.test("parameters unique", () => {
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
-          unique: true
+          unique: true,
         },
         f: (ctx) => ctx.param,
       }),
-    )(base +  "/hello/nested/helloWorld6?hi=hi"),
+    )(base + "/hello/nested/helloWorld6?hi=hi"),
     "helloWorld6",
   );
 
@@ -90,7 +90,7 @@ Deno.test("parameters unique", () => {
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
-          unique: true
+          unique: true,
         },
         f: (ctx) => ctx.param,
       }),
@@ -98,18 +98,14 @@ Deno.test("parameters unique", () => {
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
-          unique: true
+          unique: true,
         },
         f: (ctx) => ctx.param,
       }),
     ).toString(),
-    false
-  )
-
-
+    false,
+  );
 });
-
-
 
 Deno.test("parameters single", () => {
   assertEquals(
@@ -120,7 +116,7 @@ Deno.test("parameters single", () => {
       }),
     )(base + "/hello/nested/helloWorld1"),
     {
-      hi: "helloWorld1"
+      hi: "helloWorld1",
     },
   );
   assertEquals(
@@ -129,9 +125,9 @@ Deno.test("parameters single", () => {
         path: "/hello/nested/:hi",
         f: (ctx) => ctx.param.hi,
       }),
-    )(base +  "/hello/nested/helloWorld2?hi=hi"),
+    )(base + "/hello/nested/helloWorld2?hi=hi"),
     {
-      hi: "helloWorld2"
+      hi: "helloWorld2",
     },
   );
   assertEquals(
@@ -142,7 +138,7 @@ Deno.test("parameters single", () => {
       }),
     )(base + "/hello/nested/helloWorld3/"),
     {
-      hi: "helloWorld3"
+      hi: "helloWorld3",
     },
   );
   assertEquals(
@@ -151,9 +147,9 @@ Deno.test("parameters single", () => {
         path: "/hello/nested/:hi/",
         f: (ctx) => ctx.param.hi,
       }),
-    )(base +  "/hello/nested/helloWorld4/"),
+    )(base + "/hello/nested/helloWorld4/"),
     {
-      hi: "helloWorld4"
+      hi: "helloWorld4",
     },
   );
   assertEquals(
@@ -164,7 +160,7 @@ Deno.test("parameters single", () => {
       }),
     )(base + "/hello/nested/helloWorld5"),
     {
-      hi: "helloWorld5"
+      hi: "helloWorld5",
     },
   );
   assertEquals(
@@ -173,9 +169,51 @@ Deno.test("parameters single", () => {
         path: "/hello/nested/:hi",
         f: (ctx) => ctx.param.hi,
       }),
-    )(base +  "/hello/nested/helloWorld6?hi=hi"),
+    )(base + "/hello/nested/helloWorld6?hi=hi"),
     {
-      hi: "helloWorld6"
+      hi: "helloWorld6",
+    },
+  );
+});
+
+Deno.test("parameters muliple", () => {
+  assertEquals(
+    mainParameters()(
+      petitions.common()({
+        path: "/hello/nested/:hi/:hello",
+        f: (ctx) => ctx.param.hi,
+      }),
+    )(base + "/hello/nested/helloWorld1/abcd1"),
+    {
+      hi: "helloWorld1",
+      hello: "abcd1",
+    },
+  );
+
+  assertEquals(
+    mainParameters()(
+      petitions.common()({
+        path: "/hello/nested/:hi/:hello",
+        f: (ctx) => ctx.param.hi,
+      }),
+    )(base + "/hello/nested/helloWorld1/abcd1"),
+    {
+      hi: "helloWorld1",
+      hello: "abcd1",
+    },
+  );
+
+  assertEquals(
+    mainParameters()(
+      petitions.common()({
+        path: "/:test/:id/:hello",
+        f: (ctx) => ctx.param.hi,
+      }),
+    )(base + "/test/hello/world"),
+    {
+      hello: "world",
+      id: "hello",
+      test: "test",
     },
   );
 });

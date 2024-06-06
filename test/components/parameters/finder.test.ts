@@ -6,7 +6,7 @@ import type { Petition } from "../../../src/morphism.ts";
 
 test(
   "only one parameter at the end and query",
-  (_) =>
+  (_) => {
     assert.deepStrictEqual(
       (new Function(
         ` return ${
@@ -20,30 +20,20 @@ test(
         id: "456",
       },
     ),
-);
-
-test(
-  "only one parameter at the end and query",
-  (_) =>
-    assert.deepStrictEqual(
-      (new Function(
-        ` return ${
-          finder(
-            map()({ f: (_) => "hello", path: "/:test/:id/:hi" } as Petition),
-          )
-        }`,
-      ))()("test/456/hi"),
-      {
-        hi: "hi",
-        id: "456",
-        test: "test",
-      },
-    ),
-);
-
-test(
-  "only one parameter at the end and query",
-  (_) =>
+      assert.deepStrictEqual(
+        (new Function(
+          ` return ${
+            finder(
+              map()({ f: (_) => "hello", path: "/:test/:id/:hi" } as Petition),
+            )
+          }`,
+        ))()("test/456/hi"),
+        {
+          hi: "hi",
+          id: "456",
+          test: "test",
+        },
+      );
     assert.deepStrictEqual(
       (new Function(
         ` return ${
@@ -56,5 +46,6 @@ test(
         id: "456",
         test: "test",
       },
-    ),
+    );
+  },
 );
