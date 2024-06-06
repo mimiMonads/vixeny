@@ -1,4 +1,4 @@
-import params from "../components/parameters/main.ts";
+import params from "../components/parameters/mainParameters.ts";
 import query from "../components/queries/main.ts";
 import cookies from "../components/cookies/main.ts";
 import resolve from "./resolve/main.ts";
