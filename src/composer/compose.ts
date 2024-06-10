@@ -55,7 +55,8 @@ export default (o?: FunRouterOptions<any>) =>
               .some((x) =>
                 elementsUsed.includes(x)
                   //@ts-ignore
-                  ? "isAsync" in o.cyclePlugin[x] && o.cyclePlugin[x] === true
+                  ? "isAsync" in o.cyclePlugin[x] &&
+                    o.cyclePlugin[x].isAsync === true
                   : false
               )
           ),
@@ -65,7 +66,8 @@ export default (o?: FunRouterOptions<any>) =>
               .some((x) =>
                 elementsUsed.includes(x)
                   //@ts-ignore
-                  ? "isAsync" in o.cyclePlugin[x] && o.cyclePlugin[x] === true
+                  ? "isAsync" in o.cyclePlugin[x] &&
+                    o.cyclePlugin[x].isAsync === true
                   : false
               )
           ),
