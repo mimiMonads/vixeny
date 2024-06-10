@@ -95,6 +95,7 @@ export type CyclePlugin<
   readonly name: symbol;
   // Do not use false
   readonly isFunction?: FC;
+  readonly isAsync?: boolean;
   readonly f: FC extends true
     ? (o?: FunRouterOptions<any>) => (p: Petition) => any
     : (
