@@ -1,6 +1,7 @@
 //TODO: add
 import composerTools from "../composer/composerTools.ts";
-import type { StaticFilePlugin } from "../morphism.ts";
+import type { Petition, StaticFilePlugin } from "../morphism.ts";
+import checkerTools from "../composer/checkPetition/checkTools.ts";
 import {
   type CyclePlugin,
   type FunRouterOptions,
@@ -111,4 +112,25 @@ export default {
     TP extends "response" | "request" | undefined,
     O extends StaticFilePlugin<TP>,
   >(config: O) => config,
+  pluginIsUsing: (p: Petition) => (currenName: string) =>
+    (
+      (args) =>
+        args
+          ? [
+            ...new Set(
+              checkerTools.getdDestructedElements(p.f)(
+                typeof args == "string" ? args + "." + currenName : currenName,
+              ).concat(
+                checkerTools.getDots(p.f)(
+                  typeof args == "string"
+                    ? args + "." + currenName
+                    : currenName,
+                ),
+              ),
+            ),
+          ]
+          : null
+    )(
+      checkerTools.getArgsname(p.f),
+    ),
 };
