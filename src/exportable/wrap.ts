@@ -547,7 +547,7 @@ export const wrap = <
    * const api = wrap()().addAnyPetition(requestPetition);
    * ```
    */
-  addAnyPetition: (petition: Petition) => wrap(o)([...a, petition]) ,
+  addAnyPetition: (petition: Petition) => wrap(o)([...a, petition]),
   /**
    * `compose` consolidates all petitions within the wrap instance into a cohesive, operational unit,
    * ready for execution or further configuration. This method is pivotal for finalizing the setup
@@ -562,8 +562,7 @@ export const wrap = <
    *   .compose();
    * ```
    */
-  compose: () => vixeny(o)(a) as (r: Request)=> Promise<Response> | Response 
-  ,
+  compose: () => vixeny(o)(a) as (r: Request) => Promise<Response> | Response,
   /**
    * TODO: delete this and don't push it, just complaining
    * Theoretically, we should be using `ReturnType<typeof wrap>` instead of our trusty old `Petition` for `(arg: Petition) => Petition`. But hey, TypeScript throws a tantrum and starts yelling at me UwU. Classic TypeScript, am I right? ¯\_(ツ)_/¯

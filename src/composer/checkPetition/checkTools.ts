@@ -1,6 +1,8 @@
 type CheckTools = {
   getArgsname: (f: (args: any) => any) => string | string[] | null;
-  getDestructedElements: (f: (args: any) => any) => (toFind: string) => string[];
+  getDestructedElements: (
+    f: (args: any) => any,
+  ) => (toFind: string) => string[];
   getDots: (f: (args: any) => any) => (toSearch: string) => string[];
 };
 
@@ -59,9 +61,8 @@ export default (((regex) => ({
           new Set<string>(),
         ),
     ].filter(Boolean),
-}) 
-)({
+}))({
   simpleArgsRegex: /^\s*\(([^)]+)\)/,
   destructuredArgsRegex: /^\s*\(\{([^}]+)\}\)/,
   noArgsRegex: /^\s*\(\s*\)/,
-})) as CheckTools
+})) as CheckTools;

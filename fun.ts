@@ -10,7 +10,11 @@ import type { fileServerPetition, Petition } from "./src/morphism.ts";
  * Main function , use in wrap
  */
 
-type vixeny = (o?: FunRouterOptions<any>) => (routes: (Petition | fileServerPetition)[]) => (r: Request)=> Promise<Response> | Response 
+type vixeny = (
+  o?: FunRouterOptions<any>,
+) => (
+  routes: (Petition | fileServerPetition)[],
+) => (r: Request) => Promise<Response> | Response;
 
 export default ((o?: FunRouterOptions<any>) =>
 (routes: (Petition | fileServerPetition)[]) =>
