@@ -1,5 +1,11 @@
-export default ((regex) => ({
-  getArgsname: (f: (args: any) => any) =>
+type CheckTools = {
+  getArgsname: (f: (args: any) => any) => string | string[] | null;
+  getDestructedElements: (f: (args: any) => any) => (toFind: string) => string[];
+  getDots: (f: (args: any) => any) => (toSearch: string) => string[];
+};
+
+export default (((regex) => ({
+  getArgsname: (f) =>
     (
       (string) =>
         regex.noArgsRegex.test(string)
@@ -25,7 +31,7 @@ export default ((regex) => ({
         f.toString(),
       ),
     ),
-  getdDestructedElements: (f: (key: any) => any) => (toFind: string) =>
+  getDestructedElements: (f) => (toFind) =>
     (
       (match) =>
         match && match.length > 0
@@ -42,19 +48,20 @@ export default ((regex) => ({
         f.toString(),
       ),
     ),
-  getDots: (f: (arg: any) => any) => (toSearch: string) =>
+  getDots: (f) => (toSearch) =>
     [
       ...f.toString()
         .split(new RegExp(`\\b${toSearch}(\\.|\\?\\.)`))
         .slice(1)
         .map((x: string) => x.slice(0, x.match(/[^\w]/)?.index ?? x.length))
         .reduce(
-          (acc: Set<string>, x: string) => (acc.add(x), acc),
+          (acc: Set<string>, x) => (acc.add(x), acc),
           new Set<string>(),
         ),
-    ].filter(Boolean) as string[],
-}))({
+    ].filter(Boolean),
+}) 
+)({
   simpleArgsRegex: /^\s*\(([^)]+)\)/,
   destructuredArgsRegex: /^\s*\(\{([^}]+)\}\)/,
   noArgsRegex: /^\s*\(\s*\)/,
-});
+})) as CheckTools

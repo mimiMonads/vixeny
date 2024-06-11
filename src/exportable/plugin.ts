@@ -118,7 +118,7 @@ export default {
         args
           ? [
             ...new Set(
-              checkerTools.getdDestructedElements(p.f)(
+              checkerTools.getDestructedElements(p.f)(
                 typeof args == "string" ? args + "." + currenName : currenName,
               ).concat(
                 checkerTools.getDots(p.f)(
