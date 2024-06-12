@@ -8,6 +8,8 @@
   <code>npx create-vixeny</code> | <code>bun create vixeny</code>
 </p>
 
+[![JSR](https://jsr.io/badges/@vixeny/core)](https://jsr.io/@vixeny/core)
+
 **Vixeny: Pioneering Functional Web Development**
 
 Vixeny is not just another framework; it's a comprehensive solution designed for
@@ -47,6 +49,10 @@ workflow efficiency.
 
 Embrace the future of web development with Vixeny, where functionality meets
 sophistication. Get started today and experience the difference. **Benchmarks**
+
+```bash
+npx create-vixeny
+```
 
 - [JWT Benchmark](https://github.com/mimiMonads/FrameworkBench)
 - [Bun by SaltyAom](https://github.com/SaltyAom/bun-http-framework-benchmark)

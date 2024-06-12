@@ -64,13 +64,15 @@ export default {
    * }))(Symbol("myPlugin"));
    * ```
    */
-  getOptions: (userOptions: unknown) => (currentName: string) =>
-    userOptions && typeof userOptions === "object" &&
+  getOptions: <T extends any>(userOptions: unknown) =>
+  (
+    currentName: string,
+  ): T | null => (userOptions && typeof userOptions === "object" &&
       !Array.isArray(userOptions) && "plugins" in userOptions &&
       userOptions.plugins
-      //@ts-ignore
-      ? userOptions.plugins[currentName]
-      : null,
+    //@ts-ignore
+    ? userOptions.plugins[currentName] as T
+    : null),
 
   /**
    * Retrieves the current name of a plugin using its symbol, accounting for possible changes in naming conventions.
@@ -114,23 +116,27 @@ export default {
   >(config: O) => config,
   pluginIsUsing: (p: Petition) => (currenName: string) =>
     (
-      (args) =>
-        args
-          ? [
-            ...new Set(
-              checkerTools.getdDestructedElements(p.f)(
-                typeof args == "string" ? args + "." + currenName : currenName,
-              ).concat(
-                checkerTools.getDots(p.f)(
+      (
+        (args) =>
+          args
+            ? [
+              ...new Set(
+                checkerTools.getDestructedElements(p.f)(
                   typeof args == "string"
                     ? args + "." + currenName
                     : currenName,
+                ).concat(
+                  checkerTools.getDots(p.f)(
+                    typeof args == "string"
+                      ? args + "." + currenName
+                      : currenName,
+                  ),
                 ),
               ),
-            ),
-          ]
-          : null
-    )(
-      checkerTools.getArgsname(p.f),
-    ),
+            ]
+            : null
+      )(
+        checkerTools.getArgsname(p.f),
+      )
+    ) as string[] | null,
 };

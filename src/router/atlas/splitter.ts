@@ -4,7 +4,12 @@ import main1 from "./main1.ts";
 import type { ArraySwap } from "../types.ts";
 import type { PartialAtlas } from "./main1.ts";
 
-export default (o?: FunRouterOptions<any>) => (a: RouteTypes[]) =>
+//TODO: remake Split (before 0.3.0)
+type Split = (
+  o?: FunRouterOptions<any>,
+) => (a: RouteTypes[]) => [ArraySwap[], PartialAtlas];
+
+export default ((o?: FunRouterOptions<any>) => (a: RouteTypes[]) =>
   (
     (fl) =>
       (
@@ -47,4 +52,4 @@ export default (o?: FunRouterOptions<any>) => (a: RouteTypes[]) =>
       )
   )(
     a.filter((x) => x[3] === false && x[1].at(-1) !== "*"),
-  );
+  )) as Split;
