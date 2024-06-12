@@ -85,7 +85,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
   changeOptions: <NC extends CyclePluginMap, NO extends FunRouterOptions<NC>>(
     newOptions?: NO,
   ) => Wrap<NO>;
-    /**
+  /**
    * Combines petitions from another `wrap` instance with the current one. This is particularly useful for modularizing
    * and reusing petitions across different parts of your application. By importing and unioning petitions, you can
    * maintain clean separation of concerns and ensure your code remains organized.
@@ -108,7 +108,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * intended by the wrap's design.
    */
   union: (b: Petition[]) => Wrap<O>;
-    /**
+  /**
    * Excludes one or more petitions based on their paths from the current wrap instance, creating a new instance without the specified paths.
    * This is useful for dynamically adjusting the set of active petitions, perhaps in response to configuration changes or to conditionally
    * remove certain routes in different environments or contexts.

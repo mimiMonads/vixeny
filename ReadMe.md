@@ -8,6 +8,8 @@
   <code>npx create-vixeny</code> | <code>bun create vixeny</code>
 </p>
 
+[![JSR](https://jsr.io/badges/@vixeny/core)](https://jsr.io/@vixeny/core)
+
 **Vixeny: Pioneering Functional Web Development**
 
 Vixeny is not just another framework; it's a comprehensive solution designed for
