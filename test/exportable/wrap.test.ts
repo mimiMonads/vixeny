@@ -26,9 +26,14 @@ const opt = plugins.globalOptions({
     hello: pluginHello,
     method: pluginMethod,
   },
+  wrap: {
+    startWith: "/hi",
+  },
 });
 
-const wrapped = wrap(opt)()
+const wrapped = wrap(
+  opt,
+)()
   .stdPetition({
     path: "/stdHello",
     f: () => "stdHello",

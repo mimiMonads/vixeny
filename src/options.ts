@@ -83,6 +83,33 @@ export type FunRouterOptions<
   405?: (x: Request) => Response;
 
   readonly cyclePlugin?: PI;
+  readonly wrap?: {
+    /**
+     * `startWith` is an optional configuration that prefixes all petition paths with a specified string upon unwrapping.
+     * This feature is particularly useful for organizing and grouping routes under a common base path,
+     * making it easier to structure your application's API endpoints.
+     *
+     * When `startWith` is set and the wrap instance is unwrapped, each petition's path will be modified
+     * to include this prefix, facilitating modular and hierarchical API designs.
+     *
+     * Example usage:
+     * ```typescript
+     * import extension from "./extension.ts";
+     *
+     * export default wrap()(
+     *   extension.union(
+     *     // Changing the start path of the wrap `extension` to prefix all paths with "/api"
+     *     extension.changeOptions({ "startWith": "/api" })
+     *       .unwrap(),
+     *   ),
+     * )
+     * ```
+     *
+     * In this example, if `extension` had a petition with a path of `/hello`, after applying `changeOptions` with
+     * `startWith: "/api"` and unwrapping, the resulting path would be `/api/hello`.
+     */
+    startWith?: string;
+  };
 };
 
 export type CyclePluginMap = {
