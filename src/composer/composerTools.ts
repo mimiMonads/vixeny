@@ -55,13 +55,14 @@ export default {
                 )) ??
               false,
       ) as unknown as (f: Petition) => boolean,
-  parsingToHexa: (crypto: { globalKey: string }) =>
+  parsingToHexa: (crypto: { globalKey: string }): Uint8Array =>
     typeof crypto.globalKey === "string"
       ? /^[0-9a-fA-F]+$/g.test(crypto.globalKey)
         ? new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
         : new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
       : crypto.globalKey,
-  isUsing: (o?: FunRouterOptions<any>) => (f: Petition) => mainCheck(o)(f),
+  isUsing: (o?: FunRouterOptions<any>) => (f: Petition): string[] =>
+    mainCheck(o)(f),
   elements: (f: Petition) =>
     (
       f.crypto && "globalKey" in f.crypto
