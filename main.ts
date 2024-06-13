@@ -1,4 +1,4 @@
-import parseArguments from "./src/runtime/parseArguments.ts";
+import parseargs from "./src/runtime/parseArguments.ts";
 import name from "./src/runtime/name.ts";
 
 /**
@@ -6,7 +6,7 @@ import name from "./src/runtime/name.ts";
  */
 export const runtime = {
   name: name,
-  arguments: parseArguments,
+  arguments: parseargs,
 };
 
 /**

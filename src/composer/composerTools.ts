@@ -78,7 +78,7 @@ export default {
           f.resolve ? "resolve" : undefined,
           "mutable",
           f.branch ? "branch" : undefined,
-          f.arguments ? "arguments" : undefined,
+          f.args ? "args" : undefined,
           ,
           "token",
           "verify",
@@ -96,7 +96,7 @@ export default {
           f.resolve ? "resolve" : undefined,
           "mutable",
           f.branch ? "branch" : undefined,
-          f.arguments ? "arguments" : undefined,
+          f.args ? "args" : undefined,
           ,
         ]
     ).filter(Boolean) as string[],

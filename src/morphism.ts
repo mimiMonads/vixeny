@@ -245,8 +245,8 @@ export const petitions = {
    * import { petitions, wrap } from 'vixeny';
    *
    * const helloBranch = petitions.branch()({
-   *   arguments: 'string',
-   *   f: (c) => c.arguments, //string
+   *   args: 'string',
+   *   f: (c) => c.args, //string
    * });
    * wrap()()
    *   .stdPetition({
@@ -482,7 +482,7 @@ export type Morphism<
   readonly branch?: BM;
   readonly method?: ParamsMethod;
   readonly crypto?: CO;
-  readonly arguments?: MO extends { branch: true } ? AT : never;
+  readonly args?: MO extends { branch: true } ? AT : never;
   readonly query?: QO;
   readonly param?: PO;
   readonly plugins?: ExtractPluginTypes<RO>;
@@ -535,7 +535,7 @@ type AddOption =
   | "resolve"
   | "mutable"
   | "branch"
-  | "arguments"
+  | "args"
   | "headers";
 
 export type PetitionOptions<
@@ -549,7 +549,7 @@ export type PetitionOptions<
   readonly setHash?: string;
   readonly setRandomNumber?: number;
   readonly setDate?: number;
-  readonly arguments?: any;
+  readonly args?: any;
 };
 
 // Modified ExtractPluginTypes
@@ -641,7 +641,7 @@ interface Ctx<
   OPT extends PetitionOptions<any, any>,
   AR = any,
 > {
-  arguments: AR;
+  args: AR;
   /**
    * The `resolve` property is integral to ensuring that all necessary data is fetched or calculations are performed before the main function (`f`) of a morphism is executed. It consists of a map where each key corresponds to a resolve function that is executed prior to `f`. The results of these resolves are then made available in the `CTX` for use in the main function.
    *
@@ -741,7 +741,7 @@ interface Ctx<
    * Defining a simple branch:
    * ```typescript
    * const helloBranch = petitions.branch(options)({
-   *   arguments: {} as string,
+   *   args: {} as string,
    *   f: () => "Hello from branch",
    * });
    *
@@ -758,8 +758,8 @@ interface Ctx<
    * Branch with parameters:
    * ```typescript
    * const greetUserBranch = petitions.branch()({
-   *   arguments: {} as Record<string, string>,
-   *   f: (ctx) => `Hello, ${ctx.arguments.name}`,
+   *   args: {} as Record<string, string>,
+   *   f: (ctx) => `Hello, ${ctx.args.name}`,
    * });
    * wrap(options)()
    *   .stdPetition({
@@ -775,7 +775,7 @@ interface Ctx<
    * ```js
    * const fetchUserDataBranch = morphism(options)({
    *   async f: (ctx) => {
-   *     const userId = ctc.arguments.userId;
+   *     const userId = ctc.args.userId;
    *     return await fetch(`https://api.example.com/users/${userId}`).then(res => res.json());
    *   },
    * });
@@ -794,7 +794,7 @@ interface Ctx<
    * ```
    */
   branch: {
-    [V in keyof B]: (ctx: B[V]["arguments"]) => ReturnType<B[V]["f"]>;
+    [V in keyof B]: (ctx: B[V]["args"]) => ReturnType<B[V]["f"]>;
   };
 
   /**

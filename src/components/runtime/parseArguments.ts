@@ -1,9 +1,9 @@
 /**
- * Parses command-line arguments passed to the script and returns an object with key-value pairs.
+ * Parses command-line args passed to the script and returns an object with key-value pairs.
  * For flags without explicit values, the value is set to `true`.
  *
  * This function is designed to work with both Deno and Node.js environments, automatically detecting
- * the environment to use the appropriate source of arguments.
+ * the environment to use the appropriate source of args.
  *
  * Example usage in Node.js:
  * ```bash
@@ -17,7 +17,7 @@
  * ```
  * Similar output as Node.js example.
  *
- * @returns {ParsedArgs} An object representing the parsed command-line arguments.
+ * @returns {ParsedArgs} An object representing the parsed command-line args.
  */
 
 //TODO: introduce `name` and add , interface

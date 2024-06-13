@@ -30,8 +30,8 @@ const asyncResolve = petitions.resolve()({
 // Branch
 
 const nestedBranch = petitions.branch()({
-  arguments: "string",
-  f: (ctx) => ctx.arguments,
+  args: "string",
+  f: (ctx) => ctx.args,
 });
 
 const asyncNestedBranch = petitions.branch()({

@@ -73,7 +73,7 @@ export default (o?: FunRouterOptions<any>) =>
       type: 1,
     },
     {
-      name: "arguments",
+      name: "args",
       value: o && "branch" in o ? "b" : null,
       type: 0,
     },
