@@ -1,5 +1,5 @@
 import params from "../components/parameters/mainParameters.ts";
-import query from "../components/queries/main.ts";
+import query from "../components/queries/mainQueries.ts";
 import cookies from "../components/cookies/main.ts";
 import resolve from "./resolve/main.ts";
 import branch from "./branch/branchMain.ts";

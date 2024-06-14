@@ -1,5 +1,7 @@
 import parseargs from "./src/runtime/parseArguments.ts";
 import name from "./src/runtime/name.ts";
+import mainQueries from "./src/components/queries/mainQueries.ts";
+import mainParameters from "./src/components/parameters/mainParameters.ts";
 
 /**
  * Runtime utilities
@@ -8,6 +10,15 @@ export const runtime = {
   name: name,
   arguments: parseargs,
 };
+
+/**
+ * Runtime utilities
+ */
+export const components = {
+  query: mainQueries,
+  parameters: mainParameters,
+};
+
 
 /**
  * Plugins utilities
