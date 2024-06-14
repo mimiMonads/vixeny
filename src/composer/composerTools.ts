@@ -69,7 +69,6 @@ export default {
         ? [
           "cookie",
           "headers",
-          "randomNumber",
           "hash",
           "param",
           "query",
@@ -87,7 +86,6 @@ export default {
         : [
           "cookie",
           "headers",
-          "randomNumber",
           "hash",
           "param",
           "query",

@@ -450,6 +450,8 @@ type HasType<P extends MapOptions> = P extends { type: typeMorphism }
   : { readonly type: P["type"] }
   : {};
 
+  type ArgsOrDefault<T> = T extends { args: infer U } ? U : void;
+
 type ExtraKeys<P extends MapOptions> = HasPath<P> & HasType<P>;
 
 type PetitionHeader = {
@@ -487,7 +489,8 @@ export type Morphism<
   readonly param?: PO;
   readonly plugins?: ExtractPluginTypes<RO>;
   readonly headings?: PetitionHeader;
-  readonly isAsync?: MO["isAPetition"] extends true ? true : never;
+  readonly isAsync?: MO["isAPetition"] extends boolean ? boolean : never;
+  readonly this?: MO["isAPetition"] extends boolean ? boolean : never;
   readonly mutable?: MO extends { mutable: true } ? true : never;
   readonly options?: PetitionOptions<
     [Extract<keyof RO["cyclePlugin"], string>],
@@ -515,7 +518,7 @@ export type Morphism<
     ): MO["specificReturnType"] extends true ? MO["retunType"]
       : MO["type"] extends "response" ? Response | Promise<Response>
       : MO["type"] extends "request" ? Response | Promise<Response>
-      : MO["type"] extends "base" ? BodyInit | Promise<Response>
+      : MO["type"] extends "base" ? BodyInit | Promise<BodyInit> | null
       : R;
   };
 } & ExtraKeys<MO>;
@@ -529,8 +532,6 @@ type AddOption =
   | "query"
   | "param"
   | "date"
-  | "randomNumber"
-  | "hash"
   | "cookie"
   | "resolve"
   | "mutable"
@@ -641,7 +642,7 @@ interface Ctx<
   OPT extends PetitionOptions<any, any>,
   AR = any,
 > {
-  args: AR;
+  args: AR extends undefined ? never : AR;
   /**
    * The `resolve` property is integral to ensuring that all necessary data is fetched or calculations are performed before the main function (`f`) of a morphism is executed. It consists of a map where each key corresponds to a resolve function that is executed prior to `f`. The results of these resolves are then made available in the `CTX` for use in the main function.
    *
@@ -794,7 +795,7 @@ interface Ctx<
    * ```
    */
   branch: {
-    [V in keyof B]: (ctx: B[V]["args"]) => ReturnType<B[V]["f"]>;
+    [V in keyof B]: (ctx:  Exclude< B[V]["args"], undefined>) => ReturnType<B[V]["f"]>;
   };
 
   /**
@@ -937,83 +938,7 @@ interface Ctx<
   /**
    * @deprecated
    */
-  randomNumber: number;
-  /**
-   * @deprecated
-   *
-   * Generates a unique ID using `crypto.randomUUID()`.
-   *
-   * ```ts
-   * {
-   *    path: "/path",
-   *    f: ctx => ctx.hash === "some-random-uuid"
-   *      ? "ID matches expected value"
-   *      : "Generated a unique ID"
-   * }
-   * ```
-   * ---
-   * This behavior can be set for testing purposes:
-   * ```ts
-   * {
-   *    path: "/",
-   *    options:{
-   *      setHash: "specified-uuid-value"
-   *    },
-   *    f: ctx => ctx.hash === "specified-uuid-value"
-   *       ? "UUID is bind to a state"
-   *       : "unreachable"
-   * }
-   * ```
-   */
-  hash: string;
-  /**
-   * (it hasn't been fully optimized btw)
-   * Retrieves cookies sent with the request using `ctx.cookie`.
-   *
-   * @example
-   * ---
-   * ```ts
-   * {
-   *   path: '/path',
-   *   f: ctx => ctx.cookie?.sessionID
-   * };
-   * ```
-   */
   cookie: null | { [key: string]: string | undefined };
-
-  /**
-   * @deprecated
-   *
-   * `mutable`: A property designed to facilitate state mutation within the execution context of a petition. It enables the dynamic alteration of state across different parts of your application's flow, allowing for sophisticated state management strategies and interactions.
-   *
-   * **Caution**: Mutable state should be handled with care to prevent unintended side effects. It's recommended to use this feature judiciously, ensuring that state mutations are predictable and well-understood within your application's context.
-   *
-   * **Key Concept**:
-   * - All morphisms composing a petition can share and mutate this state, providing a powerful mechanism for stateful logic and data management.
-   * - This shared mutable state can be particularly useful for maintaining state across asynchronous operations, user authentication status, or other complex interaction patterns within a petition.
-   *
-   * **Example Usage**:
-   * ```js
-   * {
-   *     path: '/',
-   *     resolve: {
-   *       // Define a resolve function that mutates state within `mutable`
-   *       world: morphism()({
-   *         f: c => {
-   *           c.mutable.hello = "hello "; // Mutating state
-   *           return 'world';
-   *         }
-   *       })
-   *     },
-   *     // The main function leverages the mutated state for constructing the response
-   *     f: c => new Response(c.mutable.hello + c.resolve.world) // Accessing mutated state
-   * }
-   * ```
-   * **Note**: The structure and usage of `mutable` enable developers to architect complex and dynamic data flows within their Vixeny applications, offering flexibility in handling stateful operations.
-   */
-  mutable: {
-    [keys: string]: any;
-  };
 }
 
 export type CryptoOptions = {

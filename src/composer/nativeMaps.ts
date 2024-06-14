@@ -29,18 +29,6 @@ export default (o?: FunRouterOptions<any>) =>
       value: f.options?.setDate ? f.options.setDate : "headers()",
       type: 1,
     },
-    {
-      name: "randomNumber",
-      value: f.options?.setRandomNumber
-        ? f.options.setRandomNumber
-        : "Math.random()",
-      type: 0,
-    },
-    {
-      name: "hash",
-      value: f.options?.setHash ? f.options.setHash : "crypto.randomUUID()",
-      type: 0,
-    },
     { name: "sign", value: "sign", type: 1 },
     { name: "verify", value: "verify", type: 1 },
     {
