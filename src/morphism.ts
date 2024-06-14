@@ -450,7 +450,7 @@ type HasType<P extends MapOptions> = P extends { type: typeMorphism }
   : { readonly type: P["type"] }
   : {};
 
-  type ArgsOrDefault<T> = T extends { args: infer U } ? U : void;
+type ArgsOrDefault<T> = T extends { args: infer U } ? U : void;
 
 type ExtraKeys<P extends MapOptions> = HasPath<P> & HasType<P>;
 
@@ -795,7 +795,9 @@ interface Ctx<
    * ```
    */
   branch: {
-    [V in keyof B]: (ctx:  Exclude< B[V]["args"], undefined>) => ReturnType<B[V]["f"]>;
+    [V in keyof B]: (
+      ctx: Exclude<B[V]["args"], undefined>,
+    ) => ReturnType<B[V]["f"]>;
   };
 
   /**

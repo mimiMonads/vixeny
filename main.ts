@@ -19,7 +19,6 @@ export const components = {
   parameters: mainParameters,
 };
 
-
 /**
  * Plugins utilities
  */

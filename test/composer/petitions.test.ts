@@ -24,13 +24,13 @@ const asyncResolve = petitions.resolve()({
 });
 
 const getArray = petitions.branch()({
-  f: () => "args"
-})
+  f: () => "args",
+});
 
 const getString = petitions.branch()({
-  args: 'string',
-  f: ({args}) => args
-})
+  args: "string",
+  f: ({ args }) => args,
+});
 
 Deno.test("base case", async () => {
   const base = await compose()({
@@ -132,13 +132,16 @@ Deno.test("standard case with resolve", async () => {
     resolve: {
       syncResolve,
     },
-    branch:{
+    branch: {
       getArray,
-      getString
+      getString,
     },
-    f: ({ branch , resolve}) => new Response(
-      `${resolve.syncResolve} ${branch.getArray(null)} ${branch.getString("hello")}`
-    ),
+    f: ({ branch, resolve }) =>
+      new Response(
+        `${resolve.syncResolve} ${branch.getArray(null)} ${
+          branch.getString("hello")
+        }`,
+      ),
   });
 
   const base = await compose()(

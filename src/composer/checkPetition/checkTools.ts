@@ -23,10 +23,7 @@ export default (((regex) => ({
       (
         (innerString) =>
           innerString.slice(
-            innerString.indexOf("function") + 1 ??
-                Infinity < innerString.indexOf("{")
-              ? innerString.indexOf("(")
-              : 0,
+            innerString.indexOf("("),
             innerString.indexOf(")") + 1 ?? innerString.indexOf("=") + 1,
           )
       )(

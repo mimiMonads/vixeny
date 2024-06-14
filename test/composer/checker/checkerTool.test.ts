@@ -1,5 +1,7 @@
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import validator from "../../../src/composer/checkPetition/checkTools.ts";
+import { petitions } from "../../../main.ts";
+import type { Petition } from "../../../src/morphism.ts";
 
 function testingSomething(ctx: string) {
   return ctx;
@@ -19,6 +21,14 @@ Deno.test("Should return 'ctx' for named function with parameters", () => {
 Deno.test("Should return an array of params for destructured parameters", () => {
   assertEquals(validator.getArgsname(({ params }) => params), ["params"]);
 });
+
+
+Deno.test("Should return an array of params for destructured parameters", () => {
+  assertEquals(validator.getArgsname((petitions.resolve()({
+    f: async (c) => await c.req.json() as Object,
+  }) as Petition).f), 'c');
+});
+
 
 Deno.test("Should return an array of multiple params for complex destructured function", () => {
   assertEquals(
