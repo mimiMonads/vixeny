@@ -22,13 +22,16 @@ Deno.test("Should return an array of params for destructured parameters", () => 
   assertEquals(validator.getArgsname(({ params }) => params), ["params"]);
 });
 
-
 Deno.test("Should return an array of params for destructured parameters", () => {
-  assertEquals(validator.getArgsname((petitions.resolve()({
-    f: async (c) => await c.req.json() as Object,
-  }) as Petition).f), 'c');
+  assertEquals(
+    validator.getArgsname(
+      (petitions.resolve()({
+        f: async (c) => await c.req.json() as Object,
+      }) as Petition).f,
+    ),
+    "c",
+  );
 });
-
 
 Deno.test("Should return an array of multiple params for complex destructured function", () => {
   assertEquals(

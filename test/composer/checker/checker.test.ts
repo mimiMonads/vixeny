@@ -1,6 +1,6 @@
 import mainCheck from "../../../src/composer/checkPetition/mainCheck.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
-import { petitions, type Petition } from "../../../src/morphism.ts";
+import { type Petition, petitions } from "../../../src/morphism.ts";
 
 const pluginHello = {
   name: Symbol.for("hello"),

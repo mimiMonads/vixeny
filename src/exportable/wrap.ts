@@ -32,7 +32,7 @@ import type { ParamsMethod } from "../router/types.ts";
  * ```
  */
 type Wrap<O extends FunRouterOptions<any>> = {
-    /**
+  /**
    * `petitionWithoutCTX` allows to bypass the `composer` and it is not bind to it's rules, keeping the function untouched.
    *
    * @param {Petition} petition - The petition to be added.
@@ -51,7 +51,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
     method?: ParamsMethod;
     r: (ctx: Request) => Response | Promise<Response>;
   }) => Wrap<O>;
-    /**
+  /**
    * Defines a standard Petition where `f` returns either a `BodyInit` or a `Promise<BodyInit>`.
    *
    * @example
@@ -90,7 +90,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
       R
     >,
   ) => Wrap<O>;
-    /**
+  /**
    * `customPetition` allows for defining a custom Petition where `f` returns either a `Response`
    * or a `Promise<Response>`. This method is suitable for scenarios where the standard response
    * structure does not fit your needs.
@@ -131,7 +131,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
       R
     >,
   ) => Wrap<O>;
-    /**
+  /**
    * `logPaths` is a utility method that logs the paths of all the petitions wrapped by this instance.
    * It helps in debugging by providing a quick overview of the defined petition paths at any given moment.
    *
@@ -158,7 +158,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * ```
    */
   logPaths: () => Wrap<O>;
-    /**
+  /**
    * `logLastCheck` is a diagnostic tool that logs the keys or parameters currently being used by the last petition added.
    * This is particularly helpful for developers to understand which parts of the context (`c`) are being composed.
    *
@@ -184,7 +184,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * ```
    */
   logLastCheck: () => Wrap<O>;
-    /**
+  /**
    * `handleRequest` dynamically processes a request getting a specified path. If the path exists among the defined petitions,
    * it either applies provided modifications (useful for mocking or altering request handling behavior) or proceeds with the
    * default petition handling logic.
@@ -228,7 +228,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
   ) => (
     injection: Partial<Petition>,
   ) => (r: Request) => Promise<Response | null>;
-    /**
+  /**
    * Simulates a server environment for testing the functionality of all wrapped requests.
    * This method creates a server-like instance that can handle requests directly, enabling
    * comprehensive testing of the `wrap` configuration and all defined petitions without depending
@@ -250,7 +250,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * ```
    */
   testRequests: () => (r: Request) => Promise<Response>;
-    /**
+  /**
    * Allows for changing the wrap options of the current instance, creating a new instance with the updated options
    * while preserving the existing petitions. This is useful for dynamically adjusting configurations, such as
    * modifying routes or other settings, without needing to redefine all petitions.
@@ -392,10 +392,9 @@ type Wrap<O extends FunRouterOptions<any>> = {
    */
   compose: () => (r: Request) => Promise<Response> | Response;
   /**
- * Applies a function over each petition, wrapping each result, and then flattens all results into a single wrap.
- *
- */
-flatMap:(fn: (p: Petition) => Wrap<O>) => Wrap<O>;
+   * Applies a function over each petition, wrapping each result, and then flattens all results into a single wrap.
+   */
+  flatMap: (fn: (p: Petition) => Wrap<O>) => Wrap<O>;
 };
 
 type WrapFunction = <FC extends CyclePluginMap, O extends FunRouterOptions<FC>>(
@@ -555,8 +554,7 @@ export const wrap = (<
       ),
     ),
 
-  changeOptions:
-    (o) =>
+  changeOptions: (o) =>
     wrap({ ...o })(
       [...a],
     ),
@@ -577,5 +575,5 @@ export const wrap = (<
   pure: (petition) => wrap(o)([petition]),
   addAnyPetition: (petition) => wrap(o)([...a, petition]),
   compose: () => vixeny(o)(a),
-  flatMap: (fn) =>a.reduce((acc, x) => acc.union(fn(x).unwrap()), wrap(o)([]))
+  flatMap: (fn) => a.reduce((acc, x) => acc.union(fn(x).unwrap()), wrap(o)([])),
 })) as WrapFunction;

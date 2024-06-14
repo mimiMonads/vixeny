@@ -17,8 +17,7 @@ export default ((o?: FunRouterOptions<any>) => (p: Petition) =>
             : addAndRemove(p?.options?.remove ?? [])(p?.options?.add ?? [])([
               ...new Set(
                 checkfrom.getDestructedElements(p.f)(destructured)
-                  .concat(checkfrom.getDots(p.f)(destructured))
-                  
+                  .concat(checkfrom.getDots(p.f)(destructured)),
               ),
             ].filter((item) => elements.includes(item)))
       )(
@@ -30,9 +29,9 @@ export default ((o?: FunRouterOptions<any>) => (p: Petition) =>
     ],
   ));
 
-const addAndRemove = (remove:string[]) => (add: string[]) => (elements: string[]) =>
-        [
-          ...new Set(
-            (elements.filter( x => !remove.includes(x))?? []).concat(add)
-          )
-        ]
+const addAndRemove =
+  (remove: string[]) => (add: string[]) => (elements: string[]) => [
+    ...new Set(
+      (elements.filter((x) => !remove.includes(x)) ?? []).concat(add),
+    ),
+  ];
