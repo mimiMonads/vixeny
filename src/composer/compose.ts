@@ -6,34 +6,34 @@ import linker from "./linker.ts";
 import mime from "../util/mime.ts";
 
 export default (o?: FunRouterOptions<any>) =>
-(f: Petition): (ctx: Request) => Promise<Response> | Response =>
+(p: Petition): (ctx: Request) => Promise<Response> | Response =>
   ((elementsUsed) =>
     (
       (table) =>
         ((composition) =>
-          (table.headers && table.json && f.type !== "request")
-            ? composition(table.json)(table.headers)(f.f)(
-              linker(o)(f)(elementsUsed),
+          (table.headers && table.json && p.type !== "request")
+            ? composition(table.json)(table.headers)(p.f)(
+              linker(o)(p)(elementsUsed),
             )
             : table.headers
-            ? composition(table.headers)(f.f)(
-              linker(o)(f)(elementsUsed),
+            ? composition(table.headers)(p.f)(
+              linker(o)(p)(elementsUsed),
             )
             : table.json
-            ? composition(table.json)(f.f)(
-              linker(o)(f)(elementsUsed),
+            ? composition(table.json)(p.f)(
+              linker(o)(p)(elementsUsed),
             )
-            : composition(f.f)(
-              linker(o)(f)(elementsUsed),
+            : composition(p.f)(
+              linker(o)(p)(elementsUsed),
             ))(
-            f.type === "request" || f.type === "morphism" ||
-              typeof f.type === "undefined"
+            p.type === "request" || p.type === "morphism" ||
+              typeof p.type === "undefined"
               ? new Function(`
       return ${table.headers ? "h=>" : ""}f=>c=>${
                 table.async || table.asyncResolve ? "async " : ""
               }r=>${table.async || table.asyncResolve ? "await f" : "f"}(${
                 table.asyncResolve ? "await c" : "c"
-              }(${"mutable" in f ? "[r,{res: {}}]" : "r"}))`)()
+              }(${"mutable" in p ? "[r,{res: {}}]" : "r"}))`)()
               : new Function(
                 `return ${table.headers ? "h=>" : ""}${
                   table.async ? "f=>" : "f=>"
@@ -42,14 +42,14 @@ export default (o?: FunRouterOptions<any>) =>
                 }r=> new Response(${
                   table.async || table.asyncResolve ? "await f" : "f"
                 }(${table.asyncResolve ? "await c" : "c"}(${
-                  "mutable" in f ? "[r,{res: {}}]" : "r"
+                  "mutable" in p ? "[r,{res: {}}]" : "r"
                 }))${table.headers ? ",h" : ""})`,
               )(),
           )
     )(
       //elements int table
       {
-        async: f.f.constructor.name === "AsyncFunction" ||
+        async: p.f.constructor.name === "AsyncFunction" ||
           (
             o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
               .some((x) =>
@@ -71,26 +71,26 @@ export default (o?: FunRouterOptions<any>) =>
                   : false
               )
           ),
-        headers: "headings" in f
-          ? typeof f.headings?.headers == "string"
+        headers: "headings" in p
+          ? typeof p.headings?.headers == "string"
             ? {
-              ...f.headings,
+              ...p.headings,
               headers: {
                 "Content-Type": mime.find((x) =>
-                  x[0] === f.headings?.headers
+                  x[0] === p.headings?.headers
                 )![1],
                 ...(o && o.cors ? stringToFunction(parse()(o.cors))() : {}),
               },
             }
             : {
-              ...f.headings,
+              ...p.headings,
               ...(o && o.cors ? stringToFunction(parse()(o.cors))() : {}),
             }
           : null,
-        json: "json" in f
+        json: "json" in p
           ? null //jsonComposer({ type: "safe" })(f.json.scheme)
           : null,
       },
     ))(
-      tools.isUsing(o)(f),
+      tools.isUsing(o)(p),
     );
