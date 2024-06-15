@@ -25,14 +25,14 @@ export default (o?: FunRouterOptions<any>) =>
                 ? typeof o.indexBase?.at === "number"
                   ? baseWithStricTrailingSlachesAndAt(
                     parsed,
-                  )
+                  )(o.indexBase.at)
                   : baseWithStricTrailingSlaches(
                     parsed,
                   )
-                : typeof o.indexBase?.at === "number"
+                : typeof o?.indexBase?.at === "number"
                 ? baseAndAt(
                   parsed,
-                )
+                )(o.indexBase.at)
                 : base(
                   parsed,
                 ))(

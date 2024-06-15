@@ -420,30 +420,9 @@ type WrapFunction = <FC extends CyclePluginMap, O extends FunRouterOptions<FC>>(
  * ```
  */
 
-export const wrap = (<
-  FC extends CyclePluginMap,
-  O extends FunRouterOptions<FC>,
->(o?: O) =>
-<
-  RM extends ResolveMap<any>,
-  BM extends BranchMap<any>,
-  QO extends QueryOptions,
-  PO extends ParamOptions,
-  RO extends O,
-  CO extends CryptoOptions,
-  AR = any,
-  R = any,
->(a = [] as Petition[]) => ({
-  petitionWithoutCTX: <
-    RM extends ResolveMap<any>,
-    BM extends BranchMap<any>,
-    QO extends QueryOptions,
-    PO extends ParamOptions,
-    RO extends O,
-    CO extends CryptoOptions,
-    AR = any,
-    R = any,
-  >(I: {
+export const wrap = ((o?) =>
+(a = [] ) => ({
+  petitionWithoutCTX: (I: {
     path: string;
     method?: ParamsMethod;
     r: { (ctx: Request): Response | Promise<Response> };
@@ -458,62 +437,16 @@ export const wrap = (<
         type: "response",
       },
     )),
-  customPetition: <
-    RM extends ResolveMap<any>,
-    BM extends BranchMap<any>,
-    QO extends QueryOptions,
-    PO extends ParamOptions,
-    CO extends CryptoOptions,
-    AR = any,
-    R = any,
-  >(
-    ob: Morphism<
-      {
-        type: "request";
-        hasPath: true;
-        isAPetition: true;
-        typeNotNeeded: true;
-      },
-      RM,
-      BM,
-      QO,
-      PO,
-      O,
-      CO,
-      AR,
-      R
-    >,
+  customPetition: (
+    ob,
   ) =>
     wrap(o)(a.concat(
       //@ts-ignore
       { ...ob, type: "request" } as Petition,
     )),
 
-  stdPetition: <
-    RM extends ResolveMap<any>,
-    BM extends BranchMap<any>,
-    QO extends QueryOptions,
-    PO extends ParamOptions,
-    CO extends CryptoOptions,
-    AR = any,
-    R = any,
-  >(
-    ob: Morphism<
-      {
-        type: "base";
-        typeNotNeeded: true;
-        hasPath: true;
-        isAPetition: true;
-      },
-      RM,
-      BM,
-      QO,
-      PO,
-      O,
-      CO,
-      AR,
-      R
-    >,
+  stdPetition: (
+    ob,
   ) =>
     wrap(o)(a.concat(
       { ...ob, type: "base" } as Petition,
