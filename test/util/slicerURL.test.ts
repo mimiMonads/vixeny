@@ -3,7 +3,7 @@ import mainSlicerUrl from "../../src/util/slicerURL/mainSlicerUrl.ts";
 
 const baseURL = "https://example.com/1/2/3/4/5";
 
-Deno.test("SlierURL", () => {
+Deno.test("SlicerURL", () => {
   assertEquals(
     mainSlicerUrl(2)(baseURL),
     "/1/2/3/4/5",

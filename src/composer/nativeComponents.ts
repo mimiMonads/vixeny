@@ -71,7 +71,7 @@ export default (o?: FunRouterOptions<any>) =>
       },
       {
         condition: (x: NativeMaps) => x.name === "cookie",
-        action: () => cookies(f),
+        action: () => cookies(o)(f),
       },
       {
         condition: (x: NativeMaps) => x.name === "headers",

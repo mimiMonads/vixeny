@@ -489,8 +489,12 @@ export type Morphism<
   readonly param?: PO;
   readonly plugins?: ExtractPluginTypes<RO>;
   readonly headings?: PetitionHeader;
-  readonly isAsync?: MO["isAPetition"] extends boolean ? boolean : never;
-  readonly this?: MO["isAPetition"] extends boolean ? boolean : never;
+  readonly isAsync?: MO["isAPetition"] extends boolean ? boolean
+    : MO["type"] extends { type: "morphism" } ? boolean
+    : never;
+  readonly o?: MO["isAPetition"] extends boolean ? FunRouterOptions<any>
+    : MO["type"] extends { type: "morphism" } ? FunRouterOptions<any>
+    : never;
   readonly mutable?: MO extends { mutable: true } ? true : never;
   readonly options?: PetitionOptions<
     [Extract<keyof RO["cyclePlugin"], string>],
@@ -547,10 +551,7 @@ export type PetitionOptions<
   readonly debug?: DebugOptions;
   readonly remove?: Array<ExtendedAddOption<CR> | T[number]>;
   readonly only?: Array<ExtendedAddOption<CR> | T[number]>;
-  readonly setHash?: string;
-  readonly setRandomNumber?: number;
   readonly setDate?: number;
-  readonly args?: any;
 };
 
 // Modified ExtractPluginTypes

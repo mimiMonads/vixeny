@@ -4,7 +4,6 @@ import cookieToTokenBodyParser from "./cookieToTokenBodyParser.ts";
 import cookieToTokenGets from "./cookieToTokenGets.ts";
 import { plugins } from "../../../main.ts";
 
-
 export default (o?: FunRouterOptions<any>) => (p: Petition) =>
   p.crypto && "globalKey" in p.crypto
     ? (
@@ -18,7 +17,7 @@ export default (o?: FunRouterOptions<any>) => (p: Petition) =>
               //@ts-ignore
               Object.keys(p.crypto.token),
             )
-          :  getCookies && getCookies.length > 0
+          : getCookies && getCookies.length > 0
           ? ((s: SupportedKeys) => (arr: string[]) =>
             arr.reduce(
               (acc, x) => acc(cookieToTokenGets(s)(x)),
@@ -29,6 +28,6 @@ export default (o?: FunRouterOptions<any>) => (p: Petition) =>
           : void console.error("No token found, please use 'token' ") ??
             (() => null)
     )(
-      plugins.pluginIsUsing(p)('token'),
+      plugins.pluginIsUsing(p)("token"),
     )
     : () => ({ SystemError: "Crypto is requieres" });
