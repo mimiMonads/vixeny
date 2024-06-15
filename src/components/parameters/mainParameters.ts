@@ -5,8 +5,12 @@ import map from "./map.ts";
 import onlyOneParser from "./onlyOneParser.ts";
 import uniqueParser from "./uniqueParser.ts";
 
+type Parameters = (
+  options?: FunRouterOptions<any>,
+) => (p: Petition) => (url: string) => string | Record<string, string> | null;
+
 //TODO
-export default (options?: FunRouterOptions<any>) => (p: Petition) =>
+export default ((options?: FunRouterOptions<any>) => (p: Petition) =>
   (
     (map) =>
       p?.param?.unique === true
@@ -15,7 +19,7 @@ export default (options?: FunRouterOptions<any>) => (p: Petition) =>
         ? onlyOneParser(options)(map)
         : map.elements.length > 1
         ? composeMultiParameters(options)(map)
-        : () => null as unknown as (key: string) => string
+        : () => null
   )(
     map(options)(p),
-  );
+  )) as Parameters;

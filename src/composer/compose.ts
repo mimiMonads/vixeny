@@ -11,16 +11,8 @@ export default (o?: FunRouterOptions<any>) =>
     (
       (table) =>
         ((composition) =>
-          (table.headers && table.json && p.type !== "request")
-            ? composition(table.json)(table.headers)(p.f)(
-              linker(o)(p)(elementsUsed),
-            )
-            : table.headers
+          table.headers
             ? composition(table.headers)(p.f)(
-              linker(o)(p)(elementsUsed),
-            )
-            : table.json
-            ? composition(table.json)(p.f)(
               linker(o)(p)(elementsUsed),
             )
             : composition(p.f)(
@@ -86,9 +78,6 @@ export default (o?: FunRouterOptions<any>) =>
               ...p.headings,
               ...(o && o.cors ? stringToFunction(parse()(o.cors))() : {}),
             }
-          : null,
-        json: "json" in p
-          ? null //jsonComposer({ type: "safe" })(f.json.scheme)
           : null,
       },
     ))(

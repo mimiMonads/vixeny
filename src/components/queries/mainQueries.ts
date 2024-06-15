@@ -5,7 +5,8 @@ import elements from "./querryElements.ts";
 import unique from "./unique.ts";
 import plugin from "../../exportable/plugin.ts";
 
-export default (o?: FunRouterOptions<any>) => (p: Petition) =>
+export default (o?: FunRouterOptions<any>) =>
+(p: Petition): (url: string) => string | Record<string, string | null> | null =>
   p.query && p.query.name
     ? new Function(`return ${unique([p.query.name])}`)()
     : p.query && Array.isArray(p.query.only)

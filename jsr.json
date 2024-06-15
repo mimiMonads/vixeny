@@ -1,5 +1,5 @@
 {
   "name": "@vixeny/core",
-  "version": "0.1.40",
+  "version": "0.1.35",
   "exports": "./main.ts"
 }
