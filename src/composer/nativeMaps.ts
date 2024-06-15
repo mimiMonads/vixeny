@@ -21,7 +21,7 @@ export default (o?: FunRouterOptions<any>) =>
     },
     {
       name: "io",
-      value: 'io',
+      value: "io",
       type: 1,
     },
     {

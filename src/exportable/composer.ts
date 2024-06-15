@@ -128,7 +128,7 @@ export const composer = {
     >,
   ) =>
     (compose(o)(
-      { ...r, type: "morphism" , o} as unknown as Petition,
+      { ...r, type: "morphism", o } as unknown as Petition,
     )) as unknown as (re: Request) => R,
   /**
    * Composes a Petition configured for processing HTTP responses directly. Useful for scenarios where the petition is already structured to handle specific response types and does not require further composition.

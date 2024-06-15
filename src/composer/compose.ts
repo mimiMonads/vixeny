@@ -60,7 +60,7 @@ export default (o?: FunRouterOptions<any>) =>
                   : false
               )
           ),
-        asyncResolve: tools.recursiveCheckAsync(f) ||
+        asyncResolve: tools.recursiveCheckAsync(p) ||
           (
             o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
               .some((x) =>

@@ -84,7 +84,7 @@ export const petitions = {
       AR,
       R
     >,
-  ) => ({ ...I, type: "request" , o }) as unknown as Petition,
+  ) => ({ ...I, type: "request", o }) as unknown as Petition,
   /**
    * Configures and types a basic petition to be used with `wrap` or `compose`.
    * The `f` function in the petition configuration returns either a `BodyInit` or `Promise<BodyInit>`,
@@ -168,7 +168,7 @@ export const petitions = {
       f: () =>
         new Response("Unreachable: TODO: make response work without an f"),
       type: "response",
-      o
+      o,
     }) as unknown as Petition,
   /**
    * Configures a morphism that can be composed into a petition. This function accepts a configuration
@@ -230,7 +230,7 @@ export const petitions = {
       AT,
       R
     >,
-  ) => ({...I, type: 'morphism', o}),
+  ) => ({ ...I, type: "morphism", o }),
   /**
    * Configures and types a branch morphism to be used within a petition. Branch morphisms are designed to execute
    * alongside or within the main function (`f`) of a petition, allowing for the extension of functionality through
@@ -288,7 +288,7 @@ export const petitions = {
       AT,
       R
     >,
-  ) => ({...I, type: 'morphism', o}),
+  ) => ({ ...I, type: "morphism", o }),
   /**
    * Joins multiple Morphisms or Petitions into a single unified array, ensuring that each component adheres to
    * the specifications of being a valid petition with a designated path. This function is particularly useful
@@ -411,7 +411,7 @@ export type ResolveMap<T> = {
         type: "morphism";
       }
     >
-    : T[K] extends { f: any , type: 'morphism'} ? any
+    : T[K] extends { f: any; type: "morphism" } ? any
     : never;
 };
 
@@ -427,7 +427,7 @@ export type BranchMap<T> = {
         branch: true;
       }
     >
-    : T[K] extends { f: any , type: 'morphism' } ? any
+    : T[K] extends { f: any; type: "morphism" } ? any
     : never;
 };
 
@@ -451,7 +451,6 @@ type HasType<P extends MapOptions> = P extends { type: typeMorphism }
   : P extends { type: "morphism" } ? {}
   : { readonly type: P["type"] }
   : {};
-
 
 type ExtraKeys<P extends MapOptions> = HasPath<P> & HasType<P>;
 
@@ -944,7 +943,7 @@ interface Ctx<
    * @deprecated
    */
   cookie: null | { [key: string]: string | undefined };
-  io: FileHandler
+  io: FileHandler;
 }
 
 export type CryptoOptions = {
