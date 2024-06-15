@@ -1,7 +1,7 @@
 import type { info } from "./types.ts";
 import singleElement from "./singleElement.ts";
-
-export default (map: info) =>
+import type { FunRouterOptions } from "../../options.ts";
+export default (o?: FunRouterOptions<any>) => (map: info) =>
   map?.bind
     ? map.endsInSlash
       ? singleElement.fixElementAndSlashAtTheEnd(

@@ -1,7 +1,8 @@
 import type { info } from "./types.ts";
 import singleElement from "./singleElement.ts";
+import type { FunRouterOptions } from "../../options.ts";
 
-export default (map: info) =>
+export default (o?: FunRouterOptions<any>) => (map: info) =>
   map?.bind === "string"
     ? map.endsInSlash
       ? singleElement.creatingAnObjectWith(map.elements[0].slice(1))(

@@ -10,11 +10,11 @@ export default (options?: FunRouterOptions<any>) => (p: Petition) =>
   (
     (map) =>
       p?.param?.unique === true
-        ? uniqueParser(map)
+        ? uniqueParser(options)(map)
         : map.elements.length === 1
-        ? onlyOneParser(map)
+        ? onlyOneParser(options)(map)
         : map.elements.length > 1
-        ? composeMultiParameters(map)
+        ? composeMultiParameters(options)(map)
         : () => null as unknown as (key: string) => string
   )(
     map(options)(p),
