@@ -489,7 +489,7 @@ export type Morphism<
   readonly param?: PO;
   readonly plugins?: ExtractPluginTypes<RO>;
   readonly headings?: PetitionHeader;
-  readonly isAsync?: MO["isAPetition"] extends boolean ? boolean
+  readonly isAsync?: MO["isAPetition"] extends true | false ? boolean
     : MO["type"] extends { type: "morphism" } ? boolean
     : never;
   readonly o?: MO["isAPetition"] extends boolean ? FunRouterOptions<any>
