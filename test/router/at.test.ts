@@ -10,7 +10,12 @@ const wrapAt4 = wrap({
   .stdPetition({
     path: "/hello",
     f: () => "from inside",
-  }).compose();
+  })
+  .stdPetition({
+    path: "/hello/:hello",
+    f: ({ param }) => param.hello,
+  })
+  .compose();
 
 const serve = wrap()()
   .petitionWithoutCTX({
@@ -18,11 +23,18 @@ const serve = wrap()()
     r: wrapAt4,
   }).testRequests();
 
-const req = new Request("http://hello.com/hello/hello");
+const base = "http://hello.com/hello";
+const req = new Request(base + "/hello");
+const param = new Request(base + "/hello/hello");
 
 test("Router checking `at`", async () => {
   assert.strictEqual(
-    await (await serve(req)).text(),
+    await serve(req).then((x) => x.text()),
     "from inside",
+  );
+
+  assert.strictEqual(
+    await serve(param).then((x) => x.text()),
+    "hello",
   );
 });

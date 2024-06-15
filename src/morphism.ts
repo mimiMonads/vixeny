@@ -1,3 +1,4 @@
+import type { FileHandler } from "./components/io/mainIO.ts";
 import type { CyclePluginMap, FunRouterOptions } from "./options.ts";
 import type { ParamsMethod } from "./router/types.ts";
 
@@ -535,6 +536,7 @@ type AddOption =
   | "req"
   | "query"
   | "param"
+  | "io"
   | "date"
   | "cookie"
   | "resolve"
@@ -942,6 +944,7 @@ interface Ctx<
    * @deprecated
    */
   cookie: null | { [key: string]: string | undefined };
+  io: FileHandler
 }
 
 export type CryptoOptions = {

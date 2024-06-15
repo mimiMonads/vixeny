@@ -6,6 +6,7 @@ import branch from "./branch/branchMain.ts";
 import cookieToTokenMain from "../components/cookieToToken/cookieToTokenMain.ts";
 import signSha256 from "../components/jwt/signSha256.mjs";
 import verifySha256 from "../components/jwt/verifySha256.mjs";
+import mainIO from "../components/io/mainIO.ts";
 import { parse, stringToFunction } from "../components/cors/mainCORS.ts";
 
 import type { FunRouterOptions } from "../options.ts";
@@ -29,6 +30,10 @@ export default (o?: FunRouterOptions<any>) =>
       {
         condition: (x: NativeMaps) => x.name === "param",
         action: () => params(o)(f),
+      },
+      {
+        condition: (x: NativeMaps) => x.name === "io",
+        action: () => mainIO(o)(f),
       },
       {
         condition: (x: NativeMaps) => x.name === "query",

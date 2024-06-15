@@ -420,8 +420,7 @@ type WrapFunction = <FC extends CyclePluginMap, O extends FunRouterOptions<FC>>(
  * ```
  */
 
-export const wrap = ((o?) =>
-(a = [] ) => ({
+export const wrap = ((o?) => (a = []) => ({
   petitionWithoutCTX: (I: {
     path: string;
     method?: ParamsMethod;

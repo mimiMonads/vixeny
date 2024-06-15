@@ -20,6 +20,11 @@ export default (o?: FunRouterOptions<any>) =>
       type: 1,
     },
     {
+      name: "io",
+      value: 'io',
+      type: 1,
+    },
+    {
       name: "date",
       value: f.options?.setDate ? f.options.setDate : "Date.now()",
       type: 0,
