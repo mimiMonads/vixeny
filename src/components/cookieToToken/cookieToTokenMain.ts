@@ -2,35 +2,32 @@ import type { FunRouterOptions } from "../../options.ts";
 import type { Petition, SupportedKeys } from "../../morphism.ts";
 import cookieToTokenBodyParser from "./cookieToTokenBodyParser.ts";
 import cookieToTokenGets from "./cookieToTokenGets.ts";
-import cookieToTokenFilter from "./cookieToTokenFilter.ts";
+import { plugins } from "../../../main.ts";
 
-export default (o?: FunRouterOptions<any>) => (f: Petition) =>
-  f.crypto && "globalKey" in f.crypto
+export default (o?: FunRouterOptions<any>) => (p: Petition) =>
+  p.crypto && "globalKey" in p.crypto
     ? (
       (getCookies) =>
-        "token" in f.crypto
+        "token" in p.crypto
           ? ((s: SupportedKeys) => (arr: string[]) =>
             arr.reduce(
               (acc, x) => acc(cookieToTokenGets(s)(x)),
               cookieToTokenBodyParser(arr),
-            ))(f.crypto.globalKey)(
+            ))(p.crypto.globalKey)(
               //@ts-ignore
-              Object.keys(f.crypto.token),
+              Object.keys(p.crypto.token),
             )
-          : getCookies.length > 0
+          : getCookies && getCookies.length > 0
           ? ((s: SupportedKeys) => (arr: string[]) =>
             arr.reduce(
               (acc, x) => acc(cookieToTokenGets(s)(x)),
               cookieToTokenBodyParser(arr),
-            ))(f.crypto.globalKey)(
+            ))(p.crypto.globalKey)(
               getCookies,
             )
           : void console.error("No token found, please use 'token' ") ??
             (() => null)
     )(
-      cookieToTokenFilter(
-        f.f.toString()
-          .split(" "),
-      )("token"),
+      plugins.pluginIsUsing(p)("token"),
     )
     : () => ({ SystemError: "Crypto is requieres" });

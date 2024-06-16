@@ -2,8 +2,9 @@ import type { info } from "./types.ts";
 
 import finder from "./finder.ts";
 import sliceURL from "./sliceURL.ts";
+import type { FunRouterOptions } from "../../options.ts";
 
-export default (info: info) =>
+export default (o?: FunRouterOptions<any>) => (info: info) =>
   (
     (slice) =>
       (
@@ -15,5 +16,7 @@ export default (info: info) =>
         finder(info),
       )
   )(
-    sliceURL.slice(info.firstParam + 1)(info.lastParam),
+    typeof o?.indexBase?.at === "number"
+      ? sliceURL.sliceUsingAt(info.firstParam + 1)(info.lastParam)
+      : sliceURL.slice(info.firstParam + 1)(info.lastParam),
   );

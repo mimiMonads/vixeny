@@ -23,6 +23,15 @@ const asyncResolve = petitions.resolve()({
   f: (ctx) => ctx.resolve.async,
 });
 
+const getArray = petitions.branch()({
+  f: () => "args",
+});
+
+const getString = petitions.branch()({
+  args: "string",
+  f: ({ args }) => args,
+});
+
 Deno.test("base case", async () => {
   const base = await compose()({
     type: "base",
@@ -121,16 +130,25 @@ Deno.test("standard case with resolve", async () => {
   const baseResponse = petitions.standard()({
     path: "/",
     resolve: {
-      sync: syncResolve,
+      syncResolve,
     },
-    f: (ctx) => new Response(ctx.resolve.sync),
+    branch: {
+      getArray,
+      getString,
+    },
+    f: ({ branch, resolve }) =>
+      new Response(
+        `${resolve.syncResolve} ${branch.getArray(null)} ${
+          branch.getString("hello")
+        }`,
+      ),
   });
 
   const base = await compose()(
     baseResponse,
   )(new Request("http://hello.com/"));
 
-  assertEquals(await base.text(), "syncResolve");
+  assertEquals(await base.text(), "syncResolve args hello");
   assertEquals(base.status, 200);
 });
 
@@ -138,9 +156,9 @@ Deno.test("standard case with async resolve", async () => {
   const baseResponse = petitions.standard()({
     path: "/",
     resolve: {
-      async: asyncResolve,
+      asyncResolve,
     },
-    f: (ctx) => new Response(JSON.stringify(ctx.resolve.async)),
+    f: (ctx) => new Response(JSON.stringify(ctx.resolve.asyncResolve)),
   });
 
   const base = await compose()(

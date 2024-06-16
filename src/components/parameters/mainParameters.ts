@@ -5,17 +5,21 @@ import map from "./map.ts";
 import onlyOneParser from "./onlyOneParser.ts";
 import uniqueParser from "./uniqueParser.ts";
 
+type Parameters = (
+  options?: FunRouterOptions<any>,
+) => (p: Petition) => (url: string) => string | Record<string, string> | null;
+
 //TODO
-export default (options?: FunRouterOptions<any>) => (p: Petition) =>
+export default ((options?: FunRouterOptions<any>) => (p: Petition) =>
   (
     (map) =>
       p?.param?.unique === true
-        ? uniqueParser(map)
+        ? uniqueParser(options)(map)
         : map.elements.length === 1
-        ? onlyOneParser(map)
+        ? onlyOneParser(options)(map)
         : map.elements.length > 1
-        ? composeMultiParameters(map)
-        : () => null as unknown as (key: string) => string
+        ? composeMultiParameters(options)(map)
+        : () => null
   )(
     map(options)(p),
-  );
+  )) as Parameters;

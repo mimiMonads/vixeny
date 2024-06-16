@@ -1,11 +1,12 @@
 import params from "../components/parameters/mainParameters.ts";
-import query from "../components/queries/main.ts";
+import query from "../components/queries/mainQueries.ts";
 import cookies from "../components/cookies/main.ts";
 import resolve from "./resolve/main.ts";
 import branch from "./branch/branchMain.ts";
 import cookieToTokenMain from "../components/cookieToToken/cookieToTokenMain.ts";
 import signSha256 from "../components/jwt/signSha256.mjs";
 import verifySha256 from "../components/jwt/verifySha256.mjs";
+import mainIO from "../components/io/mainIO.ts";
 import { parse, stringToFunction } from "../components/cors/mainCORS.ts";
 
 import type { FunRouterOptions } from "../options.ts";
@@ -29,6 +30,10 @@ export default (o?: FunRouterOptions<any>) =>
       {
         condition: (x: NativeMaps) => x.name === "param",
         action: () => params(o)(f),
+      },
+      {
+        condition: (x: NativeMaps) => x.name === "io",
+        action: () => mainIO(o)(f),
       },
       {
         condition: (x: NativeMaps) => x.name === "query",
@@ -71,7 +76,7 @@ export default (o?: FunRouterOptions<any>) =>
       },
       {
         condition: (x: NativeMaps) => x.name === "cookie",
-        action: () => cookies(f),
+        action: () => cookies(o)(f),
       },
       {
         condition: (x: NativeMaps) => x.name === "headers",

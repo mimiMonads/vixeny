@@ -20,6 +20,11 @@ export default (o?: FunRouterOptions<any>) =>
       type: 1,
     },
     {
+      name: "io",
+      value: "io",
+      type: 1,
+    },
+    {
       name: "date",
       value: f.options?.setDate ? f.options.setDate : "Date.now()",
       type: 0,
@@ -28,18 +33,6 @@ export default (o?: FunRouterOptions<any>) =>
       name: "headers",
       value: f.options?.setDate ? f.options.setDate : "headers()",
       type: 1,
-    },
-    {
-      name: "randomNumber",
-      value: f.options?.setRandomNumber
-        ? f.options.setRandomNumber
-        : "Math.random()",
-      type: 0,
-    },
-    {
-      name: "hash",
-      value: f.options?.setHash ? f.options.setHash : "crypto.randomUUID()",
-      type: 0,
     },
     { name: "sign", value: "sign", type: 1 },
     { name: "verify", value: "verify", type: 1 },
@@ -73,7 +66,7 @@ export default (o?: FunRouterOptions<any>) =>
       type: 1,
     },
     {
-      name: "arguments",
+      name: "args",
       value: o && "branch" in o ? "b" : null,
       type: 0,
     },

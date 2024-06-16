@@ -1,6 +1,6 @@
 import mainCheck from "../../../src/composer/checkPetition/mainCheck.ts";
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
-import { petitions } from "../../../src/morphism.ts";
+import { type Petition, petitions } from "../../../src/morphism.ts";
 
 const pluginHello = {
   name: Symbol.for("hello"),
@@ -139,7 +139,7 @@ Deno.test("check remove behaivour", async () => {
         f: (ctx) => ctx.query.param ?? "hello",
       }),
     ),
-    ["param"],
+    [],
   );
   assertEquals(
     mainCheck()(
@@ -153,6 +153,7 @@ Deno.test("check remove behaivour", async () => {
     ),
     [],
   );
+
   //duplicate
   assertEquals(
     mainCheck()(
@@ -192,7 +193,7 @@ Deno.test("check remove behaivour", async () => {
         f: () => "hello",
       }),
     ),
-    ["req"],
+    [],
   );
   //duplicates
   assertEquals(
@@ -205,7 +206,7 @@ Deno.test("check remove behaivour", async () => {
         f: () => "hello",
       }),
     ),
-    ["req"],
+    [],
   );
   //overrides remove and it's unique
   assertEquals(
@@ -219,7 +220,7 @@ Deno.test("check remove behaivour", async () => {
         f: () => "hello",
       }),
     ),
-    ["req"],
+    [],
   );
 });
 
