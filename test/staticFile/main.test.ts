@@ -4,7 +4,7 @@ import main from "../../src/staticFiles/staticFileMain.ts";
 import { petitions } from "../../src/morphism.ts";
 
 test(
-  "static file cheking logo",
+  "static file checking logo",
   () =>
     assert.deepStrictEqual(
       main()({
@@ -19,7 +19,7 @@ test(
 );
 
 test(
-  "static file cheking extension",
+  "static file checking extension",
   () =>
     assert.deepStrictEqual(
       main()({

@@ -115,7 +115,7 @@ export const composer = {
         type: "morphism";
         typeNotNeeded: true;
         specificReturnType: true;
-        retunType: Promise<BodyNull> | BodyNull;
+        returnType: Promise<BodyNull> | BodyNull;
       },
       RM,
       BM,

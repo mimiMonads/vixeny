@@ -1,7 +1,7 @@
 /**
  * @mimiMonads
  *
- * This code is an object that containts all the logic related with handeling just one parameter
+ * This code is an object that contains all the logic related with handling just one parameter
  */
 
 export default {
@@ -44,11 +44,11 @@ export default {
     )(
       string.indexOf("/", string.indexOf("/") + 2) + offset,
     ),
-  fixElementAtTheEnd: (offsett: number) => (string: string) =>
+  fixElementAtTheEnd: (offset: number) => (string: string) =>
     string.slice(
-      offsett,
+      offset,
       string.indexOf("?") !== -1 ? string.indexOf("?") : string.length,
     ),
-  fixElementAndSlashAtTheEnd: (offsett: number) => (string: string) =>
-    string.slice(offsett, string.indexOf("/", offsett + 1)),
+  fixElementAndSlashAtTheEnd: (offset: number) => (string: string) =>
+    string.slice(offset, string.indexOf("/", offset + 1)),
 };

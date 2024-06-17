@@ -1,0 +1,6 @@
+[files]
+extend-exclude = ["node_modules/**/*"]
+
+[default.extend-words]
+ND = "ND"
+

@@ -176,7 +176,7 @@ Deno.test("parameters single", () => {
   );
 });
 
-Deno.test("parameters muliple", () => {
+Deno.test("parameters multiple", () => {
   assertEquals(
     mainParameters()(
       petitions.common()({

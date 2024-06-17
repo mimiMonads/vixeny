@@ -80,7 +80,7 @@ Deno.test("wrap checking std", async () => {
   );
 });
 
-Deno.test("wrap checking costum", async () => {
+Deno.test("wrap checking custom", async () => {
   assertEquals(
     await serve(
       new Request("http://example.com/customHello"),
@@ -175,7 +175,7 @@ Deno.test("wrap monoidal properties", async () => {
   }]) as unknown as Petition[];
 });
 
-//check if your token is valid, return null if it's invalid, otherwise retruns the token
+//check if your token is valid, return null if it's invalid, otherwise returns the token
 // const validToken = petitions.resolve()({
 //   crypto: {
 //     globalKey: 'Secret!',

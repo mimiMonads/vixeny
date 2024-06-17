@@ -3,7 +3,7 @@ import mainSlicerUrl from "../../util/slicerURL/mainSlicerUrl.ts";
 /**
  * @mimiMonads
  *
- * This code is an object that containts all the logic related with handeling just one parameter
+ * This code is an object that contains all the logic related with handling just one parameter
  */
 
 export default {

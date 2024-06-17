@@ -439,7 +439,7 @@ type MapOptions = {
   isAPetition?: boolean;
   mutable?: true;
   specificReturnType?: boolean;
-  retunType?: any;
+  returnType?: any;
 };
 
 type HasPath<P extends MapOptions> = P extends { hasPath: true }
@@ -484,7 +484,7 @@ export type Morphism<
   readonly branch?: BM;
   readonly method?: ParamsMethod;
   readonly crypto?: CO;
-  readonly args?: MO extends { branch: true } ? AT : never;
+  readonly args?: MO extends { type: "morphism" } ? AT : never;
   readonly query?: QO;
   readonly param?: PO;
   readonly plugins?: ExtractPluginTypes<RO>;
@@ -519,7 +519,7 @@ export type Morphism<
         >,
         AT
       >,
-    ): MO["specificReturnType"] extends true ? MO["retunType"]
+    ): MO["specificReturnType"] extends true ? MO["returnType"]
       : MO["type"] extends "response" ? Response | Promise<Response>
       : MO["type"] extends "request" ? Response | Promise<Response>
       : MO["type"] extends "base" ? BodyInit | Promise<BodyInit> | null
@@ -596,12 +596,12 @@ type WithPlugins<
 > =
   & Ctx<R, B, QS, PA, O, CR, { hasHeaders: true }, OPT, AR>
   & (O extends { cyclePlugin: infer CPM } ? [keyof CPM] extends [never] ? {}
-    : CPM extends CyclePluginMap ? CyclePlugingFunctions<CPM>
+    : CPM extends CyclePluginMap ? CyclePluginFunctions<CPM>
     : never
     : {})
   & CryptoContext<CR>;
 
-type CyclePlugingFunctions<CPM extends CyclePluginMap> = {
+type CyclePluginFunctions<CPM extends CyclePluginMap> = {
   [K in keyof CPM]: CPM[K] extends
     { isFunction: boolean; f: (...args: any) => any }
     ? ReturnType<ReturnType<CPM[K]["f"]>> // Direct function case
@@ -798,7 +798,7 @@ interface Ctx<
    */
   branch: {
     [V in keyof B]: (
-      ctx: Exclude<B[V]["args"], undefined>,
+      ctx: B[V]["args"],
     ) => ReturnType<B[V]["f"]>;
   };
 

@@ -1,7 +1,7 @@
 import type { FunRouterOptions } from "../../options.ts";
 import type { Petition } from "../../morphism.ts";
 import common from "./common.ts";
-import elements from "./querryElements.ts";
+import elements from "./queryElements.ts";
 import unique from "./unique.ts";
 import plugin from "../../exportable/plugin.ts";
 
