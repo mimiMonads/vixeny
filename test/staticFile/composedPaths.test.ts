@@ -4,7 +4,7 @@ import test from "node:test";
 import composer from "../../src/staticFiles/composedPaths.ts";
 
 test(
-  "static file cheking file in composition",
+  "static file checking file in composition",
   () => {
     assert.deepStrictEqual(
       "/fun.test.ts",

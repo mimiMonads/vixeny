@@ -4,7 +4,7 @@ import test from "node:test";
 import staticFileTools from "../../src/staticFiles/staticFileTools.ts";
 
 test(
-  "cheking mime",
+  "checking mime",
   () => {
     assert.deepStrictEqual(
       staticFileTools.mimeForm({

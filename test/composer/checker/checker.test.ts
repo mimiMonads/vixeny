@@ -6,13 +6,13 @@ const pluginHello = {
   name: Symbol.for("hello"),
   isFunction: true,
   type: "string",
-  f: () => () => () => "pluging",
+  f: () => () => () => "plugin",
 };
 
 const pluginMethod = {
   name: Symbol.for("method"),
   type: "string",
-  f: () => () => () => "pluging",
+  f: () => () => () => "plugin",
 };
 
 const opt = {
@@ -23,7 +23,7 @@ const opt = {
 };
 
 // Test
-Deno.test("check behaivour", async () => {
+Deno.test("check behaviour", async () => {
   assertEquals(
     mainCheck()(
       petitions.common()({
@@ -44,7 +44,7 @@ Deno.test("check behaivour", async () => {
   );
 });
 
-Deno.test("check only behaivour", async () => {
+Deno.test("check only behaviour", async () => {
   assertEquals(
     mainCheck()(
       petitions.common()({
@@ -128,7 +128,7 @@ Deno.test("check only behaivour", async () => {
   );
 });
 
-Deno.test("check remove behaivour", async () => {
+Deno.test("check remove behaviour", async () => {
   assertEquals(
     mainCheck()(
       petitions.common()({
@@ -182,7 +182,7 @@ Deno.test("check remove behaivour", async () => {
   );
 });
 
-Deno.test("check remove behaivour", async () => {
+Deno.test("check remove behaviour", async () => {
   assertEquals(
     mainCheck()(
       petitions.common()({

@@ -39,7 +39,7 @@ export default ((o?: FunRouterOptions<any>) => (atlas: Atlas1) =>
       )(
         solver(o)(atlas)(0)(
           (atlas[4][0] as Atlas1[0]).length === 0
-            //exist wildcards (inluding static server) and server
+            //exist wildcards (including static server) and server
             ? atlas[3].length - 4 + (atlas[4][3] as Atlas1[3]).length
             //just the server (null)
             : null as unknown as number,

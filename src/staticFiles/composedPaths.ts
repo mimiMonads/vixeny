@@ -1,7 +1,7 @@
 import type { fileServerPetition, Petition } from "../morphism.ts";
 import staticFileTools from "./staticFileTools.ts";
 
-//TODO: make it more redable 🙏
+//TODO: make it more readable 🙏
 
 export default (f: fileServerPetition) =>
 (name: string) =>

@@ -30,4 +30,4 @@ export default (o?: FunRouterOptions<any>) => (p: Petition) =>
     )(
       plugins.pluginIsUsing(p)("token"),
     )
-    : () => ({ SystemError: "Crypto is requieres" });
+    : () => ({ SystemError: "Crypto is requires" });

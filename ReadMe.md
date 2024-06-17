@@ -1,5 +1,3 @@
-**Welcome to Vixeny: Revolutionize Your Web Development**
-
 <p align="center">
   <img src="misc/logo.png" alt="Vixeny Logo"  style="max-width: 100%;">
   <br>
@@ -9,6 +7,8 @@
 </p>
 
 [![JSR](https://jsr.io/badges/@vixeny/core)](https://jsr.io/@vixeny/core)
+![GitHub Actions status](https://github.com/mimiMonads/vixeny/workflows/Deno/badge.svg)
+[![npm version](https://img.shields.io/npm/v/vixeny.svg)](https://www.npmjs.com/package/vixeny)
 
 **Vixeny: Pioneering Functional Web Development**
 

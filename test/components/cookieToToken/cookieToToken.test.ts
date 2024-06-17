@@ -62,7 +62,7 @@ test("jwt signing with an invalid request", async () => {
   );
 });
 
-test("jwt signing with a valid request but not using the righ cookie", async () => {
+test("jwt signing with a valid request but not using the right cookie", async () => {
   assert.deepStrictEqual(
     await wrap()()
       .stdPetition({

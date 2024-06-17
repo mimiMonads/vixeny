@@ -23,10 +23,10 @@ export default (o?: FunRouterOptions<any>) =>
                 )
                 : o?.router?.strictTrailingSlash === false
                 ? typeof o.indexBase?.at === "number"
-                  ? baseWithStricTrailingSlachesAndAt(
+                  ? baseWithStricTrailingSlashesAndAt(
                     parsed,
                   )(o.indexBase.at)
-                  : baseWithStricTrailingSlaches(
+                  : baseWithStricTrailingSlashes(
                     parsed,
                   )
                 : typeof o?.indexBase?.at === "number"
@@ -54,8 +54,8 @@ const baseIndexed = (index: number) => (strictTrailingSlash: boolean) =>
     })${strictTrailingSlash ? `|| '/'` : ""}) `,
   )();
 
-// TODO: check for posible optimization switching `?` for `/?`
-const baseWithStricTrailingSlaches =
+// TODO: check for possible optimization switching `?` for `/?`
+const baseWithStricTrailingSlashes =
   (p: (url: string) => number) => (url: string) =>
     (
       (start) =>
@@ -71,8 +71,8 @@ const baseWithStricTrailingSlaches =
         )
     )(url.indexOf("/", url.indexOf("//") + 2));
 
-// TODO: check for posible optimization switching `?` for `/?`
-const baseWithStricTrailingSlachesAndAt =
+// TODO: check for possible optimization switching `?` for `/?`
+const baseWithStricTrailingSlashesAndAt =
   (p: (url: string) => number) => (at: number) =>
     (
       (slicer) => (url: string) =>

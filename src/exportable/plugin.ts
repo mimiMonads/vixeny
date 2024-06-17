@@ -114,7 +114,7 @@ export default {
     TP extends "response" | "request" | undefined,
     O extends StaticFilePlugin<TP>,
   >(config: O) => config,
-  pluginIsUsing: (p: Petition) => (currenName: string) =>
+  pluginIsUsing: (p: Petition) => (currentName: string) =>
     (
       (
         (args) =>
@@ -123,13 +123,13 @@ export default {
               ...new Set(
                 checkerTools.getDestructedElements(p.f)(
                   typeof args == "string"
-                    ? args + "." + currenName
-                    : currenName,
+                    ? args + "." + currentName
+                    : currentName,
                 ).concat(
                   checkerTools.getDots(p.f)(
                     typeof args == "string"
-                      ? args + "." + currenName
-                      : currenName,
+                      ? args + "." + currentName
+                      : currentName,
                   ),
                 ),
               ),

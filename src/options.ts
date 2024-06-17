@@ -46,7 +46,7 @@ export type FunRouterOptions<
   /**
    * @deprecated
    *
-   * When an URL with a valid URL is detected and used it will be added to yout `context`
+   * When an URL with a valid URL is detected and used it will be added to your `context`
    *
    * ```ts
    * // default
@@ -54,7 +54,7 @@ export type FunRouterOptions<
    *  path: "/route/:name",
    *  f: ctx => ctx.param.name
    * }
-   * // this behavour can change with this option, for example:
+   * // this behaviour can change with this option, for example:
    * {
    *  path: "/route/-name",
    *  f: ctx => ctx.param.name

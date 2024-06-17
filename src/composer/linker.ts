@@ -1,7 +1,7 @@
 import tools from "./composerTools.ts";
 import type { FunRouterOptions } from "../options.ts";
 import type { Petition } from "../morphism.ts";
-import nativeComponets from "./nativeComponents.ts";
+import nativeComponents from "./nativeComponents.ts";
 import nativeMaps from "./nativeMaps.ts";
 
 export type specialOptions = {
@@ -34,7 +34,7 @@ export default (o?: specialOptions) => (f: Petition) => (ar: string[]) =>
               )(),
             )
         )(
-          ((or) => nativeComponets(or)(f)(table))(
+          ((or) => nativeComponents(or)(f)(table))(
             "mutable" in f
               ? { ...o, mutable: true } as FunRouterOptions<any>
               : o,
