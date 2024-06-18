@@ -20,7 +20,7 @@ test(
         id: "456",
       },
     ),
-    assertEquals(
+      assertEquals(
         (new Function(
           ` return ${
             finder(
@@ -34,7 +34,7 @@ test(
           test: "test",
         },
       );
-      assertEquals(
+    assertEquals(
       (new Function(
         ` return ${
           finder(

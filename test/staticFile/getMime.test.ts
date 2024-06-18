@@ -1,16 +1,17 @@
-import assert from "node:assert";
-import test from "node:test";
+import { assertEquals } from "@std/assert";
+import { test } from "@cross/test";
+
 
 import staticFileTools from "../../src/staticFiles/staticFileTools.ts";
 
 test(
   "statci file gets mine",
   () => {
-    assert.deepStrictEqual(
+    assertEquals(
       staticFileTools.getMime([[".hello", "hello"]])(".hello"),
       "hello",
     );
-    assert.deepStrictEqual(
+    assertEquals(
       staticFileTools.getMime([[".txt", "hello"]])(".hello"),
       "text/html",
     );

@@ -1,8 +1,8 @@
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals } from "@std/assert";
 import validator from "../../../src/composer/checkPetition/checkTools.ts";
 import { petitions } from "../../../main.ts";
 import type { Petition } from "../../../src/morphism.ts";
-
+import { test } from "@cross/test";
 function testingSomething(ctx: string) {
   return ctx;
 }
@@ -10,19 +10,19 @@ function testingSomething2() {
   return "hello";
 }
 
-Deno.test("Should return 'ctx' for single parameter arrow function", () => {
+test("Should return 'ctx' for single parameter arrow function", () => {
   assertEquals(validator.getArgsname((ctx) => ctx.params), "ctx");
 });
 
-Deno.test("Should return 'ctx' for named function with parameters", () => {
+test("Should return 'ctx' for named function with parameters", () => {
   assertEquals(validator.getArgsname(testingSomething), "ctx");
 });
 
-Deno.test("Should return an array of params for destructured parameters", () => {
+test("Should return an array of params for destructured parameters", () => {
   assertEquals(validator.getArgsname(({ params }) => params), ["params"]);
 });
 
-Deno.test("Should return an array of params for destructured parameters", () => {
+test("Should return an array of params for destructured parameters", () => {
   assertEquals(
     validator.getArgsname(
       (petitions.resolve()({
@@ -33,7 +33,7 @@ Deno.test("Should return an array of params for destructured parameters", () => 
   );
 });
 
-Deno.test("Should return an array of multiple params for complex destructured function", () => {
+test("Should return an array of multiple params for complex destructured function", () => {
   assertEquals(
     validator.getArgsname(function ({ params, hello, hi }) {
       return hi + params + hello;
@@ -42,11 +42,11 @@ Deno.test("Should return an array of multiple params for complex destructured fu
   );
 });
 
-Deno.test("Should return null for no parameter arrow function", () => {
+test("Should return null for no parameter arrow function", () => {
   assertEquals(validator.getArgsname(() => "string"), null);
 });
 
-Deno.test("Should return null for no parameter standard function", () => {
+test("Should return null for no parameter standard function", () => {
   assertEquals(
     validator.getArgsname(function () {
       return "string";
@@ -55,6 +55,6 @@ Deno.test("Should return null for no parameter standard function", () => {
   );
 });
 
-Deno.test("Should return null for no parameter named standard function", () => {
+test("Should return null for no parameter named standard function", () => {
   assertEquals(validator.getArgsname(testingSomething2), null);
 });

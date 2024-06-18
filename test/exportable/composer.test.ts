@@ -1,7 +1,7 @@
 import { composer, plugins } from "../../main.ts";
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals } from "@std/assert";
 import { petitions } from "../../main.ts";
-
+import { test } from "@cross/test";
 const dummyRequest = new Request("http://heyINeedTOGoToSleep.com/");
 const opt = plugins.globalOptions({
   cyclePlugin: {
@@ -29,7 +29,7 @@ const requestPetition = petitions.standard()({
   f: (ctx) => new Response("standard"),
 });
 
-Deno.test("exportable composer any", async () => {
+test("exportable composer any", async () => {
   assertEquals(
     composer.anyRequest()({
       f: () => "hello",
@@ -50,7 +50,7 @@ Deno.test("exportable composer any", async () => {
   );
 });
 
-Deno.test("exportable composer ObjectNull", async () => {
+test("exportable composer ObjectNull", async () => {
   assertEquals(
     composer.objectNullRequest()({
       f: () => ({ hi: 1 }),
@@ -79,7 +79,7 @@ Deno.test("exportable composer ObjectNull", async () => {
   );
 });
 
-Deno.test("exportable composer petition", async () => {
+test("exportable composer petition", async () => {
   assertEquals(
     await Promise.resolve(composer.petition()(commonPetition)(dummyRequest))
       .then((x) => x.text()),

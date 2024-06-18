@@ -1,7 +1,7 @@
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals } from "@std/assert";
 import mainParameters from "../../../src/components/parameters/mainParameters.ts";
 import { petitions, plugins } from "../../../main.ts";
-
+import { test } from "@cross/test";
 const base = "http://hello.com";
 
 const options = plugins.globalOptions({
@@ -10,7 +10,7 @@ const options = plugins.globalOptions({
   },
 });
 
-Deno.test("parameters unique", () => {
+test("parameters unique", () => {
   assertEquals(
     mainParameters()(
       petitions.common()({
@@ -107,7 +107,7 @@ Deno.test("parameters unique", () => {
   );
 });
 
-Deno.test("parameters single", () => {
+test("parameters single", () => {
   assertEquals(
     mainParameters()(
       petitions.common()({
@@ -176,7 +176,7 @@ Deno.test("parameters single", () => {
   );
 });
 
-Deno.test("parameters multiple", () => {
+test("parameters multiple", () => {
   assertEquals(
     mainParameters()(
       petitions.common()({

@@ -1,12 +1,12 @@
 import map from "../../../src/components/parameters/map.ts";
-import assert from "node:assert";
-import test from "node:test";
+import { assertEquals } from "@std/assert";
+import { test } from "@cross/test";
 import type { Petition } from "../../../src/morphism.ts";
 
 test(
   "only one parameter at the end",
   (_) => {
-    assert.deepStrictEqual(
+    assertEquals(
       map({})({ path: "/test/:id", f: (_) => "hello" } as Petition),
       {
         elements: [
@@ -27,7 +27,7 @@ test(
         startsWith: ":",
       },
     );
-    assert.deepStrictEqual(
+    assertEquals(
       map({})({ path: "/test/:id/", f: (_) => "hello" } as Petition),
       {
         elements: [
@@ -48,7 +48,7 @@ test(
         startsWith: ":",
       },
     ),
-      assert.deepStrictEqual(
+      assertEquals(
         map({})({ path: "/test/:id/hi", f: (_) => "hello" } as Petition),
         {
           elements: [
@@ -71,7 +71,7 @@ test(
           startsWith: ":",
         },
       ),
-      assert.deepStrictEqual(
+      assertEquals(
         map({})({ path: "/test/:id/hi/", f: (_) => "hello" } as Petition),
         {
           elements: [
@@ -94,7 +94,7 @@ test(
           startsWith: ":",
         },
       ),
-      assert.deepStrictEqual(
+      assertEquals(
         map({})({ path: "/test/:id/:test", f: (_) => "hello" } as Petition),
         {
           elements: [
@@ -118,7 +118,7 @@ test(
           startsWith: ":",
         },
       ),
-      assert.deepStrictEqual(
+      assertEquals(
         map({})({ path: "/:test/:id/:hi", f: (_) => "hello" } as Petition),
         {
           elements: [

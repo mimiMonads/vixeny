@@ -104,4 +104,3 @@ export default (o?: FunRouterOptions<any>) =>
           action: () => o!.cyclePlugin![x]!["f"](o)(f as CommonRequestMorphism),
         })),
       ));
-

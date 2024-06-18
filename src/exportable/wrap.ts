@@ -464,12 +464,13 @@ export const wrap = ((o?) => (a = []) => ({
     ) ?? wrap(o)(a),
   logLastCheck: () =>
     void (
-      isUsing => display({
-        using: "[" + isUsing + "]",
-        isAsync: composerTools.localAsync(o)(a[a.length-1])(isUsing)
-      })
-    )( 
-         composerTools.isUsing(o)(a[a.length -1])
+      (isUsing) =>
+        display({
+          using: "[" + isUsing + "]",
+          isAsync: composerTools.localAsync(o)(a[a.length - 1])(isUsing),
+        })
+    )(
+      composerTools.isUsing(o)(a[a.length - 1]),
     ) ??
       wrap(o)(a),
   handleRequest: (s: string) =>
@@ -525,9 +526,11 @@ export const wrap = ((o?) => (a = []) => ({
 
 const display = (object: Object) => (
   console.log("---"),
-  Object.entries(object).forEach(
-    ([key, value]) => (
-      console.log(`\x1b[35m${key}\x1b[0m: \x1b[38;2;255;165;0m${value}\x1b[0m`)
+    Object.entries(object).forEach(
+      ([key, value]) => (
+        console.log(
+          `\x1b[35m${key}\x1b[0m: \x1b[38;2;255;165;0m${value}\x1b[0m`,
+        )
+      ),
     )
-  )
 );

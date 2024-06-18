@@ -1,8 +1,8 @@
 import { petitions, wrap } from "../../main.ts";
 import { plugins } from "../../main.ts";
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals } from "@std/assert";
 import type { Petition } from "../../src/morphism.ts";
-
+import { test } from "@cross/test";
 const normalPetition = petitions.common()({
   path: "/addAny",
   f: () => "addAny",
@@ -61,7 +61,7 @@ const wrapped = wrap(
 
 const serve = wrapped.testRequests();
 
-Deno.test("wrap checking std", async () => {
+test("wrap checking std", async () => {
   assertEquals(
     await serve(
       new Request("http://example.com/stdHello"),
@@ -80,7 +80,7 @@ Deno.test("wrap checking std", async () => {
   );
 });
 
-Deno.test("wrap checking custom", async () => {
+test("wrap checking custom", async () => {
   assertEquals(
     await serve(
       new Request("http://example.com/customHello"),
@@ -99,7 +99,7 @@ Deno.test("wrap checking custom", async () => {
   );
 });
 
-Deno.test("wrap checking withoutCTX", async () => {
+test("wrap checking withoutCTX", async () => {
   assertEquals(
     await serve(
       new Request("http://example.com/withoutCTX"),
@@ -110,7 +110,7 @@ Deno.test("wrap checking withoutCTX", async () => {
   );
 });
 
-Deno.test("wrap checking addAny", async () => {
+test("wrap checking addAny", async () => {
   assertEquals(
     await serve(
       new Request("http://example.com/addAny"),
@@ -121,7 +121,7 @@ Deno.test("wrap checking addAny", async () => {
   );
 });
 
-Deno.test("wrap monoidal properties", async () => {
+test("wrap monoidal properties", async () => {
   const identity = wrap({})();
   const f = () => "test";
 

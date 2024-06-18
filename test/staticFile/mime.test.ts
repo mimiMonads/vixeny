@@ -1,12 +1,13 @@
-import assert from "node:assert";
-import test from "node:test";
+import { assertEquals } from "@std/assert";
+import { test } from "@cross/test";
+
 
 import staticFileTools from "../../src/staticFiles/staticFileTools.ts";
 
 test(
   "checking mime",
   () => {
-    assert.deepStrictEqual(
+    assertEquals(
       staticFileTools.mimeForm({
         type: "fileServer",
         path: "./",
@@ -14,7 +15,7 @@ test(
       }).length,
       74,
     );
-    assert.deepStrictEqual(
+    assertEquals(
       staticFileTools.mimeForm({
         type: "fileServer",
         path: "./",
@@ -24,7 +25,7 @@ test(
         .length,
       0,
     );
-    assert.deepStrictEqual(
+    assertEquals(
       staticFileTools.mimeForm({
         type: "fileServer",
         path: "./",

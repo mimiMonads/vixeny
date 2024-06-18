@@ -26,25 +26,15 @@ export default (o?: FunRouterOptions<any>) =>
               }r=>${table.async || table.asyncResolve ? "await f" : "f"}(${
                 table.asyncResolve ? "await c" : "c"
               }(${"mutable" in p ? "[r,{res: {}}]" : "r"}))`)()
-              : getF(table.async || table.asyncResolve)(table.headers ? true : false)(),
+              : getF(table.async || table.asyncResolve)(
+                table.headers ? true : false,
+              )(),
           )
     )(
       //elements int table
       {
         async: tools.localAsync(o)(p)(elementsUsed),
-        asyncResolve: tools.recursiveCheckAsync(p) 
-        // ||
-        //   (
-        //     o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
-        //       .some((x) =>
-        //         elementsUsed.includes(x)
-        //           //@ts-ignore
-        //           ? "isAsync" in o.cyclePlugin[x] &&
-        //             o.cyclePlugin[x].isAsync === true
-        //           : false
-        //       )
-        //   )
-          ,
+        asyncResolve: tools.recursiveCheckAsync(p),
         headers: "headings" in p
           ? typeof p.headings?.headers == "string"
             ? {
@@ -66,18 +56,17 @@ export default (o?: FunRouterOptions<any>) =>
       tools.isUsing(o)(p),
     );
 
-
-    //maybe of an optimization
-    const getF = (isAsync:boolean) => 
-    (hasHeaders:boolean) =>
-    isAsync
-      ? hasHeaders
-        ? //@ts-ignore
-        () => (h => f => c => async r => new Response(await f( await c(r)),h))
-        : //@ts-ignore
-        () => (f =>  c => async r => new Response(await f( await c(r))))
-      : hasHeaders
-        ? //@ts-ignore
-        () => (h => f => c => r => new Response(f(c(r)),h))
-        : //@ts-ignore
-        () =>(f => c => r => new Response(f(c(r))))
+//maybe of an optimization
+const getF = (isAsync: boolean) => (hasHeaders: boolean) =>
+  isAsync
+    ? hasHeaders
+      //@ts-ignore
+      ? () => ((h) => (f) => (c) => async (r) =>
+        new Response(await f(await c(r)), h))
+      //@ts-ignore
+      : () => ((f) => (c) => async (r) => new Response(await f(await c(r))))
+    : hasHeaders
+    //@ts-ignore
+    ? () => ((h) => (f) => (c) => (r) => new Response(f(c(r)), h))
+    //@ts-ignore
+    : () => ((f) => (c) => (r) => new Response(f(c(r))));

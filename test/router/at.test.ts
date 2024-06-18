@@ -1,5 +1,6 @@
-import assert from "node:assert";
-import test from "node:test";
+import { assertEquals } from "@std/assert";
+import { test } from "@cross/test";
+
 import { wrap } from "../../main.ts";
 
 const wrapAt4 = wrap({
@@ -28,12 +29,12 @@ const req = new Request(base + "/hello");
 const param = new Request(base + "/hello/hello");
 
 test("Router checking `at`", async () => {
-  assert.strictEqual(
+  assertEquals(
     await serve(req).then((x) => x.text()),
     "from inside",
   );
 
-  assert.strictEqual(
+  assertEquals(
     await serve(param).then((x) => x.text()),
     "hello",
   );

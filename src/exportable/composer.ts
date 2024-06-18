@@ -31,7 +31,7 @@ export const composer = {
    * @example
    * Example usage: Tests the `anyRequest` composer to ensure it correctly returns the expected string.
    * ```typescript
-   * Deno.test("anyRequest test", () => {
+   * test("anyRequest test", () => {
    *
    *  const returnsAny = ({
    *       f: () => "hello",
@@ -86,7 +86,7 @@ export const composer = {
    * @example
    * Example usage: Tests the handling of null and object responses through multiple scenarios.
    * ```typescript
-   * Deno.test("objectNullRequest test", async () => {
+   * test("objectNullRequest test", async () => {
    *   const objectNull = composer.objectNullRequest()({
    *       f: () => ({ hi: 1 }),
    *     })
@@ -139,7 +139,7 @@ export const composer = {
    * @example
    * Example usage: Tests the `petition` composer to ensure it correctly processes predefined petitions into appropriate HTTP responses.
    * ```typescript
-   * Deno.test("petition composer test", async () => {
+   * test("petition composer test", async () => {
    *
    *  const commonPetition = petitions.common()({
    *    path: "/common",

@@ -1,5 +1,5 @@
-import assert from "node:assert";
-import test from "node:test";
+import { assertEquals } from "@std/assert";
+import { test } from "@cross/test";
 import solver from "../../src/router/solver1.ts";
 import atlas from "../../src/router/atlas/main1.ts";
 import paths from "./paths.ts";
@@ -12,7 +12,7 @@ test(
   (_) =>
     (
       (a) =>
-        assert.deepStrictEqual(
+        assertEquals(
           [
             a(new Request("http://localhost:8080/")),
             a(new Request("http://localhost:8080/one")),
@@ -56,7 +56,7 @@ test(
   (_) =>
     (
       (a) =>
-        assert.deepStrictEqual(
+        assertEquals(
           [
             a(new Request("http://localhost:8080/")),
             a(new Request("http://localhost:8080/one")),
@@ -86,7 +86,7 @@ test(
   (_) =>
     (
       (f) =>
-        assert.deepStrictEqual(
+        assertEquals(
           [
             f(new Request("http://localhost:8000/count")),
             f(new Request("http://localhost:8000/hello_world")),
