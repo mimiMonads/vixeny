@@ -480,6 +480,7 @@ export type Morphism<
   AT = any,
   R = any,
 > = {
+  readonly active?: MO["isAPetition"] extends true ? boolean : never;
   readonly resolve?: RM;
   readonly branch?: BM;
   readonly method?: ParamsMethod;

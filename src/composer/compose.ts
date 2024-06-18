@@ -41,28 +41,20 @@ export default (o?: FunRouterOptions<any>) =>
     )(
       //elements int table
       {
-        async: p.f.constructor.name === "AsyncFunction" ||
-          (
-            o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
-              .some((x) =>
-                elementsUsed.includes(x)
-                  //@ts-ignore
-                  ? "isAsync" in o.cyclePlugin[x] &&
-                    o.cyclePlugin[x].isAsync === true
-                  : false
-              )
-          ),
-        asyncResolve: tools.recursiveCheckAsync(p) ||
-          (
-            o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
-              .some((x) =>
-                elementsUsed.includes(x)
-                  //@ts-ignore
-                  ? "isAsync" in o.cyclePlugin[x] &&
-                    o.cyclePlugin[x].isAsync === true
-                  : false
-              )
-          ),
+        async: tools.localAsync(o)(p)(elementsUsed),
+        asyncResolve: tools.recursiveCheckAsync(p) 
+        // ||
+        //   (
+        //     o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
+        //       .some((x) =>
+        //         elementsUsed.includes(x)
+        //           //@ts-ignore
+        //           ? "isAsync" in o.cyclePlugin[x] &&
+        //             o.cyclePlugin[x].isAsync === true
+        //           : false
+        //       )
+        //   )
+          ,
         headers: "headings" in p
           ? typeof p.headings?.headers == "string"
             ? {
@@ -83,3 +75,5 @@ export default (o?: FunRouterOptions<any>) =>
     ))(
       tools.isUsing(o)(p),
     );
+
+

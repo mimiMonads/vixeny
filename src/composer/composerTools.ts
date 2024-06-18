@@ -100,4 +100,14 @@ export default {
           ,
         ]
     ).filter(Boolean) as string[],
+    localAsync : (o?:FunRouterOptions<any>) => (p:Petition)=> (elementsUsed:string[]):boolean => (
+      (p.f.constructor.name === "AsyncFunction"?? false) || o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
+        .some((x) =>
+          elementsUsed.includes(x)
+            //@ts-ignore
+            ? "isAsync" in o.cyclePlugin[x] &&
+              o.cyclePlugin[x].isAsync === true
+            : false
+        )
+    ) ?? false
 };

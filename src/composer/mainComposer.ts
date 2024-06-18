@@ -12,6 +12,9 @@ export default (
 ): (routes: (Petition | fileServerPetition)[]) => RouteTypes[] =>
 (ar) =>
   ar
+    .filter(
+      (x) => !("active" in x && x.active === false),
+    )
     .map(
       (x) =>
         x.type === "response"

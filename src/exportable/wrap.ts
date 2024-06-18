@@ -451,12 +451,25 @@ export const wrap = ((o?) => (a = []) => ({
       { ...ob, type: "base" } as Petition,
     )),
 
-  logPaths: () => void a.forEach((x) => console.log(x.path)) ?? wrap(o)(a),
+  logPaths: () =>
+    void a.forEach(
+      (x) =>
+        display({
+          method: x.method ?? "GET",
+          path: x.path,
+          ...(
+            x.active ? { active: x.active } : {}
+          ),
+        }),
+    ) ?? wrap(o)(a),
   logLastCheck: () =>
-    void console.log(
-      a.length > 0
-        ? composerTools.isUsing(o)(a[a.length - 1])
-        : "This wrap is empty.",
+    void (
+      isUsing => display({
+        using: "[" + isUsing + "]",
+        isAsync: composerTools.localAsync(o)(a[a.length-1])(isUsing)
+      })
+    )( 
+         composerTools.isUsing(o)(a[a.length -1])
     ) ??
       wrap(o)(a),
   handleRequest: (s: string) =>
@@ -509,3 +522,13 @@ export const wrap = ((o?) => (a = []) => ({
   compose: () => vixeny(o)(a),
   flatMap: (fn) => a.reduce((acc, x) => acc.union(fn(x).unwrap()), wrap(o)([])),
 })) as WrapFunction;
+
+const display = (object: Object) => (
+  console.log("---"),
+  Object.entries(object).forEach(
+    ([key, value]) => (
+      console.log(`\x1b[35m${key}\x1b[0m: \x1b[38;2;255;165;0m${value}\x1b[0m`)
+    )
+  ),
+  console.log("---")
+);
