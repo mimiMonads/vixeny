@@ -26,17 +26,7 @@ export default (o?: FunRouterOptions<any>) =>
               }r=>${table.async || table.asyncResolve ? "await f" : "f"}(${
                 table.asyncResolve ? "await c" : "c"
               }(${"mutable" in p ? "[r,{res: {}}]" : "r"}))`)()
-              : new Function(
-                `return ${table.headers ? "h=>" : ""}${
-                  table.async ? "f=>" : "f=>"
-                }${table.asyncResolve ? "c=>" : "c=>"}${
-                  table.async || table.asyncResolve ? "async " : ""
-                }r=> new Response(${
-                  table.async || table.asyncResolve ? "await f" : "f"
-                }(${table.asyncResolve ? "await c" : "c"}(${
-                  "mutable" in p ? "[r,{res: {}}]" : "r"
-                }))${table.headers ? ",h" : ""})`,
-              )(),
+              : getF(table.async || table.asyncResolve)(table.headers ? true : false)(),
           )
     )(
       //elements int table
@@ -77,3 +67,17 @@ export default (o?: FunRouterOptions<any>) =>
     );
 
 
+    //maybe of an optimization
+    const getF = (isAsync:boolean) => 
+    (hasHeaders:boolean) =>
+    isAsync
+      ? hasHeaders
+        ? //@ts-ignore
+        () => (h => f => c => async r => new Response(await f( await c(r)),h))
+        : //@ts-ignore
+        () => (f =>  c => async r => new Response(await f( await c(r))))
+      : hasHeaders
+        ? //@ts-ignore
+        () => (h => f => c => r => new Response(f(c(r)),h))
+        : //@ts-ignore
+        () =>(f => c => r => new Response(f(c(r))))

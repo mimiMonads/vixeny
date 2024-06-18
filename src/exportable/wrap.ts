@@ -529,6 +529,5 @@ const display = (object: Object) => (
     ([key, value]) => (
       console.log(`\x1b[35m${key}\x1b[0m: \x1b[38;2;255;165;0m${value}\x1b[0m`)
     )
-  ),
-  console.log("---")
+  )
 );
