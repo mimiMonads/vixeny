@@ -84,7 +84,12 @@ export const petitions = {
       AR,
       R
     >,
-  ) => ({ ...I, type: "request", o }) as unknown as Petition,
+  ) =>
+    ({
+      ...I,
+      type: "request",
+      o,
+    }) as unknown as Petition,
   /**
    * Configures and types a basic petition to be used with `wrap` or `compose`.
    * The `f` function in the petition configuration returns either a `BodyInit` or `Promise<BodyInit>`,
@@ -481,6 +486,7 @@ export type Morphism<
   R = any,
 > = {
   readonly active?: MO["isAPetition"] extends true ? boolean : never;
+  readonly isUsing?: MO["isAPetition"] extends true ? string[] : never;
   readonly resolve?: RM;
   readonly branch?: BM;
   readonly method?: ParamsMethod;

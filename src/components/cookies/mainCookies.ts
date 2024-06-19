@@ -4,9 +4,14 @@ import type { FunRouterOptions } from "../../options.ts";
 import { body } from "./cookieBodyParser.ts";
 import cookieDefaultCase from "./cookieDefaultCase.ts";
 
-const f = (o?: FunRouterOptions<any>) => (p: Petition) =>
+type Cookie = (string: string | null) => Record<string, string | undefined>;
+
+const f = (o?: FunRouterOptions<any>) => (p: Petition): Cookie =>
   (
-    (cookies) => cookies ? body(p.cookie?.only ?? cookies) : cookieDefaultCase()
+    (cookies) =>
+      cookies
+        ? body(p.cookie?.only ?? cookies) as Cookie
+        : cookieDefaultCase() as Cookie
   )(
     plugins.pluginIsUsing(p)("cookies"),
   );

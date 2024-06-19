@@ -81,17 +81,17 @@ test("exportable composer ObjectNull", async () => {
 
 test("exportable composer petition", async () => {
   assertEquals(
-    await Promise.resolve(composer.petition()(commonPetition)(dummyRequest))
+    await Promise.resolve(composer.petition(commonPetition)(dummyRequest))
       .then((x) => x.text()),
     "common",
   );
   assertEquals(
-    await Promise.resolve(composer.petition()(requestPetition)(dummyRequest))
+    await Promise.resolve(composer.petition(requestPetition)(dummyRequest))
       .then((x) => x.text()),
     "standard",
   );
   assertEquals(
-    await Promise.resolve(composer.petition()(responsePetition)(dummyRequest))
+    await Promise.resolve(composer.petition(responsePetition)(dummyRequest))
       .then((x) => x.text()),
     "response",
   );

@@ -173,14 +173,10 @@ export const composer = {
    * });
    * ```
    */
-  petition: <
-    FC extends CyclePluginMap,
-    O extends FunRouterOptions<FC>,
-  >(o?: O) =>
-  (
+  petition: (
     r: Petition,
   ) =>
-    (r.type === "response" ? r.r : (compose(o)(
+    (r.type === "response" ? r.r : (compose(r.o ?? {})(
       { ...r },
     ))) as unknown as (
       re: Request,
