@@ -2,6 +2,7 @@ import type { CyclePluginMap, FunRouterOptions } from "../options.ts";
 import response from "../composer/compose.ts";
 import composerTools from "../composer/composerTools.ts";
 import vixeny from "../../fun.ts";
+import { display, displayPaths } from "./display.ts";
 import type {
   BranchMap,
   CryptoOptions,
@@ -173,17 +174,17 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *   // Logging the used context after the first petition (expected to be empty as none is used):
    *   // Output: []
    *   // Important!, `_c` will be the Request
-   *   .logLastCheck()
+   *   .debugLast()
    *   .stdPetition({
    *       path: '/two/:id',
    *       f: c => c.param.id
    *   })
    *   // Logging the used context after adding a petition that accesses a URL parameter:
    *   // Output: [ "param" ]
-   *   .logLastCheck()
+   *   .debugLast()
    * ```
    */
-  logLastCheck: () => Wrap<O>;
+  debugLast: () => Wrap<O>;
   /**
    * `handleRequest` dynamically processes a request getting a specified path. If the path exists among the defined petitions,
    * it either applies provided modifications (useful for mocking or altering request handling behavior) or proceeds with the
@@ -453,20 +454,13 @@ export const wrap = ((o?) => (a = []) => ({
 
   logPaths: () =>
     void a.forEach(
-      (x) =>
-        display({
-          method: x.method ?? "GET",
-          path: x.path,
-          ...(
-            x.active ? { active: x.active } : {}
-          ),
-        }),
+      (x) => displayPaths(x),
     ) ?? wrap(o)(a),
-  logLastCheck: () =>
+  debugLast: () =>
     void (
       (isUsing) =>
-        display({
-          using: "[" + isUsing + "]",
+        display(o)(a[a.length - 1])({
+          using: isUsing,
           isAsync: composerTools.localAsync(o)(a[a.length - 1])(isUsing),
         })
     )(
@@ -523,14 +517,3 @@ export const wrap = ((o?) => (a = []) => ({
   compose: () => vixeny(o)(a),
   flatMap: (fn) => a.reduce((acc, x) => acc.union(fn(x).unwrap()), wrap(o)([])),
 })) as WrapFunction;
-
-const display = (object: Object) => (
-  console.log("---"),
-    Object.entries(object).forEach(
-      ([key, value]) => (
-        console.log(
-          `\x1b[35m${key}\x1b[0m: \x1b[38;2;255;165;0m${value}\x1b[0m`,
-        )
-      ),
-    )
-);

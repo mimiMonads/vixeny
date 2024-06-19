@@ -1,7 +1,6 @@
 import { assertEquals } from "@std/assert";
 import { test } from "@cross/test";
 
-
 import composer from "../../src/staticFiles/composedPaths.ts";
 
 test(

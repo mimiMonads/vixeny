@@ -10,7 +10,7 @@ type Parameters = (
 ) => (p: Petition) => (url: string) => string | Record<string, string> | null;
 
 //TODO
-export default ((options?: FunRouterOptions<any>) => (p: Petition) =>
+const f = ((options?: FunRouterOptions<any>) => (p: Petition) =>
   (
     (map) =>
       p?.param?.unique === true
@@ -23,3 +23,12 @@ export default ((options?: FunRouterOptions<any>) => (p: Petition) =>
   )(
     map(options)(p),
   )) as Parameters;
+
+const isUsing = (options?: FunRouterOptions<any>) => (p: Petition) =>
+  p.param?.unique === true
+    ? "unique"
+    : "[" + [map(options)(p).elements.toString()].map((x) =>
+      x.slice(1)
+    ).toString() + "]";
+
+export { f, isUsing };

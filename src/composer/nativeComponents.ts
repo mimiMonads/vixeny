@@ -1,9 +1,9 @@
-import params from "../components/parameters/mainParameters.ts";
-import query from "../components/queries/mainQueries.ts";
-import cookies from "../components/cookies/main.ts";
+import { f as params } from "../components/parameters/mainParameters.ts";
+import { f as query } from "../components/queries/mainQueries.ts";
+import { f as cookies } from "../components/cookies/mainCookies.ts";
 import resolve from "./resolve/main.ts";
 import branch from "./branch/branchMain.ts";
-import cookieToTokenMain from "../components/cookieToToken/cookieToTokenMain.ts";
+import { f as mainCookieToToken } from "../components/cookieToToken/mainCookieToToken.ts";
 import signSha256 from "../components/jwt/signSha256.mjs";
 import verifySha256 from "../components/jwt/verifySha256.mjs";
 import mainIO from "../components/io/mainIO.ts";
@@ -66,7 +66,7 @@ export default (o?: FunRouterOptions<any>) =>
       {
         condition: (x: NativeMaps) => x.name === "token",
         action: () =>
-          cookieToTokenMain(o)({
+          mainCookieToToken(o)({
             ...f,
             crypto: {
               ...f.crypto,

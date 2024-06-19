@@ -487,6 +487,7 @@ export type Morphism<
   readonly crypto?: CO;
   readonly args?: MO extends { type: "morphism" } ? AT : never;
   readonly query?: QO;
+  readonly cookie?: CookieOptions;
   readonly param?: PO;
   readonly plugins?: ExtractPluginTypes<RO>;
   readonly headings?: PetitionHeader;
@@ -575,6 +576,10 @@ export type QueryOptions = {
 } | {
   only?: string[];
 } | {};
+
+export type CookieOptions = {
+  only?: string[];
+};
 
 export type ParamOptions = {
   readonly unique?: true;
@@ -846,7 +851,7 @@ interface Ctx<
    * ```
    */
   query: QS extends { unique: true } ? (string | null)
-    : { [key: string]: string };
+    : { [key: string]: string | null };
 
   /**
    * `param`: Enables the extraction of URL path parameters within the petition's execution context. This feature simplifies accessing dynamic segments of the URL path, allowing petitions to respond to varied requests efficiently.
@@ -940,10 +945,7 @@ interface Ctx<
    * ```
    */
   date: number;
-  /**
-   * @deprecated
-   */
-  cookie: null | { [key: string]: string | undefined };
+  cookie: { [key: string]: string | undefined };
   io: FileHandler;
 }
 

@@ -4,7 +4,7 @@ import cookieToTokenBodyParser from "./cookieToTokenBodyParser.ts";
 import cookieToTokenGets from "./cookieToTokenGets.ts";
 import { plugins } from "../../../main.ts";
 
-export default (o?: FunRouterOptions<any>) => (p: Petition) =>
+export const f = (o?: FunRouterOptions<any>) => (p: Petition) =>
   p.crypto && "globalKey" in p.crypto
     ? (
       (getCookies) =>
@@ -30,4 +30,12 @@ export default (o?: FunRouterOptions<any>) => (p: Petition) =>
     )(
       plugins.pluginIsUsing(p)("token"),
     )
-    : () => ({ SystemError: "Crypto is requires" });
+    : () => null;
+
+export const isUsing = (o?: FunRouterOptions<any>) => (p: Petition): string =>
+  (
+    (uses) =>
+      uses && uses.length > 0 ? `[` + uses.map((x) => x + "?") + "]" : "null"
+  )(
+    plugins.pluginIsUsing(p)("token"),
+  );

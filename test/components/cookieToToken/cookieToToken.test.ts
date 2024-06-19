@@ -1,7 +1,6 @@
 import { assertEquals } from "@std/assert";
 import { test } from "@cross/test";
 
-
 import signSha256 from "../../../src/components/jwt/signSha256.mjs";
 import { wrap } from "../../../main.ts";
 
