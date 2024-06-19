@@ -2,7 +2,7 @@ import type { FunRouterOptions } from "../../options.ts";
 import type { Petition, SupportedKeys } from "../../morphism.ts";
 import cookieToTokenBodyParser from "./cookieToTokenBodyParser.ts";
 import cookieToTokenGets from "./cookieToTokenGets.ts";
-import { plugins } from "../../../main.ts";
+import plugins from "../../exportable/plugin.ts";
 
 export const f = (o?: FunRouterOptions<any>) => (p: Petition) =>
   p.crypto && "globalKey" in p.crypto

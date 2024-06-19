@@ -2,8 +2,18 @@ import parseargs from "./src/runtime/parseArguments.ts";
 import name from "./src/runtime/name.ts";
 import { f as query } from "./src/components/queries/mainQueries.ts";
 import { f as param } from "./src/components/parameters/mainParameters.ts";
-import { f as cookie } from "./src/components/parameters/mainParameters.ts";
+import { f as cookie } from "./src/components/cookies/mainCookies.ts";
 import { f as token } from "./src/components/cookieToToken/mainCookieToToken.ts";
+
+/**
+ * Components utilities
+ */
+export const components = {
+  query,
+  param,
+  cookie,
+  token,
+};
 
 /**
  * Runtime utilities
@@ -11,16 +21,6 @@ import { f as token } from "./src/components/cookieToToken/mainCookieToToken.ts"
 export const runtime = {
   name: name,
   arguments: parseargs,
-};
-
-/**
- * Runtime utilities
- */
-export const components = {
-  query,
-  param,
-  cookie,
-  token,
 };
 
 /**
