@@ -8,6 +8,7 @@
 
 [![JSR](https://jsr.io/badges/@vixeny/core)](https://jsr.io/@vixeny/core)
 [![npm version](https://img.shields.io/npm/v/vixeny.svg)](https://www.npmjs.com/package/vixeny)
+![GitHub Actions status](https://github.com/mimiMonads/vixeny/workflows/Deno/badge.svg)
 ![GitHub Actions status](https://github.com/mimiMonads/vixeny/workflows/Bun/badge.svg)
 
 **Vixeny: Pioneering Functional Web Development**
