@@ -4,8 +4,8 @@ import { f as cookies } from "../components/cookies/mainCookies.ts";
 import resolve from "./resolve/main.ts";
 import branch from "./branch/branchMain.ts";
 import { f as mainCookieToToken } from "../components/cookieToToken/mainCookieToToken.ts";
-import signSha256 from "../components/jwt/signSha256.mjs";
-import verifySha256 from "../components/jwt/verifySha256.mjs";
+import signSha256 from "../components/jwt/signSha256.ts";
+import verifySha256 from "../components/jwt/verifySha256.ts";
 import mainIO from "../components/io/mainIO.ts";
 import { parse, stringToFunction } from "../components/cors/mainCORS.ts";
 
@@ -44,7 +44,7 @@ export default (o?: FunRouterOptions<any>) =>
         action: () =>
           f.crypto && "globalKey" in f.crypto
             ? verifySha256()(
-              tools.parsingToHexa(f.crypto as { globalKey: string }),
+              tools.parsingToHexa(f.crypto.globalKey),
             )
             : void console.error(
               "I don't know you got this message, contact me in discord," +
@@ -56,7 +56,7 @@ export default (o?: FunRouterOptions<any>) =>
         action: () =>
           f.crypto && "globalKey" in f.crypto
             ? signSha256()(
-              tools.parsingToHexa(f.crypto as { globalKey: string }),
+              tools.parsingToHexa(f.crypto.globalKey),
             )
             : void console.error(
               "I don't know you got this message, contact me in discord," +
@@ -70,7 +70,7 @@ export default (o?: FunRouterOptions<any>) =>
             ...f,
             crypto: {
               ...f.crypto,
-              globalKey: tools.parsingToHexa(f.crypto as { globalKey: string }),
+              globalKey: tools.parsingToHexa(f.crypto.globalKey),
             },
           }),
       },

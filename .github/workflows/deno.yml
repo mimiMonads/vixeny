@@ -19,7 +19,10 @@ jobs:
         with:
           deno-version: v1.x # Uses latest deno version 1 
       - run: deno add @cross/test @std/assert # Installs dependencies from jsr.io
-      - run: deno test -A # Runs tests
+      - run: deno test -A 
 
       - name: Verify formatting
         run: deno fmt --check
+
+      - name: Verify JSR
+        run: deno publish --dry-run

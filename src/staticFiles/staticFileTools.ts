@@ -15,7 +15,7 @@ export default {
     "mime" in f && f.mime === false
       ? []
       : "extra" in f
-      ? mime.concat(f.extra as [string,string][]) 
+      ? mime.concat(f.extra as [string, string][])
       : mime,
 
   getMime: (mimes: [string, string][]) => (ext: string): string =>

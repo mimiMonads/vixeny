@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert";
 import { test } from "@cross/test";
 
-import signSha256 from "../../../src/components/jwt/signSha256.mjs";
+import signSha256 from "../../../src/components/jwt/signSha256.ts";
 import { wrap } from "../../../main.ts";
 
 const secret = new Uint8Array([1, 2, 3, 4, 5, 6]);

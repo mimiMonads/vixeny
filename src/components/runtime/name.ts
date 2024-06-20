@@ -19,8 +19,10 @@
  */
 
 export default () =>
+  //@ts-ignore
   typeof Bun !== "undefined"
     ? "Bun"
+    //@ts-ignore
     : typeof Bun !== "undefined"
     ? "Deno"
     : "Node";

@@ -1,7 +1,6 @@
-import verifySha256 from "../jwt/verifySha256.mjs";
-import type { SupportedKeys } from "../../morphism.ts";
+import verifySha256 from "../jwt/verifySha256.ts";
 
-export default (secret: SupportedKeys) => (name: string) =>
+export default (secret: Uint8Array) => (name: string) =>
   (
     (sha256) => (c: string | null) =>
       (

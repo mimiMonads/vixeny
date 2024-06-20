@@ -33,10 +33,6 @@ export type ResolveMorphism = Morphism<
   any
 >;
 
-
-
-
-
 /**
  * Types Morphisims
  */
@@ -241,17 +237,30 @@ export const petitions = {
       AT,
       R
     >,
-  ) => (
-    (isUsing) => ({
-      ...m,
-      type: 'morphism',
-      isUsing: isUsing,
-      isAsync: composerTools.localAsync(o)(m as Petition)(isUsing),
-      o
-    }) 
-  )(
-    composerTools.isUsing(o)(m as Petition)
-  ),
+  ) =>
+    (
+      (isUsing) => ({
+        ...m,
+        type: "morphism",
+        isUsing: isUsing,
+        isAsync: composerTools.localAsync(o)(m as Petition)(isUsing),
+        o,
+      })
+    )(
+      composerTools.isUsing(o)(m as Petition),
+    ) as unknown as Morphism<
+      {
+        type: "morphism";
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AT,
+      R
+    >,
 
   /**
    * Configures and types a branch morphism to be used within a petition. Branch morphisms are designed to execute
@@ -310,17 +319,31 @@ export const petitions = {
       AT,
       R
     >,
-  ) => (
-    (isUsing) => ({
-      ...m,
-      type: 'morphism',
-      isUsing: isUsing,
-      isAsync: composerTools.localAsync(o)(m as Petition)(isUsing),
-      o
-    }) 
-  )(
-    composerTools.isUsing(o)(m as Petition)
-  ),
+  ) =>
+    (
+      (isUsing) => ({
+        ...m,
+        type: "morphism",
+        isUsing: isUsing,
+        isAsync: composerTools.localAsync(o)(m as Petition)(isUsing),
+        o,
+      })
+    )(
+      composerTools.isUsing(o)(m as Petition),
+    ) as unknown as Morphism<
+      {
+        type: "morphism";
+        branch: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AT,
+      R
+    >,
   /**
    * Joins multiple Morphisms or Petitions into a single unified array, ensuring that each component adheres to
    * the specifications of being a valid petition with a designated path. This function is particularly useful
@@ -1019,33 +1042,22 @@ export type StaticFilePluginExtensions<
 /**
  * Object for raw response static.
  */
-export type fileServerPetition <
-  MI extends true | false
-> =
-  {
-    type: "fileServer";
-    name: string;
-    path: string;
-    mime?: MI;
-    extra?: MI extends true  ? [string, string][] : never;
-    template?: StaticFilePlugin<any>[];
-    removeExtensionOf?: defaultMime[];
-    slashIs?: string;
-  };
+export type fileServerPetition<
+  MI extends true | false,
+> = {
+  type: "fileServer";
+  name: string;
+  path: string;
+  mime?: MI;
+  extra?: MI extends true ? [string, string][] : never;
+  template?: StaticFilePlugin<any>[];
+  removeExtensionOf?: defaultMime[];
+  slashIs?: string;
+};
 
 export type SupportedKeys =
   | string
-  | Uint8Array
-  | Uint8ClampedArray
-  | Uint16Array
-  | Uint32Array
-  | Int8Array
-  | Int16Array
-  | Int32Array
-  | BigUint64Array
-  | BigInt64Array
-  | Float32Array
-  | Float64Array;
+  | Uint8Array;
 
 export type defaultMime =
   | ".aac"

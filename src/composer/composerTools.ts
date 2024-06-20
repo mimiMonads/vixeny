@@ -1,4 +1,4 @@
-import type { Petition } from "../morphism.ts";
+import type { Petition, SupportedKeys } from "../morphism.ts";
 import type { FunRouterOptions } from "../options.ts";
 import mainCheck from "./checkPetition/mainCheck.ts";
 type RecFunc = (f: Petition) => boolean;
@@ -34,7 +34,7 @@ const recursiveCheckAsync =
     ))(
       (solver: RecFunc) => (p: Petition): boolean =>
         p.f.constructor.name === "AsyncFunction" ||
-          p.isAsync 
+          p.isAsync
           ? true
           : p.f.constructor.name === "Function" &&
               typeof p.resolve === "undefined"
@@ -56,12 +56,12 @@ const recursiveCheckAsync =
             false,
     ) as unknown as (f: Petition) => boolean;
 
-const parsingToHexa = (crypto: { globalKey: string }): Uint8Array =>
-  typeof crypto.globalKey === "string"
-    ? /^[0-9a-fA-F]+$/g.test(crypto.globalKey)
-      ? new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
-      : new Uint8Array([...crypto.globalKey].map((x) => x.charCodeAt(0)))
-    : crypto.globalKey;
+const parsingToHexa = (globalKey: SupportedKeys): Uint8Array =>
+  typeof globalKey === "string"
+    ? /^[0-9a-fA-F]+$/g.test(globalKey)
+      ? new Uint8Array([...globalKey].map((x) => x.charCodeAt(0)))
+      : new Uint8Array([...globalKey].map((x) => x.charCodeAt(0)))
+    : globalKey;
 
 const isUsing = (o?: FunRouterOptions<any>) => (f: Petition): string[] =>
   mainCheck(o)(f);
@@ -109,7 +109,7 @@ const localAsync =
   (p: Petition) =>
   (elementsUsed: string[]): boolean =>
     (
-      (p.f.constructor.name === "AsyncFunction" ) ||
+      (p.f.constructor.name === "AsyncFunction") ||
       o && o.cyclePlugin && Object.keys(o.cyclePlugin || {})
           .some((x) =>
             elementsUsed.includes(x)
