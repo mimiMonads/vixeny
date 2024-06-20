@@ -1,4 +1,6 @@
 import type { FileHandler } from "./components/io/mainIO.ts";
+import { isUsing } from "./components/queries/mainQueries.ts";
+import composerTools from "./composer/composerTools.ts";
 import type { CyclePluginMap, FunRouterOptions } from "./options.ts";
 import type { ParamsMethod } from "./router/types.ts";
 
@@ -30,6 +32,10 @@ export type ResolveMorphism = Morphism<
   any,
   any
 >;
+
+
+
+
 
 /**
  * Types Morphisims
@@ -222,7 +228,7 @@ export const petitions = {
     AT = any,
     R = any,
   >(
-    I: Morphism<
+    m: Morphism<
       {
         type: "morphism";
       },
@@ -235,7 +241,18 @@ export const petitions = {
       AT,
       R
     >,
-  ) => ({ ...I, type: "morphism", o }),
+  ) => (
+    (isUsing) => ({
+      ...m,
+      type: 'morphism',
+      isUsing: isUsing,
+      isAsync: composerTools.localAsync(o)(m as Petition)(isUsing),
+      o
+    }) 
+  )(
+    composerTools.isUsing(o)(m as Petition)
+  ),
+
   /**
    * Configures and types a branch morphism to be used within a petition. Branch morphisms are designed to execute
    * alongside or within the main function (`f`) of a petition, allowing for the extension of functionality through
@@ -279,7 +296,7 @@ export const petitions = {
     AT = any,
     R = any,
   >(
-    I: Morphism<
+    m: Morphism<
       {
         type: "morphism";
         branch: true;
@@ -293,7 +310,17 @@ export const petitions = {
       AT,
       R
     >,
-  ) => ({ ...I, type: "morphism", o }),
+  ) => (
+    (isUsing) => ({
+      ...m,
+      type: 'morphism',
+      isUsing: isUsing,
+      isAsync: composerTools.localAsync(o)(m as Petition)(isUsing),
+      o
+    }) 
+  )(
+    composerTools.isUsing(o)(m as Petition)
+  ),
   /**
    * Joins multiple Morphisms or Petitions into a single unified array, ensuring that each component adheres to
    * the specifications of being a valid petition with a designated path. This function is particularly useful
