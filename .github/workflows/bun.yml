@@ -1,0 +1,14 @@
+name: Bun
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: antongolub/action-setup-bun@v1.12.8 
+        with:
+          bun-version: v1.x # Uses latest bun 1
+      - run: bun x jsr add @cross/test @std/assert # Installs dependencies
+      - run: bun test # Runs the tests
