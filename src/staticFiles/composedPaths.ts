@@ -3,7 +3,7 @@ import staticFileTools from "./staticFileTools.ts";
 
 //TODO: make it more readable 🙏
 
-export default (f: fileServerPetition) =>
+export default (f: fileServerPetition<any>) =>
 (name: string) =>
 (root: string) =>
 (paths: string[]) =>

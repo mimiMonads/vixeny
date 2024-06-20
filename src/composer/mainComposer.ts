@@ -9,7 +9,7 @@ import type { fileServerPetition, Petition } from "../morphism.ts";
 
 export default (
   o?: FunRouterOptions<any>,
-): (routes: (Petition | fileServerPetition)[]) => RouteTypes[] =>
+): (routes: (Petition | fileServerPetition<any>)[]) => RouteTypes[] =>
 (ar) =>
   ar
     .filter(

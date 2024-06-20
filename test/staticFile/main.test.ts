@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert";
 import { test } from "@cross/test";
 import main from "../../src/staticFiles/staticFileMain.ts";
-import { petitions } from "../../src/morphism.ts";
+import { petitions, type fileServerPetition } from "../../src/morphism.ts";
 
 test(
   "static file checking logo",
@@ -76,7 +76,7 @@ test(
               r: () => new Response(""),
             }),
         }],
-      })
+      } as fileServerPetition<false>)
         .some((x) => x.path === "/hello/nested/logo"),
       true,
     ),

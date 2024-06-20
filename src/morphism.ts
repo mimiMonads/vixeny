@@ -1019,24 +1019,15 @@ export type StaticFilePluginExtensions<
 /**
  * Object for raw response static.
  */
-export type fileServerPetition =
-  & ({
+export type fileServerPetition <
+  MI extends true | false
+> =
+  {
     type: "fileServer";
     name: string;
     path: string;
-  } | {
-    type: "fileServer";
-    name: string;
-    path: string;
-    mime?: true;
-    extra: [string, string][];
-  } | {
-    type: "fileServer";
-    name: string;
-    path: string;
-    mime: false;
-  })
-  & {
+    mime?: MI;
+    extra?: MI extends true  ? [string, string][] : never;
     template?: StaticFilePlugin<any>[];
     removeExtensionOf?: defaultMime[];
     slashIs?: string;
