@@ -3,7 +3,11 @@ import { isUsing as query } from "../components/queries/mainQueries.ts";
 import { isUsing as cookie } from "../components/cookies/mainCookies.ts";
 import { isUsing as token } from "../components/cookieToToken/mainCookieToToken.ts";
 import type { Petition } from "../morphism.ts";
-import type { FunRouterOptions } from "../options.ts";
+import type {
+  CyclePlugin,
+  CyclePluginMap,
+  FunRouterOptions,
+} from "../options.ts";
 
 type Display = {
   using?: string[];
@@ -34,6 +38,7 @@ export const displayPaths = (p: Petition): void => (
     )
 );
 
+type PluginType = [string, CyclePlugin<any>];
 export const display =
   (options?: FunRouterOptions<any>) =>
   (p: Petition) =>
@@ -57,6 +62,25 @@ export const display =
                   }\x1b[0m \n`
                 : acc + "",
             "--- Components ---\n",
+          ),
+      ),
+      console.log(
+        Object.keys(options?.cyclePlugin)
+          .map((name) =>
+            (object.using ?? []).includes(name) &&
+              "isUsing" in options!.cyclePlugin[name]
+              ? [name, options!.cyclePlugin[name]] as PluginType
+              : false
+          )
+          .filter((item): item is PluginType => Boolean(item))
+          .filter((x) => void console.log(x) ?? x)
+          .reduce(
+            (acc, tulip): string =>
+              acc +
+              `\x1b[35m${tulip[0]}\x1b[0m: \x1b[38;2;255;165;0m${
+                //@ts-ignore
+                tulip[1].isUsing(options)(p)}\x1b[0m \n`,
+            "--- Plugins ---\n",
           ),
       )
   );

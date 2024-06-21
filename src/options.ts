@@ -131,6 +131,7 @@ export type CyclePlugin<
       p: Petition,
     ) => (r: Request | [Request, Record<string, unknown>]) => any;
   readonly type: unknown;
+  readonly isUsing?: (o?: FunRouterOptions<any>) => (p: Petition) => string;
   readonly options?: { [k: string]: any };
 };
 

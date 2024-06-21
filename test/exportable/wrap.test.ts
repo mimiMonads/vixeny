@@ -19,6 +19,7 @@ const pluginMethod = plugins.type({
   name: Symbol.for("method"),
   type: {} as string,
   f: () => () => () => " inCycle",
+  isUsing: () => () => "sup",
 });
 
 const opt = plugins.globalOptions({
