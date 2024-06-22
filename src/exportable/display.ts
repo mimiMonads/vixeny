@@ -61,11 +61,11 @@ export const display =
                     elements[key](options)(p)
                   }\x1b[0m \n`
                 : acc + "",
-            "--- Components ---\n",
+                (object.using ?? []).length > 0 ? "--- Components ---\n" : '',
           ),
       ),
       console.log(
-        Object.keys(options?.cyclePlugin)
+        Object.keys(options?.cyclePlugin ?? {})
           .map((name) =>
             (object.using ?? []).includes(name) &&
               "isUsing" in options!.cyclePlugin[name]
@@ -80,7 +80,7 @@ export const display =
               `\x1b[35m${tulip[0]}\x1b[0m: \x1b[38;2;255;165;0m${
                 //@ts-ignore
                 tulip[1].isUsing(options)(p)}\x1b[0m \n`,
-            "--- Plugins ---\n",
+                options?.cyclePlugin ?  "--- Plugins ---\n" : '',
           ),
       )
   );
