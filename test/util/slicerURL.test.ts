@@ -1,9 +1,9 @@
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals } from "@std/assert";
 import mainSlicerUrl from "../../src/util/slicerURL/mainSlicerUrl.ts";
-
+import { test } from "@cross/test";
 const baseURL = "https://example.com/1/2/3/4/5";
 
-Deno.test("SlicerURL", () => {
+test("SlicerURL", () => {
   assertEquals(
     mainSlicerUrl(2)(baseURL),
     "https://example.com".length,

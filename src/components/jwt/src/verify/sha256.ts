@@ -1,8 +1,15 @@
-export default (Buffer) => (hash) => (key) =>
+import type BufferProto from "node:buffer";
+import type nodeCrypto from "node:crypto";
+
+type HashFunction = (data: Uint8Array) => nodeCrypto.Hash;
+
+export default (Buffer: typeof BufferProto.Buffer) =>
+(hash: HashFunction) =>
+(key: Uint8Array) =>
   (
     (hmac) =>
       (
-        (lf) => (rg) => (message) =>
+        (lf) => (rg: Uint8Array) => (message: string) =>
           message.substring(message.lastIndexOf(".") + 1) ===
               hash(
                 Buffer.concat([

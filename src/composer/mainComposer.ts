@@ -9,9 +9,12 @@ import type { fileServerPetition, Petition } from "../morphism.ts";
 
 export default (
   o?: FunRouterOptions<any>,
-): (routes: (Petition | fileServerPetition)[]) => RouteTypes[] =>
+): (routes: (Petition | fileServerPetition<any>)[]) => RouteTypes[] =>
 (ar) =>
   ar
+    .filter(
+      (x) => !("active" in x && x.active === false),
+    )
     .map(
       (x) =>
         x.type === "response"

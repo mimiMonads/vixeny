@@ -2,6 +2,7 @@ import type { CyclePluginMap, FunRouterOptions } from "../options.ts";
 import response from "../composer/compose.ts";
 import composerTools from "../composer/composerTools.ts";
 import vixeny from "../../fun.ts";
+import { display, displayPaths } from "./display.ts";
 import type {
   BranchMap,
   CryptoOptions,
@@ -173,17 +174,17 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *   // Logging the used context after the first petition (expected to be empty as none is used):
    *   // Output: []
    *   // Important!, `_c` will be the Request
-   *   .logLastCheck()
+   *   .debugLast()
    *   .stdPetition({
    *       path: '/two/:id',
    *       f: c => c.param.id
    *   })
    *   // Logging the used context after adding a petition that accesses a URL parameter:
    *   // Output: [ "param" ]
-   *   .logLastCheck()
+   *   .debugLast()
    * ```
    */
-  logLastCheck: () => Wrap<O>;
+  debugLast: () => Wrap<O>;
   /**
    * `handleRequest` dynamically processes a request getting a specified path. If the path exists among the defined petitions,
    * it either applies provided modifications (useful for mocking or altering request handling behavior) or proceeds with the
@@ -451,12 +452,19 @@ export const wrap = ((o?) => (a = []) => ({
       { ...ob, type: "base" } as Petition,
     )),
 
-  logPaths: () => void a.forEach((x) => console.log(x.path)) ?? wrap(o)(a),
-  logLastCheck: () =>
-    void console.log(
-      a.length > 0
-        ? composerTools.isUsing(o)(a[a.length - 1])
-        : "This wrap is empty.",
+  logPaths: () =>
+    void a.forEach(
+      (x) => displayPaths(x),
+    ) ?? wrap(o)(a),
+  debugLast: () =>
+    void (
+      (isUsing) =>
+        display(o)(a[a.length - 1])({
+          using: isUsing,
+          isAsync: composerTools.localAsync(o)(a[a.length - 1])(isUsing),
+        })
+    )(
+      composerTools.isUsing(o)(a[a.length - 1]),
     ) ??
       wrap(o)(a),
   handleRequest: (s: string) =>

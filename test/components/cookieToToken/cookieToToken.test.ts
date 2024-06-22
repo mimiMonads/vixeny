@@ -1,7 +1,7 @@
-import assert from "node:assert";
-import test from "node:test";
+import { assertEquals } from "@std/assert";
+import { test } from "@cross/test";
 
-import signSha256 from "../../../src/components/jwt/signSha256.mjs";
+import signSha256 from "../../../src/components/jwt/signSha256.ts";
 import { wrap } from "../../../main.ts";
 
 const secret = new Uint8Array([1, 2, 3, 4, 5, 6]);
@@ -35,7 +35,7 @@ const hiRequest = new Request("http://localhost:3000/", {
 });
 
 test("jwt signing with an element", async () => {
-  assert.deepStrictEqual(
+  assertEquals(
     await wrap()()
       .stdPetition({
         path: "/",
@@ -49,7 +49,7 @@ test("jwt signing with an element", async () => {
 });
 
 test("jwt signing with an invalid request", async () => {
-  assert.deepStrictEqual(
+  assertEquals(
     await wrap()()
       .stdPetition({
         path: "/",
@@ -63,7 +63,7 @@ test("jwt signing with an invalid request", async () => {
 });
 
 test("jwt signing with a valid request but not using the right cookie", async () => {
-  assert.deepStrictEqual(
+  assertEquals(
     await wrap()()
       .stdPetition({
         path: "/",

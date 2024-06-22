@@ -1,7 +1,7 @@
 import bun from "./src/base64toUrl/convertBase64ToBase64urlBun.mjs";
 import deno from "./src/base64toUrl/convertBase64ToBase64urlDeno.mjs";
 import node from "./src/base64toUrl/convertBase64ToBase64urlNode.mjs";
-import name from "../runtime/name.mjs";
+import name from "../runtime/name.js";
 
 /**
  * Selects and returns a function to convert Base64 strings to Base64Url strings based on the runtime environment.

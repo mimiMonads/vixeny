@@ -1,7 +1,7 @@
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
-import mainParameters from "../../../src/components/parameters/mainParameters.ts";
+import { assertEquals } from "@std/assert";
+import { f } from "../../../src/components/parameters/mainParameters.ts";
 import { petitions, plugins } from "../../../main.ts";
-
+import { test } from "@cross/test";
 const base = "http://hello.com";
 
 const options = plugins.globalOptions({
@@ -10,9 +10,9 @@ const options = plugins.globalOptions({
   },
 });
 
-Deno.test("parameters unique", () => {
+test("parameters unique", () => {
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
@@ -24,7 +24,7 @@ Deno.test("parameters unique", () => {
     "helloWorld1",
   );
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
@@ -36,7 +36,7 @@ Deno.test("parameters unique", () => {
     "helloWorld2",
   );
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/hello/nested/:hi/",
         param: {
@@ -48,7 +48,7 @@ Deno.test("parameters unique", () => {
     "helloWorld3",
   );
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/hello/nested/:hi/",
         param: {
@@ -60,7 +60,7 @@ Deno.test("parameters unique", () => {
     "helloWorld4",
   );
   assertEquals(
-    mainParameters(options)(
+    f(options)(
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
@@ -72,7 +72,7 @@ Deno.test("parameters unique", () => {
     "helloWorld5",
   );
   assertEquals(
-    mainParameters(options)(
+    f(options)(
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
@@ -86,7 +86,7 @@ Deno.test("parameters unique", () => {
 
   //checks that it's using a different function, validated that the last to `asserts` are working
   assertEquals(
-    mainParameters(options)(
+    f(options)(
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
@@ -94,7 +94,7 @@ Deno.test("parameters unique", () => {
         },
         f: (ctx) => ctx.param,
       }),
-    ).toString() === mainParameters()(
+    ).toString() === f()(
       petitions.common()({
         path: "/hello/nested/:hi",
         param: {
@@ -107,9 +107,9 @@ Deno.test("parameters unique", () => {
   );
 });
 
-Deno.test("parameters single", () => {
+test("parameters single", () => {
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/hello/nested/:hi",
         f: (ctx) => ctx.param.hi,
@@ -120,7 +120,7 @@ Deno.test("parameters single", () => {
     },
   );
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/hello/nested/:hi",
         f: (ctx) => ctx.param.hi,
@@ -131,7 +131,7 @@ Deno.test("parameters single", () => {
     },
   );
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/hello/nested/:hi/",
         f: (ctx) => ctx.param.hi,
@@ -142,7 +142,7 @@ Deno.test("parameters single", () => {
     },
   );
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/hello/nested/:hi/",
         f: (ctx) => ctx.param.hi,
@@ -153,7 +153,7 @@ Deno.test("parameters single", () => {
     },
   );
   assertEquals(
-    mainParameters(options)(
+    f(options)(
       petitions.common()({
         path: "/hello/nested/:hi",
         f: (ctx) => ctx.param.hi,
@@ -164,7 +164,7 @@ Deno.test("parameters single", () => {
     },
   );
   assertEquals(
-    mainParameters(options)(
+    f(options)(
       petitions.common()({
         path: "/hello/nested/:hi",
         f: (ctx) => ctx.param.hi,
@@ -176,9 +176,9 @@ Deno.test("parameters single", () => {
   );
 });
 
-Deno.test("parameters multiple", () => {
+test("parameters multiple", () => {
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/hello/nested/:hi/:hello",
         f: (ctx) => ctx.param.hi,
@@ -191,7 +191,7 @@ Deno.test("parameters multiple", () => {
   );
 
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/hello/nested/:hi/:hello",
         f: (ctx) => ctx.param.hi,
@@ -204,7 +204,7 @@ Deno.test("parameters multiple", () => {
   );
 
   assertEquals(
-    mainParameters()(
+    f()(
       petitions.common()({
         path: "/:test/:id/:hello",
         f: (ctx) => ctx.param.hi,

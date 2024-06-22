@@ -1,8 +1,6 @@
 import type { Petition } from "../../morphism.ts";
 import type { FunRouterOptions } from "../../options.ts";
 import composerTools from "../composerTools.ts";
-import checkParse from "./checkParse.ts";
-import checkTool from "./checkTool.ts";
 import checkfrom from "./checkTools.ts";
 
 export default ((o?: FunRouterOptions<any>) => (p: Petition) =>

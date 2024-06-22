@@ -1,13 +1,15 @@
 {
   "name": "vixeny",
-  "version": "0.1.37",
+  "version": "0.1.40",
   "description": "A functional router for Bun and Deno",
   "main": "main.ts",
+  "type": "module",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "deno test -A ./test/*"
+    "test": "deno test -A ./test/*",
+    "release": "deno test -A ./test/* && deno fmt --check && deno publish --dry-run"
   },
   "repository": {
     "type": "git",
@@ -36,5 +38,7 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
   }
 }

@@ -1,13 +1,13 @@
 import finder from "../../../src/components/parameters/finder.ts";
-import assert from "node:assert";
-import test from "node:test";
 import map from "../../../src/components/parameters/map.ts";
 import type { Petition } from "../../../src/morphism.ts";
+import { test } from "@cross/test";
+import { assertEquals } from "@std/assert";
 
 test(
   "only one parameter at the end and query",
   (_) => {
-    assert.deepStrictEqual(
+    assertEquals(
       (new Function(
         ` return ${
           finder(
@@ -20,7 +20,7 @@ test(
         id: "456",
       },
     ),
-      assert.deepStrictEqual(
+      assertEquals(
         (new Function(
           ` return ${
             finder(
@@ -34,7 +34,7 @@ test(
           test: "test",
         },
       );
-    assert.deepStrictEqual(
+    assertEquals(
       (new Function(
         ` return ${
           finder(

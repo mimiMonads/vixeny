@@ -1,4 +1,4 @@
-import { info } from "./types.ts";
+import type { info } from "./types.ts";
 
 export default (position: number) => (map: info) =>
   map.lastParam === 0 && map.elements.every((x) => x[0] === map.startsWith)

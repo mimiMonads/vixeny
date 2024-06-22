@@ -13,11 +13,11 @@ import type { fileServerPetition, Petition } from "./src/morphism.ts";
 type vixeny = (
   o?: FunRouterOptions<any>,
 ) => (
-  routes: (Petition | fileServerPetition)[],
+  routes: (Petition | fileServerPetition<any>)[],
 ) => (r: Request) => Promise<Response> | Response;
 
 export default ((o?: FunRouterOptions<any>) =>
-(routes: (Petition | fileServerPetition)[]) =>
+(routes: (Petition | fileServerPetition<any>)[]) =>
   ((re) =>
     ((map) =>
       ((s) => (r: Request): Promise<Response> | Response => map[s(r)](r))(

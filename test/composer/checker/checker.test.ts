@@ -1,7 +1,7 @@
 import mainCheck from "../../../src/composer/checkPetition/mainCheck.ts";
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals } from "@std/assert";
 import { type Petition, petitions } from "../../../src/morphism.ts";
-
+import { test } from "@cross/test";
 const pluginHello = {
   name: Symbol.for("hello"),
   isFunction: true,
@@ -23,7 +23,7 @@ const opt = {
 };
 
 // Test
-Deno.test("check behaviour", async () => {
+test("check behaviour", async () => {
   assertEquals(
     mainCheck()(
       petitions.common()({
@@ -44,7 +44,7 @@ Deno.test("check behaviour", async () => {
   );
 });
 
-Deno.test("check only behaviour", async () => {
+test("check only behaviour", async () => {
   assertEquals(
     mainCheck()(
       petitions.common()({
@@ -128,7 +128,7 @@ Deno.test("check only behaviour", async () => {
   );
 });
 
-Deno.test("check remove behaviour", async () => {
+test("check remove behaviour", async () => {
   assertEquals(
     mainCheck()(
       petitions.common()({
@@ -182,7 +182,7 @@ Deno.test("check remove behaviour", async () => {
   );
 });
 
-Deno.test("check remove behaviour", async () => {
+test("check remove behaviour", async () => {
   assertEquals(
     mainCheck()(
       petitions.common()({
@@ -224,7 +224,7 @@ Deno.test("check remove behaviour", async () => {
   );
 });
 
-Deno.test("check plugins", async () => {
+test("check plugins", async () => {
   assertEquals(
     mainCheck(opt)(
       petitions.common(opt)({

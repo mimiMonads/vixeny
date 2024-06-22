@@ -1,4 +1,5 @@
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals } from "@std/assert";
+import { test } from "@cross/test";
 import compose from "../../src/composer/compose.ts";
 import { petitions } from "../../src/morphism.ts";
 
@@ -32,7 +33,7 @@ const getString = petitions.branch()({
   f: ({ args }) => args,
 });
 
-Deno.test("base case", async () => {
+test("base case", async () => {
   const base = await compose()({
     type: "base",
     path: "/",
@@ -59,7 +60,7 @@ Deno.test("base case", async () => {
   assertEquals(baseWithHeadings.headers.get("content-type"), "text/html");
 });
 
-Deno.test("base case with resolve", async () => {
+test("base case with resolve", async () => {
   const baseResponse = petitions.common()({
     path: "/",
     resolve: {
@@ -76,7 +77,7 @@ Deno.test("base case with resolve", async () => {
   assertEquals(base.status, 200);
 });
 
-Deno.test("base case with async resolve", async () => {
+test("base case with async resolve", async () => {
   const baseResponse = petitions.common()({
     path: "/",
     resolve: {
@@ -98,7 +99,7 @@ Deno.test("base case with async resolve", async () => {
   assertEquals(base.status, 200);
 });
 
-Deno.test("standard case", async () => {
+test("standard case", async () => {
   const base = await compose()({
     type: "request",
     path: "/",
@@ -109,7 +110,7 @@ Deno.test("standard case", async () => {
   assertEquals(base.status, 200);
 });
 
-Deno.test("standard case with resolve", async () => {
+test("standard case with resolve", async () => {
   const baseResponse = petitions.standard()({
     path: "/",
     resolve: {
@@ -126,7 +127,7 @@ Deno.test("standard case with resolve", async () => {
   assertEquals(base.status, 200);
 });
 
-Deno.test("standard case with resolve", async () => {
+test("standard case with resolve", async () => {
   const baseResponse = petitions.standard()({
     path: "/",
     resolve: {
@@ -152,7 +153,7 @@ Deno.test("standard case with resolve", async () => {
   assertEquals(base.status, 200);
 });
 
-Deno.test("standard case with async resolve", async () => {
+test("standard case with async resolve", async () => {
   const baseResponse = petitions.standard()({
     path: "/",
     resolve: {

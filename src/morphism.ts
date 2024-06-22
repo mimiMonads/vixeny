@@ -1,4 +1,6 @@
 import type { FileHandler } from "./components/io/mainIO.ts";
+import { isUsing } from "./components/queries/mainQueries.ts";
+import composerTools from "./composer/composerTools.ts";
 import type { CyclePluginMap, FunRouterOptions } from "./options.ts";
 import type { ParamsMethod } from "./router/types.ts";
 
@@ -84,7 +86,12 @@ export const petitions = {
       AR,
       R
     >,
-  ) => ({ ...I, type: "request", o }) as unknown as Petition,
+  ) =>
+    ({
+      ...I,
+      type: "request",
+      o,
+    }) as unknown as Petition,
   /**
    * Configures and types a basic petition to be used with `wrap` or `compose`.
    * The `f` function in the petition configuration returns either a `BodyInit` or `Promise<BodyInit>`,
@@ -217,7 +224,7 @@ export const petitions = {
     AT = any,
     R = any,
   >(
-    I: Morphism<
+    m: Morphism<
       {
         type: "morphism";
       },
@@ -230,7 +237,31 @@ export const petitions = {
       AT,
       R
     >,
-  ) => ({ ...I, type: "morphism", o }),
+  ) =>
+    (
+      (isUsing) => ({
+        ...m,
+        type: "morphism",
+        isUsing: isUsing,
+        isAsync: composerTools.localAsync(o)(m as Petition)(isUsing),
+        o,
+      })
+    )(
+      composerTools.isUsing(o)(m as Petition),
+    ) as unknown as Morphism<
+      {
+        type: "morphism";
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AT,
+      R
+    >,
+
   /**
    * Configures and types a branch morphism to be used within a petition. Branch morphisms are designed to execute
    * alongside or within the main function (`f`) of a petition, allowing for the extension of functionality through
@@ -274,7 +305,7 @@ export const petitions = {
     AT = any,
     R = any,
   >(
-    I: Morphism<
+    m: Morphism<
       {
         type: "morphism";
         branch: true;
@@ -288,7 +319,31 @@ export const petitions = {
       AT,
       R
     >,
-  ) => ({ ...I, type: "morphism", o }),
+  ) =>
+    (
+      (isUsing) => ({
+        ...m,
+        type: "morphism",
+        isUsing: isUsing,
+        isAsync: composerTools.localAsync(o)(m as Petition)(isUsing),
+        o,
+      })
+    )(
+      composerTools.isUsing(o)(m as Petition),
+    ) as unknown as Morphism<
+      {
+        type: "morphism";
+        branch: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AT,
+      R
+    >,
   /**
    * Joins multiple Morphisms or Petitions into a single unified array, ensuring that each component adheres to
    * the specifications of being a valid petition with a designated path. This function is particularly useful
@@ -480,12 +535,15 @@ export type Morphism<
   AT = any,
   R = any,
 > = {
+  readonly active?: MO["isAPetition"] extends true ? boolean : never;
+  readonly isUsing?: MO["isAPetition"] extends true ? string[] : never;
   readonly resolve?: RM;
   readonly branch?: BM;
   readonly method?: ParamsMethod;
   readonly crypto?: CO;
   readonly args?: MO extends { type: "morphism" } ? AT : never;
   readonly query?: QO;
+  readonly cookie?: CookieOptions;
   readonly param?: PO;
   readonly plugins?: ExtractPluginTypes<RO>;
   readonly headings?: PetitionHeader;
@@ -574,6 +632,10 @@ export type QueryOptions = {
 } | {
   only?: string[];
 } | {};
+
+export type CookieOptions = {
+  only?: string[];
+};
 
 export type ParamOptions = {
   readonly unique?: true;
@@ -845,7 +907,7 @@ interface Ctx<
    * ```
    */
   query: QS extends { unique: true } ? (string | null)
-    : { [key: string]: string };
+    : { [key: string]: string | null };
 
   /**
    * `param`: Enables the extraction of URL path parameters within the petition's execution context. This feature simplifies accessing dynamic segments of the URL path, allowing petitions to respond to varied requests efficiently.
@@ -939,10 +1001,7 @@ interface Ctx<
    * ```
    */
   date: number;
-  /**
-   * @deprecated
-   */
-  cookie: null | { [key: string]: string | undefined };
+  cookie: { [key: string]: string | undefined };
   io: FileHandler;
 }
 
@@ -983,42 +1042,22 @@ export type StaticFilePluginExtensions<
 /**
  * Object for raw response static.
  */
-export type fileServerPetition =
-  & ({
-    type: "fileServer";
-    name: string;
-    path: string;
-  } | {
-    type: "fileServer";
-    name: string;
-    path: string;
-    mime?: true;
-    extra: [string, string][];
-  } | {
-    type: "fileServer";
-    name: string;
-    path: string;
-    mime: false;
-  })
-  & {
-    template?: StaticFilePlugin<any>[];
-    removeExtensionOf?: defaultMime[];
-    slashIs?: string;
-  };
+export type fileServerPetition<
+  MI extends true | false,
+> = {
+  type: "fileServer";
+  name: string;
+  path: string;
+  mime?: MI;
+  extra?: MI extends true ? [string, string][] : never;
+  template?: StaticFilePlugin<any>[];
+  removeExtensionOf?: defaultMime[];
+  slashIs?: string;
+};
 
 export type SupportedKeys =
   | string
-  | Uint8Array
-  | Uint8ClampedArray
-  | Uint16Array
-  | Uint32Array
-  | Int8Array
-  | Int16Array
-  | Int32Array
-  | BigUint64Array
-  | BigInt64Array
-  | Float32Array
-  | Float64Array;
+  | Uint8Array;
 
 export type defaultMime =
   | ".aac"

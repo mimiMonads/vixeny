@@ -11,17 +11,17 @@ export default {
   join: (base: string) => (target: string): string =>
     base.endsWith("/") ? base + target : base + "/" + target,
 
-  mimeForm: (f: fileServerPetition) =>
+  mimeForm: (f: fileServerPetition<any>) =>
     "mime" in f && f.mime === false
       ? []
       : "extra" in f
-      ? mime.concat(f.extra)
+      ? mime.concat(f.extra as [string, string][])
       : mime,
 
   getMime: (mimes: [string, string][]) => (ext: string): string =>
     (mimes.find((x) => x[0] === ext) || [".txt", "text/html"])[1],
 
-  removeExtension: (f: fileServerPetition) => (petitions: Petition[]) =>
+  removeExtension: (f: fileServerPetition<any>) => (petitions: Petition[]) =>
     f.removeExtensionOf && Array.isArray(f.removeExtensionOf)
       ? petitions.map(
         (x) =>

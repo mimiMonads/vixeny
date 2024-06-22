@@ -1,6 +1,10 @@
 //TODO: add
 import composerTools from "../composer/composerTools.ts";
-import type { Petition, StaticFilePlugin } from "../morphism.ts";
+import type {
+  fileServerPetition,
+  Petition,
+  StaticFilePlugin,
+} from "../morphism.ts";
 import checkerTools from "../composer/checkPetition/checkTools.ts";
 import {
   type CyclePlugin,
@@ -110,6 +114,9 @@ export default {
    * only the relevant context elements are included
    */
   isUsing: composerTools.isUsing,
+  fileServer: <MI extends true | false>(
+    s: fileServerPetition<MI>,
+  ): fileServerPetition<MI> => s,
   staticFilePlugin: <
     TP extends "response" | "request" | undefined,
     O extends StaticFilePlugin<TP>,

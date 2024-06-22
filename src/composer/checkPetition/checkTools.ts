@@ -40,7 +40,8 @@ export default (((regex) => ({
     )(
       (
         new RegExp(
-          `const\\s*\\{([^\\}]*)\\}\\s*=\\s*${toFind}(?:\\.|;|,|\\s)`,
+          `const\\s*\\{([^\\}]*)\\}\\s*=\\s*${toFind //.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+          }(?:\\.|;|,|\\s)`,
           "g",
         )
       ).exec(
@@ -50,7 +51,12 @@ export default (((regex) => ({
   getDots: (f) => (toSearch) =>
     [
       ...f.toString()
-        .split(new RegExp(`\\b${toSearch}(\\.|\\?\\.)`))
+        .split(
+          new RegExp(
+            `\\b${toSearch //.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+            }(\\.|\\?\\.)`,
+          ),
+        )
         .slice(1)
         .map((x: string) => x.slice(0, x.match(/[^\w]/)?.index ?? x.length))
         .reduce(
