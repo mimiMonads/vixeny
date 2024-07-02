@@ -111,7 +111,7 @@ test("standard case", async () => {
 });
 
 test("standard case with resolve", async () => {
-  const baseResponse = petitions.standard()({
+  const baseResponse = petitions.custom()({
     path: "/",
     resolve: {
       sync: syncResolve,
@@ -128,7 +128,7 @@ test("standard case with resolve", async () => {
 });
 
 test("standard case with resolve", async () => {
-  const baseResponse = petitions.standard()({
+  const baseResponse = petitions.custom()({
     path: "/",
     resolve: {
       syncResolve,
@@ -154,7 +154,7 @@ test("standard case with resolve", async () => {
 });
 
 test("standard case with async resolve", async () => {
-  const baseResponse = petitions.standard()({
+  const baseResponse = petitions.custom()({
     path: "/",
     resolve: {
       asyncResolve,

@@ -256,6 +256,8 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * while preserving the existing petitions. This is useful for dynamically adjusting configurations, such as
    * modifying routes or other settings, without needing to redefine all petitions.
    *
+   *  For more details, see the [documentation](https://vixeny.dev/library/wrap#changeoptions).
+   *
    * Usage example:
    * ```javascript
    * const initialWrap = wrap(initialOptions)().stdPetition({path: '/test', f: () => "Test"});
@@ -365,10 +367,13 @@ type Wrap<O extends FunRouterOptions<any>> = {
   /**
    * `addAnyPetition` allows for adding a petition of any type to the current wrap instance,
    * increasing flexibility in handling different Petitions as HTTP requests.
+   *
+   * For more details, see the [documentation](https://vixeny.dev/library/wrap#petitionwithoutctx).
+   *
    * @example
    * ```js
    *
-   *  const requestPetition = petitions.standard()({
+   *  const requestPetition = petitions.custom()({
    *    path: "/response",
    *    f: () => new Response("standard"),
    *  });
@@ -376,6 +381,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * const api = wrap()().addAnyPetition(requestPetition);
    * ```
    */
+
   addAnyPetition: (petition: Petition) => Wrap<O>;
   /**
    * `compose` consolidates all petitions within the wrap instance into a cohesive, operational unit,

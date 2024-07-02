@@ -24,7 +24,7 @@ const responsePetition = petitions.response()({
   r: () => new Response("response"),
 });
 
-const requestPetition = petitions.standard()({
+const requestPetition = petitions.custom()({
   path: "/response",
   f: (ctx) => new Response("standard"),
 });

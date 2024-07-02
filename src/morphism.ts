@@ -50,13 +50,13 @@ export const petitions = {
    * ```typescript
    * import { petitions } from 'vixeny';
    *
-   * const standard = petitions.standard()({
+   * const standard = petitions.custom()({
    *   path: '/yourPath',
    *   f: ctx => new Response(ctx.query.hello ?? 'queryNotFound')
    * });
    * ```
    */
-  standard: <
+  custom: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
   >(o?: O) =>
@@ -200,7 +200,7 @@ export const petitions = {
    *   f: () => 'world'
    * });
    *
-   * const stdPetition = petitions.standard()({
+   * const stdPetition = petitions.custom()({
    *   path: "/example",
    *   resolve: {
    *     hello: hello,
@@ -362,11 +362,11 @@ export const petitions = {
    * import { petitions } from 'vixeny';
    *
    * // Define individual petitions
-   * const petitionA = petitions.standard()({
+   * const petitionA = petitions.custom()({
    *   path: '/pathA',
    *   f: ctx => new Response('Response A')
    * });
-   * const petitionB = petitions.standard()({
+   * const petitionB = petitions.custom()({
    *   path: '/pathB',
    *   f: ctx => new Response('Response B')
    * });
@@ -1029,7 +1029,7 @@ export type StaticFilePluginExtensions<
       root: string;
       path: string;
       relativeName: string;
-    }) => ReturnType<ReturnType<typeof petitions.standard>>;
+    }) => ReturnType<ReturnType<typeof petitions.custom>>;
   }
   : {
     r: (options: {

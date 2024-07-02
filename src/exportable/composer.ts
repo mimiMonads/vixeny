@@ -151,7 +151,7 @@ export const composer = {
    *    r: () => new Response("response"),
    *  });
    *
-   *  const requestPetition = petitions.standard()({
+   *  const requestPetition = petitions.custom()({
    *    path: "/response",
    *    f: () => new Response("standard"),
    *  });
