@@ -46,3 +46,15 @@ export { composer } from "./src/exportable/composer.ts";
 export { default as vixeny } from "./fun.ts";
 export { default as composeResponse } from "./fun.ts";
 export { wrap } from "./src/exportable/wrap.ts";
+
+/**
+ * Dev stuff
+ */
+export const symbolExport = {
+  /**
+   * Version
+   */
+  [Symbol.for("vixeny")]: [0, 1, 43],
+} as {
+  [key: symbol]: [number, number, number];
+};

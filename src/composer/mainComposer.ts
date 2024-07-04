@@ -21,9 +21,11 @@ export default (
           ? [
             x?.method ?? "GET",
             x.path,
-            o && o.enableLiveReloading
-              //@ts-ignore
-              ? async (r: Request) => await injectHtml()(x.r(r))
+            o && o.debugging !== undefined &&
+              typeof o.debugging.injectHtml == "string"
+              ? async (r: Request) =>
+                //@ts-ignore
+                await injectHtml(o.debugging!.injectHtml!)(x.r(r))
               : x.r,
             false,
           ] as unknown as RouteTypes
@@ -50,9 +52,10 @@ export default (
           : [
             x?.method ? x.method : "GET",
             x.path,
-            o && o.enableLiveReloading
+            o && o.debugging !== undefined &&
+              typeof o.debugging.injectHtml == "string"
               ? async (r: Request) =>
-                await injectHtml()(
+                await injectHtml(o.debugging!.injectHtml!)(
                   compose(o)(x)(r),
                 )
               : compose(o)(x),
@@ -60,7 +63,8 @@ export default (
             false,
           ] as unknown as RouteTypes,
     ).concat(
-      o && o.enableLiveReloading
+      o && o.debugging !== undefined &&
+        typeof o.debugging.injectHtml == "string"
         ? [[
           "GET",
           "/timestamp-for-reload",

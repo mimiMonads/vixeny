@@ -1,18 +1,4 @@
-export default ((appendString = `
-<script>
-  let lastCheck = Date.now();
-  setInterval(() => {
-    fetch('/timestamp-for-reload')
-      .then(response => response.text())
-      .then(data => {
-        if (lastCheck < Number(data)) {
-          window.location.reload();
-        }
-      });
-  }, 100); // Check every second
-</script>
-
-`) =>
+export default ((appendString: string) =>
 async (aResponse: Response | Promise<Response>) =>
   (
     (response) =>

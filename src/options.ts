@@ -71,7 +71,10 @@ export type FunRouterOptions<
   readonly runtimeOptions?: {
     returns?: any;
   };
-  readonly enableLiveReloading?: true;
+  readonly debugging?: {
+    injectHtml?: string;
+  };
+
   /**
    * A function that takes a Request and returns a Response for 404 errors.
    */
