@@ -21,16 +21,13 @@ export default (f: fileServerPetition<any>) =>
                   )
                   : ({
                     path: root.slice(1, -1) + x.slice(name.length - 1),
+                    ...mimeIsTrue(f)("." + x.split(".").at(-1)),
                     type: "base",
                     f: staticFileTools.fromStringToPetition(
                       //@ts-ignore
                       typeof Deno === "object"
-                        ? `return async () => new Response( await Deno.readFile("${x}"), {headers:  {'Content-Type': '${
-                          checker("." + x.split(".").at(-1))
-                        }'}})`
-                        : `return async _=> new Response( await ( Bun.file("${x}")).arrayBuffer(), {headers:  {'Content-Type': '${
-                          checker("." + x.split(".").at(-1))
-                        }'}})`,
+                        ? `return async () =>  await Deno.readFile("${x}")`
+                        : `return async ()=>  await ( Bun.file("${x}")).arrayBuffer() `,
                     ),
                   }))(
                   f.template!.find((y) =>
@@ -42,15 +39,14 @@ export default (f: fileServerPetition<any>) =>
             (x) => ({
               path: root.slice(1, -1) + x.slice(name.length - 1),
               type: "base",
+              headings: {
+                headers: "." + x.split(".").at(-1),
+              },
               f: staticFileTools.fromStringToPetition(
                 //@ts-ignore
                 typeof Deno === "object"
-                  ? `return async () => new Response( await Deno.readFile("${x}"), {headers:  {'Content-Type': '${
-                    checker("." + x.split(".").at(-1))
-                  }'}})`
-                  : `return async _=> new Response( await ( Bun.file("${x}")).arrayBuffer(), {headers:  {'Content-Type': '${
-                    checker("." + x.split(".").at(-1))
-                  }'}})`,
+                  ? `return async () => await Deno.readFile("${x}") `
+                  : `return async () =>  await ( Bun.file("${x}")).arrayBuffer()`,
               ),
             }),
           ) as unknown as Petition[]
@@ -67,11 +63,12 @@ export default (f: fileServerPetition<any>) =>
             : ({
               path: root.slice(1, -1) + x.slice(name.length - 1),
               type: "base",
+              ...mimeIsTrue(f)("." + x.split(".").at(-1)),
               f: staticFileTools.fromStringToPetition(
                 //@ts-ignore
                 typeof Deno === "object"
-                  ? `return async () => new Response( await Deno.readFile("${x}"))`
-                  : `return async ()=>  new Response(await ( Bun.file("${x}")).arrayBuffer())`,
+                  ? `return async () => await Deno.readFile("${x}")`
+                  : `return async ()=>  await ( Bun.file("${x}")).arrayBuffer()`,
               ),
             }))(
             f.template!.find((y) =>
@@ -83,11 +80,21 @@ export default (f: fileServerPetition<any>) =>
       (x) => ({
         path: root.slice(1, -1) + x.slice(name.length - 1),
         type: "base",
+        ...mimeIsTrue(f)("." + x.split(".").at(-1)),
         f: staticFileTools.fromStringToPetition(
           //@ts-ignore
           typeof Deno === "object"
-            ? `return async () => new Response( await Deno.readFile("${x}"))`
-            : `return async ()=>  new Response(await ( Bun.file("${x}")).arrayBuffer())`,
+            ? `return async () =>  await Deno.readFile("${x}")`
+            : `return async ()=>  await ( Bun.file("${x}")).arrayBuffer()`,
         ),
       }),
     ) as unknown as Petition[];
+
+const mimeIsTrue = (f: fileServerPetition<any>) => (mime: string) =>
+  f.mime
+    ? {
+      headings: {
+        headers: mime,
+      },
+    }
+    : { headings: undefined };

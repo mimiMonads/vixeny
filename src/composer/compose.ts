@@ -42,9 +42,9 @@ export default (o?: FunRouterOptions<any>) =>
               headers: {
                 ...("headings" in p
                   ? {
-                    "Content-Type": mime.find((x) =>
-                      x[0] === p.headings?.headers
-                    )![1],
+                    "Content-Type": maybeOfArray(
+                      mime.find((x) => x[0] === p.headings?.headers),
+                    ),
                   }
                   : {}),
                 ...(typeof o?.cors === "object"
@@ -66,6 +66,8 @@ export default (o?: FunRouterOptions<any>) =>
     ))(
       tools.isUsing(o)(p),
     );
+
+const maybeOfArray = (arr?: [string, string]) => arr ? arr[1] : "hello";
 
 //maybe of an optimization
 const getF = (isAsync: boolean) => (hasHeaders: boolean) =>
