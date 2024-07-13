@@ -1,6 +1,6 @@
 {
   "name": "@vixeny/core",
-  "version": "0.1.43",
+  "version": "0.1.44",
   "exports": "./main.ts",
   "imports": {
     "@cross/test": "jsr:@cross/test@^0.0.9",

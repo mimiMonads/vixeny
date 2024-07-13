@@ -34,13 +34,9 @@ export default (o?: specialOptions) => (f: Petition) => (ar: string[]) =>
               )(),
             )
         )(
-          ((or) => nativeComponents(or)(f)(table))(
-            "mutable" in f
-              ? { ...o, mutable: true } as FunRouterOptions<any>
-              : o,
-          ),
+          ((or) => nativeComponents(or)(f)(table))(o),
         )
     )(
-      nativeMaps(o)(f)(ar)(("mutable" in f) || (o && "mutable" in o) || false),
+      nativeMaps(o)(f)(ar)(false),
     ),
   );

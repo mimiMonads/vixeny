@@ -62,14 +62,4 @@ export default (
 
             false,
           ] as unknown as RouteTypes,
-    ).concat(
-      o && o.debugging !== undefined &&
-        typeof o.debugging.injectHtml == "string"
-        ? [[
-          "GET",
-          "/timestamp-for-reload",
-          ((t) => () => new Response(t))(Date.now().toString()),
-          false,
-        ]]
-        : [],
     );

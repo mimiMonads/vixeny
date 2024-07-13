@@ -21,7 +21,7 @@ export default (o?: FunRouterOptions<any>) =>
             p.type === "request" || p.type === "morphism" ||
               typeof p.type === "undefined"
               ? new Function(`
-      return ${table.headers ? "h=>" : ""}f=>c=>${
+            return ${table.headers ? "h=>" : ""}f=>c=>${
                 table.async || table.asyncResolve ? "async " : ""
               }r=>${table.async || table.asyncResolve ? "await f" : "f"}(${
                 table.asyncResolve ? "await c" : "c"
@@ -35,20 +35,31 @@ export default (o?: FunRouterOptions<any>) =>
       {
         async: tools.localAsync(o)(p)(elementsUsed),
         asyncResolve: tools.recursiveCheckAsync(p),
-        headers: "headings" in p
+        headers: typeof p.headings === "object" || typeof o?.cors === "object"
           ? typeof p.headings?.headers == "string"
             ? {
-              ...p.headings,
+              ...(p.headings ?? {}),
               headers: {
-                "Content-Type": mime.find((x) =>
-                  x[0] === p.headings?.headers
-                )![1],
-                ...(o && o.cors ? stringToFunction(parse()(o.cors))() : {}),
+                ...("headings" in p
+                  ? {
+                    "Content-Type": mime.find((x) =>
+                      x[0] === p.headings?.headers
+                    )![1],
+                  }
+                  : {}),
+                ...(typeof o?.cors === "object"
+                  ? stringToFunction(parse()(o.cors))()
+                  : {}),
               },
             }
             : {
-              ...p.headings,
-              ...(o && o.cors ? stringToFunction(parse()(o.cors))() : {}),
+              ...(p.headings ?? {}),
+              headers: {
+                ...p.headings ?? {},
+                ...(typeof o?.cors === "object"
+                  ? stringToFunction(parse()(o.cors))()
+                  : {}),
+              },
             }
           : null,
       },

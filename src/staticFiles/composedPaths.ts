@@ -21,8 +21,8 @@ export default (f: fileServerPetition<any>) =>
                   )
                   : ({
                     path: root.slice(1, -1) + x.slice(name.length - 1),
-                    type: "response",
-                    r: staticFileTools.fromStringToPetition(
+                    type: "base",
+                    f: staticFileTools.fromStringToPetition(
                       //@ts-ignore
                       typeof Deno === "object"
                         ? `return async () => new Response( await Deno.readFile("${x}"), {headers:  {'Content-Type': '${
@@ -41,8 +41,8 @@ export default (f: fileServerPetition<any>) =>
           : paths.map(
             (x) => ({
               path: root.slice(1, -1) + x.slice(name.length - 1),
-              type: "response",
-              r: staticFileTools.fromStringToPetition(
+              type: "base",
+              f: staticFileTools.fromStringToPetition(
                 //@ts-ignore
                 typeof Deno === "object"
                   ? `return async () => new Response( await Deno.readFile("${x}"), {headers:  {'Content-Type': '${
@@ -66,8 +66,8 @@ export default (f: fileServerPetition<any>) =>
             ? staticFileTools.getValidPetitionFromPlugin(checks)(root)(x)(name)
             : ({
               path: root.slice(1, -1) + x.slice(name.length - 1),
-              type: "response",
-              r: staticFileTools.fromStringToPetition(
+              type: "base",
+              f: staticFileTools.fromStringToPetition(
                 //@ts-ignore
                 typeof Deno === "object"
                   ? `return async () => new Response( await Deno.readFile("${x}"))`
@@ -82,8 +82,8 @@ export default (f: fileServerPetition<any>) =>
     : paths.map(
       (x) => ({
         path: root.slice(1, -1) + x.slice(name.length - 1),
-        type: "response",
-        r: staticFileTools.fromStringToPetition(
+        type: "base",
+        f: staticFileTools.fromStringToPetition(
           //@ts-ignore
           typeof Deno === "object"
             ? `return async () => new Response( await Deno.readFile("${x}"))`

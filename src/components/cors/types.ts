@@ -43,13 +43,6 @@ export type CORSOptions = {
   allowCredentials?: boolean;
   allowHeaders?: string | string[];
   appendHeaders?: boolean;
+  allowPrivateNetwork?: boolean;
+  preflightContinue?: boolean;
 };
-
-type HeadersName =
-  | "Access-Control-Max-Age"
-  | "Access-Control-Allow-Credentials"
-  | "Access-Control-Allow-Headers"
-  | "Access-Control-Expose-Headers"
-  | "Access-Control-Allow-Methods"
-  | "Vary"
-  | "Access-Control-Allow-Origin";
