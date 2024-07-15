@@ -1,22 +1,22 @@
 import type { fileServerPetition, Petition } from "../morphism.ts";
+import type { FunRouterOptions } from "../options.ts";
 import staticFileTools from "./staticFileTools.ts";
 
 //TODO: make it more readable 🙏
 
-export default (f: fileServerPetition<any>) =>
+export default (o?:FunRouterOptions<any>)=>(f: fileServerPetition<any>) =>
 (name: string) =>
 (root: string) =>
 (paths: string[]) =>
 (mimes: [string, string][]): Petition[] =>
   mimes.length > 0
     ? (
-      (checker) =>
         f.template !== undefined && f.template && f.template.length > 0
           ? paths.map(
             (x) =>
               ((checks) =>
                 checks
-                  ? staticFileTools.getValidPetitionFromPlugin(checks)(root)(x)(
+                  ? staticFileTools.getValidPetitionFromPlugin(o)(checks)(root)(x)(
                     name,
                   )
                   : ({
@@ -50,8 +50,6 @@ export default (f: fileServerPetition<any>) =>
               ),
             }),
           ) as unknown as Petition[]
-    )(
-      staticFileTools.getMime(mimes),
     )
     //lazy way, fix later
     : "template" in f && f.template && f.template.length > 0
@@ -59,7 +57,7 @@ export default (f: fileServerPetition<any>) =>
       (x) =>
         ((checks) =>
           checks
-            ? staticFileTools.getValidPetitionFromPlugin(checks)(root)(x)(name)
+            ? staticFileTools.getValidPetitionFromPlugin(o)(checks)(root)(x)(name)
             : ({
               path: root.slice(1, -1) + x.slice(name.length - 1),
               type: "base",

@@ -7,7 +7,7 @@ test(
   "static file checking logo",
   () =>
     assertEquals(
-      main()({
+      main()()({
         type: "fileServer",
         path: "./misc/",
         name: "/hello",
@@ -22,7 +22,7 @@ test(
   "static file checking extension",
   () =>
     assertEquals(
-      main()({
+      main()()({
         type: "fileServer",
         path: "./misc/",
         name: "/hello",
@@ -38,7 +38,7 @@ test(
   "static file has path",
   () =>
     assertEquals(
-      main()({ type: "fileServer", path: "./misc/", name: "/", mime: false })
+      main()()({ type: "fileServer", path: "./misc/", name: "/", mime: false })
         .some((x) => x.path === "/logo.png"),
       true,
     ),
@@ -48,7 +48,7 @@ test(
   "static file has nested path",
   () =>
     assertEquals(
-      main()({
+      main()()({
         type: "fileServer",
         path: "./misc/",
         name: "/hello/nested",
@@ -62,7 +62,7 @@ test(
   "static file plugin",
   () =>
     assertEquals(
-      main()({
+      main()()({
         type: "fileServer",
         path: "./misc/",
         name: "/hello/nested",

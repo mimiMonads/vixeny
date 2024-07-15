@@ -1028,6 +1028,7 @@ export type StaticFilePluginExtensions<
     f: (options: {
       root: string;
       path: string;
+      o?: FunRouterOptions<any>;
       relativeName: string;
     }) => ReturnType<ReturnType<typeof petitions.custom>>;
   }
@@ -1035,6 +1036,7 @@ export type StaticFilePluginExtensions<
     r: (options: {
       root: string;
       path: string;
+      o?: FunRouterOptions<any>;
       relativeName: string;
     }) => ReturnType<ReturnType<typeof petitions.response>>;
   };

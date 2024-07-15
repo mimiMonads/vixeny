@@ -43,7 +43,7 @@ export default (
                   : {}),
               },
             })(
-              staticFiles(
+              staticFiles(o)(
                 //this curried is for debbuing purposes
               )(x),
             ),
