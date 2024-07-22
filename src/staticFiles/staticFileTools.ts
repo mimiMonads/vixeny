@@ -56,7 +56,7 @@ export default {
     ))() as (r: Request) => Promise<Response>,
 
   getValidPetitionFromPlugin:
-    (o?: FunRouterOptions<any>)=>
+    (o?: FunRouterOptions<any>) =>
     (checks: StaticFilePluginExtensions<any>) =>
     (root: string) =>
     (x: string) =>
@@ -66,7 +66,7 @@ export default {
           {
             root: root,
             path: x,
-            o:o,
+            o: o,
             relativeName: root.slice(1, -1) + x.slice(name.length - 1),
           },
         )

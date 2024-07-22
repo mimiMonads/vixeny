@@ -8,13 +8,23 @@ test(
   () => {
     assertEquals(
       "/fun.test.ts",
-      composer()({ type: "fileServer", path: "./misc/", name: "/", mime: false })(
+      composer()({
+        type: "fileServer",
+        path: "./misc/",
+        name: "/",
+        mime: false,
+      })(
         "./test/",
       )("./")(["./test/fun.test.ts"])([])[0].path,
     );
     assertEquals(
       "/fun.test.ts",
-      composer()({ type: "fileServer", path: "./misc/", name: "/", mime: false })(
+      composer()({
+        type: "fileServer",
+        path: "./misc/",
+        name: "/",
+        mime: false,
+      })(
         "./test/",
       )("./")(["./test/fun.test.ts"])([[".ts", "null"]])[0]
         .path,

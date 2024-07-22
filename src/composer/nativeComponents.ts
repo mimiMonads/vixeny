@@ -13,6 +13,7 @@ import type { FunRouterOptions } from "../options.ts";
 import type { Petition } from "../morphism.ts";
 
 import tools from "./composerTools.ts";
+import mime from "../util/mime.ts";
 
 type NativeMaps = {
   name: string;
@@ -21,7 +22,7 @@ type NativeMaps = {
 };
 
 export default (o?: FunRouterOptions<any>) =>
-(f: Petition) =>
+(p: Petition) =>
 (native: NativeMaps[]) =>
   ((list) =>
     native.map((x) =>
@@ -29,22 +30,22 @@ export default (o?: FunRouterOptions<any>) =>
     ).filter((x) => x !== null).map((x) => x!.action()))([
       {
         condition: (x: NativeMaps) => x.name === "param",
-        action: () => params(o)(f),
+        action: () => params(o)(p),
       },
       {
         condition: (x: NativeMaps) => x.name === "io",
-        action: () => mainIO(o)(f),
+        action: () => mainIO(o)(p),
       },
       {
         condition: (x: NativeMaps) => x.name === "query",
-        action: () => query(o)(f),
+        action: () => query(o)(p),
       },
       {
         condition: (x: NativeMaps) => x.name === "verify",
         action: () =>
-          f.crypto && "globalKey" in f.crypto
+          p.crypto && "globalKey" in p.crypto
             ? verifySha256()(
-              tools.parsingToHexa(f.crypto.globalKey),
+              tools.parsingToHexa(p.crypto.globalKey),
             )
             : void console.error(
               "I don't know you got this message, contact me in discord," +
@@ -54,9 +55,9 @@ export default (o?: FunRouterOptions<any>) =>
       {
         condition: (x: NativeMaps) => x.name === "sign",
         action: () =>
-          f.crypto && "globalKey" in f.crypto
+          p.crypto && "globalKey" in p.crypto
             ? signSha256()(
-              tools.parsingToHexa(f.crypto.globalKey),
+              tools.parsingToHexa(p.crypto.globalKey),
             )
             : void console.error(
               "I don't know you got this message, contact me in discord," +
@@ -67,32 +68,32 @@ export default (o?: FunRouterOptions<any>) =>
         condition: (x: NativeMaps) => x.name === "token",
         action: () =>
           mainCookieToToken(o)({
-            ...f,
+            ...p,
             crypto: {
-              ...f.crypto,
-              globalKey: tools.parsingToHexa(f.crypto.globalKey),
+              ...p.crypto,
+              globalKey: tools.parsingToHexa(p.crypto.globalKey),
             },
           }),
       },
       {
         condition: (x: NativeMaps) => x.name === "cookie",
-        action: () => cookies(o)(f),
+        action: () => cookies(o)(p),
       },
       {
         condition: (x: NativeMaps) => x.name === "headers",
-        action: () => stringToFunction(parse()(o?.cors ?? {})),
+        action: () => stringToFunction(joinHeaders(o)(p)),
       },
       {
         condition: (x: NativeMaps) => x.name === "resolve",
         action: () =>
-          ("resolve" in f) ? resolve(o)(f.path as string)(f.resolve) : null,
+          ("resolve" in p) ? resolve(o)(p.path as string)(p.resolve) : null,
       },
       {
         condition: (x: NativeMaps) => x.name === "branch",
         action: () =>
-          ("branch" in f)
-            ? branch({ ...o, branch: true })(f.path)(
-              f!.branch,
+          ("branch" in p)
+            ? branch({ ...o, branch: true })(p.path)(
+              p!.branch,
             )
             : null,
       },
@@ -104,3 +105,29 @@ export default (o?: FunRouterOptions<any>) =>
           action: () => o!.cyclePlugin![x]!["f"](o)(f as CommonRequestMorphism),
         })),
       ));
+
+      const maybeOfArray = (arr?: [string, string]) => arr ? arr[1] : "text/html";
+
+      const joinHeaders = (o?: FunRouterOptions<any>) =>
+        (p: Petition) => {
+      
+          const fromPetition = typeof p.headings === "object"
+            ? typeof p.headings?.headers == "string"
+              ? {
+                "Content-Type": maybeOfArray(
+                  mime.find((x) => x[0] === p.headings?.headers),
+                ),
+              }
+              : p.headings.headers
+            : {}
+      
+          const fromCORS = typeof o?.cors === "object"
+          ? stringToFunction(parse()(o.cors))()
+          : {}
+          
+          return {
+            ...fromCORS,
+            ...fromPetition
+          }
+        }
+         

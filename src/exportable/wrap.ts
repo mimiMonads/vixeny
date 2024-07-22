@@ -292,7 +292,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *
    * This method supports integrating only certain types of petitions, which align with the structure and functionality
    * intended by the wrap's design.
-   * 
+   *
    * For more details, see the [union](https://vixeny.dev/library/wrap#union).
    */
   union: (b: Petition[]) => Wrap<O>;
@@ -369,7 +369,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *  ```
    * For more details, see the [pure](https://vixeny.dev/library/wrap#pure).
    */
-  pure: (petition: Petition) => Wrap<O>;
+  pure: (petition?: Petition) => Wrap<O>;
   /**
    * `addAnyPetition` allows for adding a petition of any type to the current wrap instance,
    * increasing flexibility in handling different Petitions as HTTP requests.
@@ -383,7 +383,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *
    * const api = wrap()().addAnyPetition(requestPetition);
    * ```
-   * 
+   *
    * For more details, see the [addAnyPetition](https://vixeny.dev/library/wrap#addanypetition).
    */
 
@@ -402,10 +402,10 @@ type Wrap<O extends FunRouterOptions<any>> = {
    */
   compose: () => (r: Request) => Promise<Response> | Response;
   /**
-  * Applies a function over each petition, wrapping each result, and then flattens all results into a single wrap.
-  *
-  * For more details, see the [flatMap](https://vixeny.dev/library/wrap#flatmap).
-  */
+   * Applies a function over each petition, wrapping each result, and then flattens all results into a single wrap.
+   *
+   * For more details, see the [flatMap](https://vixeny.dev/library/wrap#flatmap).
+   */
   flatMap: (fn: (p: Petition) => Wrap<O>) => Wrap<O>;
 };
 
@@ -523,7 +523,7 @@ export const wrap = ((o?) => (a = []) => ({
         ? { ...x, path: o.wrap?.startWith + x.path }
         : { ...x }
     ),
-  pure: (petition) => wrap(o)([petition]),
+  pure: (petition) => wrap(o)(petition ? [petition] : []),
   addAnyPetition: (petition) => wrap(o)([...a, petition]),
   compose: () => vixeny(o)(a),
   flatMap: (fn) => a.reduce((acc, x) => acc.union(fn(x).unwrap()), wrap(o)([])),
