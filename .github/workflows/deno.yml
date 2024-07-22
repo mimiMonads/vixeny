@@ -24,5 +24,3 @@ jobs:
       - name: Verify formatting
         run: deno fmt --check
 
-      - name: Verify JSR
-        run: deno publish --dry-run

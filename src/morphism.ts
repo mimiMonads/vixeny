@@ -860,7 +860,7 @@ interface Ctx<
    */
   branch: {
     [V in keyof B]: (
-      ctx: B[V]["args"],
+      ctx: B[V]["args"] extends undefined ? void : NonNullable<B[V]["args"]>,
     ) => ReturnType<B[V]["f"]>;
   };
 
