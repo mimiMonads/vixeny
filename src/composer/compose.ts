@@ -38,7 +38,7 @@ export default (o?: FunRouterOptions<any>) =>
         headers: typeof p.headings === "object" || typeof o?.cors === "object"
           ? {
             ...p.headings,
-            headers: joinHeaders(o)(p)
+            headers: joinHeaders(o)(p),
           }
           : null,
       },
@@ -48,29 +48,26 @@ export default (o?: FunRouterOptions<any>) =>
 
 const maybeOfArray = (arr?: [string, string]) => arr ? arr[1] : "text/html";
 
-const joinHeaders = (o?: FunRouterOptions<any>) =>
-  (p: Petition) => {
+const joinHeaders = (o?: FunRouterOptions<any>) => (p: Petition) => {
+  const fromPetition = typeof p.headings === "object"
+    ? typeof p.headings?.headers == "string"
+      ? {
+        "Content-Type": maybeOfArray(
+          mime.find((x) => x[0] === p.headings?.headers),
+        ),
+      }
+      : p.headings.headers
+    : {};
 
-    const fromPetition = typeof p.headings === "object"
-      ? typeof p.headings?.headers == "string"
-        ? {
-          "Content-Type": maybeOfArray(
-            mime.find((x) => x[0] === p.headings?.headers),
-          ),
-        }
-        : p.headings.headers
-      : {}
-
-    const fromCORS = typeof o?.cors === "object"
+  const fromCORS = typeof o?.cors === "object"
     ? stringToFunction(parse()(o.cors))()
-    : {}
-    
-    return {
-      ...fromCORS,
-      ...fromPetition
-    }
-  }
+    : {};
 
+  return {
+    ...fromCORS,
+    ...fromPetition,
+  };
+};
 
 //maybe of an optimization
 const getF = (isAsync: boolean) => (hasHeaders: boolean) =>
