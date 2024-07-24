@@ -27,8 +27,6 @@ const f = ((options?: FunRouterOptions<any>) => (p: Petition) =>
 const isUsing = (options?: FunRouterOptions<any>) => (p: Petition) =>
   p.param?.unique === true
     ? "unique"
-    : "[" + [map(options)(p).elements.toString()].map((x) =>
-      x.slice(1)
-    ).toString() + "]";
+    : "[" + [map(options)(p).elements.toString()].map((x) => x.replaceAll(":", "") ).toString() + "]";
 
 export { f, isUsing };

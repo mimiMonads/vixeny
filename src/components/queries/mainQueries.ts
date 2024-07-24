@@ -26,8 +26,8 @@ export const isUsing = (o?: FunRouterOptions<any>) => (p: Petition): string =>
   (
     (uses) =>
       uses && uses?.length > 0
-        ? p.query?.unique ? p.query?.name : `[` + uses.map((x) => x + "?") + "]"
-        : `Record<string, string|null> | null`
+        ? `[` + uses.map((x) => x + "?") + "]"
+        : p.query?.unique ? "[" + p.query?.name + "?" + "]" : `Record<string, string|null> | null`
   )(
     plugin.pluginIsUsing(p)("query"),
   );
