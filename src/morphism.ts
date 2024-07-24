@@ -859,12 +859,11 @@ interface Ctx<
    * ```
    */
   branch: {
-    [V in keyof B]:  (
-      ctx: B[V]["args"] extends undefined ? void : Exclude<B[V]["args"], undefined>,
-    ) => ReturnType<B[V]["f"]>
-  
+    [V in keyof B]: (
+      ctx: B[V]["args"] extends undefined ? void
+        : Exclude<B[V]["args"], undefined>,
+    ) => ReturnType<B[V]["f"]>;
   };
- 
 
   /**
    * Adds with query to the `context`
