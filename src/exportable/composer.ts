@@ -25,9 +25,6 @@ export const composer = {
    * Wraps a given Morphism into a Petition configured for any type of HTTP request.
    * This composition function allows integration with additional plugins and settings provided via optional parameters.
    *
-   * @param {O} [o] - Optional configuration options that may include plugin settings.
-   * @returns {Function} A function that, when given a Morphism, returns a function configured to handle a Request and return a response of type R.
-   *
    * @example
    * Example usage: Tests the `anyRequest` composer to ensure it correctly returns the expected string.
    * ```typescript
@@ -180,5 +177,5 @@ export const composer = {
       { ...r },
     ))) as unknown as (
       re: Request,
-    ) => Promise<Request> | Request,
+    ) => Promise<Response> | Response,
 };
