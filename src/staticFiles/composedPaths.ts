@@ -94,7 +94,7 @@ export default (o?: FunRouterOptions<any>) =>
     ) as unknown as Petition[];
 
 const mimeIsTrue = (f: fileServerPetition<any>) => (mime: string) =>
-  void console.log(mime) ?? f.mime
+   f.mime
     ? {
       headings: {
         headers: mime,
