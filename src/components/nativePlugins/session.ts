@@ -98,7 +98,7 @@ const mapper = <
 };
 
 // Checks for all session if the performance now it more than the last time used (adding the tolerance)
-const deleteUnsedSession =
+const deleteUnusedSession =
   <T extends Record<string, unknown> & InnerElement>(map: Map<string, T>) =>
   (tolerance: number) =>
   () =>
@@ -120,19 +120,19 @@ const session = <
   T extends Record<string, unknown>,
   R = RealType<T>,
 >(opt?: {
-  removeDeleteUnsedSession?: true;
+  removeDeleteUnusedSession?: true;
   tolerance?: number;
   autoDeleteTolerance?: number;
   injectMap?: Map<string, R>;
 }): CyclePlugin<{ isFunction: false; return: SessionType<T> }> => {
-  // Decalring  map
+  // Declaring  map
   const sym = Symbol("session");
   const map = opt?.injectMap ?? new Map<string, R>();
 
   // To cleannd the whole map
-  if (!opt?.removeDeleteUnsedSession) {
+  if (!opt?.removeDeleteUnusedSession) {
     setInterval(
-      deleteUnsedSession(
+      deleteUnusedSession(
         //@ts-ignore
         map,
       )(opt?.tolerance ?? 300000),
