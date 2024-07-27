@@ -4,6 +4,7 @@ import { f as query } from "./src/components/queries/mainQueries.ts";
 import { f as param } from "./src/components/parameters/mainParameters.ts";
 import { f as cookie } from "./src/components/cookies/mainCookies.ts";
 import { f as token } from "./src/components/cookieToToken/mainCookieToToken.ts";
+import { session } from "./src/components/nativePlugins/session.ts";
 
 /**
  * Components utilities
@@ -13,6 +14,7 @@ export const components = {
   param,
   cookie,
   token,
+  session,
 };
 
 /**

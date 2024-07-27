@@ -119,20 +119,25 @@ export type CyclePluginMap = {
   readonly [key: string]: CyclePlugin<any>;
 };
 
+type CyclePluginOptions = {
+  isFunction?: true | false;
+  return?: unknown;
+};
+
 export type CyclePlugin<
-  FC extends boolean,
+  T extends CyclePluginOptions,
 > = {
   readonly name: symbol;
   // Do not use false
-  readonly isFunction?: FC;
+  readonly isFunction?: T["isFunction"];
   readonly isAsync?: boolean;
-  readonly f: FC extends true
-    ? (o?: FunRouterOptions<any>) => (p: Petition) => any
+  readonly f: T["isFunction"] extends { isFunction: true }
+    ? (o?: FunRouterOptions<any>) => (p: Petition) => T["return"]
     : (
       o?: FunRouterOptions<any>,
     ) => (
       p: Petition,
-    ) => (r: Request | [Request, Record<string, unknown>]) => any;
+    ) => (r: Request) => T["return"];
   readonly type: unknown;
   readonly isUsing?: (o?: FunRouterOptions<any>) => (p: Petition) => string;
   readonly options?: { [k: string]: any };
