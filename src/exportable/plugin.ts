@@ -37,7 +37,10 @@ export default {
    */
   type: <
     FC extends boolean,
-    O extends CyclePlugin<FC>,
+    O extends CyclePlugin<{
+      isFunction: FC;
+      return: unknown;
+    }>,
   >(config: O) => config,
 
   /**

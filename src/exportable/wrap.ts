@@ -18,7 +18,6 @@ import type { ParamsMethod } from "../router/types.ts";
  * The second `()` can either be left empty or used to add another `wrap`.
  * This allows for flexible composition of your application's routing and request handling.
  *
- * @example
  * ```js
  * import { api } from './somewhere'
  * const options = {...} // Optional<funRouterOptions>
@@ -31,21 +30,19 @@ import type { ParamsMethod } from "../router/types.ts";
  *     f: () => "helloWorld",
  *   })
  * ```
+ * For more details, see the [first-and-second-curried](https://vixeny.dev/library/wrap#first-and-second-curried).
  */
 type Wrap<O extends FunRouterOptions<any>> = {
   /**
    * `petitionWithoutCTX` allows to bypass the `composer` and it is not bind to it's rules, keeping the function untouched.
    *
-   * @param {Petition} petition - The petition to be added.
-   * @returns {Object} The current wrap instance with the new petition added, allowing for chaining further modifications or additions.
-   *
-   * @example
    * ```js
    * const api = wrap()().addAnyPetition({
    *   path: "/data",
    *   r: wrappedPetitions.compose()
    * });
    * ```
+   * For more details, see the [petitionWithoutCTX](https://vixeny.dev/library/wrap#petitionwithoutctx.
    */
   petitionWithoutCTX: <RM, BM, QO, PO, CO, AR, R>(I: {
     path: string;
@@ -64,6 +61,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *     f: () => "helloWorld",
    *   })
    * ```
+   * For more details, see the [customPetition](https://vixeny.dev/library/wrap#custompetition.
    */
   customPetition: <
     RM extends ResolveMap<any>,
@@ -96,7 +94,6 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * or a `Promise<Response>`. This method is suitable for scenarios where the standard response
    * structure does not fit your needs.
    *
-   * @example
    * Usage example:
    * ```js
    * wrap(options)()
@@ -105,6 +102,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *     f: (c) => new Response(c.param.name),
    *   })
    * ```
+   * For more details, see the [stdPetition](https://vixeny.dev/library/wrap#stdpetition).
    */
   stdPetition: <
     RM extends ResolveMap<any>,
@@ -136,7 +134,6 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * `logPaths` is a utility method that logs the paths of all the petitions wrapped by this instance.
    * It helps in debugging by providing a quick overview of the defined petition paths at any given moment.
    *
-   * @example
    * Example usage:
    * ```javascript
    * wrap()()
@@ -157,6 +154,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *   //   /two
    *   .logPaths()
    * ```
+   * For more details, see the [logPaths](https://vixeny.dev/library/wrap#logpaths).
    */
   logPaths: () => Wrap<O>;
   /**
@@ -183,6 +181,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *   // Output: [ "param" ]
    *   .debugLast()
    * ```
+   * For more details, see the [debugLast](https://vixeny.dev/library/wrap#debuglast).
    */
   debugLast: () => Wrap<O>;
   /**
@@ -223,6 +222,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * // Outputs the mocked date: "1710592645075"
    * console.log(await mocked(request).then(r => r.text()));
    * ```
+   * For more details, see the [handleRequest](https://vixeny.dev/library/wrap#handlerequest).
    */
   handleRequest: (
     s: string,
@@ -249,6 +249,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *   // assertions or checks on the response
    * });
    * ```
+   * For more details, see the [testRequests](https://vixeny.dev/library/wrap#testrequests).
    */
   testRequests: () => (r: Request) => Promise<Response>;
   /**
@@ -265,6 +266,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * const modifiedWrap = initialWrap.changeOptions(newOptions);
    * // `modifiedWrap` now operates with `newOptions`, while still handling the '/test' petition
    * ```
+   * For more details, see the [changeOptions](https://vixeny.dev/library/wrap#changeoptions).
    */
   changeOptions: <NC extends CyclePluginMap, NO extends FunRouterOptions<NC>>(
     newOptions?: NO,
@@ -290,6 +292,8 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *
    * This method supports integrating only certain types of petitions, which align with the structure and functionality
    * intended by the wrap's design.
+   *
+   * For more details, see the [union](https://vixeny.dev/library/wrap#union).
    */
   union: (b: Petition[]) => Wrap<O>;
   /**
@@ -308,6 +312,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * ```
    *
    * This facilitates flexible and dynamic petition management within your application's routing logic.
+   * For more details, see the [exclude](https://vixeny.dev/library/wrap#exclude).
    */
   exclude: (list: string[] | string) => Wrap<O>;
   /**
@@ -329,8 +334,8 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *     .unwrap(), // Unwraps into an array of petitions ready for further processing
    * );
    * ```
+   * For more details, see the [unwrap](https://vixeny.dev/library/wrap#unwrap).
    */
-
   unwrap: () => Petition[];
   /**
    *  ```typescript
@@ -362,15 +367,13 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *   console.log(idTest1.unwrap()); // Should log [{ path: '/a' , ...}]
    *   console.log(idTest2.unwrap()); // Should log [{ path: '/a' , ...}]
    *  ```
+   * For more details, see the [pure](https://vixeny.dev/library/wrap#pure).
    */
-  pure: (petition: Petition) => Wrap<O>;
+  pure: (petition?: Petition) => Wrap<O>;
   /**
    * `addAnyPetition` allows for adding a petition of any type to the current wrap instance,
    * increasing flexibility in handling different Petitions as HTTP requests.
    *
-   * For more details, see the [documentation](https://vixeny.dev/library/wrap#petitionwithoutctx).
-   *
-   * @example
    * ```js
    *
    *  const requestPetition = petitions.custom()({
@@ -380,6 +383,8 @@ type Wrap<O extends FunRouterOptions<any>> = {
    *
    * const api = wrap()().addAnyPetition(requestPetition);
    * ```
+   *
+   * For more details, see the [addAnyPetition](https://vixeny.dev/library/wrap#addanypetition).
    */
 
   addAnyPetition: (petition: Petition) => Wrap<O>;
@@ -388,18 +393,18 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * ready for execution or further configuration. This method is pivotal for finalizing the setup
    * of routing and request handling mechanisms before application deployment.
    *
-   * @returns {Object} A composite entity representing the fully configured request handling logic.
-   *
-   * @example
    * ```js
    * const app = wrap()()
    *   .addAnyPetition({ path: "/test", f: () => "Test" })
    *   .compose();
    * ```
+   * For more details, see the [compose](https://vixeny.dev/library/wrap#compose).
    */
   compose: () => (r: Request) => Promise<Response> | Response;
   /**
    * Applies a function over each petition, wrapping each result, and then flattens all results into a single wrap.
+   *
+   * For more details, see the [flatMap](https://vixeny.dev/library/wrap#flatmap).
    */
   flatMap: (fn: (p: Petition) => Wrap<O>) => Wrap<O>;
 };
@@ -518,7 +523,7 @@ export const wrap = ((o?) => (a = []) => ({
         ? { ...x, path: o.wrap?.startWith + x.path }
         : { ...x }
     ),
-  pure: (petition) => wrap(o)([petition]),
+  pure: (petition) => wrap(o)(petition ? [petition] : []),
   addAnyPetition: (petition) => wrap(o)([...a, petition]),
   compose: () => vixeny(o)(a),
   flatMap: (fn) => a.reduce((acc, x) => acc.union(fn(x).unwrap()), wrap(o)([])),

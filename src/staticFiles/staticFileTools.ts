@@ -4,6 +4,7 @@ import type {
   Petition,
   StaticFilePluginExtensions,
 } from "../morphism.ts";
+import type { FunRouterOptions } from "../options.ts";
 import mime from "../util/mime.ts";
 import bunSyncCheckDir from "./transverseFiles.ts";
 
@@ -55,6 +56,7 @@ export default {
     ))() as (r: Request) => Promise<Response>,
 
   getValidPetitionFromPlugin:
+    (o?: FunRouterOptions<any>) =>
     (checks: StaticFilePluginExtensions<any>) =>
     (root: string) =>
     (x: string) =>
@@ -64,6 +66,7 @@ export default {
           {
             root: root,
             path: x,
+            o: o,
             relativeName: root.slice(1, -1) + x.slice(name.length - 1),
           },
         )

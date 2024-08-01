@@ -9,23 +9,23 @@ type Cookie = (string: string | null) => Record<string, string | undefined>;
 const f = (o?: FunRouterOptions<any>) => (p: Petition): Cookie =>
   (
     (cookies) =>
-      cookies
+      cookies && cookies.length > 0
         ? body(p.cookie?.only ?? cookies) as Cookie
         : cookieDefaultCase() as Cookie
   )(
-    plugins.pluginIsUsing(p)("cookies"),
+    plugins.pluginIsUsing(p)("cookie"),
   );
 
 const isUsing = (o?: FunRouterOptions<any>) => (p: Petition): string =>
   (
     (uses) =>
       p.cookie?.only
-        ? p.cookie?.only.toString()
+        ? `[` + p.cookie?.only.map((x) => x + "?").toString() + "]"
         : uses && uses.length > 0
         ? `[` + uses.map((x) => x + "?") + "]"
         : `Record<string, string|null> | null`
   )(
-    plugins.pluginIsUsing(p)("cookies"),
+    plugins.pluginIsUsing(p)("cookie"),
   );
 
 export { f, isUsing };

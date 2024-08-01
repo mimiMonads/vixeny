@@ -36,38 +36,38 @@ export default (o?: FunRouterOptions<any>) =>
         async: tools.localAsync(o)(p)(elementsUsed),
         asyncResolve: tools.recursiveCheckAsync(p),
         headers: typeof p.headings === "object" || typeof o?.cors === "object"
-          ? typeof p.headings?.headers == "string"
-            ? {
-              ...(p.headings ?? {}),
-              headers: {
-                ...("headings" in p
-                  ? {
-                    "Content-Type": maybeOfArray(
-                      mime.find((x) => x[0] === p.headings?.headers),
-                    ),
-                  }
-                  : {}),
-                ...(typeof o?.cors === "object"
-                  ? stringToFunction(parse()(o.cors))()
-                  : {}),
-              },
-            }
-            : {
-              ...(p.headings ?? {}),
-              headers: {
-                ...p.headings ?? {},
-                ...(typeof o?.cors === "object"
-                  ? stringToFunction(parse()(o.cors))()
-                  : {}),
-              },
-            }
+          ? {
+            ...p.headings,
+            headers: joinHeaders(o)(p),
+          }
           : null,
       },
     ))(
       tools.isUsing(o)(p),
     );
 
-const maybeOfArray = (arr?: [string, string]) => arr ? arr[1] : "hello";
+const maybeOfArray = (arr?: [string, string]) => arr ? arr[1] : "text/html";
+
+const joinHeaders = (o?: FunRouterOptions<any>) => (p: Petition) => {
+  const fromPetition = typeof p.headings === "object"
+    ? typeof p.headings?.headers == "string"
+      ? {
+        "Content-Type": maybeOfArray(
+          mime.find((x) => x[0] === p.headings?.headers),
+        ),
+      }
+      : p.headings.headers
+    : {};
+
+  const fromCORS = typeof o?.cors === "object"
+    ? stringToFunction(parse()(o.cors))()
+    : {};
+
+  return {
+    ...fromCORS,
+    ...fromPetition,
+  };
+};
 
 //maybe of an optimization
 const getF = (isAsync: boolean) => (hasHeaders: boolean) =>

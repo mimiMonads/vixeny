@@ -860,7 +860,8 @@ interface Ctx<
    */
   branch: {
     [V in keyof B]: (
-      ctx: B[V]["args"],
+      ctx: B[V]["args"] extends undefined ? void
+        : Exclude<B[V]["args"], undefined>,
     ) => ReturnType<B[V]["f"]>;
   };
 
@@ -1028,6 +1029,7 @@ export type StaticFilePluginExtensions<
     f: (options: {
       root: string;
       path: string;
+      o?: FunRouterOptions<any>;
       relativeName: string;
     }) => ReturnType<ReturnType<typeof petitions.custom>>;
   }
@@ -1035,6 +1037,7 @@ export type StaticFilePluginExtensions<
     r: (options: {
       root: string;
       path: string;
+      o?: FunRouterOptions<any>;
       relativeName: string;
     }) => ReturnType<ReturnType<typeof petitions.response>>;
   };
