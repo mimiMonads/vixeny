@@ -19,10 +19,10 @@ export default {
       ? []
       : f.extra
         // Creates a map of mime and overwrites the extra keys if already exist
-      ? f.extra.reduce( ( map , v) =>  ( 
+      ? [... f.extra.reduce( ( map , v) =>  ( 
         map.set(v[0], v[1]),
         map
-      ) ,  new Map<string,string>(mime))
+      ) ,  new Map<string,string>(mime))]
 
       : mime,
 

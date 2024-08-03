@@ -30,7 +30,7 @@ test(
         path: "./",
         name: "/hello/",
         extra: [[".ts", "hello/hello"]],
-      }).at(74),
+      }).find( val => val[0] === '.ts'),
       [".ts", "hello/hello"],
     );
   },
