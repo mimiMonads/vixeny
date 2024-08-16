@@ -29,6 +29,14 @@ test(
         type: "fileServer",
         path: "./",
         name: "/hello/",
+      }).find( val => val[0] === '.ts'),
+      [".ts", "video/mp2t"],
+    );
+    assertEquals(
+      staticFileTools.mimeForm({
+        type: "fileServer",
+        path: "./",
+        name: "/hello/",
         extra: [[".ts", "hello/hello"]],
       }).find( val => val[0] === '.ts'),
       [".ts", "hello/hello"],
