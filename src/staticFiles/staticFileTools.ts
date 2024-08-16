@@ -13,17 +13,13 @@ export default {
   join: (base: string) => (target: string): string =>
     base.endsWith("/") ? base + target : base + "/" + target,
 
-  // Checks 
+  // Checks
   mimeForm: (f: fileServerPetition<any>) =>
-    "mime" in f && f.mime === false
-      ? []
-      : f.extra
-        // Creates a map of mime and overwrites the extra keys if already exist
-      ? [... f.extra.reduce( ( map , v) =>  ( 
-        map.set(v[0], v[1]),
-        map
-      ) ,  new Map<string,string>(mime))]
-
+    "mime" in f && f.mime === false ? [] : f.extra
+      // Creates a map of mime and overwrites the extra keys if already exist
+      ? [...f.extra.reduce((map, v) => (
+        map.set(v[0], v[1]), map
+      ), new Map<string, string>(mime))]
       : mime,
 
   getMime: (mimes: [string, string][]) => (ext: string): string =>
@@ -48,7 +44,6 @@ export default {
               x.path.includes(y)
             ),
           ),
-          
       ) as Petition[]
       : petitions,
 
