@@ -20,6 +20,7 @@ const syncCheckerDir =
         ))(dir)
       )
     )(
+      // TODO: Remove the Y combinator
       // Setting up the Y combinator.
       (f: (arg0: (y: any) => any) => any) =>
         ((x) => x(x))((x: (arg0: any) => { (arg0: any): any; new (): any }) =>
@@ -27,6 +28,7 @@ const syncCheckerDir =
         ),
     );
 
+// TODO: Remove the Y combinator
 const recursiveCheckAsync =
   ((f: (x: RecFunc) => RecFunc) =>
     ((x: (arg: any) => any) => (v: any) => x(x)(v))(
@@ -46,13 +48,6 @@ const recursiveCheckAsync =
                 p.resolve[ob] as unknown as Petition,
               )
             )) ??
-            // ("branch" in p && p.branch &&
-            //   Object.keys(p.branch).some((ob) =>
-            //     p.branch &&
-            //     solver(
-            //       p.branch[ob] as unknown as Petition,
-            //     )
-            //   )) ??
             false,
     ) as unknown as (f: Petition) => boolean;
 

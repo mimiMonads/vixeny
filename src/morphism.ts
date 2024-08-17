@@ -537,6 +537,7 @@ export type Morphism<
 > = {
   readonly active?: MO["isAPetition"] extends true ? boolean : never;
   readonly isUsing?: MO["isAPetition"] extends true ? string[] : never;
+  readonly throws?: MO["isAPetition"] extends true ? boolean : never;
   readonly resolve?: RM;
   readonly branch?: BM;
   readonly method?: ParamsMethod;
