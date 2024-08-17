@@ -16,10 +16,10 @@ export default (o?: FunRouterOptions<any>) =>
             // Unfolds the compostion based on if it has headers or not
             table.headers
               ? composition(table.headers)(p.f)(
-                linker(o)(p)(elementsUsed),
+                linker( p.o ?? o)(p)(elementsUsed),
               ) as (req: Request) => Response
               : composition(p.f)(
-                linker(o)(p)(elementsUsed),
+                linker( p.o ?? o )(p)(elementsUsed),
               ) as (req: Request) => Response,
           ))(
             /**
@@ -43,12 +43,12 @@ export default (o?: FunRouterOptions<any>) =>
        *  - `headers` : checks and join the headers from `options` and `Petition`
        */
       {
-        async: tools.localAsync(o)(p)(elementsUsed),
+        async: tools.localAsync( p.o ?? o)(p)(elementsUsed),
         asyncResolve: tools.recursiveCheckAsync(p),
         headers: typeof p.headings === "object" || typeof o?.cors === "object"
           ? {
             ...p.headings,
-            headers: joinHeaders(o)(p),
+            headers: joinHeaders( p.o ?? o)(p),
           }
           : null,
       },
@@ -56,7 +56,7 @@ export default (o?: FunRouterOptions<any>) =>
       /**
        *  It basically gets what this `Petition` is using
        */
-      tools.isUsing(o)(p),
+      tools.isUsing( p.o ?? o)(p),
     );
 
 // Tools
