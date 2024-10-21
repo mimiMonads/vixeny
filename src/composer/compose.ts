@@ -20,13 +20,8 @@ export default (o?: FunRouterOptions<any>) =>
             ))(
             p.type === "request" || p.type === "morphism" ||
               typeof p.type === "undefined"
-              ? new Function(`
-            return ${table.headers ? "h=>" : ""}f=>c=>${
-                table.async || table.asyncResolve ? "async " : ""
-              }r=>${table.async || table.asyncResolve ? "await f" : "f"}(${
-                table.asyncResolve ? "await c" : "c"
-              }(${"mutable" in p ? "[r,{res: {}}]" : "r"}))`)()
-              : getF(table.async || table.asyncResolve)(
+              ? getResponse(table.async || table.asyncResolve)()
+              : getBody(table.async || table.asyncResolve)(
                 table.headers ? true : false,
               )(),
           )
@@ -70,16 +65,25 @@ const joinHeaders = (o?: FunRouterOptions<any>) => (p: Petition) => {
 };
 
 //maybe of an optimization
-const getF = (isAsync: boolean) => (hasHeaders: boolean) =>
+const getBody = (isAsync: boolean) => (hasHeaders: boolean) =>
   isAsync
     ? hasHeaders
       //@ts-ignore
-      ? () => ((h) => (f) => (c) => async (r) =>
-        new Response(await f(await c(r)), h))
+      ? () => ((headers) => (f) => (context) => async (request) =>
+        new Response(await f(await context(request)), headers))
       //@ts-ignore
-      : () => ((f) => (c) => async (r) => new Response(await f(await c(r))))
+      : () => ((f) => (context) => async (request) => new Response(await f(await context(request))))
     : hasHeaders
     //@ts-ignore
-    ? () => ((h) => (f) => (c) => (r) => new Response(f(c(r)), h))
+    ? () => ((headers) => (f) => (context) => (request) => new Response(f(context(request)), headers))
     //@ts-ignore
-    : () => ((f) => (c) => (r) => new Response(f(c(r))));
+    : () => ((f) => (context) => (request) => new Response(f(context(request))));
+
+
+const getResponse = (isAsync: boolean) => 
+  isAsync
+    //@ts-ignore
+    ? () => ((f) => (context) => async (request) => await f(await context(request)))
+    //@ts-ignore
+    : () => ((f) => (context) => (request) => f(context(request)));
+    
