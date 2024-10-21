@@ -495,6 +495,7 @@ type MapOptions = {
   mutable?: true;
   specificReturnType?: boolean;
   returnType?: any;
+  hasMaybe?: boolean;
 };
 
 type HasPath<P extends MapOptions> = P extends { hasPath: true }
@@ -537,6 +538,8 @@ export type Morphism<
 > = {
   readonly active?: MO["isAPetition"] extends true ? boolean : never;
   readonly isUsing?: MO["isAPetition"] extends true ? string[] : never;
+  // TODO: Adding support for maybe
+  readonly maybe?: MO["isAPetition"] extends true ? any : never;
   readonly resolve?: RM;
   readonly branch?: BM;
   readonly method?: ParamsMethod;
