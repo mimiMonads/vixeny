@@ -72,18 +72,31 @@ const getBody = (isAsync: boolean) => (hasHeaders: boolean) =>
       ? () => ((headers) => (f) => (context) => async (request) =>
         new Response(await f(await context(request)), headers))
       //@ts-ignore
-      : () => ((f) => (context) => async (request) => new Response(await f(await context(request))))
+      : () => ((f) => (context) => async (request) =>
+        new Response(await f(await context(request))))
     : hasHeaders
     //@ts-ignore
-    ? () => ((headers) => (f) => (context) => (request) => new Response(f(context(request)), headers))
+    ? () => ((headers) => (f) => (context) => (request) =>
+      new Response(f(context(request)), headers))
     //@ts-ignore
-    : () => ((f) => (context) => (request) => new Response(f(context(request))));
+    : () => ((f) => (context) => (request) =>
+      new Response(f(context(request))));
 
-
-const getResponse = (isAsync: boolean) => 
+const getResponse = (isAsync: boolean) =>
   isAsync
-    //@ts-ignore
-    ? () => ((f) => (context) => async (request) => await f(await context(request)))
+    //@ts-ignore-start
+    ? () => ((f) => (context) => async (request) =>
+      await f(await context(request)))
     //@ts-ignore
     : () => ((f) => (context) => (request) => f(context(request)));
-    
+
+const maybeOf =
+  (f: (f: Request) => Promise<Response> | Response) =>
+  (m: (f: Request) => (error: unknown) => Promise<Response> | Response) =>
+  async (r: Request) => {
+    try {
+      return await f(r);
+    } catch (error) {
+      return await m(r)(error);
+    }
+  };

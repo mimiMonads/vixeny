@@ -56,7 +56,7 @@ const logContext = (object: Display): void => {
 const logComponents = (
   object: Display,
   options: FunRouterOptions<any> | undefined,
-  p: Petition
+  p: Petition,
 ): void => {
   const usedComponents = object.using ?? [];
   if (usedComponents.length > 0) {
@@ -64,7 +64,9 @@ const logComponents = (
     usedComponents.forEach((key) => {
       if (key in elements) {
         const value = elements[key](options)(p);
-        console.log(`\x1b[35m${key}\x1b[0m: \x1b[38;2;255;165;0m${value}\x1b[0m`);
+        console.log(
+          `\x1b[35m${key}\x1b[0m: \x1b[38;2;255;165;0m${value}\x1b[0m`,
+        );
       }
     });
   }
@@ -74,7 +76,7 @@ const logComponents = (
 const logPlugins = (
   object: Display,
   options: FunRouterOptions<any> | undefined,
-  p: Petition
+  p: Petition,
 ): void => {
   const pluginMap = options?.cyclePlugin ?? {};
   const usedPlugins = object.using ?? [];
@@ -82,17 +84,21 @@ const logPlugins = (
   const pluginsToDisplay: PluginType[] = usedPlugins
     .map((name) => {
       const plugin = pluginMap[name];
-      return plugin && "isUsing" in plugin ? ([name, plugin] as PluginType) : null;
+      return plugin && "isUsing" in plugin
+        ? ([name, plugin] as PluginType)
+        : null;
     })
     .filter((item): item is PluginType => item !== null);
 
   if (pluginsToDisplay.length > 0) {
     console.log("--- Plugins ---");
     pluginsToDisplay.forEach(([name, plugin]) => {
-      // This is always the case `pluginsToDisplay` filters the elements base on 
-      // if the have `isUsing` 
+      // This is always the case `pluginsToDisplay` filters the elements base on
+      // if the have `isUsing`
       const value = plugin.isUsing!(options)(p);
-      console.log(`\x1b[35m${name}\x1b[0m: \x1b[38;2;255;165;0m${value}\x1b[0m`);
+      console.log(
+        `\x1b[35m${name}\x1b[0m: \x1b[38;2;255;165;0m${value}\x1b[0m`,
+      );
     });
   }
 };
