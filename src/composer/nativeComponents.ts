@@ -47,10 +47,7 @@ export default (o?: FunRouterOptions<any>) =>
             ? verifySha256()(
               tools.parsingToHexa(p.crypto.globalKey),
             )
-            : void console.error(
-              "I don't know you got this message, contact me in discord," +
-                " also verify will always return `false` ",
-            ) ?? ((_: any) => false),
+            : ((_: any) => false),
       },
       {
         condition: (x: NativeMaps) => x.name === "sign",
@@ -59,10 +56,7 @@ export default (o?: FunRouterOptions<any>) =>
             ? signSha256()(
               tools.parsingToHexa(p.crypto.globalKey),
             )
-            : void console.error(
-              "I don't know you got this message, contact me in discord," +
-                " also sign will always return '' ",
-            ) ?? ((_: any) => ""),
+            : ((_: any) => ""),
       },
       {
         condition: (x: NativeMaps) => x.name === "token",

@@ -1,15 +1,18 @@
 import type { FunRouterOptions } from "../options.ts";
-import type { Petition } from "../morphism.ts";
+import type { Petition, WithPlugins } from "../morphism.ts";
 import { parse, stringToFunction } from "../components/cors/mainCORS.ts";
 import tools from "./composerTools.ts";
 import linker from "./linker.ts";
 import mime from "../util/mime.ts";
 
 type Table = {
-  isAsync: boolean,
-  asyncResolve: boolean,
-  headers: ResponseInit | null
-}
+  isAsync: boolean;
+  asyncResolve: boolean;
+  headers: ResponseInit | null;
+};
+
+type CTX = WithPlugins<any, any, any, any, any, any, any, any, any>;
+
 export default (o?: FunRouterOptions<any>) =>
 (p: Petition): (ctx: Request) => Promise<Response> | Response =>
   ((elementsUsed) =>
@@ -46,17 +49,20 @@ export default (o?: FunRouterOptions<any>) =>
       tools.isUsing(o)(p),
     );
 
-const resolveF = (t:Table) => (p:Petition) => {
-  switch (p.type) {
-    case 'add':
-      return getMethodForAdd(t.isAsync)
-        (t.headers ? true : false)
-    case 'response':
-  
-    default:
-      break;
-  }
-}
+const resolveF =
+  (o?: FunRouterOptions<any>) =>
+  (t: Table) =>
+  (p: Petition) =>
+  (isUsing: string[]) => {
+    switch (p.type) {
+      case "add":
+        return getMethodForAdd(t.isAsync)(t.headers ? true : false) //@ts-ignore
+        (p.f)(linker(o)(p)(isUsing));
+
+      default:
+        return (r: Request) => new Response();
+    }
+  };
 
 const maybeOfArray = (arr?: [string, string]) => arr ? arr[1] : "text/html";
 
@@ -81,8 +87,6 @@ const joinHeaders = (o?: FunRouterOptions<any>) => (p: Petition) => {
     ...fromPetition,
   };
 };
-
-
 
 // Old system
 const getBody = (isAsync: boolean) => (hasHeaders: boolean) =>
@@ -135,10 +139,10 @@ const methodForAdd =
 const methodForAsyncAdd = () => ((headers: ResponseInit) =>
 (
   f: (
-    r: unknown,
+    r: CTX,
   ) => Response | BodyInit | Promise<Response> | Promise<BodyInit>,
 ) =>
-(context: (r: Request) => unknown) =>
+(context: (r: Request) => CTX) =>
 async (request: Request): Promise<Response> => {
   const result = await f(await context(request));
 

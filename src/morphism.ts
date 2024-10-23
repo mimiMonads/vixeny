@@ -648,7 +648,7 @@ type specialElements = {
   readonly hasHeaders?: true;
 } | {};
 
-type WithPlugins<
+export type WithPlugins<
   R extends ResolveMap<any>,
   B extends BranchMap<any>,
   QS extends QueryOptions,
