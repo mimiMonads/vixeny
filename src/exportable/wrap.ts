@@ -34,6 +34,8 @@ import type { ParamsMethod } from "../router/types.ts";
  */
 type Wrap<O extends FunRouterOptions<any>> = {
   /**
+   *    * @deprecated use `add` instead
+   *
    * `petitionWithoutCTX` allows to bypass the `composer` and it is not bind to it's rules, keeping the function untouched.
    *
    * ```js
@@ -50,6 +52,52 @@ type Wrap<O extends FunRouterOptions<any>> = {
     r: (ctx: Request) => Response | Promise<Response>;
   }) => Wrap<O>;
   /**
+   * Defines a standard Petition where `f` returns either a `BodyInit` or a `Promise<BodyInit>`.
+   *
+   * @example
+   * Usage example:
+   * ```javascript
+   * export const root = wrap()()
+   *   .add({
+   *     path: "/",
+   *     f: () => "helloWorld",
+   *   })
+   *   .add({
+   *     path: "/withRequest",
+   *     f: () => new Response("helloWorld"),
+   *   })
+   * ```
+   * For more details, see the [customPetition](https://vixeny.dev/library/wrap#custompetition.
+   */
+  add: <
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    CO extends CryptoOptions,
+    AR = any,
+    R = any,
+  >(
+    ob: Morphism<
+      {
+        type: "request";
+        hasPath: true;
+        isAPetition: true;
+        typeNotNeeded: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      O,
+      CO,
+      AR,
+      R
+    >,
+  ) => Wrap<O>;
+  /**
+   * @deprecated use `add` instead
+   *
    * Defines a standard Petition where `f` returns either a `BodyInit` or a `Promise<BodyInit>`.
    *
    * @example
@@ -90,6 +138,8 @@ type Wrap<O extends FunRouterOptions<any>> = {
     >,
   ) => Wrap<O>;
   /**
+   * @deprecated use `add` instead
+   *
    * `customPetition` allows for defining a custom Petition where `f` returns either a `Response`
    * or a `Promise<Response>`. This method is suitable for scenarios where the standard response
    * structure does not fit your needs.
@@ -297,6 +347,8 @@ type Wrap<O extends FunRouterOptions<any>> = {
    */
   union: (b: Petition[]) => Wrap<O>;
   /**
+   * @deprecated use filter
+   *
    * Excludes one or more petitions based on their paths from the current wrap instance, creating a new instance without the specified paths.
    * This is useful for dynamically adjusting the set of active petitions, perhaps in response to configuration changes or to conditionally
    * remove certain routes in different environments or contexts.
@@ -315,6 +367,25 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * For more details, see the [exclude](https://vixeny.dev/library/wrap#exclude).
    */
   exclude: (list: string[] | string) => Wrap<O>;
+  /**
+   * Filter one or more petitions based on their paths from the current wrap instance, creating a new instance without the specified paths.
+   * This is useful for dynamically adjusting the set of active petitions, perhaps in response to configuration changes or to conditionally
+   * remove certain routes in different environments or contexts.
+   *
+   * The method accepts either a single path string or an array of path strings to exclude.
+   *
+   * Example usage:
+   * ```typescript
+   * // Assuming wrap()() has defined several petitions including paths '/excludeMe' and '/keepMe'
+   * const filteredWrap = wrap()()
+   *   .exclude(['/excludeMe'])
+   *   // Now, the wrap instance `filteredWrap` will not include the petition for '/excludeMe'
+   * ```
+   *
+   * This facilitates flexible and dynamic petition management within your application's routing logic.
+   * For more details, see the [exclude](https://vixeny.dev/library/wrap#exclude).
+   */
+  filter: (opt: string[] | string | { (p: Petition): boolean }) => Wrap<O>;
   /**
    * Unwraps the current `wrap` instance into its constituent petitions, typically for the purpose of exporting
    * or further manipulation. This can be especially useful when combining multiple wrap instances or configuring
@@ -455,6 +526,13 @@ export const wrap = ((o?) => (a = []) => ({
       //@ts-ignore
       { ...ob, type: "request" } as Petition,
     )),
+  add: (
+    ob,
+  ) =>
+    wrap(o)(a.concat(
+      //@ts-ignore
+      { ...ob, type: "add" } as Petition,
+    )),
 
   stdPetition: (
     ob,
@@ -516,6 +594,13 @@ export const wrap = ((o?) => (a = []) => ({
         wrap(o)(a.filter((morphism) => !pathsSet.has(morphism.path)))
     )(
       new Set(Array.isArray(list) ? list : [list]),
+    ),
+  filter: (opt) =>
+    typeof opt === "function" ? wrap(o)(a.filter(opt)) : (
+      (pathsSet) =>
+        wrap(o)(a.filter((morphism) => !pathsSet.has(morphism.path)))
+    )(
+      new Set(Array.isArray(opt) ? opt : [opt]),
     ),
   unwrap: () =>
     a.map((x) =>
