@@ -15,28 +15,16 @@ type CTX = WithPlugins<any, any, any, any, any, any, any, any, any>;
 
 export default (o?: FunRouterOptions<any>) =>
 (p: Petition): (ctx: Request) => Promise<Response> | Response =>
-  ((elementsUsed) =>
+  ((isUsing) =>
     (
       (table) =>
-        ((composition) =>
-          table.headers
-            ? composition(table.headers)(p.f)(
-              linker(o)(p)(elementsUsed),
-            )
-            : composition(p.f)(
-              linker(o)(p)(elementsUsed),
-            ))(
-            p.type === "request" || p.type === "morphism" ||
-              typeof p.type === "undefined"
-              ? getResponse(table.async || table.asyncResolve)()
-              : getBody(table.async || table.asyncResolve)(
-                table.headers ? true : false,
-              )(),
-          )
+        resolveF(o)(table)(p)(isUsing) as (
+          ctx: Request,
+        ) => Promise<Response> | Response
     )(
       //elements int table
       {
-        async: tools.localAsync(o)(p)(elementsUsed),
+        isAsync: tools.localAsync(o)(p)(isUsing),
         asyncResolve: tools.recursiveCheckAsync(p),
         headers: typeof p.headings === "object" || typeof o?.cors === "object"
           ? {
@@ -51,16 +39,38 @@ export default (o?: FunRouterOptions<any>) =>
 
 const resolveF =
   (o?: FunRouterOptions<any>) =>
-  (t: Table) =>
+  (table: Table) =>
   (p: Petition) =>
   (isUsing: string[]) => {
     switch (p.type) {
+      // Standart method
       case "add":
-        return getMethodForAdd(t.isAsync)(t.headers ? true : false) //@ts-ignore
+        return getMethodForAdd(table.isAsync || table.asyncResolve)(
+          table.headers ? true : false,
+        ) //@ts-ignore
         (p.f)(linker(o)(p)(isUsing));
 
+        // Wraps in Request
+      case "base":
+        if (table.headers) {
+          return getBody(table.isAsync || table.asyncResolve)(
+            table.headers ? true : false,
+          )()(table.headers)(p.f)(
+            linker(o)(p)(isUsing),
+          );
+        }
+
+        return getBody(table.isAsync || table.asyncResolve)(
+          table.headers ? true : false,
+        )()(p.f)(
+          linker(o)(p)(isUsing),
+        );
+
+      // Passes value, mainly used for `resolve` and `branch`
       default:
-        return (r: Request) => new Response();
+        return getResponse(table.isAsync || table.asyncResolve)()(p.f)(
+          linker(o)(p)(isUsing),
+        );
     }
   };
 
@@ -93,17 +103,17 @@ const getBody = (isAsync: boolean) => (hasHeaders: boolean) =>
   isAsync
     ? hasHeaders
       //@ts-ignore
-      ? () => ((headers) => (f) => (context) => async (request) =>
+      ? () => ((headers) => (f) => (context) => async (request: Request) =>
         new Response(await f(await context(request)), headers))
       //@ts-ignore
-      : () => ((f) => (context) => async (request) =>
+      : () => ((f) => (context) => async (request: Request) =>
         new Response(await f(await context(request))))
     : hasHeaders
     //@ts-ignore
-    ? () => ((headers) => (f) => (context) => (request) =>
+    ? () => ((headers) => (f) => (context) => (request: Request) =>
       new Response(f(context(request)), headers))
     //@ts-ignore
-    : () => ((f) => (context) => (request) =>
+    : () => ((f) => (context) => (request: Request) =>
       new Response(f(context(request))));
 
 const getResponse = (isAsync: boolean) =>

@@ -66,8 +66,7 @@ export default (o?: FunRouterOptions<any>) =>
             : ({
               path: root.slice(1, -1) + x.slice(name.length - 1),
               type: "base",
-              ...mimeIsTrue(f) // @ts-expect-error
-              ("." + x.lastIndexOf(".") ?? "text"),
+              ...mimeIsTrue(f)("." + x.lastIndexOf(".") ?? "text"),
               f: staticFileTools.fromStringToPetition(
                 //@ts-ignore
                 typeof Deno === "object"
