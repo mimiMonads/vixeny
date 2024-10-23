@@ -454,7 +454,7 @@ export const petitions = {
     ] as Petition[],
 };
 
-type typeMorphism = "response" | "request" | "morphism" | "base";
+type typeMorphism = "response" | "request" | "morphism" | "base" | "add";
 
 export type ResolveMap<T> = {
   [K in keyof T]: T[K] extends Morphism<

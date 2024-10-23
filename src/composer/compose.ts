@@ -5,6 +5,11 @@ import tools from "./composerTools.ts";
 import linker from "./linker.ts";
 import mime from "../util/mime.ts";
 
+type Table = {
+  isAsync: boolean,
+  asyncResolve: boolean,
+  headers: ResponseInit | null
+}
 export default (o?: FunRouterOptions<any>) =>
 (p: Petition): (ctx: Request) => Promise<Response> | Response =>
   ((elementsUsed) =>
@@ -41,8 +46,21 @@ export default (o?: FunRouterOptions<any>) =>
       tools.isUsing(o)(p),
     );
 
+const resolveF = (t:Table) => (p:Petition) => {
+  switch (p.type) {
+    case 'add':
+      return getMethodForAdd(t.isAsync)
+        (t.headers ? true : false)
+    case 'response':
+  
+    default:
+      break;
+  }
+}
+
 const maybeOfArray = (arr?: [string, string]) => arr ? arr[1] : "text/html";
 
+// Creating static headers
 const joinHeaders = (o?: FunRouterOptions<any>) => (p: Petition) => {
   const fromPetition = typeof p.headings === "object"
     ? typeof p.headings?.headers == "string"
@@ -64,7 +82,9 @@ const joinHeaders = (o?: FunRouterOptions<any>) => (p: Petition) => {
   };
 };
 
-//maybe of an optimization
+
+
+// Old system
 const getBody = (isAsync: boolean) => (hasHeaders: boolean) =>
   isAsync
     ? hasHeaders
@@ -90,7 +110,42 @@ const getResponse = (isAsync: boolean) =>
     //@ts-ignore
     : () => ((f) => (context) => (request) => f(context(request)));
 
-const maybeOf =
+// Add
+const baseHeader: ResponseInit = {
+  status: 200,
+};
+
+const getMethodForAdd = (isAsync: boolean) => (hasHeader: boolean) =>
+  isAsync
+    ? hasHeader ? methodForAsyncAdd() : methodForAsyncAdd()(baseHeader)
+    : hasHeader
+    ? methodForAdd()
+    : methodForAdd()(baseHeader);
+
+const methodForAdd =
+  () => ((headers: ResponseInit) =>
+  (f: (r: unknown) => Response | BodyInit) =>
+  (context: (r: Request) => unknown) =>
+  (request: Request): Response => {
+    const result = f(context(request));
+
+    return result instanceof Response ? result : new Response(result, headers);
+  });
+
+const methodForAsyncAdd = () => ((headers: ResponseInit) =>
+(
+  f: (
+    r: unknown,
+  ) => Response | BodyInit | Promise<Response> | Promise<BodyInit>,
+) =>
+(context: (r: Request) => unknown) =>
+async (request: Request): Promise<Response> => {
+  const result = await f(await context(request));
+
+  return result instanceof Response ? result : new Response(result, headers);
+});
+
+const asyncMaybeOf =
   (f: (f: Request) => Promise<Response> | Response) =>
   (m: (f: Request) => (error: unknown) => Promise<Response> | Response) =>
   async (r: Request) => {
