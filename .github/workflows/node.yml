@@ -15,13 +15,12 @@ jobs:
           node-version: '21' 
 
       - name: Install dependencies
-        run: |
-          npm install
-          npm install ts-node typescript @cross/test @std/assert
+      - run: npx jsr add @cross/test @std/assert
+      - run: "echo '{ \"type\": \"module\" }' > package.json"
 
       - name: Run tests
         run: |
           find . -type f -name "*.test.ts" | while read -r file; do
             echo "Running tests in $file"
-            npx ts-node "$file"
+            npx --yes tsx --test $file
           done
