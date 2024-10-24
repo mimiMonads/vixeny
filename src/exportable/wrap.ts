@@ -80,7 +80,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
   >(
     ob: Morphism<
       {
-        type: "request";
+        type: "add";
         hasPath: true;
         isAPetition: true;
         typeNotNeeded: true;

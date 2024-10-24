@@ -9,34 +9,53 @@ export type specialOptions = {
   branch?: boolean;
 } & FunRouterOptions<any>;
 
-export default (o?: specialOptions) => (f: Petition) => (ar: string[]) =>
-  ar.length === 0 && !(o && "branch" in o) ? ((r: Request) => r) : (
-    (el) => el
-  )(
-    (
-      (table) =>
-        (
-          (functions) =>
-            functions.reduce(
-              (s, k) => s(k),
-              new Function(
-                ` return ${
-                  table.map((x) => x.type === 1 ? x.name + "=>" : "").join("")
-                } ${
-                  f.resolve && tools.recursiveCheckAsync(f) ||
-                    f.f.constructor.name === "AsyncFunction" ||
-                    table.some((x) => "isAsync" in x && x.isAsync === true)
-                    ? o && "branch" in o ? " r=>async b=> " : " async r=> "
-                    : o && "branch" in o
-                    ? "r=>b=>"
-                    : "r=>"
-                }({${table.map((x) => x.name + ":" + x.value).join(",")}})`,
-              )(),
-            )
-        )(
-          ((or) => nativeComponents(or)(f)(table))(o),
-        )
-    )(
-      nativeMaps(o)(f)(ar)(false),
-    ),
-  );
+export default (o?: specialOptions) => (f: Petition) => (isUsing: string[]) => {
+
+    // Base case: if 'isUsing' is empty and 'branch' is not in options, return the identity function
+    // TODO: change it and add the branch flag in the petition
+    if (isUsing.length === 0 && !(o && "branch" in o)) {
+      return (r: Request) => r;
+    }
+
+    // Generate the 'table' using nativeMaps
+    const table = nativeMaps(o)(f)(isUsing)(false);
+
+    // Generate 'functions' using nativeComponents
+    const functions = nativeComponents(o)(f)(table);
+
+    // Determine if asynchronous functions are needed
+    const needsAsync =
+      (f.resolve && tools.recursiveCheckAsync(f)) ||
+      f.f.constructor.name === "AsyncFunction" ||
+      table.some((x) => 'isAsync' in x &&  x.isAsync === true);
+
+    // Build the function chain prefix from 'table'
+    const functionChain = table
+      .filter((x) => x.type === 1)
+      .map((x) => `${x.name}=>`)
+      .join("");
+
+    
+    
+    // Determine the function signature based on options
+    let functionSignature = "";
+    if (needsAsync) {
+      functionSignature = o && "branch" in o ? " r=>async b=> " : " async r=> ";
+    } else {
+      functionSignature = o && "branch" in o ? "r=>b=>" : "r=>";
+    }
+
+    // Build the function body, injecting variables from 'table'
+    const functionBody = `({${table.map((x) => `${x.name}:${x.value}`).join(",")}})`;
+
+    // Build the full function string
+    const functionString = `return ${functionChain} ${functionSignature} ${functionBody}`;
+
+    // Create the function using 'new Function'
+    const generatedFunc = new Function(functionString)();
+
+    // Reduce the functions over the generated function
+    const resultFunction = functions.reduce((s, k) => s(k), generatedFunc);
+
+    return resultFunction;
+  };

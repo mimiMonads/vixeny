@@ -13,7 +13,7 @@ type Table = {
 
 type CTX = WithPlugins<any, any, any, any, any, any, any, any, any>;
 
-export default (o?: FunRouterOptions<any>) =>
+const compose = (o?: FunRouterOptions<any>) =>
 (p: Petition): (ctx: Request) => Promise<Response> | Response =>
   ((isUsing) =>
     (
@@ -169,3 +169,5 @@ const asyncMaybeOf =
       return await m(r)(error);
     }
   };
+
+  export default compose

@@ -5,7 +5,7 @@ import tools from "./composerTools.ts";
 
 export default (o?: FunRouterOptions<any>) =>
 (f: Petition) =>
-(ar: string[]) =>
+(isUsing: string[]) =>
 (mutable: boolean) =>
   ([
     { name: "req", value: mutable ? "r[0]" : "r", type: 0 },
@@ -91,4 +91,4 @@ export default (o?: FunRouterOptions<any>) =>
         : x,
       type: 1,
     })),
-  )).filter((x) => ar.includes(x.name));
+  )).filter((x) => isUsing.includes(x.name));
