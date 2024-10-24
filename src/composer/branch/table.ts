@@ -17,11 +17,11 @@ export default (o?: specialOptions) =>
             ? ((a) =>
             (k: (arg0: any) => any) =>
             (r: Request) =>
-            async (b: unknown) => k(await a(r)(b)))(composed)(x.f)
+            async (b: unknown) => k(await a(r)(b)))(composed)(p.f)
             : ((a) => (k: (arg0: any) => any) => (r: Request) => (b: unknown) =>
               k(a(r)(b)))(composed)(p.f)
       )(
-        aComposer(o ? { ...o, branch: false } : { branch: false })(x)(
+        aComposer(o ? { ...o, branch: false } : { branch: false })(p)(
           tools.isUsing(o)(p),
         ),
       ),
