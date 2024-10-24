@@ -1,26 +1,22 @@
 name: Node.js CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  test:
+  build:
+
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [21.x]
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '21' 
-
-      - name: Install dependencies
       - run: npx jsr add @cross/test @std/assert
-      - run: "echo '{ \"type\": \"module\" }' > package.json"
-
-      - name: Run tests
-        run: |
-          find . -type f -name "*.test.ts" | while read -r file; do
-            echo "Running tests in $file"
-            npx --yes tsx --test $file
-          done
+      - run: "echo '{ \"type\": \"module\" }' > package.json" # Needed for tsx to work
+      - run: npx --yes tsx --test *.test.ts
