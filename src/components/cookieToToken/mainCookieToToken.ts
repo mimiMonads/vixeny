@@ -30,8 +30,7 @@ export const f =
               ))(p.crypto.globalKey)(
                 getCookies,
               )
-            : void console.error("No token found, please use 'token' ") ??
-              ((_: string) => null)
+            : ((_: string) => null)
       )(
         plugins.pluginIsUsing(p)("token"),
       )

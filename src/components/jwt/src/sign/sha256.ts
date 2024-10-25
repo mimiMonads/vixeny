@@ -1,10 +1,12 @@
 import type BufferProto from "node:buffer";
+import type { BinaryLike } from "node:crypto";
 import type nodeCrypto from "node:crypto";
 
-type HashFunction = (data: Uint8Array) => nodeCrypto.Hash;
+type HashFunction = (data: BinaryLike) => nodeCrypto.Hash;
+const enconder = new TextEncoder();
 
 export default (Buffer: typeof BufferProto.Buffer) =>
-(sha256: HashFunction) =>
+(hash: HashFunction) =>
 (
   header = Buffer.from(JSON.stringify({
     alg: "HS256",
@@ -18,16 +20,16 @@ export default (Buffer: typeof BufferProto.Buffer) =>
         (
           (json) =>
             header + json + "." +
-            sha256(
-              Buffer.concat([
+            hash(
+              concatUint8Arrays(
                 lf,
-                sha256(
-                  Buffer.concat([
+                hash(
+                  concatUint8Arrays(
                     rg,
-                    Buffer.from(header + json),
-                  ]),
-                ).digest(),
-              ]),
+                    enconder.encode(header + json),
+                  ),
+                ).digest() as unknown as Uint8Array,
+              ),
             )
               .digest().toString("base64url")
         )(
@@ -37,8 +39,15 @@ export default (Buffer: typeof BufferProto.Buffer) =>
         )
   )(
     key.length > 64
-      ? sha256(key).digest()
+      ? Uint8Array.of(...hash(key).digest())
       : key.length < 64
-      ? Buffer.concat([key, Buffer.alloc(64 - key.length)])
+      ? Uint8Array.of(...Buffer.concat([key, Uint8Array.of(64 - key.length)]))
       : key,
   );
+
+const concatUint8Arrays = (a: Uint8Array, b: ArrayLike<number>) => {
+  let result = new Uint8Array(a.length + b.length);
+  result.set(a, 0);
+  result.set(b, a.length);
+  return result;
+};
