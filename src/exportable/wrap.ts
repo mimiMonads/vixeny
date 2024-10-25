@@ -541,11 +541,12 @@ export const wrap = ((o?) => (a = []) => ({
       { ...ob, type: "base" } as Petition,
     )),
 
-  logPaths: () =>
+  logPaths: () => (
     void a.forEach(
       (x) => displayPaths(x),
-    ) ?? wrap(o)(a),
-  debugLast: () =>
+    ), wrap(o)(a)
+  ),
+  debugLast: () => (
     void (
       (isUsing) =>
         display(o)(a[a.length - 1])({
@@ -554,8 +555,8 @@ export const wrap = ((o?) => (a = []) => ({
         })
     )(
       composerTools.isUsing(o)(a[a.length - 1]),
-    ) ??
-      wrap(o)(a),
+    ), wrap(o)(a)
+  ),
   handleRequest: (s: string) =>
   (
     injection: Partial<
@@ -572,8 +573,7 @@ export const wrap = ((o?) => (a = []) => ({
             } as unknown as Petition,
           )(r),
         )
-      : void console.error(s + " was not found.") ??
-        ((_: Request) => Promise.resolve(null))) as unknown as (
+      : ((_: Request) => Promise.resolve(null))) as unknown as (
         r: Request,
       ) => Promise<Response>,
   testRequests: () =>

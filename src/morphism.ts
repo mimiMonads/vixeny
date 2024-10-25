@@ -496,6 +496,7 @@ type MapOptions = {
   specificReturnType?: boolean;
   returnType?: any;
   hasMaybe?: boolean;
+  maybe?: boolean;
 };
 
 type HasPath<P extends MapOptions> = P extends { hasPath: true }
@@ -583,7 +584,8 @@ export type Morphism<
     ): MO["specificReturnType"] extends true ? MO["returnType"]
       : MO["type"] extends "response" ? Response | Promise<Response>
       : MO["type"] extends "request" ? Response | Promise<Response>
-      : MO["type"] extends "add" ? Response | Promise<Response> | BodyInit | Promise<BodyInit> | null
+      : MO["type"] extends "add"
+        ? Response | Promise<Response> | BodyInit | Promise<BodyInit> | null
       : MO["type"] extends "base" ? BodyInit | Promise<BodyInit> | null
       : R;
   };

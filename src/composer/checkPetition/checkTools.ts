@@ -24,7 +24,7 @@ export default (((regex) => ({
         (innerString) =>
           innerString.slice(
             innerString.indexOf("("),
-            innerString.indexOf(")") + 1 ?? innerString.indexOf("=") + 1,
+            innerString.indexOf(")") + 1 || innerString.indexOf("=") + 1,
           )
       )(
         f.toString(),

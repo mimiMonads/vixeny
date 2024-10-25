@@ -13,29 +13,30 @@ type Table = {
 
 type CTX = WithPlugins<any, any, any, any, any, any, any, any, any>;
 
-const compose = (o?: FunRouterOptions<any>) =>
-(p: Petition): (ctx: Request) => Promise<Response> | Response =>
-  ((isUsing) =>
-    (
-      (table) =>
-        resolveF(o)(table)(p)(isUsing) as (
-          ctx: Request,
-        ) => Promise<Response> | Response
-    )(
-      //elements int table
-      {
-        isAsync: tools.localAsync(o)(p)(isUsing),
-        asyncResolve: tools.recursiveCheckAsync(p),
-        headers: typeof p.headings === "object" || typeof o?.cors === "object"
-          ? {
-            ...p.headings,
-            headers: joinHeaders(o)(p),
-          }
-          : null,
-      },
-    ))(
-      tools.isUsing(o)(p),
-    );
+const compose =
+  (o?: FunRouterOptions<any>) =>
+  (p: Petition): (ctx: Request) => Promise<Response> | Response =>
+    ((isUsing) =>
+      (
+        (table) =>
+          resolveF(o)(table)(p)(isUsing) as (
+            ctx: Request,
+          ) => Promise<Response> | Response
+      )(
+        //elements int table
+        {
+          isAsync: tools.localAsync(o)(p)(isUsing),
+          asyncResolve: tools.recursiveCheckAsync(p),
+          headers: typeof p.headings === "object" || typeof o?.cors === "object"
+            ? {
+              ...p.headings,
+              headers: joinHeaders(o)(p),
+            }
+            : null,
+        },
+      ))(
+        tools.isUsing(o)(p),
+      );
 
 const resolveF =
   (o?: FunRouterOptions<any>) =>
@@ -170,4 +171,4 @@ const asyncMaybeOf =
     }
   };
 
-  export default compose
+export default compose;
