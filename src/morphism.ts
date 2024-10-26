@@ -60,7 +60,7 @@ export const petitions = {
    * });
    * ```
    */
-  maybe: <
+  onError: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
   >(o?: O) =>
@@ -92,8 +92,8 @@ export const petitions = {
     ...I,
     o,
     thrush: {
-      name: "maybe",
-      value: "maybe(r)(b)",
+      name: "onError",
+      value: "onError(r)(b)",
       type: 0,
       isAsync: false,
     },
@@ -607,8 +607,8 @@ export type Morphism<
 > = {
   readonly active?: MO["isAPetition"] extends true ? boolean : never;
   readonly isUsing?: MO["isAPetition"] extends true ? string[] : never;
-  // TODO: Adding support for maybe
-  readonly maybe?: MO["hasMaybe"] extends true ? (
+  // TODO: Adding support for error
+  readonly onError?: MO["hasMaybe"] extends true ? (
       a: WithPlugins<
         RM,
         BM,
@@ -803,7 +803,7 @@ interface Ctx<
   TH extends boolean | undefined,
   AR = any,
 > {
-  maybe: TH extends true ? unknown : never;
+  error: TH extends true ? unknown : never;
   args: AR extends undefined ? never : AR;
   /**
    * The `resolve` property is integral to ensuring that all necessary data is fetched or calculations are performed before the main function (`f`) of a morphism is executed. It consists of a map where each key corresponds to a resolve function that is executed prior to `f`. The results of these resolves are then made available in the `CTX` for use in the main function.

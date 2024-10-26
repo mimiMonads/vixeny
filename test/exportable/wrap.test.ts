@@ -51,12 +51,12 @@ const wrapped = wrap(
     path: "/customHello",
     f: () => new Response("customHello"),
   })
-  .add({
+  .route({
     path: "/customsPlugin",
     f: ({ hello, method }) => new Response(hello() + method),
-    maybe: ({ maybe }) =>
-      maybe instanceof Response
-        ? maybe
+    onError: ({ error }) =>
+      error instanceof Response
+        ? error
         : new Response("Critical error", { status: 501 }),
   })
   .petitionWithoutCTX({

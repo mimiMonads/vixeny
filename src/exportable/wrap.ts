@@ -14,6 +14,70 @@ import type {
 } from "../morphism.ts";
 import type { ParamsMethod } from "../router/types.ts";
 
+
+/**
+ * `MethodMorphism` is a utility type that defines the function signatures for HTTP method-specific
+ * route definitions such as `get`, `post`, `delete`, and `put` within the `Wrap` interface.
+ *
+ * This type extends the `Morphism` type but omits the `method` field from its parameters. The HTTP
+ * method is enforced by the method name itself (e.g., `get`, `post`), ensuring that users cannot
+ * override the method accidentally by specifying it in the parameters.
+ *
+ *
+ * @example
+ * ```typescript
+ * const api = wrap()()
+ *   .get({
+ *     path: "/users",
+ *     f: () => "Get Users",
+ *   })
+ *   .post({
+ *     path: "/users",
+ *     f: () => "Create User",
+ *   })
+ *   .delete({
+ *     path: "/users/:id",
+ *     f: (c) => `Delete User ${c.param.id}`,
+ *   })
+ *   .put({
+ *     path: "/users/:id",
+ *     f: (c) => `Update User ${c.param.id}`,
+ *   });
+ * ```
+ * 
+ * @typeparam O - The type of the router options (`FunRouterOptions`).
+ */
+type MethodMorphism<O extends FunRouterOptions<any>> = <
+  RM extends ResolveMap<any>,
+  BM extends BranchMap<any>,
+  QO extends QueryOptions,
+  PO extends ParamOptions,
+  CO extends CryptoOptions,
+  AR = any,
+  R = any,
+>(
+  ob: Omit<
+    Morphism<
+      {
+        type: "add";
+        hasPath: true;
+        isAPetition: true;
+        typeNotNeeded: true;
+        hasMaybe: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      O,
+      CO,
+      AR,
+      R
+    >,
+    "method"
+  >,
+) => Wrap<O>;
+
 /**
  * The second `()` can either be left empty or used to add another `wrap`.
  * This allows for flexible composition of your application's routing and request handling.
@@ -33,6 +97,11 @@ import type { ParamsMethod } from "../router/types.ts";
  * For more details, see the [first-and-second-curried](https://vixeny.dev/library/wrap#first-and-second-curried).
  */
 type Wrap<O extends FunRouterOptions<any>> = {
+  get: MethodMorphism<O>;
+  post: MethodMorphism<O>;
+  delete: MethodMorphism<O>;
+  put: MethodMorphism<O>;
+  route: MethodMorphism<O>;
   /**
    *    * @deprecated use `add` instead
    *
@@ -51,51 +120,6 @@ type Wrap<O extends FunRouterOptions<any>> = {
     method?: ParamsMethod;
     r: (ctx: Request) => Response | Promise<Response>;
   }) => Wrap<O>;
-  /**
-   * Defines a standard Petition where `f` returns either a `BodyInit` or a `Promise<BodyInit>`.
-   *
-   * @example
-   * Usage example:
-   * ```javascript
-   * export const root = wrap()()
-   *   .add({
-   *     path: "/",
-   *     f: () => "helloWorld",
-   *   })
-   *   .add({
-   *     path: "/withRequest",
-   *     f: () => new Response("helloWorld"),
-   *   })
-   * ```
-   * For more details, see the [customPetition](https://vixeny.dev/library/wrap#custompetition.
-   */
-  add: <
-    RM extends ResolveMap<any>,
-    BM extends BranchMap<any>,
-    QO extends QueryOptions,
-    PO extends ParamOptions,
-    CO extends CryptoOptions,
-    AR = any,
-    R = any,
-  >(
-    ob: Morphism<
-      {
-        type: "add";
-        hasPath: true;
-        isAPetition: true;
-        typeNotNeeded: true;
-        hasMaybe: true;
-      },
-      RM,
-      BM,
-      QO,
-      PO,
-      O,
-      CO,
-      AR,
-      R
-    >,
-  ) => Wrap<O>;
   /**
    * @deprecated use `add` instead
    *
@@ -529,7 +553,7 @@ export const wrap = ((o?) => (a = []) => ({
       //@ts-ignore
       { ...ob, type: "request" } as Petition,
     )),
-  add: (
+  route: (
     ob,
   ) =>
     wrap(o)(a.concat(
@@ -585,7 +609,30 @@ export const wrap = ((o?) => (a = []) => ({
         [...a],
       ),
     ),
-
+    get: (ob) =>
+      wrap(o)(
+        a.concat(
+          { ...ob, method: "GET", type: "add" } as Petition,
+        ),
+      ),
+    post: (ob) =>
+      wrap(o)(
+        a.concat(
+          { ...ob, method: "POST", type: "add" } as Petition,
+        ),
+      ),
+    delete: (ob) =>
+      wrap(o)(
+        a.concat(
+          { ...ob, method: "DELETE", type: "add" } as Petition,
+        ),
+      ),
+    put: (ob) =>
+      wrap(o)(
+        a.concat(
+          { ...ob, method: "PUT", type: "add" } as Petition,
+        ),
+      ),
   changeOptions: (o) =>
     wrap({ ...o })(
       [...a],
