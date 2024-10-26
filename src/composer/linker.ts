@@ -9,7 +9,7 @@ export type specialOptions = {
   branch?: boolean;
 } & FunRouterOptions<any>;
 
-export default (o?: specialOptions) => (f: Petition) => (isUsing: string[]) => {
+export default (o?: specialOptions) => (p: Petition) => (isUsing: string[]) => {
   // Base case: if 'isUsing' is empty and 'branch' is not in options, return the identity function
   // TODO: change it and add the branch flag in the petition
   if (isUsing.length === 0 && !(o && "branch" in o)) {
@@ -17,14 +17,14 @@ export default (o?: specialOptions) => (f: Petition) => (isUsing: string[]) => {
   }
 
   // Generate the 'table' using nativeMaps
-  const table = nativeMaps(o)(f)(isUsing)(false);
+  const table = nativeMaps(o)(p)(isUsing)(false);
 
   // Generate 'functions' using nativeComponents
-  const functions = nativeComponents(o)(f)(table);
+  const functions = nativeComponents(o)(p)(table);
 
   // Determine if asynchronous functions are needed
-  const needsAsync = (f.resolve && tools.recursiveCheckAsync(f)) ||
-    f.f.constructor.name === "AsyncFunction" ||
+  const needsAsync = (p.resolve && tools.recursiveCheckAsync(p)) ||
+    p.f.constructor.name === "AsyncFunction" ||
     table.some((x) => "isAsync" in x && x.isAsync === true);
 
   // Build the function chain prefix from 'table'

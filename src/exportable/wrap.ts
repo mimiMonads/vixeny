@@ -84,6 +84,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
         hasPath: true;
         isAPetition: true;
         typeNotNeeded: true;
+        hasMaybe: true;
       },
       RM,
       BM,
@@ -126,6 +127,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
         hasPath: true;
         isAPetition: true;
         typeNotNeeded: true;
+        hasMaybe: true;
       },
       RM,
       BM,
@@ -169,6 +171,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
         typeNotNeeded: true;
         hasPath: true;
         isAPetition: true;
+        hasMaybe: true;
       },
       RM,
       BM,
