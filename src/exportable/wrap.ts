@@ -14,7 +14,6 @@ import type {
 } from "../morphism.ts";
 import type { ParamsMethod } from "../router/types.ts";
 
-
 /**
  * `MethodMorphism` is a utility type that defines the function signatures for HTTP method-specific
  * route definitions such as `get`, `post`, `delete`, and `put` within the `Wrap` interface.
@@ -22,7 +21,6 @@ import type { ParamsMethod } from "../router/types.ts";
  * This type extends the `Morphism` type but omits the `method` field from its parameters. The HTTP
  * method is enforced by the method name itself (e.g., `get`, `post`), ensuring that users cannot
  * override the method accidentally by specifying it in the parameters.
- *
  *
  * @example
  * ```typescript
@@ -44,7 +42,7 @@ import type { ParamsMethod } from "../router/types.ts";
  *     f: (c) => `Update User ${c.param.id}`,
  *   });
  * ```
- * 
+ *
  * @typeparam O - The type of the router options (`FunRouterOptions`).
  */
 type MethodMorphism<O extends FunRouterOptions<any>> = <
@@ -609,30 +607,30 @@ export const wrap = ((o?) => (a = []) => ({
         [...a],
       ),
     ),
-    get: (ob) =>
-      wrap(o)(
-        a.concat(
-          { ...ob, method: "GET", type: "add" } as Petition,
-        ),
+  get: (ob) =>
+    wrap(o)(
+      a.concat(
+        { ...ob, method: "GET", type: "add" } as Petition,
       ),
-    post: (ob) =>
-      wrap(o)(
-        a.concat(
-          { ...ob, method: "POST", type: "add" } as Petition,
-        ),
+    ),
+  post: (ob) =>
+    wrap(o)(
+      a.concat(
+        { ...ob, method: "POST", type: "add" } as Petition,
       ),
-    delete: (ob) =>
-      wrap(o)(
-        a.concat(
-          { ...ob, method: "DELETE", type: "add" } as Petition,
-        ),
+    ),
+  delete: (ob) =>
+    wrap(o)(
+      a.concat(
+        { ...ob, method: "DELETE", type: "add" } as Petition,
       ),
-    put: (ob) =>
-      wrap(o)(
-        a.concat(
-          { ...ob, method: "PUT", type: "add" } as Petition,
-        ),
+    ),
+  put: (ob) =>
+    wrap(o)(
+      a.concat(
+        { ...ob, method: "PUT", type: "add" } as Petition,
       ),
+    ),
   changeOptions: (o) =>
     wrap({ ...o })(
       [...a],

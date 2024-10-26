@@ -91,11 +91,11 @@ export const petitions = {
   ) => ({
     ...I,
     o,
+    // This is done to trigger a flag in compose.ts in the compposer
     thrush: {
       name: "onError",
       value: "onError(r)(b)",
-      type: 0,
-      isAsync: false,
+      type: 1,
     },
   }),
   /**
@@ -594,6 +594,13 @@ type PetitionHeader = {
   status?: number;
 };
 
+type Context = {
+  resolve?: ResolveMap<any>;
+  branch?: BranchMap<any>;
+  query?: QueryOptions;
+  param?: ParamOptions;
+  crypto?: CryptoOptions;
+};
 export type Morphism<
   MO extends MapOptions = MapOptions,
   RM extends ResolveMap<any> = any,

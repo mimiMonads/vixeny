@@ -19,9 +19,24 @@ const compose =
     ((isUsing) =>
       (
         (table) =>
-          resolveF(o)(table)(p)(isUsing) as (
-            ctx: Request,
-          ) => Promise<Response> | Response
+          p.thrush && typeof p.thrush === "object" && p.onError
+            ? onError(table.isAsync)(
+              resolveF(o)(table)(p)(isUsing) as (
+                ctx: Request,
+              ) => Response,
+            )(
+              resolveF(o)(table)({
+                // Uses the same petition's body and overdrives `onError` to avoid infinite recursions
+                ...p,
+                f: p.onError,
+                onError: undefined,
+              })(isUsing) as (
+                ctx: Request,
+              ) => (error: unknown) => Response,
+            )
+            : resolveF(o)(table)(p)(isUsing) as (
+              ctx: Request,
+            ) => Promise<Response> | Response
       )(
         //elements int table
         {
@@ -44,7 +59,7 @@ const resolveF =
   (p: Petition) =>
   (isUsing: string[]) => {
     switch (p.type) {
-      // Standart method
+      // Standard method
       case "add":
         return getMethodForAdd(table.isAsync || table.asyncResolve)(
           table.headers ? true : false,
@@ -155,14 +170,18 @@ const methodForAsyncAdd = () => ((headers: ResponseInit) =>
 ) =>
 (context: (r: Request) => CTX) =>
 async (request: Request): Promise<Response> => {
-  const result = await f(await context(request));
+  const result = await f(context(request));
 
   return result instanceof Response ? result : new Response(result, headers);
 });
 
-const asyncMaybeOf =
+// On error wraps
+
+const onError = (isAsync: boolean) => isAsync ? asyncOnError : syncOnError;
+
+const asyncOnError =
   (f: (f: Request) => Promise<Response> | Response) =>
-  (m: (f: Request) => (error: unknown) => Promise<Response> | Response) =>
+  (m: (f: Request) => (b: unknown) => Promise<Response> | Response) =>
   async (r: Request) => {
     try {
       return await f(r);
@@ -171,4 +190,14 @@ const asyncMaybeOf =
     }
   };
 
+const syncOnError =
+  (f: (f: Request) => Response) =>
+  (m: (f: Request) => (b: unknown) => Response) =>
+  (r: Request) => {
+    try {
+      return f(r);
+    } catch (error) {
+      return m(r)(error);
+    }
+  };
 export default compose;

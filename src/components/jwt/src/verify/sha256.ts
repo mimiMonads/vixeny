@@ -3,7 +3,7 @@ import type { BinaryLike } from "node:crypto";
 import type nodeCrypto from "node:crypto";
 
 type HashFunction = (data: BinaryLike) => nodeCrypto.Hash;
-const enconder = new TextEncoder();
+const encoder = new TextEncoder();
 
 export default (Buffer: typeof BufferProto.Buffer) =>
 (hash: HashFunction) =>
@@ -19,7 +19,7 @@ export default (Buffer: typeof BufferProto.Buffer) =>
                   hash(
                     concatUint8Arrays(
                       rg,
-                      enconder.encode(
+                      encoder.encode(
                         message.substring(0, message.lastIndexOf(".")),
                       ),
                     ),
