@@ -92,7 +92,7 @@ export const petitions = {
     ...I,
     o,
     // This is done to trigger a flag in compose.ts in the compposer
-    thrush: {
+    applyTo: {
       name: "onError",
       value: "onError(r)(b)",
       type: 1,
@@ -515,7 +515,13 @@ export const petitions = {
     ] as Petition[],
 };
 
-type typeMorphism = "response" | "request" | "morphism" | "base" | "add";
+type typeMorphism =
+  | "response"
+  | "request"
+  | "morphism"
+  | "base"
+  | "add"
+  | "applyTo";
 
 export type ResolveMap<T> = {
   [K in keyof T]: T[K] extends Morphism<
@@ -547,7 +553,7 @@ export type BranchMap<T> = {
     : never;
 };
 
-type ThrushCTX = {
+type ApplyToCTX = {
   name: string;
   value: string;
   type: 0 | 1;
@@ -594,13 +600,6 @@ type PetitionHeader = {
   status?: number;
 };
 
-type Context = {
-  resolve?: ResolveMap<any>;
-  branch?: BranchMap<any>;
-  query?: QueryOptions;
-  param?: ParamOptions;
-  crypto?: CryptoOptions;
-};
 export type Morphism<
   MO extends MapOptions = MapOptions,
   RM extends ResolveMap<any> = any,
@@ -640,7 +639,7 @@ export type Morphism<
   readonly query?: QO;
   readonly cookie?: CookieOptions;
   readonly param?: PO;
-  readonly thrush?: MO["specialVisible"] extends true ? ThrushCTX : never;
+  readonly applyTo?: MO["specialVisible"] extends true ? ApplyToCTX : never;
   readonly plugins?: ExtractPluginTypes<RO>;
   readonly headings?: PetitionHeader;
   readonly isAsync?: MO["isAPetition"] extends true | false ? boolean
@@ -762,8 +761,8 @@ export type WithPlugins<
     : {})
   & CryptoContext<CR>;
 
-// type Thrush<TH extends ThrushCTX | undefined> =
-//     TH extends ThrushCTX
+// type ApplyTo<TH extends ApplyToCTX | undefined> =
+//     TH extends ApplyToCTX
 //       ?  TH['name']
 //       : {}
 

@@ -19,24 +19,9 @@ const compose =
     ((isUsing) =>
       (
         (table) =>
-          p.thrush && typeof p.thrush === "object" && p.onError
-            ? onError(table.isAsync)(
-              resolveF(o)(table)(p)(isUsing) as (
-                ctx: Request,
-              ) => Response,
-            )(
-              resolveF(o)(table)({
-                // Uses the same petition's body and overdrives `onError` to avoid infinite recursions
-                ...p,
-                f: p.onError,
-                onError: undefined,
-              })(isUsing) as (
-                ctx: Request,
-              ) => (error: unknown) => Response,
-            )
-            : resolveF(o)(table)(p)(isUsing) as (
-              ctx: Request,
-            ) => Promise<Response> | Response
+          resolveF(o)(table)(p)(isUsing) as (
+            ctx: Request,
+          ) => Promise<Response> | Response
       )(
         //elements int table
         {
@@ -82,7 +67,6 @@ const resolveF =
           linker(o)(p)(isUsing),
         );
 
-      // Passes value, mainly used for `resolve` and `branch`
       default:
         return getResponse(table.isAsync || table.asyncResolve)()(p.f)(
           linker(o)(p)(isUsing),
@@ -177,6 +161,15 @@ async (request: Request): Promise<Response> => {
 
 // On error wraps
 
+const getApplyTo = (isAsync: boolean) =>
+  isAsync
+    //@ts-ignore-start
+    ? () => (f) => (context) => (request) => async (error) =>
+      await f(await context(request)(error))
+    //@ts-ignore
+    : () => (f) => (context) => (request) => (error) =>
+      f(context(request)(error));
+
 const onError = (isAsync: boolean) => isAsync ? asyncOnError : syncOnError;
 
 const asyncOnError =
@@ -197,6 +190,8 @@ const syncOnError =
     try {
       return f(r);
     } catch (error) {
+      console.log(m.toString());
+
       return m(r)(error);
     }
   };
