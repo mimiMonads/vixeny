@@ -6,23 +6,22 @@ export default (o?: specialOptions) =>
 (path: string) =>
 (table: BranchOptions) =>
   table
-    .map((x) => ({ ...x, path: path }))
-    .map((x) => ({
-      name: x.name,
+    .map((p) => ({ ...p, path: path }))
+    .map((p) => ({
+      name: p.name,
       f: (
         (composed) =>
-          x.f.constructor.name === "AsyncFunction" ||
+          p.f.constructor.name === "AsyncFunction" ||
             composed.constructor.name === "AsyncFunction"
-            //void console.log(composed.toString()) ??
             ? ((a) =>
             (k: (arg0: any) => any) =>
             (r: Request) =>
-            async (b: unknown) => k(await a(r)(b)))(composed)(x.f)
+            async (b: unknown) => k(await a(r)(b)))(composed)(p.f)
             : ((a) => (k: (arg0: any) => any) => (r: Request) => (b: unknown) =>
-              k(a(r)(b)))(composed)(x.f)
+              k(a(r)(b)))(composed)(p.f)
       )(
-        aComposer(o ? { ...o, branch: false } : { branch: false })(x)(
-          tools.isUsing(o)(x),
+        aComposer(o ? { ...o, branch: false } : { branch: false })(p)(
+          tools.isUsing(o)(p),
         ),
       ),
     }));

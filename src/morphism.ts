@@ -1,5 +1,4 @@
 import type { FileHandler } from "./components/io/mainIO.ts";
-import { isUsing } from "./components/queries/mainQueries.ts";
 import composerTools from "./composer/composerTools.ts";
 import type { CyclePluginMap, FunRouterOptions } from "./options.ts";
 import type { ParamsMethod } from "./router/types.ts";
@@ -9,6 +8,8 @@ export type Petition = Morphism<
     isAPetition: true;
     type: typeMorphism;
     hasPath: true;
+    hasMaybe: true;
+    specialVisible: true;
   },
   any,
   any,
@@ -37,6 +38,66 @@ export type ResolveMorphism = Morphism<
  * Types Morphisims
  */
 export const petitions = {
+  /**
+   * Maybe implementation
+   *
+   * // TODO: add info
+   *
+   * @param {O} [options] - Optional configuration options that may include plugin settings.
+   * @returns {Function} A function that accepts a Morphism defining an HTTP petition.
+   *
+   * @example
+   * Example usage:
+   * ```typescript
+   * import { petitions } from 'vixeny';
+   *
+   * const =
+   *
+   * const standard = petitions.custom()({
+   *   path: '/yourPath',
+   *
+   *   f: ctx => new Response(ctx.query.hello ?? 'queryNotFound')
+   * });
+   * ```
+   */
+  onError: <
+    FC extends CyclePluginMap,
+    O extends FunRouterOptions<FC>,
+  >(o?: O) =>
+  <
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    RO extends O,
+    CO extends CryptoOptions,
+    AR = any,
+    R = any,
+  >(
+    I: Morphism<
+      {
+        hasMaybe: true;
+        specialVisible: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AR,
+      R
+    >,
+  ) => ({
+    ...I,
+    o,
+    // This is done to trigger a flag in compose.ts in the compposer
+    applyTo: {
+      name: "onError",
+      value: "onError(r)(b)",
+      type: 1,
+    },
+  }),
   /**
    * Enhances a function with additional typings for handling HTTP requests within the 'vixeny' framework.
    * This function binds the provided Morphism to the rules set by `composer`, producing a typed `Petition`.
@@ -454,7 +515,13 @@ export const petitions = {
     ] as Petition[],
 };
 
-type typeMorphism = "response" | "request" | "morphism" | "base";
+type typeMorphism =
+  | "response"
+  | "request"
+  | "morphism"
+  | "base"
+  | "add"
+  | "applyTo";
 
 export type ResolveMap<T> = {
   [K in keyof T]: T[K] extends Morphism<
@@ -486,6 +553,10 @@ export type BranchMap<T> = {
     : never;
 };
 
+type ApplyToCTX = {
+  type: "onError";
+};
+
 type MapOptions = {
   hasPath?: boolean;
   typeNotNeeded?: boolean;
@@ -495,6 +566,9 @@ type MapOptions = {
   mutable?: true;
   specificReturnType?: boolean;
   returnType?: any;
+  isMaybe?: boolean;
+  hasMaybe?: boolean;
+  specialVisible?: boolean;
 };
 
 type HasPath<P extends MapOptions> = P extends { hasPath: true }
@@ -537,6 +611,24 @@ export type Morphism<
 > = {
   readonly active?: MO["isAPetition"] extends true ? boolean : never;
   readonly isUsing?: MO["isAPetition"] extends true ? string[] : never;
+  // TODO: Adding support for error
+  readonly onError?: MO["hasMaybe"] extends true ? (
+      a: WithPlugins<
+        RM,
+        BM,
+        QO,
+        PO,
+        RO,
+        CO,
+        true,
+        PetitionOptions<
+          [Extract<keyof RO["cyclePlugin"], string>],
+          CO
+        >,
+        AT
+      >,
+    ) => Promise<Response> | Response
+    : never;
   readonly resolve?: RM;
   readonly branch?: BM;
   readonly method?: ParamsMethod;
@@ -545,6 +637,7 @@ export type Morphism<
   readonly query?: QO;
   readonly cookie?: CookieOptions;
   readonly param?: PO;
+  readonly applyTo?: MO["specialVisible"] extends true ? ApplyToCTX : never;
   readonly plugins?: ExtractPluginTypes<RO>;
   readonly headings?: PetitionHeader;
   readonly isAsync?: MO["isAPetition"] extends true | false ? boolean
@@ -570,7 +663,7 @@ export type Morphism<
         PO,
         RO,
         CO,
-        {},
+        false,
         PetitionOptions<
           [Extract<keyof RO["cyclePlugin"], string>],
           CO
@@ -580,6 +673,8 @@ export type Morphism<
     ): MO["specificReturnType"] extends true ? MO["returnType"]
       : MO["type"] extends "response" ? Response | Promise<Response>
       : MO["type"] extends "request" ? Response | Promise<Response>
+      : MO["type"] extends "add"
+        ? Response | Promise<Response> | BodyInit | Promise<BodyInit> | null
       : MO["type"] extends "base" ? BodyInit | Promise<BodyInit> | null
       : R;
   };
@@ -645,23 +740,29 @@ type specialElements = {
   readonly hasHeaders?: true;
 } | {};
 
-type WithPlugins<
+export type WithPlugins<
   R extends ResolveMap<any>,
   B extends BranchMap<any>,
   QS extends QueryOptions,
   PA extends ParamOptions,
   O extends FunRouterOptions<any>,
   CR extends CryptoOptions,
-  UNI extends specialElements,
+  // TODO: Please update the Ctx and the position of TH
+  TH extends boolean | undefined,
   OPT extends PetitionOptions<any, any>,
   AR = any,
 > =
-  & Ctx<R, B, QS, PA, O, CR, { hasHeaders: true }, OPT, AR>
+  & Ctx<R, B, QS, PA, O, CR, { hasHeaders: true }, TH, AR>
   & (O extends { cyclePlugin: infer CPM } ? [keyof CPM] extends [never] ? {}
     : CPM extends CyclePluginMap ? CyclePluginFunctions<CPM>
     : never
     : {})
   & CryptoContext<CR>;
+
+// type ApplyTo<TH extends ApplyToCTX | undefined> =
+//     TH extends ApplyToCTX
+//       ?  TH['name']
+//       : {}
 
 type CyclePluginFunctions<CPM extends CyclePluginMap> = {
   [K in keyof CPM]: CPM[K] extends
@@ -703,9 +804,10 @@ interface Ctx<
   O extends FunRouterOptions<any>,
   CR extends CryptoOptions,
   UNI extends specialElements,
-  OPT extends PetitionOptions<any, any>,
+  TH extends boolean | undefined,
   AR = any,
 > {
+  error: TH extends true ? unknown : never;
   args: AR extends undefined ? never : AR;
   /**
    * The `resolve` property is integral to ensuring that all necessary data is fetched or calculations are performed before the main function (`f`) of a morphism is executed. It consists of a map where each key corresponds to a resolve function that is executed prior to `f`. The results of these resolves are then made available in the `CTX` for use in the main function.

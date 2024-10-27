@@ -35,11 +35,11 @@ const opt = plugins.globalOptions({
 const wrapped = wrap(
   opt,
 )()
-  .stdPetition({
+  .get({
     path: "/stdHello",
     f: () => "stdHello",
   })
-  .stdPetition({
+  .get({
     path: "/stdPlugin",
     plugins: {
       hello: "string",
@@ -47,13 +47,20 @@ const wrapped = wrap(
     },
     f: (ctx) => ctx.hello() + ctx.method,
   })
-  .customPetition({
+  .get({
     path: "/customHello",
     f: () => new Response("customHello"),
   })
-  .customPetition({
+  .get({
     path: "/customsPlugin",
-    f: (ctx) => new Response(ctx.hello() + ctx.method),
+    f: ({ hello, method }) => {
+      throw new Response(hello() + method);
+      return new Response(hello() + method);
+    },
+    onError: ({ error }) =>
+      error instanceof Response
+        ? error
+        : new Response("Critical error", { status: 501 }),
   })
   .petitionWithoutCTX({
     path: "/withoutCTX",

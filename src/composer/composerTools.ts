@@ -78,6 +78,7 @@ const elements = (f: Petition) =>
         "io",
         "req",
         "date",
+        "error",
         f.resolve ? "resolve" : undefined,
         "mutable",
         f.branch ? "branch" : undefined,

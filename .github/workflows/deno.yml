@@ -17,10 +17,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.x # Uses latest deno version 1 
-      - run: deno add @cross/test @std/assert # Installs dependencies from jsr.io
-      - run: deno test -A 
+          deno-version: v2.x 
+      - run: deno add jsr:@cross/test jsr:@std/assert 
+      - run: deno test -A
 
       - name: Verify formatting
         run: deno fmt --check
-

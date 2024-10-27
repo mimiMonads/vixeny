@@ -15,6 +15,68 @@ import type {
 import type { ParamsMethod } from "../router/types.ts";
 
 /**
+ * `MethodMorphism` is a utility type that defines the function signatures for HTTP method-specific
+ * route definitions such as `get`, `post`, `delete`, and `put` within the `Wrap` interface.
+ *
+ * This type extends the `Morphism` type but omits the `method` field from its parameters. The HTTP
+ * method is enforced by the method name itself (e.g., `get`, `post`), ensuring that users cannot
+ * override the method accidentally by specifying it in the parameters.
+ *
+ * @example
+ * ```typescript
+ * const api = wrap()()
+ *   .get({
+ *     path: "/users",
+ *     f: () => "Get Users",
+ *   })
+ *   .post({
+ *     path: "/users",
+ *     f: () => "Create User",
+ *   })
+ *   .delete({
+ *     path: "/users/:id",
+ *     f: (c) => `Delete User ${c.param.id}`,
+ *   })
+ *   .put({
+ *     path: "/users/:id",
+ *     f: (c) => `Update User ${c.param.id}`,
+ *   });
+ * ```
+ *
+ * @typeparam O - The type of the router options (`FunRouterOptions`).
+ */
+type MethodMorphism<O extends FunRouterOptions<any>> = <
+  RM extends ResolveMap<any>,
+  BM extends BranchMap<any>,
+  QO extends QueryOptions,
+  PO extends ParamOptions,
+  CO extends CryptoOptions,
+  AR = any,
+  R = any,
+>(
+  ob: Omit<
+    Morphism<
+      {
+        type: "add";
+        hasPath: true;
+        isAPetition: true;
+        typeNotNeeded: true;
+        hasMaybe: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      O,
+      CO,
+      AR,
+      R
+    >,
+    "method"
+  >,
+) => Wrap<O>;
+
+/**
  * The second `()` can either be left empty or used to add another `wrap`.
  * This allows for flexible composition of your application's routing and request handling.
  *
@@ -33,7 +95,14 @@ import type { ParamsMethod } from "../router/types.ts";
  * For more details, see the [first-and-second-curried](https://vixeny.dev/library/wrap#first-and-second-curried).
  */
 type Wrap<O extends FunRouterOptions<any>> = {
+  get: MethodMorphism<O>;
+  post: MethodMorphism<O>;
+  delete: MethodMorphism<O>;
+  put: MethodMorphism<O>;
+  route: MethodMorphism<O>;
   /**
+   *    * @deprecated use `add` instead
+   *
    * `petitionWithoutCTX` allows to bypass the `composer` and it is not bind to it's rules, keeping the function untouched.
    *
    * ```js
@@ -50,6 +119,8 @@ type Wrap<O extends FunRouterOptions<any>> = {
     r: (ctx: Request) => Response | Promise<Response>;
   }) => Wrap<O>;
   /**
+   * @deprecated use `add` instead
+   *
    * Defines a standard Petition where `f` returns either a `BodyInit` or a `Promise<BodyInit>`.
    *
    * @example
@@ -78,6 +149,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
         hasPath: true;
         isAPetition: true;
         typeNotNeeded: true;
+        hasMaybe: true;
       },
       RM,
       BM,
@@ -90,6 +162,8 @@ type Wrap<O extends FunRouterOptions<any>> = {
     >,
   ) => Wrap<O>;
   /**
+   * @deprecated use `add` instead
+   *
    * `customPetition` allows for defining a custom Petition where `f` returns either a `Response`
    * or a `Promise<Response>`. This method is suitable for scenarios where the standard response
    * structure does not fit your needs.
@@ -119,6 +193,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
         typeNotNeeded: true;
         hasPath: true;
         isAPetition: true;
+        hasMaybe: true;
       },
       RM,
       BM,
@@ -297,6 +372,8 @@ type Wrap<O extends FunRouterOptions<any>> = {
    */
   union: (b: Petition[]) => Wrap<O>;
   /**
+   * @deprecated use filter
+   *
    * Excludes one or more petitions based on their paths from the current wrap instance, creating a new instance without the specified paths.
    * This is useful for dynamically adjusting the set of active petitions, perhaps in response to configuration changes or to conditionally
    * remove certain routes in different environments or contexts.
@@ -315,6 +392,25 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * For more details, see the [exclude](https://vixeny.dev/library/wrap#exclude).
    */
   exclude: (list: string[] | string) => Wrap<O>;
+  /**
+   * Filter one or more petitions based on their paths from the current wrap instance, creating a new instance without the specified paths.
+   * This is useful for dynamically adjusting the set of active petitions, perhaps in response to configuration changes or to conditionally
+   * remove certain routes in different environments or contexts.
+   *
+   * The method accepts either a single path string or an array of path strings to exclude.
+   *
+   * Example usage:
+   * ```typescript
+   * // Assuming wrap()() has defined several petitions including paths '/excludeMe' and '/keepMe'
+   * const filteredWrap = wrap()()
+   *   .exclude(['/excludeMe'])
+   *   // Now, the wrap instance `filteredWrap` will not include the petition for '/excludeMe'
+   * ```
+   *
+   * This facilitates flexible and dynamic petition management within your application's routing logic.
+   * For more details, see the [exclude](https://vixeny.dev/library/wrap#exclude).
+   */
+  filter: (opt: string[] | string | { (p: Petition): boolean }) => Wrap<O>;
   /**
    * Unwraps the current `wrap` instance into its constituent petitions, typically for the purpose of exporting
    * or further manipulation. This can be especially useful when combining multiple wrap instances or configuring
@@ -455,6 +551,13 @@ export const wrap = ((o?) => (a = []) => ({
       //@ts-ignore
       { ...ob, type: "request" } as Petition,
     )),
+  route: (
+    ob,
+  ) =>
+    wrap(o)(a.concat(
+      //@ts-ignore
+      { ...ob, type: "add" } as Petition,
+    )),
 
   stdPetition: (
     ob,
@@ -463,11 +566,12 @@ export const wrap = ((o?) => (a = []) => ({
       { ...ob, type: "base" } as Petition,
     )),
 
-  logPaths: () =>
+  logPaths: () => (
     void a.forEach(
       (x) => displayPaths(x),
-    ) ?? wrap(o)(a),
-  debugLast: () =>
+    ), wrap(o)(a)
+  ),
+  debugLast: () => (
     void (
       (isUsing) =>
         display(o)(a[a.length - 1])({
@@ -476,8 +580,8 @@ export const wrap = ((o?) => (a = []) => ({
         })
     )(
       composerTools.isUsing(o)(a[a.length - 1]),
-    ) ??
-      wrap(o)(a),
+    ), wrap(o)(a)
+  ),
   handleRequest: (s: string) =>
   (
     injection: Partial<
@@ -494,8 +598,7 @@ export const wrap = ((o?) => (a = []) => ({
             } as unknown as Petition,
           )(r),
         )
-      : void console.error(s + " was not found.") ??
-        ((_: Request) => Promise.resolve(null))) as unknown as (
+      : ((_: Request) => Promise.resolve(null))) as unknown as (
         r: Request,
       ) => Promise<Response>,
   testRequests: () =>
@@ -504,7 +607,30 @@ export const wrap = ((o?) => (a = []) => ({
         [...a],
       ),
     ),
-
+  get: (ob) =>
+    wrap(o)(
+      a.concat(
+        { ...ob, method: "GET", type: "add" } as Petition,
+      ),
+    ),
+  post: (ob) =>
+    wrap(o)(
+      a.concat(
+        { ...ob, method: "POST", type: "add" } as Petition,
+      ),
+    ),
+  delete: (ob) =>
+    wrap(o)(
+      a.concat(
+        { ...ob, method: "DELETE", type: "add" } as Petition,
+      ),
+    ),
+  put: (ob) =>
+    wrap(o)(
+      a.concat(
+        { ...ob, method: "PUT", type: "add" } as Petition,
+      ),
+    ),
   changeOptions: (o) =>
     wrap({ ...o })(
       [...a],
@@ -516,6 +642,13 @@ export const wrap = ((o?) => (a = []) => ({
         wrap(o)(a.filter((morphism) => !pathsSet.has(morphism.path)))
     )(
       new Set(Array.isArray(list) ? list : [list]),
+    ),
+  filter: (opt) =>
+    typeof opt === "function" ? wrap(o)(a.filter(opt)) : (
+      (pathsSet) =>
+        wrap(o)(a.filter((morphism) => !pathsSet.has(morphism.path)))
+    )(
+      new Set(Array.isArray(opt) ? opt : [opt]),
     ),
   unwrap: () =>
     a.map((x) =>
