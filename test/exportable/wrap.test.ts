@@ -53,7 +53,10 @@ const wrapped = wrap(
   })
   .get({
     path: "/customsPlugin",
-    f: ({ hello, method }) => new Response(hello() + method),
+    f: ({ hello, method }) => {
+      throw new Response(hello() + method);
+      return new Response(hello() + method);
+    },
     onError: ({ error }) =>
       error instanceof Response
         ? error

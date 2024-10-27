@@ -33,8 +33,10 @@ const compose =
                   applyTo: {
                     type: "onError",
                   },
-                }),
-              )(isUsing),
+                })(
+                  tools.isUsing(o)({ ...p, f: p.onError, onError: undefined }),
+                ),
+              ),
             )
             : resolveF(o)(table)(p)(isUsing) as (
               ctx: Request,
@@ -207,8 +209,6 @@ const syncOnError =
     try {
       return f(r);
     } catch (error) {
-      console.log(m.toString());
-
       return m(r)(error);
     }
   };

@@ -13,7 +13,6 @@ export default (o?: specialOptions) =>
         (composed) =>
           p.f.constructor.name === "AsyncFunction" ||
             composed.constructor.name === "AsyncFunction"
-            //void console.log(composed.toString()) ??
             ? ((a) =>
             (k: (arg0: any) => any) =>
             (r: Request) =>

@@ -24,7 +24,7 @@ test("returns identity of the request", async () => {
   );
 
   // It's based on `isUsing` so even if we are using `param`
-  // it retruns identity
+  // it returns identity
   assertEquals(
     linker({})({
       type: "add",

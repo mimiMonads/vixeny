@@ -18,7 +18,7 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v2.x 
-      - run: deno add @cross/test @std/assert 
+      - run: deno add jsr:@cross/test jsr:@std/assert 
       - run: deno test -A
 
       - name: Verify formatting
