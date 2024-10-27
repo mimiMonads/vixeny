@@ -242,3 +242,31 @@ test("Checking branch", async () => {
       },
     );
 });
+
+test("Checking branch", async () => {
+  // Wraps correctly
+  assertEquals(
+    linker({})({
+      type: "add",
+      path: "/1/2/:id",
+      f: mockFunction,
+      applyTo: {
+        type: "onError",
+      },
+    })([])(requestForTest)(),
+    requestForTest,
+  );
+
+  // Wraps correctly
+  assertEquals(
+    linker({})({
+      type: "add",
+      path: "/1/2/:id",
+      f: mockFunction,
+      applyTo: {
+        type: "onError",
+      },
+    })(["error"])(requestForTest)("world").error,
+    "world",
+  );
+});

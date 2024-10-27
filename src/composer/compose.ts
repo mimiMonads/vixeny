@@ -19,9 +19,26 @@ const compose =
     ((isUsing) =>
       (
         (table) =>
-          resolveF(o)(table)(p)(isUsing) as (
-            ctx: Request,
-          ) => Promise<Response> | Response
+          typeof p.onError === "function"
+            ? onError(table.isAsync)(
+              resolveF(o)(table)(p)(isUsing) as (
+                ctx: Request,
+              ) => Response,
+            )(
+              getApplyTo(table.isAsync)()(p.onError)(
+                linker(o)({
+                  ...p,
+                  f: p.onError,
+                  onError: undefined,
+                  applyTo: {
+                    type: "onError",
+                  },
+                }),
+              )(isUsing),
+            )
+            : resolveF(o)(table)(p)(isUsing) as (
+              ctx: Request,
+            ) => Promise<Response> | Response
       )(
         //elements int table
         {

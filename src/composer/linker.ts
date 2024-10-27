@@ -16,7 +16,10 @@ export default (o?: specialOptions) => (p: Petition) => (isUsing: string[]) => {
   // Base case: if 'isUsing' is empty and 'branch' is not in options, return the identity function
   // TODO: change it and add the branch flag in the petition
 
-  if (isUsing.length === 0 && !(o && "branch" in o) && !isApplyTo) {
+  if (isUsing.length === 0 && !(o && "branch" in o)) {
+    if (isApplyTo) {
+      return (r: Request) => (b: unknown) => r;
+    }
     return (r: Request) => r;
   }
 
@@ -42,8 +45,8 @@ export default (o?: specialOptions) => (p: Petition) => (isUsing: string[]) => {
     .map((x) => `${x.name}=>`)
     .reduceRight(
       (acc, v) => v + acc,
-      // If applyTo is in
-      typeof p.applyTo === "object" ? "onError=>" : "",
+      // Place to add more in the future
+      "",
     );
 
   // Determine the function signature based on options
@@ -58,12 +61,9 @@ export default (o?: specialOptions) => (p: Petition) => (isUsing: string[]) => {
     functionSignature = (o && "branch" in o) || isApplyTo ? "r=>b=>" : "r=>";
   }
 
-  // Adding applyTo at the table to insert it in the final CTX object
-  const expandedTable = isApplyTo ? [...table, p.applyTo] : table;
-
   // Build the function body, injecting variables from 'table'
   const functionBody = `({${
-    expandedTable.map((x) => `${x.name}:${x.value}`).join(",")
+    table.map((x) => `${x.name}:${x.value}`).join(",")
   }})`;
 
   // Build the full function string
@@ -75,10 +75,6 @@ export default (o?: specialOptions) => (p: Petition) => (isUsing: string[]) => {
 
   // Reduce the functions over the generated function
   const resultFunction = functions.reduce((s, k) => s(k), generatedFunc);
-
-  if (isApplyTo) {
-    return resultFunction(p.f);
-  }
 
   return resultFunction;
 };

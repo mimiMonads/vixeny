@@ -554,9 +554,7 @@ export type BranchMap<T> = {
 };
 
 type ApplyToCTX = {
-  name: string;
-  value: string;
-  type: 0 | 1;
+  type: "onError";
 };
 
 type MapOptions = {

@@ -35,11 +35,11 @@ const opt = plugins.globalOptions({
 const wrapped = wrap(
   opt,
 )()
-  .stdPetition({
+  .get({
     path: "/stdHello",
     f: () => "stdHello",
   })
-  .stdPetition({
+  .get({
     path: "/stdPlugin",
     plugins: {
       hello: "string",
@@ -47,11 +47,11 @@ const wrapped = wrap(
     },
     f: (ctx) => ctx.hello() + ctx.method,
   })
-  .customPetition({
+  .get({
     path: "/customHello",
     f: () => new Response("customHello"),
   })
-  .route({
+  .get({
     path: "/customsPlugin",
     f: ({ hello, method }) => new Response(hello() + method),
     onError: ({ error }) =>

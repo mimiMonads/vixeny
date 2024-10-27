@@ -9,6 +9,7 @@ export default (o?: FunRouterOptions<any>) =>
 (mutable: boolean) =>
   ([
     { name: "req", value: mutable ? "r[0]" : "r", type: 0 },
+    { name: "error", value: "b", type: 0 },
     {
       name: "param",
       value: mutable ? "param(r[0].url)" : "param(r.url)",
@@ -57,7 +58,6 @@ export default (o?: FunRouterOptions<any>) =>
       }`,
       type: 1,
     },
-    { name: "mutable", value: mutable ? "r[1]" : "{}", type: 0 },
     {
       name: "branch",
       value: `${
