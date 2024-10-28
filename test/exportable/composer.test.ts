@@ -3,14 +3,16 @@ import { assertEquals } from "@std/assert";
 import { petitions } from "../../main.ts";
 import { test } from "@cross/test";
 const dummyRequest = new Request("http://heyINeedTOGoToSleep.com/");
+
+const hello = plugins.type({
+  name: Symbol.for("hello"),
+  isFunction: true,
+  type: undefined,
+  f: () => () => "hello",
+});
 const opt = plugins.globalOptions({
   cyclePlugin: {
-    hello: {
-      name: Symbol.for("hello"),
-      isFunction: true,
-      type: undefined,
-      f: () => () => () => "hello",
-    },
+    hello,
   },
 });
 

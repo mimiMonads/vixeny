@@ -1,4 +1,5 @@
 import type { CORSOptions } from "./components/cors/types.ts";
+import type { CyclePluginType } from "./exportable/plugin.ts";
 import type { Petition } from "./morphism.ts";
 /**
  * Options for the router, it is `optional`
@@ -116,31 +117,7 @@ export type FunRouterOptions<
 };
 
 export type CyclePluginMap = {
-  readonly [key: string]: CyclePlugin<any>;
-};
-
-type CyclePluginOptions = {
-  isFunction?: true | false;
-  return?: unknown;
-};
-
-export type CyclePlugin<
-  T extends CyclePluginOptions,
-> = {
-  readonly name: symbol;
-  // Do not use false
-  readonly isFunction?: T["isFunction"];
-  readonly isAsync?: boolean;
-  readonly f: T["isFunction"] extends { isFunction: true }
-    ? (o?: FunRouterOptions<any>) => (p: Petition) => T["return"]
-    : (
-      o?: FunRouterOptions<any>,
-    ) => (
-      p: Petition,
-    ) => (r: Request) => T["return"];
-  readonly type: unknown;
-  readonly isUsing?: (o?: FunRouterOptions<any>) => (p: Petition) => string;
-  readonly options?: { [k: string]: any };
+  readonly [key: string]: CyclePluginType<any, any, any, any>;
 };
 
 /**

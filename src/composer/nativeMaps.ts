@@ -81,7 +81,7 @@ export default (o?: FunRouterOptions<any>) =>
         : undefined,
       //@ts-ignore
       value: (o && o.cyclePlugin && o.cyclePlugin[x])
-        ? "isFunction" in o.cyclePlugin[x] || false
+        ? o.cyclePlugin[x].isFunction
           //@ts-ignore
           ? x
           //@ts-ignore

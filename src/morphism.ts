@@ -765,12 +765,8 @@ export type WithPlugins<
 //       : {}
 
 type CyclePluginFunctions<CPM extends CyclePluginMap> = {
-  [K in keyof CPM]: CPM[K] extends
-    { isFunction: boolean; f: (...args: any) => any }
-    ? ReturnType<ReturnType<CPM[K]["f"]>> // Direct function case
-    : CPM[K] extends { f: (...args: any) => any }
-      ? Awaited<ReturnType<ReturnType<ReturnType<CPM[K]["f"]>>>> // Nested function case
-    : never; // Handle cases that do not match expected structure
+  [K in keyof CPM]: CPM[K]["isFunction"] extends true ? ReturnType<CPM[K]["f"]>
+    : Awaited<ReturnType<ReturnType<CPM[K]["f"]>>>;
 };
 
 type SignerAndVarifier = {

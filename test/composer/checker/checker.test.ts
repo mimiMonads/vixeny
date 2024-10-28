@@ -12,7 +12,8 @@ const pluginHello = {
 const pluginMethod = {
   name: Symbol.for("method"),
   type: "string",
-  f: () => () => () => "plugin",
+  isFunction: false,
+  f: () => () => "plugin",
 };
 
 const opt = {

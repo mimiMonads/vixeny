@@ -12,14 +12,15 @@ const pluginHello = plugins.type({
   name: Symbol.for("hello"),
   isFunction: true,
   type: {} as string,
-  f: () => () => () => "function",
+  f: () => () => "function",
 });
 
 const pluginMethod = plugins.type({
   name: Symbol.for("method"),
+  isFunction: false,
   type: {} as string,
-  f: () => () => () => " inCycle",
-  isUsing: () => () => "sup",
+  f: () => (r) => " inCycle",
+  isUsing: () => "sup",
 });
 
 const opt = plugins.globalOptions({

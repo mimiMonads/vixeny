@@ -14,6 +14,7 @@ import type { Petition } from "../morphism.ts";
 
 import tools from "./composerTools.ts";
 import mime from "../util/mime.ts";
+import { pluginCTX } from "../exportable/plugin.ts";
 
 type NativeMaps = {
   name: string;
@@ -95,8 +96,8 @@ export default (o?: FunRouterOptions<any>) =>
       .concat(
         Object.keys(o?.cyclePlugin || {}).map((x) => ({
           condition: ((name) => (x: NativeMaps) => x.name === name)(x),
-          //@ts-ignore
-          action: () => o!.cyclePlugin![x]!["f"](o)(p as CommonRequestMorphism),
+
+          action: () => o!.cyclePlugin![x]!["f"](pluginCTX(o)(p)),
         })),
       ));
 

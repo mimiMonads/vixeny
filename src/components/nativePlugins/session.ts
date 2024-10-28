@@ -144,8 +144,9 @@ const session = <
   return plugins.default.type({
     name: sym,
     type: {} as unknown,
-    f: () => (p) => {
-      return mapper<T, R>(map)()(opt?.tolerance ?? 300000)(p);
+    isFunction: false,
+    f: (ctx) => {
+      return mapper<T, R>(map)()(opt?.tolerance ?? 300000)(ctx.getPetition());
     },
   }) as unknown as CyclePlugin<{ isFunction: false; return: SessionType<T> }>;
 };

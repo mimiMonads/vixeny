@@ -12,7 +12,6 @@ import {
   globalOptions,
 } from "../options.ts";
 
-
 const pluginIsUsing = (p: Petition) => (currentName: string) =>
   (
     (
@@ -37,13 +36,11 @@ const pluginIsUsing = (p: Petition) => (currentName: string) =>
     )(
       checkerTools.getArgsname(p.f),
     )
-  ) as string[] | null
-
+  ) as string[] | null;
 
 export default {
   globalOptions,
   /**
-   * @deprecated
    * Types a plugin's configuration to ensure it meets Vixeny's requirements.
    * This function validates and possibly transforms the plugin configuration using TypeScript types.
    *
@@ -65,43 +62,11 @@ export default {
    * ```
    */
   type: <
-    FC extends boolean,
-    O extends CyclePlugin<{
-      isFunction: FC;
-      return: unknown;
-    }>,
-  >(config: O) => config,
-
-  /**
-   * 
-   * @deprecated
-   * Retrieves specific plugin options using the current name of the plugin.
-   * This function is essential for dynamic plugin management where plugins might
-   * be identified differently over time or across different user options.
-   *
-   * @param {unknown} userOptions - The user options from which to retrieve plugin settings.
-   * @returns {Function} A function that accepts the current plugin name and returns the associated plugin options.
-   *
-   * @example
-   * Example usage:
-   * ```typescript
-   * import { plugins } from 'vixeny';
-   *
-   * // Define your plugin using a unique symbol
-   * export const myPlugin = ((mySym) => ({
-   *   name: mySym,
-   *   isFunction: true,
-   *   type: {} as YourType, // Specify the type here
-   *   f: (userOptions) => (currentPetition) => {
-   *     // Retrieving the current name of the plugin
-   *     const currentName = getName(userOptions)(mySym);
-   *     // Getting the options for the current plugin based on its name
-   *     const options = getOptions(currentPetition)(currentName) as YourType;
-   *     // Additional code leveraging the options...
-   *   },
-   * }))(Symbol("myPlugin"));
-   * ```
-   */
+    isFunction extends boolean,
+    isASync extends boolean,
+    T = any,
+    R = any,
+  >(g: CyclePluginType<isFunction, isASync, T, R>) => g,
   getOptions: <T extends any>(userOptions: unknown) =>
   (
     currentName: string,
@@ -156,7 +121,6 @@ export default {
   ): fileServerPetition<MI> => s,
   /**
    * @deprecated
-   * 
    */
   staticFilePlugin: <
     TP extends "response" | "request" | undefined,
@@ -164,75 +128,54 @@ export default {
   >(config: O) => config,
   /**
    * @deprecated
-   * 
-   * @param p 
-   * @returns 
+   *
+   * @param p
+   * @returns
    */
-  pluginIsUsing
+  pluginIsUsing,
 };
 
-
-
-const pluginCTX = (o?: FunRouterOptions<any>) => (p: Petition) => ({
-  getPetition: () => ({...p}),
-  getGlobalOptions: () => ({...o}),
+/**
+ * Plguin helper
+ *
+ * @param o
+ * @returns
+ */
+export const pluginCTX = (o?: FunRouterOptions<any>) => (p: Petition) => ({
+  getPetition: () => ({ ...p }),
+  getGlobalOptions: () => ({ ...o }),
   isUsing: () => composerTools.isUsing(o)(p),
-  pluginIsUsing: (currentName:string)=> pluginIsUsing(p)(currentName),
+  pluginIsUsing: (currentName: string) => pluginIsUsing(p)(currentName),
   currentName: (sym: symbol) =>
     Object
       .keys(o?.cyclePlugin ?? [])
       // @ts-ignore
       .find((name) => o?.cyclePlugin[name]?.name === sym) as string,
-  getOptionsFromPetition: <T extends any>(p: Petition) =>
-    ((
-      currentName: string,
-    ): T | null => (p && typeof p === "object" &&
-        !Array.isArray(p) && "plugins" in p &&
-        p.plugins
-      //@ts-ignore
-      ? p.plugins[currentName] as T
-      : null)),
-})
+  getOptionsFromPetition: <T extends any>(p: Petition) => ((
+    currentName: string,
+  ): T | null => (p && typeof p === "object" &&
+      !Array.isArray(p) && "plugins" in p &&
+      p.plugins
+    //@ts-ignore
+    ? p.plugins[currentName] as T
+    : null)),
+});
 
-export type PluginCTX = ReturnType<ReturnType<typeof pluginCTX>>
+export type PluginCTX = ReturnType<ReturnType<typeof pluginCTX>>;
 
 export type CyclePluginType<
-  isFunction extends boolean = false,
-  isASync extends boolean  = false,
-  T = any
+  isFunction extends boolean,
+  isASync extends boolean,
+  T = any,
+  R = any,
 > = {
   readonly name: symbol;
   // Do not use false
-  readonly isFunction?: isFunction;
+  readonly isFunction: isFunction;
   readonly isAsync?: isASync;
-  readonly f: isFunction extends true 
-    ? (ctx: PluginCTX) =>  T
-    : (ctx: PluginCTX) => (r: Request) => T;
+  readonly f: isFunction extends true ? (ctx: PluginCTX) => T
+    : (ctx: PluginCTX) => (r: Request) => R;
   readonly type: unknown;
-  readonly isUsing?: (ctx: PluginCTX ) => string;
+  readonly isUsing?: (ctx: PluginCTX) => string;
   readonly options?: { [k: string]: any };
 };
-
-export type  CyclePluginTypes<CPM extends CyclePluginType> = {
-  [K in keyof CPM]: CPM[K] extends
-    { isFunction: true; f: (...args: any) => any }
-    ? ReturnType<CPM[K]["f"]> 
-    : CPM[K] extends { f: (...args: any) => any }
-      ? Awaited<ReturnType<ReturnType<CPM[K]["f"]>>>
-    : never; 
-};
-
-const apply = <  
-  isFunction extends boolean = false,
-  isASync extends boolean = false,
-  T = any
->(g: CyclePluginType<isFunction,isASync,T>)=> g
-
-const a = apply({
-  name: Symbol.for('hi'),
-  isFunction: true,
-  type: 1,
-  f: (ctx) =>  () => 1
-})
-
-
