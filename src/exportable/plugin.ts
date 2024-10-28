@@ -12,9 +12,38 @@ import {
   globalOptions,
 } from "../options.ts";
 
+
+const pluginIsUsing = (p: Petition) => (currentName: string) =>
+  (
+    (
+      (args) =>
+        args
+          ? [
+            ...new Set(
+              checkerTools.getDestructedElements(p.f)(
+                typeof args == "string"
+                  ? args + "." + currentName
+                  : currentName,
+              ).concat(
+                checkerTools.getDots(p.f)(
+                  typeof args == "string"
+                    ? args + "." + currentName
+                    : currentName,
+                ),
+              ),
+            ),
+          ]
+          : null
+    )(
+      checkerTools.getArgsname(p.f),
+    )
+  ) as string[] | null
+
+
 export default {
   globalOptions,
   /**
+   * @deprecated
    * Types a plugin's configuration to ensure it meets Vixeny's requirements.
    * This function validates and possibly transforms the plugin configuration using TypeScript types.
    *
@@ -44,6 +73,8 @@ export default {
   >(config: O) => config,
 
   /**
+   * 
+   * @deprecated
    * Retrieves specific plugin options using the current name of the plugin.
    * This function is essential for dynamic plugin management where plugins might
    * be identified differently over time or across different user options.
@@ -117,36 +148,91 @@ export default {
    * only the relevant context elements are included
    */
   isUsing: composerTools.isUsing,
+  /**
+   * @deprecated
+   */
   fileServer: <MI extends true | false>(
     s: fileServerPetition<MI>,
   ): fileServerPetition<MI> => s,
+  /**
+   * @deprecated
+   * 
+   */
   staticFilePlugin: <
     TP extends "response" | "request" | undefined,
     O extends StaticFilePlugin<TP>,
   >(config: O) => config,
-  pluginIsUsing: (p: Petition) => (currentName: string) =>
-    (
-      (
-        (args) =>
-          args
-            ? [
-              ...new Set(
-                checkerTools.getDestructedElements(p.f)(
-                  typeof args == "string"
-                    ? args + "." + currentName
-                    : currentName,
-                ).concat(
-                  checkerTools.getDots(p.f)(
-                    typeof args == "string"
-                      ? args + "." + currentName
-                      : currentName,
-                  ),
-                ),
-              ),
-            ]
-            : null
-      )(
-        checkerTools.getArgsname(p.f),
-      )
-    ) as string[] | null,
+  /**
+   * @deprecated
+   * 
+   * @param p 
+   * @returns 
+   */
+  pluginIsUsing
 };
+
+
+
+const pluginCTX = (o?: FunRouterOptions<any>) => (p: Petition) => ({
+  getPetition: () => ({...p}),
+  getGlobalOptions: () => ({...o}),
+  isUsing: () => composerTools.isUsing(o)(p),
+  pluginIsUsing: (currentName:string)=> pluginIsUsing(p)(currentName),
+  currentName: (sym: symbol) =>
+    Object
+      .keys(o?.cyclePlugin ?? [])
+      // @ts-ignore
+      .find((name) => o?.cyclePlugin[name]?.name === sym) as string,
+  getOptionsFromPetition: <T extends any>(p: Petition) =>
+    ((
+      currentName: string,
+    ): T | null => (p && typeof p === "object" &&
+        !Array.isArray(p) && "plugins" in p &&
+        p.plugins
+      //@ts-ignore
+      ? p.plugins[currentName] as T
+      : null)),
+})
+
+export type PluginCTX = ReturnType<ReturnType<typeof pluginCTX>>
+
+export type CyclePluginType<
+  isFunction extends boolean = false,
+  isASync extends boolean  = false,
+  T = any
+> = {
+  readonly name: symbol;
+  // Do not use false
+  readonly isFunction?: isFunction;
+  readonly isAsync?: isASync;
+  readonly f: isFunction extends true 
+    ? (ctx: PluginCTX) =>  T
+    : (ctx: PluginCTX) => (r: Request) => T;
+  readonly type: unknown;
+  readonly isUsing?: (ctx: PluginCTX ) => string;
+  readonly options?: { [k: string]: any };
+};
+
+export type  CyclePluginTypes<CPM extends CyclePluginType> = {
+  [K in keyof CPM]: CPM[K] extends
+    { isFunction: true; f: (...args: any) => any }
+    ? ReturnType<CPM[K]["f"]> 
+    : CPM[K] extends { f: (...args: any) => any }
+      ? Awaited<ReturnType<ReturnType<CPM[K]["f"]>>>
+    : never; 
+};
+
+const apply = <  
+  isFunction extends boolean = false,
+  isASync extends boolean = false,
+  T = any
+>(g: CyclePluginType<isFunction,isASync,T>)=> g
+
+const a = apply({
+  name: Symbol.for('hi'),
+  isFunction: true,
+  type: 1,
+  f: (ctx) =>  () => 1
+})
+
+
