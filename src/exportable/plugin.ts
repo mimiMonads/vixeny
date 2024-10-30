@@ -7,7 +7,6 @@ import type {
 } from "../morphism.ts";
 import checkerTools from "../composer/checkPetition/checkTools.ts";
 import {
-  type CyclePlugin,
   type FunRouterOptions,
   globalOptions,
 } from "../options.ts";

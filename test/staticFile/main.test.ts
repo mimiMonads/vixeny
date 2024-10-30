@@ -1,7 +1,8 @@
 import { assertEquals } from "@std/assert";
 import { test } from "@cross/test";
 import main from "../../src/staticFiles/staticFileMain.ts";
-import { type fileServerPetition, petitions } from "../../src/morphism.ts";
+import { type fileServerPetition } from "../../src/morphism.ts";
+
 
 test(
   "static file checking logo",
@@ -68,13 +69,11 @@ test(
         name: "/hello/nested",
         mime: false,
         template: [{
-          checker: (s) => s.includes(".png"),
-          type: "response",
-          r: (options) =>
-            petitions.response()({
-              path: options.relativeName.slice(0, -4),
-              r: () => new Response(""),
-            }),
+          checker: (s) => s.path().includes(".png"),
+          type: 'add',
+          f: (options) =>
+              () => new Response(options.relativeName.slice(0, -4)),
+            
         }],
       } as fileServerPetition<false>)
         .some((x) => x.path === "/hello/nested/logo"),

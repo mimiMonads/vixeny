@@ -1113,32 +1113,24 @@ export type CryptoOptions = {
   };
 } | {};
 
-export type StaticFilePlugin<
-  TP extends "response" | "request" | undefined,
-> = {
-  checker: (path: string) => boolean;
-  type?: TP;
+type StaticFileOptions = {
+  path: () => string
+  thisOptions: () => fileServerPetition<any> 
+  globalOptions: () => FunRouterOptions<any>
+}
+type StaticFilePlugin <> = {
+  type?: 'add'
   async?: boolean;
-} & StaticFilePluginExtensions<TP>;
+  checker?: (ctx: StaticFileOptions) => boolean;
+  f: (options: {
+    root: string;
+    path: string;
+    o?: FunRouterOptions<any>;
+    relativeName: string;
+  }) => (req: Request) => Response
+} 
 
-export type StaticFilePluginExtensions<
-  TP extends "response" | "request" | undefined,
-> = TP extends "request" ? {
-    f: (options: {
-      root: string;
-      path: string;
-      o?: FunRouterOptions<any>;
-      relativeName: string;
-    }) => ReturnType<ReturnType<typeof petitions.custom>>;
-  }
-  : {
-    r: (options: {
-      root: string;
-      path: string;
-      o?: FunRouterOptions<any>;
-      relativeName: string;
-    }) => ReturnType<ReturnType<typeof petitions.response>>;
-  };
+
 
 /**
  * Object for raw response static.
@@ -1151,7 +1143,7 @@ export type fileServerPetition<
   path: string;
   mime?: MI;
   extra?: MI extends true ? [string, string][] : never;
-  template?: StaticFilePlugin<any>[];
+  template?: StaticFilePlugin[];
   removeExtensionOf?: defaultMime[];
   slashIs?: string;
 };
