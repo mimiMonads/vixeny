@@ -98,7 +98,64 @@ export const petitions = {
       type: 1,
     },
   }),
+    /**
+   *
+   * Enhances a function with additional typings for handling HTTP requests within the 'vixeny' framework.
+   * This function binds the provided Morphism to the rules set by `composer`, producing a typed `Petition`.
+   * The resulting function can be used with `wrap` or can be `composed`, and it's guaranteed to return a `Response` or `Promise<Response>`.
+   *
+   * @param {O} [options] - Optional configuration options that may include plugin settings.
+   * @returns {Function} A function that accepts a Morphism defining an HTTP petition.
+   *
+   * @example
+   * Example usage:
+   * ```typescript
+   * import { petitions } from 'vixeny';
+   *
+   * const standard = petitions.custom()({
+   *   path: '/yourPath',
+   *   f: ctx => new Response(ctx.query.hello ?? 'queryNotFound')
+   * });
+   * ```
+   */
+    add: <
+    FC extends CyclePluginMap,
+    O extends FunRouterOptions<FC>,
+  >(o?: O) =>
+  <
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    RO extends O,
+    CO extends CryptoOptions,
+    AR = any,
+    R = any,
+  >(
+    I: Morphism<
+      {
+        type: "add";
+        hasPath: true;
+        isAPetition: true;
+        typeNotNeeded: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      RO,
+      CO,
+      AR,
+      R
+    >,
+  ) =>
+    ({
+      ...I,
+      type: "request",
+      o,
+    }) as unknown as Petition,
   /**
+   *
    * Enhances a function with additional typings for handling HTTP requests within the 'vixeny' framework.
    * This function binds the provided Morphism to the rules set by `composer`, producing a typed `Petition`.
    * The resulting function can be used with `wrap` or can be `composed`, and it's guaranteed to return a `Response` or `Promise<Response>`.
@@ -1113,24 +1170,22 @@ export type CryptoOptions = {
   };
 } | {};
 
-type StaticFileOptions = {
-  path: () => string
-  thisOptions: () => fileServerPetition<any> 
-  globalOptions: () => FunRouterOptions<any>
-}
-type StaticFilePlugin <> = {
-  type?: 'add'
+export type StaticFileOptions = {
+  path: string;
+  thisOptions: () => fileServerPetition<any>;
+  globalOptions: () => FunRouterOptions<any>;
+};
+export type StaticFilePlugin<> = {
+  type?: "add";
   async?: boolean;
-  checker?: (ctx: StaticFileOptions) => boolean;
-  f: (options: {
+  checker: (ctx: StaticFileOptions) => boolean;
+  p: (options: {
     root: string;
     path: string;
     o?: FunRouterOptions<any>;
     relativeName: string;
-  }) => (req: Request) => Response
-} 
-
-
+  }) => Petition;
+};
 
 /**
  * Object for raw response static.

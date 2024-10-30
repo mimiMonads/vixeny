@@ -6,10 +6,7 @@ import type {
   StaticFilePlugin,
 } from "../morphism.ts";
 import checkerTools from "../composer/checkPetition/checkTools.ts";
-import {
-  type FunRouterOptions,
-  globalOptions,
-} from "../options.ts";
+import { type FunRouterOptions, globalOptions } from "../options.ts";
 
 const pluginIsUsing = (p: Petition) => (currentName: string) =>
   (
@@ -118,12 +115,9 @@ export default {
   fileServer: <MI extends true | false>(
     s: fileServerPetition<MI>,
   ): fileServerPetition<MI> => s,
-  /**
-   * @deprecated
-   */
+  /** */
   staticFilePlugin: <
-    TP extends "response" | "request" | undefined,
-    O extends StaticFilePlugin<TP>,
+    O extends StaticFilePlugin,
   >(config: O) => config,
   /**
    * @deprecated

@@ -3,7 +3,8 @@ import { isUsing as query } from "../components/queries/mainQueries.ts";
 import { isUsing as cookie } from "../components/cookies/mainCookies.ts";
 import { isUsing as token } from "../components/cookieToToken/mainCookieToToken.ts";
 import type { Petition } from "../morphism.ts";
-import type { CyclePlugin, FunRouterOptions } from "../options.ts";
+import type { CyclePluginMap, FunRouterOptions } from "../options.ts";
+import { type CyclePluginType, pluginCTX } from "./plugin.ts";
 
 type Display = {
   using?: string[];
@@ -32,7 +33,7 @@ export const displayPaths = (p: Petition): void => {
   });
 };
 
-type PluginType = [string, CyclePlugin<any>];
+type PluginType = [string, CyclePluginType<any, any>];
 
 // Main display function that composes the logging of context, components, and plugins
 export const display =
@@ -95,7 +96,7 @@ const logPlugins = (
     pluginsToDisplay.forEach(([name, plugin]) => {
       // This is always the case `pluginsToDisplay` filters the elements base on
       // if the have `isUsing`
-      const value = plugin.isUsing!(options)(p);
+      const value = plugin.isUsing!(pluginCTX(options)(p));
       console.log(
         `\x1b[35m${name}\x1b[0m: \x1b[38;2;255;165;0m${value}\x1b[0m`,
       );

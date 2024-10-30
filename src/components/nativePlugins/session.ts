@@ -2,7 +2,6 @@ import * as plugins from "../../exportable/plugin.ts";
 import { f as cookieParser } from "../cookies/mainCookies.ts";
 import type { Petition } from "../../morphism.ts";
 
-
 interface InnerElement {
   lastUsed: {
     get: () => number;

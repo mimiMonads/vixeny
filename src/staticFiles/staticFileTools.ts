@@ -2,7 +2,7 @@ import type {
   defaultMime,
   fileServerPetition,
   Petition,
-  StaticFilePluginExtensions,
+  StaticFilePlugin,
 } from "../morphism.ts";
 import type { FunRouterOptions } from "../options.ts";
 import mime from "../util/mime.ts";
@@ -57,24 +57,15 @@ export default {
 
   getValidPetitionFromPlugin:
     (o?: FunRouterOptions<any>) =>
-    (checks: StaticFilePluginExtensions<any>) =>
+    (checks: StaticFilePlugin) =>
     (root: string) =>
     (x: string) =>
     (name: string) =>
-      "r" in checks
-        ? checks!.r(
-          {
-            root: root,
-            path: x,
-            o: o,
-            relativeName: root.slice(1, -1) + x.slice(name.length - 1),
-          },
-        )
-        : checks!.f(
-          {
-            root: root,
-            path: x,
-            relativeName: root.slice(1, -1) + x.slice(name.length - 1),
-          },
-        ),
+      checks!.p(
+        {
+          root: root,
+          path: x,
+          relativeName: root.slice(1, -1) + x.slice(name.length - 1),
+        },
+      ),
 };
