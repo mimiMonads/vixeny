@@ -1,4 +1,8 @@
-import type { fileServerPetition, Petition } from "../morphism.ts";
+import type {
+  fileServerPetition,
+  Petition,
+  StaticFileOptions,
+} from "../morphism.ts";
 import type { FunRouterOptions } from "../options.ts";
 import staticFileTools from "./staticFileTools.ts";
 
@@ -17,11 +21,9 @@ export default (o?: FunRouterOptions<any>) =>
           (x) =>
             ((checks) =>
               checks
-                ? staticFileTools.getValidPetitionFromPlugin(o)(checks)(root)(
-                  x,
-                )(
-                  name,
-                )
+                ? staticFileTools.getValidPetitionFromPlugin(o)(checks)(
+                  root,
+                )(x)(name)
                 : ({
                   path: root.slice(1, -1) + x.slice(name.length - 1),
                   ...mimeIsTrue(f)("." + x.split(".").at(-1)),
@@ -34,7 +36,7 @@ export default (o?: FunRouterOptions<any>) =>
                   ),
                 }))(
                 f.template!.find((y) =>
-                  y.checker(root.slice(1, -1) + x.slice(name.length - 1))
+                  y.checker(createContext({ root, name, x, o, f }))
                 ),
               ),
         ) as unknown as Petition[]
@@ -75,7 +77,7 @@ export default (o?: FunRouterOptions<any>) =>
               ),
             }))(
             f.template!.find((y) =>
-              y.checker(root.slice(1, -1) + x.slice(name.length - 1))
+              y.checker(createContext({ root, name, x, o, f }))
             ),
           ),
     ) as unknown as Petition[]
@@ -101,3 +103,15 @@ const mimeIsTrue = (f: fileServerPetition<any>) => (mime: string) =>
       },
     }
     : { headings: undefined };
+
+const createContext = (obj: {
+  root: string;
+  name: string;
+  x: string;
+  o?: FunRouterOptions<any>;
+  f: fileServerPetition<any>;
+}): StaticFileOptions => ({
+  path: obj.root.slice(1, -1) + obj.x.slice(obj.name.length - 1),
+  thisOptions: () => ({ ...obj.f }),
+  globalOptions: () => ({ ...obj.o }),
+});

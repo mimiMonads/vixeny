@@ -8,21 +8,19 @@
  * This function is useful for applications that need to adapt their behavior based on the runtime environment.
  *
  * ```js
- * import { runtime } from 'vixeny'
+ * import runtime from './runtime';
  *
- * //logging runtime name
- * console.log(
- *  runtime.name()
- * )
- *
+ * // Logging runtime name
+ * console.log(runtime());
  * ```
  */
-
+//@ts-nocheck
 export default () =>
-  //@ts-ignore
-  typeof Bun !== "undefined"
+  typeof globalThis.Bun !== "undefined"
     ? "Bun"
-    //@ts-ignore
-    : typeof Bun !== "undefined"
+    : typeof globalThis.Deno !== "undefined"
     ? "Deno"
-    : "Node";
+    : typeof process !== "undefined" && typeof process.versions === "object" &&
+        !!process.versions.node
+    ? "Node"
+    : "Unknown";

@@ -9,8 +9,21 @@ type Parameters = (
   options?: FunRouterOptions<any>,
 ) => (p: Petition) => (url: string) => string | Record<string, string> | null;
 
-//TODO
-const f = ((options?: FunRouterOptions<any>) => (p: Petition) =>
+/**
+ * Native param implementation
+ *
+ * @param o
+ */
+const f = ((options?: FunRouterOptions<any>) =>
+/**
+ * Remember to change `path` and `param` for extra functionality
+ *
+ * *** It will always return null if there's not a `path`  ***
+ *
+ * @param p
+ * @returns
+ */
+(p: Petition) =>
   (
     (map) =>
       p?.param?.unique === true
