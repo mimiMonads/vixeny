@@ -111,6 +111,8 @@ export default {
   isUsing: composerTools.isUsing,
   /**
    * @deprecated
+   *
+   * Not needed anymore
    */
   fileServer: <MI extends true | false>(
     s: fileServerPetition<MI>,
@@ -120,7 +122,7 @@ export default {
     O extends StaticFilePlugin,
   >(config: O) => config,
   /**
-   * @deprecated
+   * Used only for internal plugins
    *
    * @param p
    * @returns
@@ -129,7 +131,7 @@ export default {
 };
 
 /**
- * Plguin helper
+ * Plugin helper
  *
  * @param o
  * @returns

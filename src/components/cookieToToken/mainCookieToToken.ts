@@ -5,6 +5,11 @@ import cookieToTokenGets from "./cookieToTokenGets.ts";
 import plugins from "../../exportable/plugin.ts";
 import composerTools from "../../composer/composerTools.ts";
 
+/**
+ * Native cookie verifier
+ * @param o
+ * @returns
+ */
 export const f =
   (o?: FunRouterOptions<any>) =>
   (p: Petition): (s: string) => Record<string, string | undefined> =>

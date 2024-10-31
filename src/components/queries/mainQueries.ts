@@ -5,7 +5,18 @@ import elements from "./queryElements.ts";
 import unique from "./unique.ts";
 import plugin from "../../exportable/plugin.ts";
 
+/**
+ * Native query application in vixeny
+ * @param o
+ * @returns
+ */
 export const f = (o?: FunRouterOptions<any>) =>
+/**
+ * Here the petition, please remember to modify `query` to have extra functionalities
+ *
+ * @param p
+ * @returns
+ */
 (
   p: Petition,
 ): (url: string) => string | Record<string, string | null> | null =>

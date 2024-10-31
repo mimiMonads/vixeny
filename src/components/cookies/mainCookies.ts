@@ -6,7 +6,19 @@ import cookieDefaultCase from "./cookieDefaultCase.ts";
 
 type Cookie = (string: string | null) => Record<string, string | undefined>;
 
-const f = (o?: FunRouterOptions<any>) => (p: Petition): Cookie =>
+/**
+ * Native vixeny implementation
+ * @param o
+ * @returns
+ */
+const f = (o?: FunRouterOptions<any>) =>
+/**
+ * // TODO: add useful info here
+ *
+ * @param p
+ * @returns
+ */
+(p: Petition): Cookie =>
   (
     (cookies) =>
       cookies && cookies.length > 0
