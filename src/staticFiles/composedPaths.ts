@@ -22,8 +22,8 @@ export default (o?: FunRouterOptions<any>) =>
             ((checks) =>
               checks
                 ? staticFileTools.getValidPetitionFromPlugin(o)(checks)(
-                    root,
-                  )(x)(name)
+                  root,
+                )(x)(name)
                 : ({
                   path: root.slice(1, -1) + x.slice(name.length - 1),
                   ...mimeIsTrue(f)("." + x.split(".").at(-1)),
@@ -63,7 +63,8 @@ export default (o?: FunRouterOptions<any>) =>
         ((checks) =>
           checks
             ? staticFileTools.getValidPetitionFromPlugin(o)(checks)(root)(x)(
-                name)
+              name,
+            )
             : ({
               path: root.slice(1, -1) + x.slice(name.length - 1),
               type: "base",

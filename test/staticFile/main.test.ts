@@ -71,12 +71,13 @@ test(
         template: [plugins.staticFilePlugin({
           checker: (s) => s.path.includes(".png"),
           type: "add",
-          p: (options) => petitions.add()({
-            path: options.relativeName.slice(0, -4),
-            f:() => new Response('hello')
-          }),
+          p: (options) =>
+            petitions.add()({
+              path: options.relativeName.slice(0, -4),
+              f: () => new Response("hello"),
+            }),
         })],
-      }).some(p => p.path === "/hello/nested/logo"),
+      }).some((p) => p.path === "/hello/nested/logo"),
       true,
     ),
 );

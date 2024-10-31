@@ -98,8 +98,7 @@ export const petitions = {
       type: 1,
     },
   }),
-    /**
-   *
+  /**
    * Enhances a function with additional typings for handling HTTP requests within the 'vixeny' framework.
    * This function binds the provided Morphism to the rules set by `composer`, producing a typed `Petition`.
    * The resulting function can be used with `wrap` or can be `composed`, and it's guaranteed to return a `Response` or `Promise<Response>`.
@@ -118,7 +117,7 @@ export const petitions = {
    * });
    * ```
    */
-    add: <
+  add: <
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
   >(o?: O) =>
@@ -155,7 +154,6 @@ export const petitions = {
       o,
     }) as unknown as Petition,
   /**
-   *
    * Enhances a function with additional typings for handling HTTP requests within the 'vixeny' framework.
    * This function binds the provided Morphism to the rules set by `composer`, producing a typed `Petition`.
    * The resulting function can be used with `wrap` or can be `composed`, and it's guaranteed to return a `Response` or `Promise<Response>`.
