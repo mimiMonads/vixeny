@@ -139,8 +139,9 @@ export default {
 export const pluginCTX = (o?: FunRouterOptions<any>) => (p: Petition) => ({
   getPetition: () => ({ ...p }),
   getGlobalOptions: () => ({ ...o }),
-  isUsing: () => composerTools.isUsing(o)(p),
-  pluginIsUsing: (currentName: string) => pluginIsUsing(p)(currentName),
+  isUsing: (): string[] => composerTools.isUsing(o)(p),
+  pluginIsUsing: (currentName: string): string[] | null =>
+    pluginIsUsing(p)(currentName),
   currentName: (sym: symbol) =>
     Object
       .keys(o?.cyclePlugin ?? [])

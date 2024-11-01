@@ -51,12 +51,20 @@ export { wrap } from "./src/exportable/wrap.ts";
 
 /**
  * Dev stuff
+ *
+ * Please do not use
+ */
+export type { CyclePluginType } from "./src/exportable/plugin.ts";
+/**
+ * Dev stuff
+ *
+ * Please do not use
  */
 export const symbolExport = {
   /**
    * Version
    */
-  [Symbol.for("vixeny")]: [0, 1, 48],
+  [Symbol.for("vixeny")]: [0, 1, 49],
 } as {
   [key: symbol]: [number, number, number];
 };
