@@ -1,6 +1,7 @@
 import * as plugins from "../../exportable/plugin.ts";
 import { f as cookieParser } from "../cookies/mainCookies.ts";
 import type { Petition } from "../../morphism.ts";
+import type { CyclePluginType } from "../../exportable/plugin.ts";
 
 interface InnerElement {
   lastUsed: {
@@ -113,7 +114,7 @@ const deleteUnusedSession =
     );
 
 /**
- * Native plugin fro sessions
+ * Native plugin for sessions
  */
 const session = <
   T extends Record<string, unknown>,
@@ -123,7 +124,12 @@ const session = <
   tolerance?: number;
   autoDeleteTolerance?: number;
   injectMap?: Map<string, R>;
-}) => {
+}): CyclePluginType<
+  false,
+  false,
+  SessionType<any, any>,
+  SessionType<any, any>
+> => {
   // Declaring  map
   const sym = Symbol("session");
   const map = opt?.injectMap ?? new Map<string, R>();
@@ -147,7 +153,12 @@ const session = <
     f: (ctx) => {
       return mapper<T, R>(map)()(opt?.tolerance ?? 300000)(ctx.getPetition());
     },
-  });
+  }) as unknown as CyclePluginType<
+    false,
+    false,
+    SessionType<any, any>,
+    SessionType<any, any>
+  >;
 };
 
 export { session };
