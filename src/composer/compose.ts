@@ -173,7 +173,7 @@ const methodForAsyncAdd = () => ((headers: ResponseInit) =>
 ) =>
 (context: (r: Request) => CTX) =>
 async (request: Request): Promise<Response> => {
-  const result = await f(context(request));
+  const result = await f(await context(request));
 
   return result instanceof Response ? result : new Response(result, headers);
 });
