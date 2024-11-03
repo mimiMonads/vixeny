@@ -24,7 +24,7 @@ performance-centric foundation for your web projects.
 Easing into Vixeny is now smoother than ever, especially for those working
 within Deno and Bun environments. By leveraging the simplicity of commands like
 `npx create-vixeny` and `bun create vixeny`, developers can rapidly set up new
-projects choosing from a variety of templates including vanilla JavaScript, Ejs,
+projects choosing from a variety of templates including vanilla JavaScript, EJS,
 or Pug, all equipped with hot reloading capabilities. This feature not only
 simplifies the setup process but also significantly enhances productivity and
 workflow efficiency.
@@ -40,7 +40,7 @@ workflow efficiency.
 - **Ironclad Security**: Designed with security at its heart, Vixeny ensures
   your applications are safe and sound.
 - **Sophisticated Type Checking**: Advanced type system integration for
-  bulletproof code reliability emd-to-end.
+  bulletproof code reliability end-to-end.
 - **Harmony of Paradigms**: While rooted in functional programming, Vixeny
   gracefully supports a spectrum of programming paradigms.
 - **Seamless Testing**: Built from the ground up to accommodate easy and
