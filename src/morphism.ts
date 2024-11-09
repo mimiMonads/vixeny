@@ -748,6 +748,7 @@ export type Morphism<
   readonly crypto?: CO;
   readonly args?: MO extends { type: "morphism" } ? AT : never;
   readonly query?: QO;
+  readonly lazy?: boolean;
   readonly cookie?: CookieOptions;
   readonly param?: PO;
   readonly applyTo?: MO["specialVisible"] extends true ? ApplyToCTX : never;
