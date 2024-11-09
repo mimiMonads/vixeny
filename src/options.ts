@@ -1,6 +1,6 @@
 import type { CORSOptions } from "./components/cors/types.ts";
 import type { CyclePluginType } from "./exportable/plugin.ts";
-import type { Petition } from "./morphism.ts";
+
 /**
  * Options for the router, it is `optional`
  * ```ts

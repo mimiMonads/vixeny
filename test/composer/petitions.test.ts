@@ -2,6 +2,7 @@ import { assertEquals } from "@std/assert";
 import { test } from "@cross/test";
 import compose from "../../src/composer/compose.ts";
 import { petitions } from "../../src/morphism.ts";
+import { plugins } from "../../main.ts";
 
 const nestedResolve = petitions.resolve()({
   f: (_) => "syncResolve",
@@ -31,6 +32,34 @@ const getArray = petitions.branch()({
 const getString = petitions.branch()({
   args: "string",
   f: ({ args }) => args,
+});
+
+const hello = plugins.type({
+  name: Symbol.for("hello"),
+  isFunction: true,
+  type: undefined,
+  f: () => () => "hello",
+});
+
+const sealedPetiton = petitions.sealableAdd(
+  {
+    cyclePlugin: {
+      hello2: hello,
+    },
+  },
+)({
+  cyclePlugin: {
+    hello,
+  },
+})({
+  f: ({ hello, hello2 }) => hello() + hello2(),
+});
+
+test("UWU case", async () => {
+  const base = await compose()(sealedPetiton)(new Request("http://hello.com/"));
+
+  assertEquals(await base.text(), "hellohello");
+  assertEquals(base.status, 200);
 });
 
 test("base case", async () => {

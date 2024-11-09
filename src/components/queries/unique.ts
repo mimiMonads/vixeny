@@ -1,3 +1,5 @@
+// TODO: Redo
+
 export default (s: string[]) =>
   `(p=>u=>(l=> l!==-1?p(u.slice(l)) :null)(u.indexOf("?")))(s => ${` (a =>a !== -1? (l =>  l !== -1 ? 
     

@@ -15,8 +15,11 @@ type CTX = WithPlugins<any, any, any, any, any, any, any, any, any>;
 
 const compose =
   (o?: FunRouterOptions<any>) =>
-  (p: Petition): (ctx: Request) => Promise<Response> | Response =>
-    ((isUsing) =>
+  (p: Petition): (ctx: Request) => Promise<Response> | Response => {
+    // Ensuring options from Petition has priority
+    o = p.o ?? o ?? {};
+
+    return ((isUsing) =>
       (
         (table) =>
           typeof p.onError === "function"
@@ -56,6 +59,7 @@ const compose =
       ))(
         tools.isUsing(o)(p),
       );
+  };
 
 const resolveF =
   (o?: FunRouterOptions<any>) =>
