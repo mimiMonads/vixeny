@@ -24,17 +24,13 @@ type NativeMaps = {
 
 export default (o?: FunRouterOptions<any>) =>
 (p: Petition) =>
- (native: NativeMaps[]) =>
+(native: NativeMaps[]) =>
   (async (list) =>
-   
-     await Promise.all(
+    await Promise.all(
       native.map((x) =>
         x.type === 1 ? list.find((y) => y.condition(x)) || null : null
-      ).filter((x) => x !== null).map( async (x) =>  await x!.action())
-     )
-    )
-
-    ([
+      ).filter((x) => x !== null).map(async (x) => await x!.action()),
+    ))([
       {
         condition: (x: NativeMaps) => x.name === "param",
         action: () => params(o)(p),
@@ -87,7 +83,9 @@ export default (o?: FunRouterOptions<any>) =>
       {
         condition: (x: NativeMaps) => x.name === "resolve",
         action: async () =>
-          ("resolve" in p) ? await resolve(o)(p.path as string)(p.resolve) : null,
+          ("resolve" in p)
+            ? await resolve(o)(p.path as string)(p.resolve)
+            : null,
       },
       {
         condition: (x: NativeMaps) => x.name === "branch",

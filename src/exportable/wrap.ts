@@ -595,7 +595,7 @@ export const wrap = ((o?) => (a = []) => ({
             {
               ...a.find((x) => x.path === s),
               ...injection,
-            } as unknown as Petition
+            } as unknown as Petition,
           ))(r),
         )
       : ((_: Request) => Promise.resolve(null))) as unknown as (
@@ -604,7 +604,7 @@ export const wrap = ((o?) => (a = []) => ({
   testRequests: (async () => {
     return await vixeny({ ...o })(
       [...a],
-    ).then( v =>  async (r: Request) =>  await v(r))
+    ).then((v) => async (r: Request) => await v(r));
   }),
   get: (ob) =>
     wrap(o)(
@@ -658,8 +658,8 @@ export const wrap = ((o?) => (a = []) => ({
   pure: (petition) => wrap(o)(petition ? [petition] : []),
   addAnyPetition: (petition) => wrap(o)([...a, petition]),
   compose: async () => {
-    const v = await vixeny(o)(a)
-    return v
+    const v = await vixeny(o)(a);
+    return v;
   },
   flatMap: (fn) => a.reduce((acc, x) => acc.union(fn(x).unwrap()), wrap(o)([])),
 })) as WrapFunction;

@@ -68,7 +68,7 @@ export const composer = {
       R
     >,
   ) =>
-    ( await compose(o)(
+    (await compose(o)(
       { ...r, type: "request", o } as unknown as Petition,
     )) as unknown as (
       re: Request,
@@ -173,7 +173,7 @@ export const composer = {
   petition: async (
     r: Petition,
   ) =>
-    (r.type === "response" ? r.r : ( await compose(r.o ?? {})(
+    (r.type === "response" ? r.r : (await compose(r.o ?? {})(
       { ...r },
     ))) as unknown as (
       re: Request,

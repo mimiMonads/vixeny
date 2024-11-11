@@ -50,14 +50,14 @@ test("Checking basic functions", async () => {
   );
 
   assertEquals(
-    ((await linker({})({
+    (await linker({})({
       type: "add",
       path: "/1/2/:id",
       query: {
         only: ["hello"],
       },
       f: mockFunction,
-    })(["query"])))(requestForTest),
+    })(["query"]))(requestForTest),
     {
       query: {
         hello: "world",
@@ -224,7 +224,7 @@ test("Checking branch", async () => {
     "world",
   );
 
-  await  (await linker({})({
+  await (await linker({})({
     type: "add",
     path: "/1/2/:id",
     branch: {

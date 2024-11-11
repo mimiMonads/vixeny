@@ -13,83 +13,84 @@ type Table = {
 
 type CTX = WithPlugins<any, any, any, any, any, any, any, any, any>;
 
-const onLazy =
-  (o?: FunRouterOptions<any>) =>
-  async (p: Petition): Promise<(ctx: Request) => Promise<Response> | Response> => {
-    let func = (_: Request): Promise<Response> | Response => new Response(),
-      consumed = true;
+const onLazy = (o?: FunRouterOptions<any>) =>
+async (
+  p: Petition,
+): Promise<(ctx: Request) => Promise<Response> | Response> => {
+  let func = (_: Request): Promise<Response> | Response => new Response(),
+    consumed = true;
 
-    return (async (r) => {
-      if (consumed === true) {
-        func = await compose(o)({
-          ...p,
-          lazy: false,
-        });
-        consumed = false;
-      }
-      return func(r);
-    });
-  };
-
-const compose =
-  (o?: FunRouterOptions<any>) =>
-  async (p: Petition): Promise<(ctx: Request) => Promise<Response> | Response> => {
-    // Ensuring options from Petition has priority
-    o = p.o ?? o ?? {};
-
-    if (p.lazy) {
-      return await onLazy(o)(p);
+  return (async (r) => {
+    if (consumed === true) {
+      func = await compose(o)({
+        ...p,
+        lazy: false,
+      });
+      consumed = false;
     }
+    return func(r);
+  });
+};
 
-    return ((isUsing) =>
-      (
-        async (table) =>
-          typeof p.onError === "function"
-            ? onError(table.isAsync)(
-              await resolveF(o)(table)(p)(isUsing) as (
-                ctx: Request,
-              ) => Response,
-            )(
-              getApplyTo(table.isAsync)()(p.onError)(
-                await linker(o)({
-                  ...p,
-                  f: p.onError,
-                  onError: undefined,
-                  applyTo: {
-                    type: "onError",
-                  },
-                })(
-                  tools.isUsing(o)({ ...p, f: p.onError, onError: undefined }),
-                ),
-              ),
-            )
-            : await resolveF(o)(table)(p)(isUsing) as (
+const compose = (o?: FunRouterOptions<any>) =>
+async (
+  p: Petition,
+): Promise<(ctx: Request) => Promise<Response> | Response> => {
+  // Ensuring options from Petition has priority
+  o = p.o ?? o ?? {};
+
+  if (p.lazy) {
+    return await onLazy(o)(p);
+  }
+
+  return ((isUsing) =>
+    (
+      async (table) =>
+        typeof p.onError === "function"
+          ? onError(table.isAsync)(
+            await resolveF(o)(table)(p)(isUsing) as (
               ctx: Request,
-            ) => Promise<Response> | Response
-      )(
-        //elements int table
-        {
-          isAsync: tools.localAsync(o)(p)(isUsing),
-          asyncResolve: tools.recursiveCheckAsync(p),
-          headers: typeof p.headings === "object" || typeof o?.cors === "object"
-            ? {
-              ...p.headings,
-              headers: joinHeaders(o)(p),
-            }
-            : null,
-        },
-      ))(
-        tools.isUsing(o)(p),
-      );
-  };
+            ) => Response,
+          )(
+            getApplyTo(table.isAsync)()(p.onError)(
+              await linker(o)({
+                ...p,
+                f: p.onError,
+                onError: undefined,
+                applyTo: {
+                  type: "onError",
+                },
+              })(
+                tools.isUsing(o)({ ...p, f: p.onError, onError: undefined }),
+              ),
+            ),
+          )
+          : await resolveF(o)(table)(p)(isUsing) as (
+            ctx: Request,
+          ) => Promise<Response> | Response
+    )(
+      //elements int table
+      {
+        isAsync: tools.localAsync(o)(p)(isUsing),
+        asyncResolve: tools.recursiveCheckAsync(p),
+        headers: typeof p.headings === "object" || typeof o?.cors === "object"
+          ? {
+            ...p.headings,
+            headers: joinHeaders(o)(p),
+          }
+          : null,
+      },
+    ))(
+      tools.isUsing(o)(p),
+    );
+};
 
 const resolveF =
   (o?: FunRouterOptions<any>) =>
   (table: Table) =>
   (p: Petition) =>
   async (isUsing: string[]) => {
-
-    const linked = await linker(o)(p)(isUsing)
+    const linked = await linker(o)(p)(isUsing);
     switch (p.type) {
       // Standard method
       case "add":
