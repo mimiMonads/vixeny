@@ -7,9 +7,9 @@ import type { Petition } from "../../morphism.ts";
 
 export default (o?: specialOptions) =>
 (path: string) =>
-(input: BranchMap<any>): ResponseResponse =>
+(input: BranchMap<any>): Promise<ResponseResponse> =>
   (
-    (ar) =>
+    async (ar) =>
       (
         (table) =>
           ((isAsync) =>
@@ -33,7 +33,7 @@ export default (o?: specialOptions) =>
               ),
             )
       )(
-        table(o ? { ...o, branch: true } : { branch: true })(path)(
+        await table(o ? { ...o, branch: true } : { branch: true })(path)(
           ar,
         ),
       )

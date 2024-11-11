@@ -36,42 +36,42 @@ const hiRequest = new Request("http://localhost:3000/", {
 
 test("jwt signing with an element", async () => {
   assertEquals(
-    await wrap()()
+    await ( await wrap()()
       .stdPetition({
         path: "/",
         crypto: {
           globalKey: secret,
         },
         f: ({ token }) => token.hello ? "valid" : "invalid",
-      }).testRequests()(request).then((x) => x.text()),
+      }).testRequests())(request).then((x) => x.text()),
     "valid",
   );
 });
 
 test("jwt signing with an invalid request", async () => {
   assertEquals(
-    await wrap()()
+    await ( await wrap()()
       .stdPetition({
         path: "/",
         crypto: {
           globalKey: secret,
         },
         f: ({ token }) => token.hello ? "valid" : "invalid",
-      }).testRequests()(invalidRequest).then((x) => x.text()),
+      }).testRequests())(invalidRequest).then((x) => x.text()),
     "invalid",
   );
 });
 
 test("jwt signing with a valid request but not using the right cookie", async () => {
   assertEquals(
-    await wrap()()
+    await ( await wrap()()
       .stdPetition({
         path: "/",
         crypto: {
           globalKey: secret,
         },
         f: ({ token }) => token.hello ? "valid" : "invalid",
-      }).testRequests()(hiRequest).then((x) => x.text()),
+      }).testRequests())(hiRequest).then((x) => x.text()),
     "invalid",
   );
 });

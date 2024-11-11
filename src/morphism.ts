@@ -880,7 +880,8 @@ export type WithPlugins<
 //       : {}
 
 type CyclePluginFunctions<CPM extends CyclePluginMap> = {
-  [K in keyof CPM]: CPM[K]["isFunction"] extends true ? ReturnType<CPM[K]["f"]>
+  [K in keyof CPM]: CPM[K]["isFunction"] extends true 
+    ? ReturnType<CPM[K]["f"]>
     : Awaited<ReturnType<ReturnType<CPM[K]["f"]>>>;
 };
 

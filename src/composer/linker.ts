@@ -9,7 +9,7 @@ export type specialOptions = {
   branch?: boolean;
 } & FunRouterOptions<any>;
 
-export default (o?: specialOptions) => (p: Petition) => (isUsing: string[]) => {
+export default (o?: specialOptions) => (p: Petition) => async (isUsing: string[]):Promise<any> => {
   // Checks if the function has to be applied again for an extra function
   const isApplyTo = p.applyTo !== undefined && typeof p.applyTo === "object";
 
@@ -29,10 +29,10 @@ export default (o?: specialOptions) => (p: Petition) => (isUsing: string[]) => {
   }
 
   // Generate the 'table' using nativeMaps
-  const table = nativeMaps(o)(p)(isUsing)(false);
+  const table =  nativeMaps(o)(p)(isUsing)(false);
 
   // Generate 'functions' using nativeComponents
-  const functions = nativeComponents(o)(p)(table);
+  const functions =  await nativeComponents(o)(p)(table);
 
   // Determine if asynchronous functions are needed
   const needsAsync = (p.resolve && tools.recursiveCheckAsync(p)) ||

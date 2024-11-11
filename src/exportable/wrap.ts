@@ -326,7 +326,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * ```
    * For more details, see the [testRequests](https://vixeny.dev/library/wrap#testrequests).
    */
-  testRequests: () => (r: Request) => Promise<Response>;
+  testRequests: () => Promise<(r: Request) => Promise<Response>>;
   /**
    * Allows for changing the wrap options of the current instance, creating a new instance with the updated options
    * while preserving the existing petitions. This is useful for dynamically adjusting configurations, such as
@@ -496,7 +496,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * ```
    * For more details, see the [compose](https://vixeny.dev/library/wrap#compose).
    */
-  compose: () => (r: Request) => Promise<Response> | Response;
+  compose: () => Promise<(r: Request) => Promise<Response> | Response>;
   /**
    * Applies a function over each petition, wrapping each result, and then flattens all results into a single wrap.
    *
@@ -589,24 +589,23 @@ export const wrap = ((o?) => (a = []) => ({
     >,
   ) =>
     (a.some((x) => x.path === s)
-      ? (r: Request) =>
+      ? async (r: Request) =>
         Promise.resolve(
-          response(o)(
+          (await response(o)(
             {
               ...a.find((x) => x.path === s),
               ...injection,
-            } as unknown as Petition,
-          )(r),
+            } as unknown as Petition
+          ))(r),
         )
       : ((_: Request) => Promise.resolve(null))) as unknown as (
         r: Request,
       ) => Promise<Response>,
-  testRequests: () =>
-    ((v) => (r: Request) => Promise.resolve(v(r)))(
-      vixeny({ ...o })(
-        [...a],
-      ),
-    ),
+  testRequests: (async () => {
+    return await vixeny({ ...o })(
+      [...a],
+    ).then( v =>  async (r: Request) =>  await v(r))
+  }),
   get: (ob) =>
     wrap(o)(
       a.concat(
@@ -658,6 +657,9 @@ export const wrap = ((o?) => (a = []) => ({
     ),
   pure: (petition) => wrap(o)(petition ? [petition] : []),
   addAnyPetition: (petition) => wrap(o)([...a, petition]),
-  compose: () => vixeny(o)(a),
+  compose: async () => {
+    const v = await vixeny(o)(a)
+    return v
+  },
   flatMap: (fn) => a.reduce((acc, x) => acc.union(fn(x).unwrap()), wrap(o)([])),
 })) as WrapFunction;

@@ -7,16 +7,47 @@ import { vixeny } from "../../main.ts";
 import injectHtml from "./injectHtml.ts";
 import type { fileServerPetition, Petition } from "../morphism.ts";
 
+
+
+
+const awaitedRoute = (
+  o?: FunRouterOptions<any>,
+) =>  async (route: fileServerPetition<any>):Promise<RouteTypes> =>  {
+
+  const func  = await vixeny({
+    ...o,
+    stateFlags: {
+      ...(o && o?.stateFlags ? o.stateFlags : {}),
+      isFileServer: true,
+      ...("slashIs" in route && typeof route.slashIs === "string"
+        ? { slashIs: route.slashIs }
+        : {}),
+    },
+  })(
+    staticFiles(o)(
+      //this curried is for debbuing purposes
+    )(route),
+  )
+
+    return [
+      "GET",
+      route.name + "*",
+      func,
+      'stactic' ]
+
+};
+
 export default (
   o?: FunRouterOptions<any>,
-): (routes: (Petition | fileServerPetition<any>)[]) => RouteTypes[] =>
-(ar) =>
-  ar
+) => async (routes: (Petition | fileServerPetition<any>)[]) : Promise<RouteTypes[]> => {
+
+  //@ts-ignore
+  return   Promise.all(routes
     .filter(
       (x) => !("active" in x && x.active === false),
     )
     .map(
-      (x) =>
+      async(x) =>
         x.type === "response"
           ? [
             x?.method ?? "GET",
@@ -30,25 +61,7 @@ export default (
             false,
           ] as unknown as RouteTypes
           : x.type === "fileServer"
-          ? [
-            "GET",
-            x.name + "*",
-            vixeny({
-              ...o,
-              stateFlags: {
-                ...(o && o?.stateFlags ? o.stateFlags : {}),
-                isFileServer: true,
-                ...("slashIs" in x && typeof x.slashIs === "string"
-                  ? { slashIs: x.slashIs }
-                  : {}),
-              },
-            })(
-              staticFiles(o)(
-                //this curried is for debbuing purposes
-              )(x),
-            ),
-            "static",
-          ] as RouteTypes
+          ? await awaitedRoute(o)(x)
           : [
             x?.method ? x.method : "GET",
             x.path,
@@ -56,10 +69,11 @@ export default (
               typeof o.debugging.injectHtml == "string"
               ? async (r: Request) =>
                 await injectHtml(o.debugging!.injectHtml!)(
-                  compose(o)(x)(r),
+                   (await compose(o)(x))(r),
                 )
-              : compose(o)(x),
+              : await compose(o)(x),
 
             false,
-          ] as unknown as RouteTypes,
-    );
+          ]),
+    )
+  }

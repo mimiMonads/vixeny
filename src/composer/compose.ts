@@ -15,13 +15,13 @@ type CTX = WithPlugins<any, any, any, any, any, any, any, any, any>;
 
 const onLazy =
   (o?: FunRouterOptions<any>) =>
-  (p: Petition): (ctx: Request) => Promise<Response> | Response => {
+  async (p: Petition): Promise<(ctx: Request) => Promise<Response> | Response> => {
     let func = (_: Request): Promise<Response> | Response => new Response(),
       consumed = true;
 
-    return ((r) => {
-      if (consumed) {
-        func = compose(o)({
+    return (async (r) => {
+      if (consumed === true) {
+        func = await compose(o)({
           ...p,
           lazy: false,
         });
@@ -33,25 +33,25 @@ const onLazy =
 
 const compose =
   (o?: FunRouterOptions<any>) =>
-  (p: Petition): (ctx: Request) => Promise<Response> | Response => {
+  async (p: Petition): Promise<(ctx: Request) => Promise<Response> | Response> => {
     // Ensuring options from Petition has priority
     o = p.o ?? o ?? {};
 
     if (p.lazy) {
-      return onLazy(o)(p);
+      return await onLazy(o)(p);
     }
 
     return ((isUsing) =>
       (
-        (table) =>
+        async (table) =>
           typeof p.onError === "function"
             ? onError(table.isAsync)(
-              resolveF(o)(table)(p)(isUsing) as (
+              await resolveF(o)(table)(p)(isUsing) as (
                 ctx: Request,
               ) => Response,
             )(
               getApplyTo(table.isAsync)()(p.onError)(
-                linker(o)({
+                await linker(o)({
                   ...p,
                   f: p.onError,
                   onError: undefined,
@@ -63,7 +63,7 @@ const compose =
                 ),
               ),
             )
-            : resolveF(o)(table)(p)(isUsing) as (
+            : await resolveF(o)(table)(p)(isUsing) as (
               ctx: Request,
             ) => Promise<Response> | Response
       )(
@@ -87,14 +87,16 @@ const resolveF =
   (o?: FunRouterOptions<any>) =>
   (table: Table) =>
   (p: Petition) =>
-  (isUsing: string[]) => {
+  async (isUsing: string[]) => {
+
+    const linked = await linker(o)(p)(isUsing)
     switch (p.type) {
       // Standard method
       case "add":
         return getMethodForAdd(table.isAsync || table.asyncResolve)(
           table.headers ? true : false,
         ) //@ts-ignore
-        (p.f)(linker(o)(p)(isUsing));
+        (p.f)(linked);
 
         // Wraps in Request
       case "base":
@@ -102,19 +104,19 @@ const resolveF =
           return getBody(table.isAsync || table.asyncResolve)(
             table.headers ? true : false,
           )()(table.headers)(p.f)(
-            linker(o)(p)(isUsing),
+            linked,
           );
         }
 
         return getBody(table.isAsync || table.asyncResolve)(
           table.headers ? true : false,
         )()(p.f)(
-          linker(o)(p)(isUsing),
+          linked,
         );
 
       default:
         return getResponse(table.isAsync || table.asyncResolve)()(p.f)(
-          linker(o)(p)(isUsing),
+          linked,
         );
     }
   };

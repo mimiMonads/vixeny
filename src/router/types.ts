@@ -1,7 +1,7 @@
 export type ArrayFiler = [ArraySwap[], RouteTypes[]];
 export type ArraySwap = [number, string, ParamsMethod, RequestFunction];
 export type RequestUrl = [string[], string];
-export type RequestFunction = { (r: Request): Response };
+export type RequestFunction = { (r: Request): Response | Promise<Response> };
 export type RouteTypes = [
   ParamsMethod,
   string,

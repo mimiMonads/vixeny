@@ -35,7 +35,7 @@ export default ((o?: FunRouterOptions<any>) => (a: RouteTypes[]) =>
         main1(o)(
           [
             (a.filter((x) =>
-              typeof x[3] === "string" || x[1].at(-1) === "*"
+              typeof x[3] === "string" ||  x[1].at(-1) === "*"
             ) as RouteTypes[]).map(
               (
                 x,

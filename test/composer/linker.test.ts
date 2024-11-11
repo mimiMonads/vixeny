@@ -15,33 +15,33 @@ const requestForTest = new Request("http://localhost/1/2/3?hello=world");
 
 test("returns identity of the request", async () => {
   assertEquals(
-    linker({})({
+    (await linker({})({
       type: "add",
       path: "./test",
       f: mockFunction,
-    })([])(requestForTest),
+    })([]))(requestForTest),
     requestForTest,
   );
 
   // It's based on `isUsing` so even if we are using `param`
   // it returns identity
   assertEquals(
-    linker({})({
+    (await linker({})({
       type: "add",
       path: "./test",
       f: mockFunction,
-    })([])(requestForTest),
+    })([]))(requestForTest),
     requestForTest,
   );
 });
 
 test("Checking basic functions", async () => {
   assertEquals(
-    linker({})({
+    (await linker({})({
       type: "add",
       path: "/1/2/:id",
       f: mockFunction,
-    })(["param"])(requestForTest),
+    })(["param"]))(requestForTest),
     {
       param: {
         id: "3",
@@ -50,14 +50,14 @@ test("Checking basic functions", async () => {
   );
 
   assertEquals(
-    linker({})({
+    ((await linker({})({
       type: "add",
       path: "/1/2/:id",
       query: {
         only: ["hello"],
       },
       f: mockFunction,
-    })(["query"])(requestForTest),
+    })(["query"])))(requestForTest),
     {
       query: {
         hello: "world",
@@ -66,14 +66,14 @@ test("Checking basic functions", async () => {
   );
 
   assertEquals(
-    linker({})({
+    (await linker({})({
       type: "add",
       path: "/1/2/:id",
       query: {
         only: ["hello"],
       },
       f: mockFunction,
-    })(["query", "param"])(requestForTest),
+    })(["query", "param"]))(requestForTest),
     {
       param: {
         id: "3",
@@ -113,14 +113,14 @@ test("Checking resolve", async () => {
   });
 
   assertEquals(
-    linker({})({
+    (await linker({})({
       type: "add",
       path: "/1/2/:id",
       resolve: {
         hello,
       },
       f: mockFunction,
-    })(["resolve"])(requestForTest),
+    })(["resolve"]))(requestForTest),
     {
       resolve: {
         hello: "world",
@@ -129,14 +129,14 @@ test("Checking resolve", async () => {
   );
 
   assertEquals(
-    linker({})({
+    (await linker({})({
       type: "add",
       path: "/1/2/:id",
       resolve: {
         hello: nestedHello,
       },
       f: mockFunction,
-    })(["resolve"])(requestForTest),
+    })(["resolve"]))(requestForTest),
     {
       resolve: {
         hello: "world",
@@ -146,14 +146,14 @@ test("Checking resolve", async () => {
 
   //we need to await here to resolve because we are not using the composer
   assertEquals(
-    await linker({})({
+    await (await linker({})({
       type: "add",
       path: "/1/2/:id",
       resolve: {
         hello: asyncHello,
       },
       f: mockFunction,
-    })(["resolve"])(requestForTest),
+    })(["resolve"]))(requestForTest),
     {
       resolve: {
         hello: "world",
@@ -163,14 +163,14 @@ test("Checking resolve", async () => {
 
   //we need to await here to resolve because we are not using the composer
   assertEquals(
-    await linker({})({
+    await (await linker({})({
       type: "add",
       path: "/1/2/:id",
       resolve: {
         hello: nestedAsyncHello,
       },
       f: mockFunction,
-    })(["resolve"])(requestForTest),
+    })(["resolve"]))(requestForTest),
     {
       resolve: {
         hello: "world",
@@ -201,37 +201,37 @@ test("Checking branch", async () => {
   });
 
   assertEquals(
-    linker({})({
+    (await linker({})({
       type: "add",
       path: "/1/2/:id",
       branch: {
         hello,
       },
       f: mockFunction,
-    })(["branch"])(requestForTest).branch.hello(),
+    })(["branch"]))(requestForTest).branch.hello(),
     "world",
   );
 
   assertEquals(
-    linker({})({
+    (await linker({})({
       type: "add",
       path: "/1/2/:id",
       branch: {
         hello: nestedHello,
       },
       f: mockFunction,
-    })(["branch"])(requestForTest).branch.hello(),
+    })(["branch"]))(requestForTest).branch.hello(),
     "world",
   );
 
-  await linker({})({
+  await  (await linker({})({
     type: "add",
     path: "/1/2/:id",
     branch: {
       hello: asyncHello,
     },
     f: mockFunction,
-  })(["branch"])(requestForTest).branch
+  })(["branch"]))(requestForTest).branch
     // Forcing to resolve the branch on its context
     .then(
       async (x: { hello: () => any }) => {
@@ -246,27 +246,27 @@ test("Checking branch", async () => {
 test("Checking branch", async () => {
   // Wraps correctly
   assertEquals(
-    linker({})({
+    (await linker({})({
       type: "add",
       path: "/1/2/:id",
       f: mockFunction,
       applyTo: {
         type: "onError",
       },
-    })([])(requestForTest)(),
+    })([]))(requestForTest)(),
     requestForTest,
   );
 
   // Wraps correctly
   assertEquals(
-    linker({})({
+    (await linker({})({
       type: "add",
       path: "/1/2/:id",
       f: mockFunction,
       applyTo: {
         type: "onError",
       },
-    })(["error"])(requestForTest)("world").error,
+    })(["error"]))(requestForTest)("world").error,
     "world",
   );
 });

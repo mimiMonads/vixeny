@@ -4,10 +4,11 @@ import type { BranchOptions } from "./types.ts";
 
 export default (o?: specialOptions) =>
 (path: string) =>
-(table: BranchOptions) =>
+async (table: BranchOptions) =>
+  Promise.all(
   table
     .map((p) => ({ ...p, path: path }))
-    .map((p) => ({
+    .map(async (p) => ({
       name: p.name,
       f: (
         (composed) =>
@@ -20,8 +21,9 @@ export default (o?: specialOptions) =>
             : ((a) => (k: (arg0: any) => any) => (r: Request) => (b: unknown) =>
               k(a(r)(b)))(composed)(p.f)
       )(
-        aComposer(o ? { ...o, branch: false } : { branch: false })(p)(
+        await aComposer(o ? { ...o, branch: false } : { branch: false })(p)(
           tools.isUsing(o)(p),
         ),
       ),
-    }));
+    })))
+    ;

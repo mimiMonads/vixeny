@@ -68,7 +68,7 @@ const wrapped = wrap(
     r: () => new Response("withoutCTX"),
   }).addAnyPetition(normalPetition);
 
-const serve = wrapped.testRequests();
+const serve = await  wrapped.testRequests();
 
 test("wrap checking std", async () => {
   assertEquals(
