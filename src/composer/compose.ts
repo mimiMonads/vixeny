@@ -13,10 +13,35 @@ type Table = {
 
 type CTX = WithPlugins<any, any, any, any, any, any, any, any, any>;
 
+const onLazy =
+  (o?: FunRouterOptions<any>) =>
+  (p: Petition): (ctx: Request) => Promise<Response> | Response => {
+    let func = (_: Request): Promise<Response> | Response => new Response(),
+      consumed = true;
+
+    return ((r) => {
+      if (consumed) {
+        func = compose(o)({
+          ...p,
+          lazy: false,
+        });
+        consumed = false;
+      }
+      return func(r);
+    });
+  };
+
 const compose =
   (o?: FunRouterOptions<any>) =>
-  (p: Petition): (ctx: Request) => Promise<Response> | Response =>
-    ((isUsing) =>
+  (p: Petition): (ctx: Request) => Promise<Response> | Response => {
+    // Ensuring options from Petition has priority
+    o = p.o ?? o ?? {};
+
+    if (p.lazy) {
+      return onLazy(o)(p);
+    }
+
+    return ((isUsing) =>
       (
         (table) =>
           typeof p.onError === "function"
@@ -56,6 +81,7 @@ const compose =
       ))(
         tools.isUsing(o)(p),
       );
+  };
 
 const resolveF =
   (o?: FunRouterOptions<any>) =>

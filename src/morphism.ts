@@ -35,9 +35,67 @@ export type ResolveMorphism = Morphism<
 >;
 
 /**
+ * This is a tool use for Static server as an interface for th final user.
+ * A way to add options to plugins, for example, you add your plugins on
+ * extraOptions and they will appeared on the petition that they are making.
+ *
+ * @param extraOptions
+ * @returns
+ */
+const sealableAdd = <
+  FM extends CyclePluginMap,
+  O2 extends FunRouterOptions<FM>,
+>(extraOptions: O2) =>
+<
+  FC extends CyclePluginMap,
+  O extends FunRouterOptions<FC>,
+>(
+  options?: O,
+) =>
+<
+  RM extends ResolveMap<any>,
+  BM extends BranchMap<any>,
+  QO extends QueryOptions,
+  PO extends ParamOptions,
+  //RO extends FunRouterOptions<any>,
+  CO extends CryptoOptions,
+  AR = any,
+  R = any,
+>(
+  m: Morphism<
+    {
+      type: "add";
+      isAPetition: true;
+      typeNotNeeded: true;
+    },
+    RM,
+    BM,
+    QO,
+    PO,
+    // idk how this worked tbh
+    O & O2,
+    CO,
+    AR,
+    R
+  >,
+) =>
+  ({
+    type: "add",
+    ...m,
+    o: {
+      ...options,
+      cyclePlugin: {
+        ...options?.cyclePlugin,
+        ...extraOptions?.cyclePlugin,
+      },
+    },
+  }) as Petition;
+
+/**
  * Types Morphisims
  */
 export const petitions = {
+  sealableAdd,
   /**
    * Maybe implementation
    *
@@ -690,6 +748,7 @@ export type Morphism<
   readonly crypto?: CO;
   readonly args?: MO extends { type: "morphism" } ? AT : never;
   readonly query?: QO;
+  readonly lazy?: boolean;
   readonly cookie?: CookieOptions;
   readonly param?: PO;
   readonly applyTo?: MO["specialVisible"] extends true ? ApplyToCTX : never;
@@ -789,6 +848,7 @@ export type CookieOptions = {
 
 export type ParamOptions = {
   readonly unique?: true;
+  readonly maybe?: true;
 } | {};
 
 type specialElements = {
@@ -858,6 +918,9 @@ interface Ctx<
   TH extends boolean | undefined,
   AR = any,
 > {
+  /**
+   * Error from the context
+   */
   error: TH extends true ? unknown : never;
   args: AR extends undefined ? never : AR;
   /**

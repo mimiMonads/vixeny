@@ -1,6 +1,8 @@
 import type { FunRouterOptions } from "../../options.ts";
 import type { Petition } from "../../morphism.ts";
 
+// TODO: Redo
+
 export default (o?: FunRouterOptions<any>) => (f: Petition) =>
   (
     (b) =>
