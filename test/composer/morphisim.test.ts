@@ -40,18 +40,18 @@ const asyncNestedBranch = petitions.branch()({
 
 // Test
 test("sync resolve", async () => {
-  const map = await resolve()("test")({
+  const map = await (await resolve()("test")({
     nestedResolve: nestedResolve,
     sync: syncResolve,
-  })(new Request("http://test/"));
+  }))(new Request("http://test/"));
 
   assertEquals(map.sync, map.nestedResolve);
 });
 
 test("async resolve", async () => {
-  const map = await resolve()("test")({
+  const map = await (await resolve()("test")({
     nestedResolve: asyncResolve,
-  })(
+  }))(
     new Request("http://test/", {
       body: '{"hello":1}',
       method: "POST",
@@ -64,17 +64,17 @@ test("async resolve", async () => {
 // Branch
 
 test("sync branch", async () => {
-  const map = await branch()("test")({
+  const map = await (await branch()("test")({
     sync: nestedBranch,
-  })(new Request("http://test/"));
+  }))(new Request("http://test/"));
 
   assertEquals(map.sync("sync"), "sync");
 });
 
 test("async branch", async () => {
-  const map = await branch()("test")({
+  const map = await (await branch()("test")({
     async: asyncNestedBranch,
-  })(
+  }))(
     new Request("http://test/", {
       body: '{"hello":1}',
       method: "POST",

@@ -33,67 +33,73 @@ const requestPetition = petitions.custom()({
 
 test("exportable composer any", async () => {
   assertEquals(
-    composer.anyRequest()({
+    (await composer.anyRequest()({
       f: () => "hello",
-    })(dummyRequest),
+    }))(dummyRequest),
     "hello",
   );
   assertEquals(
-    composer.anyRequest(opt)({
+    (await composer.anyRequest(opt)({
       f: (ctx) => ctx.hello(),
-    })(dummyRequest),
+    }))(dummyRequest),
     "hello",
   );
   assertEquals(
-    await composer.anyRequest()({
+    await (await composer.anyRequest()({
       f: async () => await Promise.resolve("hello"),
-    })(dummyRequest),
+    }))(dummyRequest),
     "hello",
   );
 });
 
 test("exportable composer ObjectNull", async () => {
   assertEquals(
-    composer.objectNullRequest()({
+    (await composer.objectNullRequest()({
       f: () => ({ hi: 1 }),
-    })(dummyRequest),
+    }))(dummyRequest),
     { hi: 1 },
   );
   assertEquals(
-    composer.objectNullRequest(opt)({
+    (await composer.objectNullRequest(opt)({
       f: (ctx) => ({ hello: ctx.hello() }),
-    })(dummyRequest),
+    }))(dummyRequest),
     { hello: "hello" },
   );
   assertEquals(
-    await composer.objectNullRequest()({
+    await (await composer.objectNullRequest()({
       f: async () => ({
         hello: await Promise.resolve("hello") + "!",
       }),
-    })(dummyRequest),
+    }))(dummyRequest),
     { hello: "hello!" },
   );
   assertEquals(
-    composer.objectNullRequest()({
+    (await composer.objectNullRequest()({
       f: () => null,
-    })(dummyRequest),
+    }))(dummyRequest),
     null,
   );
 });
 
 test("exportable composer petition", async () => {
   assertEquals(
-    await Promise.resolve(composer.petition(commonPetition)(dummyRequest))
+    await Promise.resolve(
+      (await composer.petition(commonPetition))(dummyRequest),
+    )
       .then((x) => x.text()),
     "common",
   );
   assertEquals(
-    await Promise.resolve(composer.petition(requestPetition)(dummyRequest))
+    await Promise.resolve(
+      (await composer.petition(requestPetition))(dummyRequest),
+    )
       .then((x) => x.text()),
     "standard",
   );
   assertEquals(
-    await Promise.resolve(composer.petition(responsePetition)(dummyRequest))
+    await Promise.resolve(
+      (await composer.petition(responsePetition))(dummyRequest),
+    )
       .then((x) => x.text()),
     "response",
   );

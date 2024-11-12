@@ -170,6 +170,7 @@ export type CyclePluginType<
   readonly isFunction: isFunction;
   readonly isAsync?: isASync;
   readonly f: isFunction extends true ? (ctx: PluginCTX) => T
+    : isASync extends true ? (ctx: PluginCTX) => Promise<(r: Request) => R>
     : (ctx: PluginCTX) => (r: Request) => R;
   readonly type: unknown;
   readonly isUsing?: (ctx: PluginCTX) => string;

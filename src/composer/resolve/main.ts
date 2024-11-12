@@ -7,36 +7,41 @@ import table from "./table.ts";
 
 export default (o?: FunRouterOptions<any>) =>
 (path: string) =>
-(input: ResolveMap<any>): ResponseResponse =>
-  (
-    (ar) =>
-      (
-        (table) =>
-          ((isAsync) =>
-            table.reduce(
-              (a, k) => a(k.f),
-              new Function(
-                ` return ${table.map((x) => x.name + "=>").join("")}${
-                  isAsync ? "async r =>" : " r=>"
-                }({${
-                  table.map((x) =>
-                    x.name +
-                    ":" + (isAsync ? "await " : "") + x.name + "(r)"
-                  ).join(",")
-                }})`,
-              )(),
-            ) as unknown as ResponseResponse)(
-              ar.some((x) =>
-                tools.recursiveCheckAsync(
-                  x as unknown as Petition,
-                )
-              ),
-            )
-      )(
-        table(o)(path)(
-          ar,
-        ) as ({ name: string; f: (r: Request) => any | Promise<any> })[],
-      )
-  )(
-    Object.keys(input).map((x) => ({ ...input[x], name: x })) as ResolveOptions,
+async (input: ResolveMap<any>): Promise<ResponseResponse> => {
+  // Convert input ResolveMap to ResolveOptions array
+  const ar = Object.keys(input).map((x) => ({
+    ...input[x],
+    name: x,
+  })) as ResolveOptions;
+
+  // Await the table function since it might now be async
+  const tableResult = await table(o)(path)(ar) as {
+    name: string;
+    f: (r: any) => any | Promise<any>;
+  }[];
+
+  // Check if any function in the tableResult is asynchronous
+  const isAsync = tableResult.some((x) =>
+    x.f.constructor.name === "AsyncFunction"
   );
+
+  // Compose the functions into a single function that returns an object with function names as keys
+  const composedFunction = isAsync
+    ? async (r: any) => {
+      const resultObj: { [key: string]: any } = {};
+      for (const item of tableResult) {
+        resultObj[item.name] = await item.f(r);
+      }
+      return resultObj;
+    }
+    : (r: any) => {
+      const resultObj: { [key: string]: any } = {};
+      for (const item of tableResult) {
+        resultObj[item.name] = item.f(r);
+      }
+      return resultObj;
+    };
+
+  // Return the composed function as the ResponseResponse
+  return composedFunction as unknown as ResponseResponse;
+};

@@ -44,7 +44,7 @@ export const composer = {
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
   >(o?: O) =>
-  <
+  async <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
@@ -68,7 +68,7 @@ export const composer = {
       R
     >,
   ) =>
-    (compose(o)(
+    (await compose(o)(
       { ...r, type: "request", o } as unknown as Petition,
     )) as unknown as (
       re: Request,
@@ -98,7 +98,7 @@ export const composer = {
     FC extends CyclePluginMap,
     O extends FunRouterOptions<FC>,
   >(o?: O) =>
-  <
+  async <
     RM extends ResolveMap<any>,
     BM extends BranchMap<any>,
     QO extends QueryOptions,
@@ -124,7 +124,7 @@ export const composer = {
       R
     >,
   ) =>
-    (compose(o)(
+    (await compose(o)(
       { ...r, type: "morphism", o } as unknown as Petition,
     )) as unknown as (re: Request) => R,
   /**
@@ -170,10 +170,10 @@ export const composer = {
    * });
    * ```
    */
-  petition: (
+  petition: async (
     r: Petition,
   ) =>
-    (r.type === "response" ? r.r : (compose(r.o ?? {})(
+    (r.type === "response" ? r.r : (await compose(r.o ?? {})(
       { ...r },
     ))) as unknown as (
       re: Request,
