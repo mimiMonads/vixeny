@@ -17,19 +17,20 @@ const onLazy = (o?: FunRouterOptions<any>) =>
 async (
   p: Petition,
 ): Promise<(ctx: Request) => Promise<Response> | Response> => {
-  let func = (_: Request): Promise<Response> | Response => new Response(),
-    consumed = true;
+  // Define `func` as `null` to reduce unnecessary operations on instantiation
+  let func: ((req: Request) => Promise<Response> | Response) | null = null;
 
-  return (async (r) => {
-    if (consumed === true) {
+  return async (r: Request) => {
+    // Only call `compose` if `func` has not been set
+    if (!func) {
       func = await compose(o)({
         ...p,
         lazy: false,
       });
-      consumed = false;
     }
+
     return func(r);
-  });
+  };
 };
 
 const compose = (o?: FunRouterOptions<any>) =>
