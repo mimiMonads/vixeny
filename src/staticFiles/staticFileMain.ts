@@ -13,5 +13,5 @@ export default (o?: FunRouterOptions<any>) =>
       maybeOfFiles ?? staticFileTools.getDir(staticFileTools.rectify(f.path)),
     )(
       staticFileTools.mimeForm(f),
-    ),
+    ).flat(),
   );
