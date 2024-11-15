@@ -13,7 +13,7 @@ export default (o?: FunRouterOptions<any>) =>
 (name: string) =>
 (root: string) =>
 (paths: string[]) =>
-(mimes: [string, string][]): Petition[] =>
+(mimes: [string, string][]): Petition[] | Petition[] =>
   mimes.length > 0
     ? (
       f.template !== undefined && f.template && f.template.length > 0

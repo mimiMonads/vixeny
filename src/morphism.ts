@@ -1247,7 +1247,7 @@ export type StaticFilePlugin<> = {
     path: string;
     o?: FunRouterOptions<any>;
     relativeName: string;
-  }) => Petition;
+  }) => Petition | Petition[];
 };
 
 /**

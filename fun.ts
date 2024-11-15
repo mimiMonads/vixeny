@@ -15,18 +15,15 @@ async (routes: (Petition | fileServerPetition<any>)[]) => {
   // Await the optimizer function to ensure `awaited` is fully resolved
   const awaited = await optimizer(o)(routes);
 
-  // Proceed with your operations using the resolved `awaited`
-  const splitResult = split(o)(awaited);
-  const re = atlas(o)(splitResult);
-  const map = [...re[3]];
-
-  const s = solver(o)(re);
-
-  // Define your handler function as an async function
-  const handler = async (r: Request): Promise<Response> => {
-    return await map[s(r)](r);
-  };
-
-  // Return the handler function
-  return handler;
+  return ((re) =>
+    ((map) =>
+      ((s) => (r: Request): Promise<Response> | Response => map[s(r)](r))(
+        solver(o)(re),
+      ))([...re[3]]))(
+      atlas(o)(
+        split(o)(
+          awaited,
+        ),
+      ),
+    );
 });
