@@ -20,7 +20,9 @@ const serve = await wrap()()
 
 const base = new Request("http://localhost/base");
 const queryAtEnd = new Request("http://localhost/base-query?id=1");
-const threeQueries = new Request("http://localhost/three-queries?id1=1&id2=2&id3=3");
+const threeQueries = new Request(
+  "http://localhost/three-queries?id1=1&id2=2&id3=3",
+);
 
 bench("base", () => {
   newResponse(base);

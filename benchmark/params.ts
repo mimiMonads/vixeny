@@ -45,5 +45,4 @@ bench("oneInMiddle", () => serve(oneInMiddle));
 
 bench("threeParams", () => serve(threeParams));
 
-
 run();
