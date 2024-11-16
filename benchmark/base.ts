@@ -2,7 +2,7 @@ import { components, petitions, plugins, runtime, wrap } from "../main.ts";
 import { bench, run } from "mitata";
 
 const base = petitions.response()({
-  path: "/base",
+  path: "/",
   r: () => new Response("hello world"),
 });
 const custom = petitions.custom()({
@@ -38,7 +38,7 @@ const serve = await wrap()()
 const add = new Request("http://localhost/add");
 const addAsync = new Request("http://localhost/addAsync");
 const addLazzy = new Request("http://localhost/addLazzy");
-const baseRequest = new Request("http://localhost/base");
+const baseRequest = new Request("http://localhost/");
 const customRequest = new Request("http://localhost/custom");
 const addOnErrormRequest = new Request("http://localhost/addOnError");
 
@@ -51,6 +51,7 @@ bench(
 );
 bench(
   "base",
+  // TODO: Check for evaling the body in compose
   () => serve(baseRequest),
 );
 

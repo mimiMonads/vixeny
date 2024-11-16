@@ -11,19 +11,16 @@ import type { fileServerPetition, Petition } from "./src/morphism.ts";
  */
 
 export default ((o?: FunRouterOptions<any>) =>
-async (routes: (Petition | fileServerPetition<any>)[]) => {
-  // Await the optimizer function to ensure `awaited` is fully resolved
-  const awaited = await optimizer(o)(routes);
-
-  return ((re) =>
+async (routes: (Petition | fileServerPetition<any>)[]) => 
+   ((re) =>
     ((map) =>
       ((s) => (r: Request): Promise<Response> | Response => map[s(r)](r))(
         solver(o)(re),
       ))([...re[3]]))(
       atlas(o)(
         split(o)(
-          awaited,
+          await optimizer(o)(routes),
         ),
       ),
-    );
-});
+    )
+);

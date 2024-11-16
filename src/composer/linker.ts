@@ -33,9 +33,6 @@ async (isUsing: string[]): Promise<any> => {
   // Generate the 'table' using nativeMaps
   const table = nativeMaps(o)(p)(isUsing)(false);
 
-  // Generate 'functions' using nativeComponents
-  const functions = await nativeComponents(o)(p)(table);
-
   // Determine if asynchronous functions are needed
   const needsAsync = (p.resolve && tools.recursiveCheckAsync(p)) ||
     p.f.constructor.name === "AsyncFunction" ||
@@ -72,11 +69,8 @@ async (isUsing: string[]): Promise<any> => {
   const functionString =
     `return ${functionChain} ${functionSignature} ${functionBody}`;
 
-  // Create the function using 'new Function'
-  const generatedFunc = new Function(functionString)();
-
-  // Reduce the functions over the generated function
-  const resultFunction = functions.reduce((s, k) => s(k), generatedFunc);
-
-  return resultFunction;
+  return (await nativeComponents(o)(p)(table)).reduce(
+    (s, k) => s(k),
+    new Function(functionString)(),
+  );
 };

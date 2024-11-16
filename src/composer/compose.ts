@@ -91,34 +91,35 @@ const resolveF =
   (table: Table) =>
   (p: Petition) =>
   async (isUsing: string[]) => {
-    const linked = await linker(o)(p)(isUsing);
+  
     switch (p.type) {
       // Standard method
       case "add":
         return getMethodForAdd(table.isAsync || table.asyncResolve)(
           table.headers ? true : false,
         ) //@ts-ignore
-        (p.f)(linked);
+        (p.f)(await linker(o)(p)(isUsing));
 
         // Wraps in Request
       case "base":
+        
         if (table.headers) {
           return getBody(table.isAsync || table.asyncResolve)(
             table.headers ? true : false,
           )()(table.headers)(p.f)(
-            linked,
+            await linker(o)(p)(isUsing),
           );
         }
 
         return getBody(table.isAsync || table.asyncResolve)(
           table.headers ? true : false,
         )()(p.f)(
-          linked,
+          await linker(o)(p)(isUsing),
         );
 
       default:
         return getResponse(table.isAsync || table.asyncResolve)()(p.f)(
-          linked,
+          await linker(o)(p)(isUsing),
         );
     }
   };
