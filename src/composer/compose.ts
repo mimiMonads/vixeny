@@ -91,7 +91,6 @@ const resolveF =
   (table: Table) =>
   (p: Petition) =>
   async (isUsing: string[]) => {
-  
     switch (p.type) {
       // Standard method
       case "add":
@@ -102,7 +101,6 @@ const resolveF =
 
         // Wraps in Request
       case "base":
-        
         if (table.headers) {
           return getBody(table.isAsync || table.asyncResolve)(
             table.headers ? true : false,

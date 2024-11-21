@@ -11,8 +11,8 @@ import type { fileServerPetition, Petition } from "./src/morphism.ts";
  */
 
 export default ((o?: FunRouterOptions<any>) =>
-async (routes: (Petition | fileServerPetition<any>)[]) => 
-   ((re) =>
+async (routes: (Petition | fileServerPetition<any>)[]) =>
+  ((re) =>
     ((map) =>
       ((s) => (r: Request): Promise<Response> | Response => map[s(r)](r))(
         solver(o)(re),
@@ -22,5 +22,4 @@ async (routes: (Petition | fileServerPetition<any>)[]) =>
           await optimizer(o)(routes),
         ),
       ),
-    )
-);
+    ));
