@@ -2,11 +2,12 @@
   "name": "Deno Development Environment",
   "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu",
   "features": {
-    "ghcr.io/devcontainers/features/deno:2": {
+    "ghcr.io/devcontainers-extra/features/deno-asdf:2": {
       "version": "latest"
     }
   },
   "extensions": [
-    "denoland.vscode-deno"
+    "denoland.vscode-deno",
+    "oven-sh.bun-vscode"
   ]
 }
