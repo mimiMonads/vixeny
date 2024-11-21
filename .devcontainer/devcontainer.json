@@ -4,12 +4,10 @@
   "features": {
     "ghcr.io/devcontainers-extra/features/deno-asdf:2": {
       "version": "latest"
-    },
-    "ghcr.io/nhaef/devcontainer-bun:latest": {
     }
   },
   "extensions": [
     "denoland.vscode-deno",
-    "dbaeumer.vscode-eslint"
+    "oven-sh.bun-vscode"
   ]
 }
