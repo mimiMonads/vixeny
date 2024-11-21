@@ -4,9 +4,12 @@
   "features": {
     "ghcr.io/devcontainers-extra/features/deno-asdf:2": {
       "version": "latest"
+    },
+    "ghcr.io/nhaef/devcontainer-bun:latest": {
     }
   },
   "extensions": [
-    "denoland.vscode-deno"
+    "denoland.vscode-deno",
+    "dbaeumer.vscode-eslint"
   ]
 }

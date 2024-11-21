@@ -2,6 +2,7 @@
   "name": "@vixeny/core",
   "version": "0.1.51",
   "exports": "./main.ts",
+  "license": "CC BY-ND 4.0",
   "imports": {
     "@cross/test": "jsr:@cross/test@^0.0.9",
     "@std/assert": "jsr:@std/assert@^0.226.0"
