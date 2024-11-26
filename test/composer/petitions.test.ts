@@ -252,99 +252,144 @@ test("standard case with async resolve", async () => {
 });
 
 test("Add ", async () => {
-
   assertEquals(
-    await(await((await compose()(
+    await (await (await compose()(
       petitions.add()({
         path: "/",
         f: () => "add",
       }),
-    )))(GLOBAL_REQUEST)).text(),
+    ))(GLOBAL_REQUEST)).text(),
     "add",
     "Checks if add is working",
   );
 
   assertEquals(
-    await(await((await compose()(
+    await (await (await compose()(
       petitions.add()({
         lazy: true,
         path: "/",
         f: () => "add",
       }),
-    )))(GLOBAL_REQUEST)).text(),
+    ))(GLOBAL_REQUEST)).text(),
     "add",
     "Checks if add is working with lazy",
   );
 
   assertEquals(
-    await(await((await compose()(
+    await (await (await compose()(
       petitions.add()({
         headings: {
-          headers: '.html'
+          headers: ".html",
         },
         path: "/",
         f: () => "add",
       }),
-    )))(GLOBAL_REQUEST)),
-    null,
+    ))(GLOBAL_REQUEST)).headers.get("content-type"),
+    "text/html",
     "Checks if add is working with headers",
   );
 
   assertEquals(
-    await(await((await compose()(
+    await (await (await compose()(
       petitions.add()({
         lazy: true,
         path: "/",
         f: () => "add",
       }),
-    )))(GLOBAL_REQUEST)).text(),
+    ))(GLOBAL_REQUEST)).text(),
     "add",
     "Checks if add is working with lazy",
   );
 
   assertEquals(
-    await(await((await compose()(
+    await (await (await compose()(
       petitions.add()({
         path: "/",
         f: async () => await "add",
       }),
-    )))(GLOBAL_REQUEST)).text(),
+    ))(GLOBAL_REQUEST)).text(),
     "add",
     "Checks if add is working async",
   );
 
   assertEquals(
-    await(await((await compose()(
+    await (await (await compose()(
       petitions.add()({
         path: "/",
         f: () => new Response("add"),
       }),
-    )))(GLOBAL_REQUEST)).text(),
+    ))(GLOBAL_REQUEST)).text(),
     "add",
     "Checks if add is working with Response",
   );
 
   assertEquals(
-    await(await((await compose()(
+    await (await (await compose()(
+      petitions.add()({
+        path: "/",
+        onError: () => new Response("Error"),
+        f: () => new Response("add"),
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working with Error",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        path: "/",
+        onError: ({ error }) =>
+          error instanceof Response
+            ? error
+            : new Response("It hasnt throw the error properly"),
+        f: () => {
+          throw new Response("add");
+          new Response("It hasnt throw the error properly");
+        },
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working with Error",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        path: "/",
+        onError: ({ error }) =>
+          error instanceof Response
+            ? error
+            : new Response("It hasnt throw the error properly"),
+        f: async () => {
+          throw new Response("add");
+          new Response("It hasnt throw the error properly");
+        },
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working with async Error",
+  );
+
+  assertEquals(
+    await (await (await compose()(
       petitions.add()({
         path: "/",
         f: async () => await new Response("add"),
       }),
-    )))(GLOBAL_REQUEST)).text(),
+    ))(GLOBAL_REQUEST)).text(),
     "add",
     "Checks if add is working with Response",
   );
-
-
 });
 
 test("Sealed add", async () => {
   const getWithHeaders = petitions.sealableAdd({})({})({
-    // headings: {
-    //   headers: {
-    //     hello: 'hello'
-    //   }
-    // },
+    headings: {
+      headers: {
+        hello: "sealableAdd",
+      },
+    },
     f: ({ headers }) => headers.hello ?? "lol",
   });
 
@@ -352,5 +397,5 @@ test("Sealed add", async () => {
     GLOBAL_REQUEST,
   );
 
-  // assertEquals(await composed, null);
+  assertEquals(await composed.text(), "sealableAdd");
 });
