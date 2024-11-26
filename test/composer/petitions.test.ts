@@ -4,9 +4,12 @@ import compose from "../../src/composer/compose.ts";
 import { petitions } from "../../src/morphism.ts";
 import { plugins } from "../../main.ts";
 
+const GLOBAL_REQUEST = new Request("http://test/");
+
 const nestedResolve = petitions.resolve()({
   f: (_) => "syncResolve",
 });
+
 const syncResolve = petitions.resolve()({
   resolve: {
     sync: nestedResolve,
@@ -246,4 +249,153 @@ test("standard case with async resolve", async () => {
 
   assertEquals(await base.json(), { "hello": 1 });
   assertEquals(base.status, 200);
+});
+
+test("Add ", async () => {
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        path: "/",
+        f: () => "add",
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        lazy: true,
+        path: "/",
+        f: () => "add",
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working with lazy",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        headings: {
+          headers: ".html",
+        },
+        path: "/",
+        f: () => "add",
+      }),
+    ))(GLOBAL_REQUEST)).headers.get("content-type"),
+    "text/html",
+    "Checks if add is working with headers",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        lazy: true,
+        path: "/",
+        f: () => "add",
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working with lazy",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        path: "/",
+        f: async () => await "add",
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working async",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        path: "/",
+        f: () => new Response("add"),
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working with Response",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        path: "/",
+        onError: () => new Response("Error"),
+        f: () => new Response("add"),
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working with Error",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        path: "/",
+        onError: ({ error }) =>
+          error instanceof Response
+            ? error
+            : new Response("It hasnt throw the error properly"),
+        f: () => {
+          throw new Response("add");
+          new Response("It hasnt throw the error properly");
+        },
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working with Error",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        path: "/",
+        onError: ({ error }) =>
+          error instanceof Response
+            ? error
+            : new Response("It hasnt throw the error properly"),
+        f: async () => {
+          throw new Response("add");
+          new Response("It hasnt throw the error properly");
+        },
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working with async Error",
+  );
+
+  assertEquals(
+    await (await (await compose()(
+      petitions.add()({
+        path: "/",
+        f: async () => await new Response("add"),
+      }),
+    ))(GLOBAL_REQUEST)).text(),
+    "add",
+    "Checks if add is working with Response",
+  );
+});
+
+test("Sealed add", async () => {
+  const getWithHeaders = petitions.sealableAdd({})({})({
+    headings: {
+      headers: {
+        hello: "sealableAdd",
+      },
+    },
+    f: ({ headers }) => headers.hello ?? "lol",
+  });
+
+  const composed = await (await compose()(getWithHeaders))(
+    GLOBAL_REQUEST,
+  );
+
+  assertEquals(await composed.text(), "sealableAdd");
 });

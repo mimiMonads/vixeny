@@ -64,6 +64,7 @@ const sealableAdd = <
 >(
   m: Morphism<
     {
+      hasMaybe: true;
       type: "add";
       isAPetition: true;
       typeNotNeeded: true;
@@ -195,6 +196,7 @@ export const petitions = {
         hasPath: true;
         isAPetition: true;
         typeNotNeeded: true;
+        hasMaybe: true;
       },
       RM,
       BM,
@@ -208,7 +210,7 @@ export const petitions = {
   ) =>
     ({
       ...I,
-      type: "request",
+      type: "add",
       o,
     }) as unknown as Petition,
   /**

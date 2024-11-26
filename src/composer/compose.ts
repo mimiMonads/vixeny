@@ -94,6 +94,12 @@ const resolveF =
     switch (p.type) {
       // Standard method
       case "add":
+        if (table.headers !== null) {
+          return getMethodForAdd(table.isAsync || table.asyncResolve)(
+            table.headers ? true : false,
+          ) //@ts-ignore
+          (table.headers)(p.f)(await linker(o)(p)(isUsing));
+        }
         return getMethodForAdd(table.isAsync || table.asyncResolve)(
           table.headers ? true : false,
         ) //@ts-ignore
