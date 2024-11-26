@@ -208,7 +208,7 @@ export const petitions = {
   ) =>
     ({
       ...I,
-      type: "request",
+      type: "add",
       o,
     }) as unknown as Petition,
   /**
