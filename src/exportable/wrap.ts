@@ -14,6 +14,13 @@ import type {
 } from "../morphism.ts";
 import type { ParamsMethod } from "../router/types.ts";
 
+
+type AcceptedBodies = 
+  string | Request | {
+    path: string
+  } & RequestInit
+
+
 /**
  * `MethodMorphism` is a utility type that defines the function signatures for HTTP method-specific
  * route definitions such as `get`, `post`, `delete`, and `put` within the `Wrap` interface.
@@ -99,7 +106,34 @@ type Wrap<O extends FunRouterOptions<any>> = {
   post: MethodMorphism<O>;
   delete: MethodMorphism<O>;
   put: MethodMorphism<O>;
-  route: MethodMorphism<O>;
+  route:
+<
+  RM extends ResolveMap<any>,
+  BM extends BranchMap<any>,
+  QO extends QueryOptions,
+  PO extends ParamOptions,
+  CO extends CryptoOptions,
+  AR = any,
+  R = any,
+>(
+  I: Morphism<
+    {
+      type: "add";
+      hasPath: true;
+      isAPetition: true;
+      typeNotNeeded: true;
+      hasMaybe: true;
+    },
+    RM,
+    BM,
+    QO,
+    PO,
+    O,
+    CO,
+    AR,
+    R
+  >,
+) =>  Wrap<O>,
   /**
    *    * @deprecated use `add` instead
    *
@@ -303,8 +337,9 @@ type Wrap<O extends FunRouterOptions<any>> = {
     s: string,
   ) => (
     injection: Partial<Petition>,
-  ) => (r: Request) => Promise<Response | null>;
+  ) => (r: AcceptedBodies) => Promise<Response>;
   /**
+   * @deprecated
    * Simulates a server environment for testing the functionality of all wrapped requests.
    * This method creates a server-like instance that can handle requests directly, enabling
    * comprehensive testing of the `wrap` configuration and all defined petitions without depending
@@ -327,6 +362,28 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * For more details, see the [testRequests](https://vixeny.dev/library/wrap#testrequests).
    */
   testRequests: () => Promise<(r: Request) => Promise<Response>>;
+    /**
+   * Simulates a server environment for testing the functionality of all wrapped requests.
+   * This method creates a server-like instance that can handle requests directly, enabling
+   * comprehensive testing of the `wrap` configuration and all defined petitions without depending
+   * on an external runtime or actual server.
+   *
+   * This is particularly useful for unit testing or integration testing, where you want to validate
+   * the behavior of your request handling logic under controlled conditions.
+   *
+   * Usage example:
+   * ```javascript
+   * // Assuming `wrap` has been configured with multiple petitions
+   * const server = wrap(...)...
+   * const testServer = server.testPetitions();
+   *
+   * // Now you can use `testServer` to simulate requests and test responses
+   * testServer(new Request("/some-path")).then(response => {
+   *   // assertions or checks on the response
+   * });
+   * ```
+   */
+    testPetitions: () => Promise<(r: AcceptedBodies) => Promise<Response>>;
   /**
    * Allows for changing the wrap options of the current instance, creating a new instance with the updated options
    * while preserving the existing petitions. This is useful for dynamically adjusting configurations, such as
@@ -416,7 +473,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * or further manipulation. This can be especially useful when combining multiple wrap instances or configuring
    * a server to handle all defined petitions.
    *
-   * The `unwrap` method adjusts the paths based on the `startWith` option if it's set, allowing for prefixing all
+   * The `unwrap` method adjusts the paths based on the `startswith` option if it's set, allowing for prefixing all
    * paths within the unwrapped petitions, facilitating organized and hierarchical URL structures.
    *
    * Example usage:
@@ -528,6 +585,16 @@ type WrapFunction = <FC extends CyclePluginMap, O extends FunRouterOptions<FC>>(
  * ```
  */
 
+
+// Helpers
+
+const convertToRequest = (obj: AcceptedBodies):Request => 
+    obj instanceof Request
+      ? obj
+      : typeof obj === 'string'
+        ? new Request(obj)
+        :new Request(obj.path , obj)
+
 export const wrap = ((o?) => (a = []) => ({
   petitionWithoutCTX: (I: {
     path: string;
@@ -587,24 +654,34 @@ export const wrap = ((o?) => (a = []) => ({
     injection: Partial<
       Petition
     >,
-  ) =>
-    (a.some((x) => x.path === s)
-      ? async (r: Request) =>
+  ) => {
+
+    const wasFound = a.some((x) => x.path === s)
+
+    if(!wasFound) {
+      throw new Error(`The path : ${s} does not exist!` )
+    }
+
+    return async (r: AcceptedBodies) =>
         Promise.resolve(
           (await response(o)(
             {
               ...a.find((x) => x.path === s),
               ...injection,
             } as unknown as Petition,
-          ))(r),
+          ))(convertToRequest(r)),
         )
-      : ((_: Request) => Promise.resolve(null))) as unknown as (
-        r: Request,
-      ) => Promise<Response>,
+      
+  },
   testRequests: (async () => {
     return await vixeny({ ...o })(
       [...a],
     ).then((v) => async (r: Request) => await v(r));
+  }),
+  testPetitions: (async () => {
+    return await vixeny({ ...o })(
+      [...a],
+    ).then((v) => async (r: AcceptedBodies) => await v(convertToRequest(r)));
   }),
   get: (ob) =>
     wrap(o)(
@@ -651,8 +728,8 @@ export const wrap = ((o?) => (a = []) => ({
     ),
   unwrap: () =>
     a.map((x) =>
-      o && o.wrap?.startWith
-        ? { ...x, path: o.wrap?.startWith + x.path }
+      o && o.wrap?.startswith
+        ? { ...x, path: o.wrap?.startswith + x.path }
         : { ...x }
     ),
   pure: (petition) => wrap(o)(petition ? [petition] : []),

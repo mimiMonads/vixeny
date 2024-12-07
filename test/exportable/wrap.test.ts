@@ -29,7 +29,7 @@ const opt = plugins.globalOptions({
     method: pluginMethod,
   },
   wrap: {
-    startWith: "/hi",
+    startswith: "/hi",
   },
 });
 
