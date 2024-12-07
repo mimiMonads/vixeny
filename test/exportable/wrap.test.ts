@@ -55,7 +55,7 @@ const wrapped = wrap(
   .route({
     path: "/test",
     // Checking type inference
-    method: 'DELETE',
+    method: "OPTIONS",
     f: () => new Response("customHello"),
   })
   .get({
@@ -133,6 +133,21 @@ test("wrap checking addAny", async () => {
       (x) => x.text(),
     ),
     "addAny",
+  );
+});
+
+test("wrap checking right unwrapping", async () => {
+  assertEquals(
+    await (wrap()()
+      .route({
+        path: "/hello",
+        method: "PATCH",
+        f: ({ clonedRequest }) => typeof clonedRequest,
+      })
+      .handleRequest("/hello")({})("/hello")).then(
+        async (r) => r.text(),
+      ),
+    "object",
   );
 });
 

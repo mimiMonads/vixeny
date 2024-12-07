@@ -14,12 +14,12 @@ import type {
 } from "../morphism.ts";
 import type { ParamsMethod } from "../router/types.ts";
 
-
-type AcceptedBodies = 
-  string | Request | {
-    path: string
-  } & RequestInit
-
+type AcceptedBodies =
+  | string
+  | Request
+  | {
+    path: string;
+  } & RequestInit;
 
 /**
  * `MethodMorphism` is a utility type that defines the function signatures for HTTP method-specific
@@ -106,34 +106,33 @@ type Wrap<O extends FunRouterOptions<any>> = {
   post: MethodMorphism<O>;
   delete: MethodMorphism<O>;
   put: MethodMorphism<O>;
-  route:
-<
-  RM extends ResolveMap<any>,
-  BM extends BranchMap<any>,
-  QO extends QueryOptions,
-  PO extends ParamOptions,
-  CO extends CryptoOptions,
-  AR = any,
-  R = any,
->(
-  I: Morphism<
-    {
-      type: "add";
-      hasPath: true;
-      isAPetition: true;
-      typeNotNeeded: true;
-      hasMaybe: true;
-    },
-    RM,
-    BM,
-    QO,
-    PO,
-    O,
-    CO,
-    AR,
-    R
-  >,
-) =>  Wrap<O>,
+  route: <
+    RM extends ResolveMap<any>,
+    BM extends BranchMap<any>,
+    QO extends QueryOptions,
+    PO extends ParamOptions,
+    CO extends CryptoOptions,
+    AR = any,
+    R = any,
+  >(
+    I: Morphism<
+      {
+        type: "add";
+        hasPath: true;
+        isAPetition: true;
+        typeNotNeeded: true;
+        hasMaybe: true;
+      },
+      RM,
+      BM,
+      QO,
+      PO,
+      O,
+      CO,
+      AR,
+      R
+    >,
+  ) => Wrap<O>;
   /**
    *    * @deprecated use `add` instead
    *
@@ -362,7 +361,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * For more details, see the [testRequests](https://vixeny.dev/library/wrap#testrequests).
    */
   testRequests: () => Promise<(r: Request) => Promise<Response>>;
-    /**
+  /**
    * Simulates a server environment for testing the functionality of all wrapped requests.
    * This method creates a server-like instance that can handle requests directly, enabling
    * comprehensive testing of the `wrap` configuration and all defined petitions without depending
@@ -383,7 +382,7 @@ type Wrap<O extends FunRouterOptions<any>> = {
    * });
    * ```
    */
-    testPetitions: () => Promise<(r: AcceptedBodies) => Promise<Response>>;
+  testPetitions: () => Promise<(r: AcceptedBodies) => Promise<Response>>;
   /**
    * Allows for changing the wrap options of the current instance, creating a new instance with the updated options
    * while preserving the existing petitions. This is useful for dynamically adjusting configurations, such as
@@ -585,15 +584,17 @@ type WrapFunction = <FC extends CyclePluginMap, O extends FunRouterOptions<FC>>(
  * ```
  */
 
-
 // Helpers
 
-const convertToRequest = (obj: AcceptedBodies):Request => 
-    obj instanceof Request
-      ? obj
-      : typeof obj === 'string'
-        ? new Request(obj)
-        :new Request(obj.path , obj)
+const href = (s: string) =>
+  s.startsWith("/") ? "http://vixeny.dev" + s : "http://vixeny.dev/" + s;
+
+const convertToRequest = (obj: AcceptedBodies): Request =>
+  obj instanceof Request
+    ? obj
+    : typeof obj === "string"
+    ? new Request(href(obj))
+    : new Request(href(obj.path), obj);
 
 export const wrap = ((o?) => (a = []) => ({
   petitionWithoutCTX: (I: {
@@ -655,23 +656,21 @@ export const wrap = ((o?) => (a = []) => ({
       Petition
     >,
   ) => {
+    const wasFound = a.some((x) => x.path === s);
 
-    const wasFound = a.some((x) => x.path === s)
-
-    if(!wasFound) {
-      throw new Error(`The path : ${s} does not exist!` )
+    if (!wasFound) {
+      throw new Error(`The path : ${s} does not exist!`);
     }
 
     return async (r: AcceptedBodies) =>
-        Promise.resolve(
-          (await response(o)(
-            {
-              ...a.find((x) => x.path === s),
-              ...injection,
-            } as unknown as Petition,
-          ))(convertToRequest(r)),
-        )
-      
+      Promise.resolve(
+        (await response(o)(
+          {
+            ...a.find((x) => x.path === s),
+            ...injection,
+          } as unknown as Petition,
+        ))(convertToRequest(r)),
+      );
   },
   testRequests: (async () => {
     return await vixeny({ ...o })(

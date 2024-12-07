@@ -77,6 +77,7 @@ const elements = (f: Petition) =>
         "query",
         "io",
         "req",
+        "clonedRequest",
         "date",
         "error",
         f.resolve ? "resolve" : undefined,

@@ -1,6 +1,6 @@
 {
   "name": "@vixeny/core",
-  "version": "0.1.52",
+  "version": "0.1.53",
   "exports": "./main.ts",
   "license": "CC BY-ND 4.0",
   "imports": {
