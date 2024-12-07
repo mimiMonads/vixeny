@@ -1086,6 +1086,8 @@ interface Ctx<
   };
 
   /**
+   * @deprecated
+   *
    * Adds with query to the `context`
    *
    * @example
