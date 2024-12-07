@@ -52,6 +52,12 @@ const wrapped = wrap(
     path: "/customHello",
     f: () => new Response("customHello"),
   })
+  .route({
+    path: "/test",
+    // Checking type inference
+    method: 'DELETE',
+    f: () => new Response("customHello"),
+  })
   .get({
     path: "/customsPlugin",
     f: ({ hello, method }) => {
