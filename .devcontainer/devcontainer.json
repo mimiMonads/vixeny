@@ -1,14 +1,15 @@
 {
   "name": "Deno and Bun Development Environment",
-  "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu",
+  "image": "mcr.microsoft.com/vscode/devcontainers/base:bookworm",
   "features": {
     "ghcr.io/devcontainers-extra/features/deno-asdf:2": {
       "version": "latest"
-    }
+    },
+    "ghcr.io/michidk/devcontainers-features/typos:1": {}
   },
   "extensions": [
     "denoland.vscode-deno",
     "oven-sh.bun-vscode"
   ],
-  "postCreateCommand": "curl -fsSL https://bun.sh/install | bash && echo 'export PATH=\"$HOME/.bun/bin:$PATH\"' >> ~/.bashrc"
+  "postCreateCommand": "bash ./.devcontainer/install.sh"
 }

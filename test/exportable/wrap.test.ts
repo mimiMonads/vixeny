@@ -29,7 +29,7 @@ const opt = plugins.globalOptions({
     method: pluginMethod,
   },
   wrap: {
-    startWith: "/hi",
+    startswith: "/hi",
   },
 });
 
@@ -50,6 +50,12 @@ const wrapped = wrap(
   })
   .get({
     path: "/customHello",
+    f: () => new Response("customHello"),
+  })
+  .route({
+    path: "/test",
+    // Checking type inference
+    method: "OPTIONS",
     f: () => new Response("customHello"),
   })
   .get({
@@ -127,6 +133,21 @@ test("wrap checking addAny", async () => {
       (x) => x.text(),
     ),
     "addAny",
+  );
+});
+
+test("wrap checking right unwrapping", async () => {
+  assertEquals(
+    await (wrap()()
+      .route({
+        path: "/hello",
+        method: "PATCH",
+        f: ({ clonedRequest }) => typeof clonedRequest,
+      })
+      .handleRequest("/hello")({})("/hello")).then(
+        async (r) => r.text(),
+      ),
+    "object",
   );
 });
 

@@ -64,7 +64,7 @@ export const symbolExport = {
   /**
    * Version
    */
-  [Symbol.for("vixeny")]: [0, 1, 52],
+  [Symbol.for("vixeny")]: [0, 1, 53],
 } as {
   [key: symbol]: [number, number, number];
 };

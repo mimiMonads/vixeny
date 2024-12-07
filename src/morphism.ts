@@ -805,6 +805,7 @@ type AddOption =
   | "query"
   | "param"
   | "io"
+  | "clonedRequest"
   | "date"
   | "cookie"
   | "resolve"
@@ -1086,6 +1087,8 @@ interface Ctx<
   };
 
   /**
+   * @deprecated
+   *
    * Adds with query to the `context`
    *
    * @example
@@ -1099,6 +1102,7 @@ interface Ctx<
    * ```
    */
   req: Request;
+  clonedRequest: Request;
   /**
    * `query`: Facilitates access to URL query parameters within the petition's execution context.
    *

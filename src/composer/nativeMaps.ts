@@ -9,6 +9,7 @@ export default (o?: FunRouterOptions<any>) =>
 (mutable: boolean) =>
   ([
     { name: "req", value: mutable ? "r[0]" : "r", type: 0 },
+    { name: "clonedRequest", value: "r.clone()", type: 0 },
     { name: "error", value: "b", type: 0 },
     {
       name: "param",
