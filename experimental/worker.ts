@@ -10,7 +10,9 @@ import {
 // One example function: returns "Hello from Worker!"
 const listOfFunctions = [
   async (input: Uint8Array | null) => {
-    const text = input ? new TextDecoder().decode(input) : "Hello from Worker!";
+    const text = input
+      ? new TextDecoder().decode(input)
+      : "Hello from Worker!" + Date.now();
     return new TextEncoder().encode(text);
   },
 ];
@@ -41,13 +43,13 @@ while (true) {
   if (currentState > 127 && currentState !== 255) {
     if (currentState === 224) {
       // queue a job => returns "Hello from Worker!"
-      queue.add([id[0], null, 0]);
+      queue.add([id[0], null, status[1]]);
       // let main know we read its signal
       workerSig.messageWasRead(); // => 1
     } else if (currentState === 192) {
       // read input from payload
       const input = readMsg();
-      queue.add([id[0], input, 0]);
+      queue.add([id[0], input, status[1]]);
       workerSig.messageWasRead(); // => 1
     }
   }

@@ -1,8 +1,10 @@
 import { Worker } from "node:worker_threads";
 import {
   genTaskID,
+  mainQueue,
   mainSignal,
   readMessageToUint,
+  sendUintMessage,
   setArrayBuffers,
 } from "./helpers.ts";
 
@@ -24,6 +26,8 @@ const sab = setArrayBuffers.sab();
 const status = setArrayBuffers.status(sab);
 const id = setArrayBuffers.id(sab);
 const payload = setArrayBuffers.payload(sab);
+const writer = sendUintMessage(id)(payload);
+const queue = mainQueue(writer)(10)();
 
 //
 // MAIN THREAD
@@ -39,8 +43,12 @@ function waitForWorkerReady() {
   return new Promise<void>((resolve) => {
     function check() {
       // < 126 means the worker might be 0,1,2,... up to 125
+
       if (status[0] < 126) {
         resolve();
+      }
+      if (status[0] === 255) {
+        queue.sendNextToWorker();
       } else {
         queueMicrotask(check);
       }
@@ -58,9 +66,13 @@ async function mainLoop() {
         const data = readMessage();
         if (data) {
           console.log("MAIN received:", new TextDecoder().decode(data));
-          // mainSig.voidMessage();
-          // id[0] = genTaskID();
-          // return
+          voidFunction();
+          
+          //   if(queue.isBusy() === false){
+          //     queue.writeNext()
+          //   }
+
+          return;
         }
       }
 
@@ -70,7 +82,32 @@ async function mainLoop() {
 }
 console.log("MAIN => Sending voidMessage...");
 
-mainSig.voidMessage();
-id[0] = genTaskID();
+const setVoidFunction =
+  (fnNumber: number) =>
+  (generateIDTask: () => number) =>
+  (setUp: Function) =>
+  (id: Int32Array) =>
+  (status: Uint8Array) =>
+  () => {
+    id[0] = generateIDTask();
+    status[1] = fnNumber;
+    setUp();
+  };
+
+const voidFunction = setVoidFunction(0)(genTaskID)(mainSig.voidMessage)(id)(
+  status,
+);
+
+voidFunction();
+
+// ( async () => {
+// await queue.add([superId,null,0])
+//     .then(console.log)
+// await queue.add([genTaskID(),null,0])
+//     .then(console.log)
+// await queue.add([genTaskID(),null,0])
+//     .then(console.log)
+// })()
+
 // Start reading loop
 mainLoop();
