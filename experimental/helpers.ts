@@ -69,7 +69,7 @@ export const mainQueue = (writer: (job: MainList) => void) =>
   //   workerResponse = new Uint8Array()
   queue = Array.from(
     { length: max },
-    () => [false, false, 0, null, 0, new Uint8Array()] as MainList,
+    () => [true, false, 0, null, 0, new Uint8Array()] as MainList,
   ),
 ) => {
   /**
@@ -84,26 +84,25 @@ export const mainQueue = (writer: (job: MainList) => void) =>
   return {
     /**
      * isBusy: indicates if all slots are occupied.
-     * We treat queue[i][0] == true as “slot in use.”
-     * Hence, if every slot’s free flag is true, we’re busy.
+     * We treat queue[i][0] == false as “slot in use.”
+     * Hence, if every slot’s free flag is false, we’re busy.
      */
-    isBusy: () => queue.every((item) => item[0] === true),
-
+    isBusy: () => queue.every((item) => item[0] === false),
+    canWrite: () => queue.some((item) => item[0] === false),
+    count: () => queue.reduce((x, acc) => acc[0] === false ? x + 1 : x, 0),
     /**
      * add: insert a new task into the first free slot (where free == false).
      * Returns a Promise that resolves when the task is eventually solved.
      */
     add: (task: PartialQueueList) => {
-      return new Promise<WorkerResponse>((resolve, reject) => {
+      return new Promise<WorkerResponse>((resolve) => {
         // Find a free slot
-        const freeIndex = queue.findIndex((item) => item[0] === false);
+        const freeIndex = queue.findIndex((item) => item[0] === true);
         if (freeIndex === -1) {
-          return reject(
-            new Error("No free slots available in mainQueue"),
-          );
+          return null;
         }
         // Mark this slot as in use, unsolved, and fill in the metadata
-        queue[freeIndex][0] = true; // free -> in use
+        queue[freeIndex][0] = false; // free -> in use
         queue[freeIndex][1] = false; // solved -> false
         queue[freeIndex][2] = task[0]; // taskID
         queue[freeIndex][3] = task[1]; // rawArguments
@@ -130,13 +129,14 @@ export const mainQueue = (writer: (job: MainList) => void) =>
     sendNextToWorker: () => {
       // First look for a free slot
       let idx = queue.findIndex(
-        (item) => item[0] === true && item[1] === false,
+        (item) => item[0] === false && item[1] === false,
       );
 
       if (idx === -1) {
         return;
       }
 
+      queue[idx][0] = true;
       writer(queue[idx]);
     },
     /**
@@ -220,14 +220,18 @@ export const workingQueue =
 
     // Process the next available task.
     nextJob: async () => {
-      const taskIndex = queue.findIndex((task) => task[0] && !task[1]);
-
+      const taskIndex = queue.findIndex((task) =>
+        task[0] && !task[1] && !task[2]
+      );
       if (taskIndex !== -1) {
         const task = queue[taskIndex];
         task[1] = true; // Lock the task
-        task[6] = await jobs[task[5]](task[4]); // Execute the job
-        task[2] = true; // Mark as solved
-        task[1] = false; // Unlock the task
+        try {
+          task[6] = await jobs[task[5]](task[4]); // Execute the job
+          task[2] = true; // Mark as solved
+        } finally {
+          task[1] = false; // Unlock the task
+        }
       }
     },
   });

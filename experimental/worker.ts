@@ -7,12 +7,13 @@ import {
   writeUintMessage,
 } from "./helpers.ts";
 
+const atm = ((n = 0) => () => n = n + 1)();
 // One example function: returns "Hello from Worker!"
 const listOfFunctions = [
   async (input: Uint8Array | null) => {
     const text = input
       ? new TextDecoder().decode(input)
-      : "Hello from Worker!" + Date.now();
+      : "Hello from Worker!" + atm();
     return new TextEncoder().encode(text);
   },
 ];

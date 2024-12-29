@@ -1,3 +1,4 @@
+// main.ts
 import { Worker } from "node:worker_threads";
 import {
   genTaskID,
@@ -11,7 +12,7 @@ import {
 const currentPath = import.meta.url;
 const workerUrl = new URL(currentPath.replace("main.ts", "worker.ts"));
 
-// One example function: returns "Hello from Worker!"
+// Example only, presumably your worker uses these
 const listOfFunctions = [
   async (input: Uint8Array | null) => {
     const text = input ? new TextDecoder().decode(input) : "Hello from Worker!";
@@ -19,9 +20,9 @@ const listOfFunctions = [
   },
 ];
 
-//
+// ─────────────────────────────────────────────────────────────────────────────
 // SHARED BUFFERS
-//
+// ─────────────────────────────────────────────────────────────────────────────
 const sab = setArrayBuffers.sab();
 const status = setArrayBuffers.status(sab);
 const id = setArrayBuffers.id(sab);
@@ -29,85 +30,73 @@ const payload = setArrayBuffers.payload(sab);
 const writer = sendUintMessage(id)(payload);
 const queue = mainQueue(writer)(10)();
 
-//
+// ─────────────────────────────────────────────────────────────────────────────
 // MAIN THREAD
-//
-
+// ─────────────────────────────────────────────────────────────────────────────
 const worker = new Worker(workerUrl, { type: "module", workerData: { sab } });
 const mainSig = mainSignal(status);
 const readMessage = readMessageToUint(payload);
 mainSig.hasNoMoreMessages();
 
-// Wait for worker statuses < 127
-function waitForWorkerReady() {
-  return new Promise<void>((resolve) => {
-    function check() {
-      // < 126 means the worker might be 0,1,2,... up to 125
+// ─────────────────────────────────────────────────────────────────────────────
+// The "check" loop that never ends (so your tasks always get resolved)
+// ─────────────────────────────────────────────────────────────────────────────
+function check() {
+  const currentStatus = status[0];
 
-      if (status[0] < 126) {
-        resolve();
-      }
-      if (status[0] === 255) {
+  // If worker posted a "response" (status=0), solve it
+  if (currentStatus < 126) {
+    if (currentStatus === 0) {
+      const data = readMessage();
+      queue.solve(id[0], data);
+
+      if (queue.canWrite()) {
         queue.sendNextToWorker();
+        status[0] = 224;
       } else {
-        queueMicrotask(check);
+        mainSig.readyToRead();
       }
+
+      queueMicrotask(check);
+      return;
     }
-    check();
-  });
-}
 
-// Continuous loop: look for messages
-async function mainLoop() {
-  while (true) {
-    await waitForWorkerReady().then(() => {
-      // If worker said "0 => message ready", let's read it
-      if (status[0] === 0) {
-        const data = readMessage();
-        if (data) {
-          console.log("MAIN received:", new TextDecoder().decode(data));
-          voidFunction();
-          
-          //   if(queue.isBusy() === false){
-          //     queue.writeNext()
-          //   }
-
-          return;
-        }
-      }
-
-      mainSig.readyToRead();
-    });
+    mainSig.readyToRead();
+    queueMicrotask(check);
+    return;
   }
+
+  // If worker is "done" or requests more (status=255)
+  if (currentStatus === 255) {
+    if (queue.canWrite()) {
+      queue.sendNextToWorker();
+      status[0] = 224;
+    }
+  }
+
+  // Send to Macro
+  setInterval(check, 0);
 }
-console.log("MAIN => Sending voidMessage...");
 
-const setVoidFunction =
-  (fnNumber: number) =>
-  (generateIDTask: () => number) =>
-  (setUp: Function) =>
-  (id: Int32Array) =>
-  (status: Uint8Array) =>
-  () => {
-    id[0] = generateIDTask();
-    status[1] = fnNumber;
-    setUp();
-  };
+// Start the infinite loop
+queueMicrotask(check);
 
-const voidFunction = setVoidFunction(0)(genTaskID)(mainSig.voidMessage)(id)(
-  status,
-);
+console.log("MAIN => Starting tasks...");
 
-voidFunction();
+const t1 = performance.now();
 
-// ( async () => {
-// await queue.add([superId,null,0])
-//     .then(console.log)
-// await queue.add([genTaskID(),null,0])
-//     .then(console.log)
-// await queue.add([genTaskID(),null,0])
-//     .then(console.log)
-// })()
+await Promise.all([
+  queue.add([genTaskID(), null, 0]).then(console.log),
+  queue.add([genTaskID(), null, 0]).then(console.log),
+  queue.add([genTaskID(), null, 0]).then(console.log),
+  queue.add([genTaskID(), null, 0]).then(console.log),
+  queue.add([genTaskID(), null, 0]).then(console.log),
+  queue.add([genTaskID(), null, 0]).then(console.log),
+  queue.add([genTaskID(), null, 0]).then(console.log),
+  queue.add([genTaskID(), null, 0]).then(console.log),
+  queue.add([genTaskID(), null, 0]).then(console.log),
+  queue.add([genTaskID(), null, 0]).then(console.log),
+  queue.add([genTaskID(), null, 0]).then(console.log),
+]);
 
-// Start reading loop
-mainLoop();
+console.log(performance.now() - t1);
