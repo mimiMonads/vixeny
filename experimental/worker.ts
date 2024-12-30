@@ -7,14 +7,27 @@ import {
   writeUintMessage,
 } from "./helpers.ts";
 
+const decoder = new TextEncoder();
 const atm = ((n = 0) => () => n = n + 1)();
 // One example function: returns "Hello from Worker!"
 const listOfFunctions = [
-  async (input: Uint8Array | null) => {
-    const text = input
-      ? new TextDecoder().decode(input)
-      : "Hello from Worker!" + atm();
-    return new TextEncoder().encode(text);
+  // async (input: Uint8Array | null) => {
+  //   const text = input
+  //     ? new TextDecoder().decode(input)
+  //     : "Hello from Worker!" + atm();
+  //   return decoder.encode(text);
+  // },
+  async () => {
+    let sum = 0;
+
+    // Increase or decrease the loop count for more or less work
+    const iterations = 1_000;
+
+    for (let i = 0; i < iterations; i++) {
+      sum += performance.now();
+    }
+
+    return decoder.encode(sum.toString());
   },
 ];
 

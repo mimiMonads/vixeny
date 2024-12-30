@@ -1,8 +1,10 @@
 // main.ts
 import { Worker } from "node:worker_threads";
+import { bench, run } from "mitata";
 import {
   genTaskID,
   mainQueue,
+  mainQueueSingle,
   mainSignal,
   readMessageToUint,
   sendUintMessage,
@@ -12,14 +14,6 @@ import {
 const currentPath = import.meta.url;
 const workerUrl = new URL(currentPath.replace("main.ts", "worker.ts"));
 
-// Example only, presumably your worker uses these
-const listOfFunctions = [
-  async (input: Uint8Array | null) => {
-    const text = input ? new TextDecoder().decode(input) : "Hello from Worker!";
-    return new TextEncoder().encode(text);
-  },
-];
-
 // ─────────────────────────────────────────────────────────────────────────────
 // SHARED BUFFERS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -28,8 +22,8 @@ const status = setArrayBuffers.status(sab);
 const id = setArrayBuffers.id(sab);
 const payload = setArrayBuffers.payload(sab);
 const writer = sendUintMessage(id)(payload);
-const queue = mainQueue(writer)(10)();
-
+//const queue = mainQueue(writer)(2)();
+const queue = mainQueueSingle(writer);
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN THREAD
 // ─────────────────────────────────────────────────────────────────────────────
@@ -54,6 +48,11 @@ function check() {
         queue.sendNextToWorker();
         status[0] = 224;
       } else {
+        if (queue.isEverythingSolve()) {
+          mainSig.hasNoMoreMessages();
+          //terminate();
+          return;
+        }
         mainSig.readyToRead();
       }
 
@@ -74,29 +73,76 @@ function check() {
     }
   }
 
-  // Send to Macro
-  setInterval(check, 0);
+  queueMicrotask(check);
 }
 
-// Start the infinite loop
-queueMicrotask(check);
+// Terminate the worker and it's used for debugging
+const terminate = () => {
+  console.log("finish");
+  worker.terminate();
+};
 
 console.log("MAIN => Starting tasks...");
 
-const t1 = performance.now();
+const decoder = new TextEncoder();
 
-await Promise.all([
-  queue.add([genTaskID(), null, 0]).then(console.log),
-  queue.add([genTaskID(), null, 0]).then(console.log),
-  queue.add([genTaskID(), null, 0]).then(console.log),
-  queue.add([genTaskID(), null, 0]).then(console.log),
-  queue.add([genTaskID(), null, 0]).then(console.log),
-  queue.add([genTaskID(), null, 0]).then(console.log),
-  queue.add([genTaskID(), null, 0]).then(console.log),
-  queue.add([genTaskID(), null, 0]).then(console.log),
-  queue.add([genTaskID(), null, 0]).then(console.log),
-  queue.add([genTaskID(), null, 0]).then(console.log),
-  queue.add([genTaskID(), null, 0]).then(console.log),
-]);
+const f = async () => {
+  let sum = 0;
 
-console.log(performance.now() - t1);
+  // Increase or decrease the loop count for more or less work
+  const iterations = 1_000;
+
+  for (let i = 0; i < iterations; i++) {
+    sum += performance.now();
+  }
+
+  return decoder.encode(sum.toString());
+};
+
+type Resolver = {
+  queue: ReturnType<ReturnType<ReturnType<typeof mainQueue>>>;
+  fn: Function;
+  fnNumber: number;
+  status: Uint8Array;
+};
+
+const isActive = (status: Uint8Array) =>
+  status[0] === 255 ? queueMicrotask(check) : undefined;
+
+const resolver = (args: Resolver) => {
+  const { queue, fn, status, fnNumber } = args;
+
+  return async () =>
+    queue.isBusy() ? fn() : (
+      isActive(status),
+        status[0] = 224,
+        queue.add([
+          genTaskID(),
+          null,
+          fnNumber,
+        ])
+    );
+};
+
+const forTest = resolver({
+  //@ts-ignore
+  queue,
+  fn: f,
+  status,
+  fnNumber: 0,
+});
+
+(
+  async () => {
+    bench("main + 1 thread ", async () => {
+      forTest();
+      forTest();
+    });
+
+    bench("normal", async () => {
+      f(), f();
+    });
+
+    await run();
+  }
+)();
