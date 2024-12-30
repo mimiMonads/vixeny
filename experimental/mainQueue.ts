@@ -51,16 +51,22 @@ type MainQueueSingle = {
   status: Uint8Array;
 };
 
-export const multi = (writer: (job: MainList) => void) =>
-(max: number) =>
+type MultipleQueueSingle = {
+  writer: (job: MainList) => void;
+  status: Uint8Array;
+  max?: number;
+};
+
+export const multi = (args: MultipleQueueSingle) =>
 (
   // Initialize each slot of the main queue.
 
   queue = Array.from(
-    { length: max },
+    { length: args.max ?? 10 },
     () => [true, false, 0, null, 0, new Uint8Array(), true, 224] as MainList,
   ),
 ) => {
+  const { writer, status, max } = args;
   /**
    * Keep track of every task's resolver, so when `solve` is called we can
    * resolve the Promise that was returned by `add`.

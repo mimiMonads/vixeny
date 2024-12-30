@@ -89,3 +89,18 @@ export const sendUintMessage =
     }
     idBuffer[0] = task[2]; // Task ID
   };
+
+export const optimalOrder = (n: number) => {
+  const a = Array.from(
+    { length: (n * 2) },
+    (_, i) => i % 2 == 1,
+  );
+  a[a.length - 1] = true;
+  if (n > 3) {
+    a[a.length - 2] = true;
+  }
+
+  return ((n: number) => (m: number) => () => n === m ? a[n = 0] : a[n++])(0)(
+    (n * 2) - 1,
+  );
+};

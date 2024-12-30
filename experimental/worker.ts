@@ -60,7 +60,6 @@ while (true) {
       queue.add([id[0], null, status[1], 224]);
       // let main know we read its signal
       workerSig.messageWasRead(); // => 1
-      continue;
     }
     // } else if (currentState === 192) {
     //   // read input from payload
@@ -73,17 +72,15 @@ while (true) {
   // Process the next job
   await queue.nextJob();
 
-  // If main sets 127 => we have "readyToRead" or this procces has been bussy finishing tasks => 1
+  // If main sets 127 => we have "readyToRead" or this process has been busy finishing tasks => 1
   if (currentState === 127 || currentState === 126) {
     if (currentState === 126) {
       console.log("busy");
-      continue;
     }
     // check if someone has finished
     if (queue.someHasFinished()) {
       queue.write();
       workerSig.messageReady();
-      continue;
     }
 
     if (queue.allDone()) {

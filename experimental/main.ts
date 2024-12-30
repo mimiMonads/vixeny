@@ -1,10 +1,11 @@
 // main.ts
 import { Worker } from "node:worker_threads";
-import { bench, run } from "mitata";
+import { bench, group, run } from "mitata";
 import { multi, single } from "./mainQueue.ts";
 import {
   genTaskID,
   mainSignal,
+  optimalOrder,
   readMessageToUint,
   sendUintMessage,
   setArrayBuffers,
@@ -21,8 +22,11 @@ const status = setArrayBuffers.status(sab);
 const id = setArrayBuffers.id(sab);
 const payload = setArrayBuffers.payload(sab);
 const writer = sendUintMessage(id)(payload);
-//const queue = multi(writer)(3)();
-const queue = single({ writer, status });
+const queue = multi({
+  writer,
+  status,
+})();
+//const queue = single({ writer, status });
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN THREAD
 // ─────────────────────────────────────────────────────────────────────────────
@@ -68,6 +72,8 @@ function check() {
   if (currentStatus === 255) {
     if (queue.canWrite()) {
       queue.sendNextToWorker();
+    } else {
+      return;
     }
   }
 
@@ -92,21 +98,24 @@ const f = async () => {
 };
 
 type Resolver = {
-  queue: ReturnType<ReturnType<ReturnType<typeof multi>>>;
+  queue: ReturnType<ReturnType<typeof multi>>;
   fn: Function;
   fnNumber: number;
   status: Uint8Array;
   statusSignal: 224;
+  max?: number;
 };
 
 const isActive = (status: Uint8Array) =>
   status[0] === 255 ? queueMicrotask(check) : undefined;
 
 const resolver = (args: Resolver) => {
-  const { queue, fn, status, fnNumber, statusSignal } = args;
+  const { queue, fn, status, fnNumber, statusSignal, max } = args;
+
+  const seq = optimalOrder(max ?? 10);
 
   return async () =>
-    queue.isBusy() ? fn() : (
+    seq() ? fn() : queue.isBusy() ? fn() : (
       isActive(status),
         queue.add([
           genTaskID(),
@@ -126,20 +135,22 @@ const forTest = resolver({
   statusSignal: 224,
 });
 
-(
-  async () => {
-    bench("main + 1 thread ", async () => {
-      forTest();
-      forTest();
-    });
+group("Compare", async () => {
+  bench("main + 1 thread ", async () => {
+    Promise.all([
+      forTest(),
+      forTest(),
+    ]);
+  });
 
-    bench("normal", async () => {
-      f();
-      f();
-    });
+  bench("normal", async () => {
+    Promise.all([
+      f(),
+      f(),
+    ]);
+  });
+});
 
-    await run();
+await run();
 
-    worker.terminate();
-  }
-)();
+worker.terminate();
