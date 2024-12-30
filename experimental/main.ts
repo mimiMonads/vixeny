@@ -1,10 +1,9 @@
 // main.ts
 import { Worker } from "node:worker_threads";
 import { bench, run } from "mitata";
+import { multi, single } from "./mainQueue.ts";
 import {
   genTaskID,
-  mainQueue,
-  mainQueueSingle,
   mainSignal,
   readMessageToUint,
   sendUintMessage,
@@ -22,8 +21,8 @@ const status = setArrayBuffers.status(sab);
 const id = setArrayBuffers.id(sab);
 const payload = setArrayBuffers.payload(sab);
 const writer = sendUintMessage(id)(payload);
-//const queue = mainQueue(writer)(2)();
-const queue = mainQueueSingle(writer);
+//const queue = multi(writer)(3)();
+const queue = single({ writer, status });
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN THREAD
 // ─────────────────────────────────────────────────────────────────────────────
@@ -38,26 +37,26 @@ mainSig.hasNoMoreMessages();
 function check() {
   const currentStatus = status[0];
 
-  // If worker posted a "response" (status=0), solve it
+  // If has posted something
   if (currentStatus < 126) {
+    // If worker posted a "response" (status=0), solve it
     if (currentStatus === 0) {
-      const data = readMessage();
-      queue.solve(id[0], data);
+      queue.solve(id[0], readMessage());
 
       if (queue.canWrite()) {
         queue.sendNextToWorker();
-        status[0] = 224;
       } else {
-        if (queue.isEverythingSolve()) {
-          mainSig.hasNoMoreMessages();
-          //terminate();
-          return;
-        }
         mainSig.readyToRead();
       }
 
       queueMicrotask(check);
       return;
+    }
+
+    if (currentStatus === 2) {
+      if (!queue.canWrite()) {
+        return;
+      }
     }
 
     mainSig.readyToRead();
@@ -69,18 +68,11 @@ function check() {
   if (currentStatus === 255) {
     if (queue.canWrite()) {
       queue.sendNextToWorker();
-      status[0] = 224;
     }
   }
 
   queueMicrotask(check);
 }
-
-// Terminate the worker and it's used for debugging
-const terminate = () => {
-  console.log("finish");
-  worker.terminate();
-};
 
 console.log("MAIN => Starting tasks...");
 
@@ -100,26 +92,27 @@ const f = async () => {
 };
 
 type Resolver = {
-  queue: ReturnType<ReturnType<ReturnType<typeof mainQueue>>>;
+  queue: ReturnType<ReturnType<ReturnType<typeof multi>>>;
   fn: Function;
   fnNumber: number;
   status: Uint8Array;
+  statusSignal: 224;
 };
 
 const isActive = (status: Uint8Array) =>
   status[0] === 255 ? queueMicrotask(check) : undefined;
 
 const resolver = (args: Resolver) => {
-  const { queue, fn, status, fnNumber } = args;
+  const { queue, fn, status, fnNumber, statusSignal } = args;
 
   return async () =>
     queue.isBusy() ? fn() : (
       isActive(status),
-        status[0] = 224,
         queue.add([
           genTaskID(),
           null,
           fnNumber,
+          statusSignal,
         ])
     );
 };
@@ -130,6 +123,7 @@ const forTest = resolver({
   fn: f,
   status,
   fnNumber: 0,
+  statusSignal: 224,
 });
 
 (
@@ -140,9 +134,12 @@ const forTest = resolver({
     });
 
     bench("normal", async () => {
-      f(), f();
+      f();
+      f();
     });
 
     await run();
+
+    worker.terminate();
   }
 )();
