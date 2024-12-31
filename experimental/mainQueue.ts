@@ -44,6 +44,7 @@ export type QueueList = [
   RawArguments,
   FunctionID,
   WorkerResponse,
+  StatusSignal,
 ];
 
 type MainQueueSingle = {
@@ -60,21 +61,57 @@ type MultipleQueueSingle = {
 export const multi = (args: MultipleQueueSingle) =>
 (
   // Initialize each slot of the main queue.
-
   queue = Array.from(
     { length: args.max ?? 10 },
     () => [true, false, 0, null, 0, new Uint8Array(), true, 224] as MainList,
   ),
 ) => {
-  const { writer, status, max } = args;
+  const { writer, status } = args;
+
   /**
-   * Keep track of every task's resolver, so when `solve` is called we can
+   * Keep track of every task's resolver, so when `solve` is called, we can
    * resolve the Promise that was returned by `add`.
    */
-  const promisesMap = new Map<
-    TaskID,
-    (result: WorkerResponse) => void
-  >();
+  const promisesMap = new Map<TaskID, (result: WorkerResponse) => void>();
+
+  /**
+   * A list of tasks waiting for a free slot. Each element is:
+   * [partialQueueList, resolver]
+   */
+  const pendingTasks: Array<[PartialQueueList, (res: WorkerResponse) => void]> =
+    [];
+
+  /**
+   * Try to fill any newly freed slots with tasks from pendingTasks.
+   * This will be called after a task is solved (slot freed), or if you
+   * want to check for newly available slots at some other point.
+   */
+  const processPendingTasks = () => {
+    // Keep filling slots while both:
+    // - There is at least one free slot
+    // - There are pending tasks
+    while (true) {
+      const freeIndex = queue.findIndex((item) => item[0] === true);
+      if (freeIndex === -1 || pendingTasks.length === 0) {
+        break; // No free slot or no pending tasks
+      }
+      // Pop one pending task
+      const [task, resolveFn] = pendingTasks.shift()!;
+
+      // Occupy the free slot
+      queue[freeIndex][0] = false; // free -> in use
+      queue[freeIndex][1] = false; // solved -> false
+      queue[freeIndex][2] = task[0]; // taskID
+      queue[freeIndex][3] = task[1]; // rawArguments
+      queue[freeIndex][4] = task[2]; // functionID
+      // queue[freeIndex][5] = new Uint8Array(); // (Optional) reset WorkerResponse
+      queue[freeIndex][6] = false; // hasBeenResolve -> false (reset)
+      queue[freeIndex][7] = task[3]; // TypeOfFunction -> 224, 192, etc.
+
+      // Keep track of the resolver so we can fulfill the promise in solve()
+      promisesMap.set(task[0], resolveFn);
+    }
+  };
 
   return {
     /**
@@ -83,39 +120,59 @@ export const multi = (args: MultipleQueueSingle) =>
      * Hence, if every slot’s free flag is false, we’re busy.
      */
     isBusy: () => queue.every((item) => item[0] === false),
-    canWrite: () => queue.some((item) => item[0] === false),
-    isEverythingSolve: () =>
-      queue.every((item) => (item[6] === true && item[0] === true)),
-    count: () => queue.reduce((x, acc) => acc[0] === false ? x + 1 : x, 0),
+
     /**
-     * add: insert a new task into the first free slot (where free == false).
-     * Returns a Promise that resolves when the task is eventually solved.
+     * canWrite: indicates if there's at least one slot in use.
+     * (You might define it differently as well.)
+     */
+    canWrite: () => queue.some((item) => item[0] === false),
+
+    /**
+     * isEverythingSolve: are all tasks either solved or not in use?
+     * i.e., queue[i][6] === true (solved) and queue[i][0] === true (free).
+     */
+    isEverythingSolve: () =>
+      queue.every((item) => item[6] === true && item[0] === true),
+
+    /**
+     * count: how many slots are in use right now?
+     */
+    count: () =>
+      queue.reduce((count, item) => (item[0] === false ? count + 1 : count), 0),
+
+    /**
+     * add: insert a new task.
+     * - If there is a free slot, occupy it immediately
+     * - Otherwise, enqueue it in pendingTasks
+     * Returns a Promise that resolves with the task's WorkerResponse.
      */
     add: (task: PartialQueueList) => {
       return new Promise<WorkerResponse>((resolve) => {
         // Find a free slot
         const freeIndex = queue.findIndex((item) => item[0] === true);
         if (freeIndex === -1) {
-          return null;
+          // No free slot => put in pending queue
+          pendingTasks.push([task, resolve]);
+        } else {
+          // Occupy the free slot immediately
+          queue[freeIndex][0] = false; // free -> in use
+          queue[freeIndex][1] = false; // solved -> false
+          queue[freeIndex][2] = task[0]; // taskID
+          queue[freeIndex][3] = task[1]; // rawArguments
+          queue[freeIndex][4] = task[2]; // functionID
+          // queue[freeIndex][5] = new Uint8Array(); // (Optional) reset WorkerResponse
+          queue[freeIndex][6] = false; // hasBeenResolve -> false
+          queue[freeIndex][7] = task[3]; // TypeOfFunction -> 224, 192, etc.
+
+          // Save the resolver so solve() can fulfill the Promise
+          promisesMap.set(task[0], resolve);
         }
-        // Mark this slot as in use, unsolved, and fill in the metadata
-        queue[freeIndex][0] = false; // free -> in use
-        queue[freeIndex][1] = false; // solved -> false
-        queue[freeIndex][2] = task[0]; // taskID
-        queue[freeIndex][3] = task[1]; // rawArguments
-        queue[freeIndex][4] = task[2]; // functionID
-        // queue[freeIndex][5] = new Uint8Array(); // (Optional) initialize WorkerResponse
-        queue[freeIndex][6] = false; // hasBeenResolve -> false (reset)
-        // Store this promise's resolver so we can fulfill it later in solve()
-        promisesMap.set(task[0], resolve);
       });
     },
 
     /**
-     * get: returns the WorkerResponse if the task is solved;
-     * otherwise, you could (a) return null, (b) throw an error,
-     * or (c) return a Promise that resolves when the task finishes.
-     * Below, we’ll demonstrate a simple "return the data if solved, else null."
+     * get: returns the WorkerResponse if the task is solved,
+     * otherwise returns null (you could also make it return a Promise, etc.).
      */
     get: (id: TaskID) => {
       const idx = queue.findIndex((item) => item[2] === id);
@@ -123,41 +180,56 @@ export const multi = (args: MultipleQueueSingle) =>
       return queue[idx][1] ? queue[idx][5] : null;
     },
 
+    /**
+     * sendNextToWorker: picks the first unsolved (in use) task and calls writer(...).
+     * Mark that slot as free right after sending, so that concurrency logic can continue.
+     */
     sendNextToWorker: () => {
-      // First look for a free slot
-      let idx = queue.findIndex(
+      // Look for a slot that is "in use" but not "solved."
+      const idx = queue.findIndex(
         (item) => item[0] === false && item[1] === false,
       );
-
       if (idx === -1) {
-        return;
+        return; // No such slot
       }
-
-      queue[idx][0] = true;
+      // Actually send to worker
       writer(queue[idx]);
+      status[0] = queue[idx][7];
+
+      // Mark the slot as "free" immediately after sending
+      // so that we can accept more tasks if needed.
+      queue[idx][0] = true;
+
+      // Now we might have just freed a slot.
+      // Let's see if there's a pending task that can occupy it.
+      processPendingTasks();
     },
+
     /**
-     * solve: mark a task as solved and store its result.
-     * Then resolve the promise from `add`.
+     * solve: mark a task as solved, store its result, and resolve the promise
+     * from `add`. Then, processPendingTasks to fill the newly freed slot.
      */
     solve: (id: TaskID, res: WorkerResponse) => {
       const idx = queue.findIndex((item) => item[2] === id);
-
       if (idx === -1) {
-        // No matching task found; safely ignore or throw
-        return;
+        console.log("No matching task found for ID:", id);
+        return; // or throw
       }
 
-      // Mark the task as solved, store the response
+      // Mark the task as solved
       queue[idx][1] = true; // solved
-      queue[idx][5] = res; // update the response
-      queue[idx][6] = true; // solved
+      queue[idx][5] = res; // store the response
+      queue[idx][6] = true; // hasBeenResolve = true
+
       // Resolve the Promise that was returned by `add`
       const resolveFn = promisesMap.get(id);
       if (resolveFn) {
         resolveFn(res);
         promisesMap.delete(id);
       }
+
+      // A slot just got solved => might be free
+      processPendingTasks();
     },
   };
 };
@@ -217,7 +289,7 @@ export const single = (args: MainQueueSingle) => {
         slot[3] = task[1]; // rawArguments
         slot[4] = task[2]; // functionID
         slot[6] = false; // hasBeenResolve -> false
-        slot[7] = task[3]; // hasBeenResolve -> false
+        slot[7] = task[3]; // TypeOfFunction -> 224 , 192 ...
         // Store the Promise’s resolver, so we can call it in `solve`
         promisesMap.set(task[0], resolve);
       });

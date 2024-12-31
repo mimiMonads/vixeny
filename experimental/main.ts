@@ -1,6 +1,6 @@
 // main.ts
 import { Worker } from "node:worker_threads";
-import { bench, group, run } from "mitata";
+import { bench, boxplot, run } from "mitata";
 import { multi, single } from "./mainQueue.ts";
 import {
   genTaskID,
@@ -25,6 +25,7 @@ const writer = sendUintMessage(id)(payload);
 const queue = multi({
   writer,
   status,
+  max: 10,
 })();
 //const queue = single({ writer, status });
 // ─────────────────────────────────────────────────────────────────────────────
@@ -38,8 +39,20 @@ mainSig.hasNoMoreMessages();
 // ─────────────────────────────────────────────────────────────────────────────
 // The "check" loop that never ends (so your tasks always get resolved)
 // ─────────────────────────────────────────────────────────────────────────────
+
+const changeOfSignal = ((store: number) => (status: number) => {
+  if (store === status) {
+    return;
+  }
+  store = status;
+  console.log("status change to:");
+  console.log(store);
+})(0);
 function check() {
   const currentStatus = status[0];
+
+  // DEBBUGING STEPS
+  //changeOfSignal(currentStatus);
 
   // If has posted something
   if (currentStatus < 126) {
@@ -58,9 +71,17 @@ function check() {
     }
 
     if (currentStatus === 2) {
-      if (!queue.canWrite()) {
+      if (queue.canWrite()) {
+        queue.sendNextToWorker();
+        queueMicrotask(check);
         return;
       }
+
+      mainSig.hasNoMoreMessages();
+
+      // DEBBUGING STEPS
+      // console.log("Finish by 2");
+      return;
     }
 
     mainSig.readyToRead();
@@ -73,6 +94,8 @@ function check() {
     if (queue.canWrite()) {
       queue.sendNextToWorker();
     } else {
+      // DEBBUGING STEPS
+      // console.log("Finish by 255");
       return;
     }
   }
@@ -80,7 +103,7 @@ function check() {
   queueMicrotask(check);
 }
 
-console.log("MAIN => Starting tasks...");
+//console.log("MAIN => Starting tasks...");
 
 const decoder = new TextEncoder();
 
@@ -117,7 +140,7 @@ const resolver = (args: Resolver) => {
   return async () =>
     seq() ? fn() : queue.isBusy() ? fn() : (
       isActive(status),
-        queue.add([
+        await queue.add([
           genTaskID(),
           null,
           fnNumber,
@@ -135,16 +158,17 @@ const forTest = resolver({
   statusSignal: 224,
 });
 
-group("Compare", async () => {
+boxplot(async () => {
   bench("main + 1 thread ", async () => {
-    Promise.all([
-      forTest(),
-      forTest(),
-    ]);
+    await forTest();
+    await forTest();
+    await forTest();
+    await forTest();
   });
-
-  bench("normal", async () => {
-    Promise.all([
+  bench("main ", async () => {
+    await Promise.all([
+      f(),
+      f(),
       f(),
       f(),
     ]);

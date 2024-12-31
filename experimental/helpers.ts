@@ -43,18 +43,17 @@ export const setArrayBuffers = {
 
 // Main thread signal management.
 export const mainSignal = (status: Uint8Array) => ({
-  send: () => (status[0] = 192),
-  readyToRead: () => (status[0] = 127),
-  voidMessage: () => (status[0] = 224),
-  hasNoMoreMessages: () => (status[0] = 255),
+  send: (): 192 => (status[0] = 192),
+  readyToRead: (): 127 => (status[0] = 127),
+  voidMessage: (): 224 => (status[0] = 224),
+  hasNoMoreMessages: (): 255 => (status[0] = 255),
 });
 
 // Worker thread signal management.
 export const workerSignal = (status: Uint8Array) => ({
-  messageReady: () => (status[0] = 0),
-  messageWasRead: () => (status[0] = 1),
-  finishedAllTasks: () => (status[0] = 2),
-  tooBusy: () => (status[0] = 126),
+  messageReady: (): 0 => (status[0] = 0),
+  messageWasRead: (): 1 => (status[0] = 1),
+  finishedAllTasks: (): 2 => (status[0] = 2),
 });
 
 // Read a message from a Uint8Array.
@@ -74,11 +73,13 @@ export const writeUintMessage =
     } else {
       payload[0] = 10;
     }
+    // console.log("to send id: " + task[3]);
     idBuffer[0] = task[3]; // Task ID
   };
 
 export const sendUintMessage =
   (idBuffer: Int32Array) => (payload: Uint8Array) => (task: MainList) => {
+    idBuffer[0] = task[2];
     payload.fill(0);
     // If it's not null
     if (task[5] !== null) {
@@ -87,7 +88,6 @@ export const sendUintMessage =
     } else {
       payload[0] = 10;
     }
-    idBuffer[0] = task[2]; // Task ID
   };
 
 export const optimalOrder = (n: number) => {

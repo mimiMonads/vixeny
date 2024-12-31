@@ -1,16 +1,22 @@
 import type { PartialQueueList, QueueList } from "./mainQueue.ts";
 
+type ArgumetnsForMulti = {
+  jobs: Function[];
+  max?: number;
+  writer: (job: QueueList) => void;
+  status: Uint8Array;
+};
 // Create and manage a working queue.
-export const multi =
-  (jobs: Function[]) =>
-  (writer: (job: QueueList) => void) =>
-  (max: number) =>
-  (
-    queue = Array.from(
-      { length: max },
-      () => [false, false, false, 0, null, 0, new Uint8Array()] as QueueList,
-    ),
-  ) => ({
+export const multi = (args: ArgumetnsForMulti) =>
+(
+  queue = Array.from(
+    { length: args.max ?? 10 },
+    () => [false, false, false, 0, null, 0, new Uint8Array(), 224] as QueueList,
+  ),
+) => {
+  const { jobs, max, writer, status } = args;
+
+  return {
     // Check if all tasks are in use.
     isBusy: () => queue.every((job) => job[0]),
 
@@ -30,6 +36,7 @@ export const multi =
           element[1], // RawArguments
           element[2], // FunctionID
           new Uint8Array(), // WorkerResponse
+          element[3], // SatusSignal
         ];
       } else {
         queue.push([
@@ -40,15 +47,28 @@ export const multi =
           element[1],
           element[2],
           new Uint8Array(),
+          element[3],
         ]);
       }
+
+      status[0] = 1;
     },
 
     // Write completed tasks to the writer.
     write: () => {
       const finishedTaskIndex = queue.findIndex((task) => task[2]);
       if (finishedTaskIndex !== -1) {
+        // console.log(" 4 .- worker sends :");
+        // console.log(
+        //   [
+        //     queue[finishedTaskIndex][3],
+        //     queue[finishedTaskIndex][4],
+        //     queue[finishedTaskIndex][5],
+        //     queue[finishedTaskIndex][7],
+        //   ],
+        // );
         writer(queue[finishedTaskIndex]); // Writes on playload
+        status[0] = 0;
         queue[finishedTaskIndex][0] = false; // Reset OnUse
         queue[finishedTaskIndex][2] = false; // Reset Solved
       }
@@ -74,4 +94,5 @@ export const multi =
       queue.every(
         (task) => task[0] === false && task[1] === false && task[2] === false,
       ),
-  });
+  };
+};
