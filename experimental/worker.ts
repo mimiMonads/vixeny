@@ -2,10 +2,11 @@ import { workerData } from "node:worker_threads";
 import {
   readMessageToUint,
   setArrayBuffers,
-  workerSignal,
   writeUintMessage,
 } from "./helpers.ts";
 import { multi } from "./workerQueue.ts";
+
+import { signalsForWorker, workerSignal } from "./signal.ts";
 
 const decoder = new TextEncoder();
 
@@ -14,7 +15,7 @@ const listOfFunctions = [
     let sum = 0;
 
     // Increase or decrease the loop count for more or less work
-    const iterations = 1_000;
+    const iterations = 10;
 
     for (let i = 0; i < iterations; i++) {
       sum += performance.now();
@@ -24,25 +25,30 @@ const listOfFunctions = [
   },
 ];
 
-const sab = workerData.sab;
-const status = setArrayBuffers.status(sab);
-const id = setArrayBuffers.id(sab);
-const payload = setArrayBuffers.payload(sab);
+const sharedSab = workerData.sab as SharedArrayBuffer;
 
-const workerSig = workerSignal(status);
+const signals = signalsForWorker({
+  sharedSab,
+});
+
+const status = setArrayBuffers.status(signals.sab);
+const id = setArrayBuffers.id(signals.sab);
+
+const workerSig = workerSignal(signals);
+
 //const readMsg = readMessageToUint(payload);
-const writeMsg = writeUintMessage(id)(payload);
+const writeMsg = writeUintMessage(signals);
 
 const queue = multi({
   jobs: listOfFunctions,
   writer: writeMsg,
   status,
-})();
+});
 
-let currentState = status[0];
+let currentState = workerSig.curretSignal();
 
 while (true) {
-  currentState = status[0];
+  currentState = workerSig.curretSignal();
 
   // If main sets 224 (voidMessage) or 192 (send), that is > 127
 

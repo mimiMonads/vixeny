@@ -1,20 +1,9 @@
 import type { MainList, QueueList } from "./mainQueue.ts";
+import type { SignalArguments } from "./signal.ts";
 
 // Signals
 type StatusSignalForVoid = 224;
 export type StatusSignal = StatusSignalForVoid;
-
-/**
- * QueueList:
- * - Represents the structure of a queue item in the worker thread.
- *   0: Free - Whether the task is assigned.
- *   1: Locked - Whether the task is locked/in-progress.
- *   2: Solved - Whether the task has been completed.
- *   3: TaskID - ID of the task.
- *   4: RawArguments - Input arguments for the task.
- *   5: FunctionID - ID of the function to execute.
- *   6: WorkerResponse - Result of the task.
- */
 
 // Generate unique task IDs.
 export const genTaskID =
@@ -41,30 +30,15 @@ export const setArrayBuffers = {
   payload: (sab: SharedArrayBuffer) => new Uint8Array(sab, 8),
 };
 
-// Main thread signal management.
-export const mainSignal = (status: Uint8Array) => ({
-  send: (): 192 => (status[0] = 192),
-  readyToRead: (): 127 => (status[0] = 127),
-  voidMessage: (): 224 => (status[0] = 224),
-  hasNoMoreMessages: (): 255 => (status[0] = 255),
-});
-
-// Worker thread signal management.
-export const workerSignal = (status: Uint8Array) => ({
-  messageReady: (): 0 => (status[0] = 0),
-  messageWasRead: (): 1 => (status[0] = 1),
-  finishedAllTasks: (): 2 => (status[0] = 2),
-});
-
 // Read a message from a Uint8Array.
-export const readMessageToUint = (buffer: Uint8Array) => () => {
-  const terminatorIndex = buffer.lastIndexOf(10);
-  return terminatorIndex >= 0 ? buffer.slice(0, terminatorIndex) : null;
+export const readMessageToUint = ({ payload }: SignalArguments) => () => {
+  const terminatorIndex = payload.lastIndexOf(10);
+  return payload.slice(0, terminatorIndex);
 };
 
 // Write a Uint8Array message with task metadata.
 export const writeUintMessage =
-  (idBuffer: Int32Array) => (payload: Uint8Array) => (task: QueueList) => {
+  ({ id, payload }: SignalArguments) => (task: QueueList) => {
     payload.fill(0);
     // If it's not null
     if (task[6] !== null) {
@@ -74,12 +48,11 @@ export const writeUintMessage =
       payload[0] = 10;
     }
     // console.log("to send id: " + task[3]);
-    idBuffer[0] = task[3]; // Task ID
+    id[0] = task[3]; // Task ID
   };
 
 export const sendUintMessage =
-  (idBuffer: Int32Array) => (payload: Uint8Array) => (task: MainList) => {
-    idBuffer[0] = task[2];
+  ({ id, payload }: SignalArguments) => (task: MainList) => {
     payload.fill(0);
     // If it's not null
     if (task[5] !== null) {
@@ -88,6 +61,8 @@ export const sendUintMessage =
     } else {
       payload[0] = 10;
     }
+
+    id[0] = task[2];
   };
 
 export const optimalOrder = (n: number) => {

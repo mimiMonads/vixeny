@@ -7,14 +7,11 @@ type ArgumetnsForMulti = {
   status: Uint8Array;
 };
 // Create and manage a working queue.
-export const multi = (args: ArgumetnsForMulti) =>
-(
-  queue = Array.from(
-    { length: args.max ?? 10 },
+export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
+  const queue = Array.from(
+    { length: max ?? 10 },
     () => [false, false, false, 0, null, 0, new Uint8Array(), 224] as QueueList,
-  ),
-) => {
-  const { jobs, max, writer, status } = args;
+  );
 
   return {
     // Check if all tasks are in use.
