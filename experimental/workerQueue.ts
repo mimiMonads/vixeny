@@ -14,9 +14,6 @@ export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
   );
 
   return {
-    // Check if all tasks are in use.
-    isBusy: () => queue.every((job) => job[0]),
-
     // Check if any task is solved and ready for writing.
     someHasFinished: () => queue.some((task) => task[2] === true),
 
@@ -25,16 +22,11 @@ export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
       const freeSlot = queue.findIndex((task) => !task[0]);
 
       if (freeSlot !== -1) {
-        queue[freeSlot] = [
-          true, // OnUse
-          false, // Locked
-          false, // Solved
-          element[0], // TaskID
-          element[1], // RawArguments
-          element[2], // FunctionID
-          new Uint8Array(), // WorkerResponse
-          element[3], // SatusSignal
-        ];
+        queue[freeSlot][0] = true;
+        queue[freeSlot][3] = element[0];
+        queue[freeSlot][4] = element[1];
+        queue[freeSlot][5] = element[2];
+        queue[freeSlot][7] = element[3];
       } else {
         queue.push([
           true,
@@ -65,7 +57,7 @@ export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
         //   ],
         // );
         writer(queue[finishedTaskIndex]); // Writes on playload
-        status[0] = 0;
+        status[0] = 0; // The main can read it now;
         queue[finishedTaskIndex][0] = false; // Reset OnUse
         queue[finishedTaskIndex][2] = false; // Reset Solved
       }
@@ -77,13 +69,14 @@ export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
         task[0] && !task[1] && !task[2]
       );
       if (taskIndex !== -1) {
-        const task = queue[taskIndex];
-        task[1] = true; // Lock the task
+        queue[taskIndex][1] = true; // Lock the task
         try {
-          task[6] = await jobs[task[5]](task[4]); // Execute the job
-          task[2] = true; // Mark as solved
+          queue[taskIndex][6] = await jobs[queue[taskIndex][5]](
+            queue[taskIndex][4],
+          ); // Execute the job
+          queue[taskIndex][2] = true; // Mark as solved
         } finally {
-          task[1] = false; // Unlock the task
+          queue[taskIndex][1] = false; // Unlock the task
         }
       }
     },

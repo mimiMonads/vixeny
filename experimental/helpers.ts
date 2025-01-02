@@ -3,7 +3,8 @@ import type { SignalArguments } from "./signal.ts";
 
 // Signals
 type StatusSignalForVoid = 224;
-export type StatusSignal = StatusSignalForVoid;
+type StatusSignalForMessage = 192;
+export type StatusSignal = StatusSignalForVoid | StatusSignalForMessage;
 
 // Generate unique task IDs.
 export const genTaskID =
@@ -47,7 +48,7 @@ export const writeUintMessage =
     } else {
       payload[0] = 10;
     }
-    // console.log("to send id: " + task[3]);
+
     id[0] = task[3]; // Task ID
   };
 

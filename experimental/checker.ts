@@ -8,58 +8,64 @@ export const checker = ({
   queue: MultiQueue;
   signalBox: MainSignal;
 }) => {
-  return function check() {
-    const currentStatus = signalBox.updateLastSignal();
+  const check = () => {
+    // DEBUGGING STEPS
+    // changeOfSignal(currentStatus);
 
-    // DEBBUGING STEPS
-    //changeOfSignal(currentStatus);
-
-    // If has posted something
-    if (currentStatus < 126) {
-      // If worker posted a "response" (status=0), solve it
-      if (currentStatus === 0) {
+    switch (signalBox.updateLastSignal()) {
+      case 0: // If worker posted a "response" (status=0), solve it
         queue.solve();
-
         if (queue.canWrite()) {
           queue.sendNextToWorker();
         } else {
           signalBox.readyToRead();
         }
-
         queueMicrotask(check);
         return;
-      }
 
-      if (currentStatus === 2) {
+      case 1: // Ready to read
+        signalBox.readyToRead();
+        queueMicrotask(check);
+        return;
+
+      case 2: // Handle case 2
         if (queue.canWrite()) {
           queue.sendNextToWorker();
           queueMicrotask(check);
+        } else {
+          signalBox.hasNoMoreMessages();
+          // DEBUGGING STEPS
+          // console.log("Finish by 2");
+        }
+        return;
+
+      case 255: // If worker is "done" or requests more (status=255)
+        // maybe  isEverythingSolve
+        if (queue.canWrite()) {
+          queue.sendNextToWorker();
+        } else {
+          // DEBUGGING STEPS
+          // console.log("Finish by 255");
           return;
         }
-
-        signalBox.hasNoMoreMessages();
-
-        // DEBBUGING STEPS
-        // console.log("Finish by 2");
+        queueMicrotask(check);
         return;
-      }
 
-      signalBox.readyToRead();
-      queueMicrotask(check);
-      return;
-    }
-
-    // If worker is "done" or requests more (status=255)
-    if (currentStatus === 255) {
-      if (queue.canWrite()) {
+      // This case one
+      case 254:
         queue.sendNextToWorker();
-      } else {
-        // DEBBUGING STEPS
-        // console.log("Finish by 255");
+        queueMicrotask(check);
         return;
-      }
+
+        // default: // Default behavior for unknown statuses
+        //   // DEBUGGING STEPS
+        //   // console.log(`Unhandled status: ${currentStatus}`);
+        //   queueMicrotask(check);
+        //   return;
     }
 
     queueMicrotask(check);
   };
+
+  return check;
 };

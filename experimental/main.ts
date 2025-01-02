@@ -7,7 +7,6 @@ import {
   optimalOrder,
   readMessageToUint,
   sendUintMessage,
-  setArrayBuffers,
 } from "./helpers.ts";
 
 import { mainSignal, signalsForWorker } from "./signal.ts";
@@ -26,6 +25,7 @@ const queue = multi({
   writer,
   signalBox,
   reader,
+  genTaskID,
 });
 const check = checker({
   signalBox,
@@ -43,7 +43,7 @@ const f = async () => {
   let sum = 0;
 
   // Increase or decrease the loop count for more or less work
-  const iterations = 10;
+  const iterations = 1000;
 
   for (let i = 0; i < iterations; i++) {
     sum += performance.now();
@@ -54,7 +54,6 @@ const f = async () => {
 
 type Resolver = {
   queue: MultiQueue;
-  fn: Function;
   fnNumber: number;
   status: Uint8Array;
   statusSignal: 224;
@@ -62,75 +61,42 @@ type Resolver = {
 };
 
 const isActive = (status: Uint8Array) =>
-  status[0] === 255 ? queueMicrotask(check) : undefined;
+  status[0] === 255
+    ? (
+      // Skips one cycle
+      status[0] = 254, queueMicrotask(check)
+    )
+    : undefined;
 
 const resolver = (args: Resolver) => {
-  const { queue, fn, status, fnNumber, statusSignal, max } = args;
+  const { queue, status, fnNumber, statusSignal } = args;
 
-  const seq = optimalOrder(max ?? 10);
-
-  return async () =>
-    seq() ? fn() : queue.isBusy() ? fn() : (
-      isActive(status),
-        queue.awaits(
-          queue.add([
-            genTaskID(),
-            null,
-            fnNumber,
-            statusSignal,
-          ]),
-        )
-    );
+  const adds = queue.add(statusSignal)(fnNumber);
+  return async () => (
+    isActive(status),
+      queue.awaits(
+        adds(null),
+      )
+  );
 };
 
 const forTest = resolver({
   //@ts-ignore
   queue,
-  fn: f,
   status: signals.status,
   fnNumber: 0,
   statusSignal: 224,
 });
 
-await forTest().then((x) => new TextDecoder().decode(x)).then(console.log);
-await forTest().then((x) => new TextDecoder().decode(x)).then(console.log);
-await forTest().then((x) => new TextDecoder().decode(x)).then(console.log);
-await forTest().then((x) => new TextDecoder().decode(x)).then(console.log);
-await forTest().then((x) => new TextDecoder().decode(x)).then(console.log);
-
 boxplot(async () => {
-  bench("main + 1 thread ", async () => {
-    queueMicrotask(check);
-    const a = queue.add([
-        genTaskID(),
-        null,
-        0,
-        224,
-      ]),
-      c = queue.add([
-        genTaskID(),
-        null,
-        0,
-        224,
-      ]),
-      b = queue.add([
-        genTaskID(),
-        null,
-        0,
-        224,
-      ]);
-
-    return queue.awaitArray([a, b, c]);
+  bench("thread ", async () => {
+    await forTest();
   });
   bench("main ", async () => {
-    const a = await f();
-    const b = await f();
-    const c = await f();
-
-    return [a, b, c];
+    await f();
   });
 });
 
 await run();
-
+console.log(genTaskID());
 worker.terminate();

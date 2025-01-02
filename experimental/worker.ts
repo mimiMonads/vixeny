@@ -15,7 +15,7 @@ const listOfFunctions = [
     let sum = 0;
 
     // Increase or decrease the loop count for more or less work
-    const iterations = 10;
+    const iterations = 1000;
 
     for (let i = 0; i < iterations; i++) {
       sum += performance.now();
@@ -36,7 +36,7 @@ const id = setArrayBuffers.id(signals.sab);
 
 const workerSig = workerSignal(signals);
 
-//const readMsg = readMessageToUint(payload);
+const readMsg = readMessageToUint(signals);
 const writeMsg = writeUintMessage(signals);
 
 const queue = multi({
@@ -45,42 +45,32 @@ const queue = multi({
   status,
 });
 
-let currentState = workerSig.curretSignal();
-
 while (true) {
-  currentState = workerSig.curretSignal();
+  switch (workerSig.curretSignal()) {
+    case 127: {
+      if (queue.someHasFinished()) {
+        queue.write();
+        continue;
+      }
 
-  // If main sets 224 (voidMessage) or 192 (send), that is > 127
-
-  if (currentState > 127 && currentState !== 255) {
-    // DEBBUGING STEPS
-    // console.log(" 3 .- worker gets: ");
-    // console.log([id[0], null, status[1], 224]);
-
-    if (currentState === 224) {
-      queue.add([id[0], null, status[1], 224]);
+      if (queue.allDone()) {
+        workerSig.finishedAllTasks();
+      }
+      break;
     }
-    // } else if (currentState === 192) {
-    //   // read input from payload
-    //   const input = readMsg();
-    //   queue.add([id[0], input, status[1],192]);
-    //   workerSig.messageWasRead(); // => 1
-    // }
+    case 224:
+      {
+        queue.add([id[0], null, status[1], 224]);
+      }
+      break;
+    case 192:
+      {
+        queue.add([id[0], readMsg(), status[1], 192]);
+      }
+
+      break;
   }
 
   // Process the next job
   await queue.nextJob();
-
-  // If main sets 127 => we have "readyToRead" or this process has been busy finishing tasks => 1
-  if (currentState === 127) {
-    // check if someone has finished
-    if (queue.someHasFinished()) {
-      queue.write();
-      continue;
-    }
-
-    if (queue.allDone()) {
-      workerSig.finishedAllTasks();
-    }
-  }
 }

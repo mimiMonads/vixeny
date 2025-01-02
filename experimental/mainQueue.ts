@@ -54,16 +54,21 @@ type MultipleQueueSingle = {
   writer: (job: MainList) => void;
   reader: () => Uint8Array;
   signalBox: MainSignal;
+  genTaskID: () => number;
   max?: number;
 };
 export const multi = (
-  { writer, signalBox, max, reader }: MultipleQueueSingle,
+  { writer, signalBox, max, reader, genTaskID }: MultipleQueueSingle,
 ) => {
   const queue = Array.from(
     { length: max ?? 10 },
     () => [true, false, 0, null, 0, new Uint8Array(), true, 224] as MainList,
   );
 
+  const freeSlotOp = Array.from(
+    { length: max ?? 10 },
+    () => true,
+  );
   /**
    * Instead of just storing (result) => void in a Map,
    * we’ll store both the Promise and the resolve function,
@@ -71,79 +76,77 @@ export const multi = (
    */
   const promisesMap = new Map<
     TaskID,
-    { promise: Promise<WorkerResponse>; resolve: (val: WorkerResponse) => void }
+    [Promise<WorkerResponse>, (val: WorkerResponse) => void]
   >();
 
   return {
-    isBusy: () => queue.every((item) => item[0] === false),
+    isBusy: () => freeSlotOp.indexOf(true) === -1,
 
-    canWrite: () => queue.some((item) => item[0] === false),
+    canWrite: () => freeSlotOp.indexOf(false) !== -1,
 
     isEverythingSolve: () =>
       queue.every((item) => item[6] === true && item[0] === true),
 
-    count: () =>
-      queue.reduce((count, item) => (item[0] === false ? count + 1 : count), 0),
+    // count: () =>
+    //   queue.reduce((count, item) => (item[0] === false ? count + 1 : count), 0),
 
     /**
      * add: insert a new task and create a Promise.
      * We'll store that Promise (and its resolver) in promisesMap
      * keyed by the taskID.
      */
-    add: (task: PartialQueueList) => {
-      const freeIndex = queue.findIndex((item) => item[0] === true);
+    add:
+      (statusSignal: StatusSignal) =>
+      (functionID: FunctionID) =>
+      (rawArguments: RawArguments) => {
+        const freeIndex = freeSlotOp.indexOf(true);
+        const taskID = genTaskID();
+        if (freeIndex === -1) {
+          throw "No free slots! isBusyFailed uwu";
+        }
 
-      if (freeIndex === -1) {
-        throw "No free slots! isBusyFailed uwu";
-      }
+        let resolveFn!: (res: WorkerResponse) => void;
 
-      let resolveFn!: (res: WorkerResponse) => void;
-      const promise = new Promise<WorkerResponse>((resolve) => {
-        resolveFn = resolve;
-      });
+        // Store the Promise + resolver in our Map
+        promisesMap.set(taskID, [
+          new Promise<WorkerResponse>((resolve) => {
+            resolveFn = resolve;
+          }),
+          resolveFn,
+        ]);
 
-      // Store the Promise + resolver in our Map
-      promisesMap.set(task[0], { promise, resolve: resolveFn });
+        // Occupy the free slot immediately
+        queue[freeIndex][0] = false; // free -> in use
+        freeSlotOp[freeIndex] = false; // free -> in use
+        queue[freeIndex][1] = false; // solved -> false
+        queue[freeIndex][2] = taskID; // taskID
+        queue[freeIndex][3] = rawArguments; // rawArguments
+        queue[freeIndex][4] = functionID; // functionID
+        queue[freeIndex][6] = false; // hasBeenResolve -> false
+        queue[freeIndex][7] = statusSignal; // StatusSignal
 
-      // Occupy the free slot immediately
-      queue[freeIndex][0] = false; // free -> in use
-      queue[freeIndex][1] = false; // solved -> false
-      queue[freeIndex][2] = task[0]; // taskID
-      queue[freeIndex][3] = task[1]; // rawArguments
-      queue[freeIndex][4] = task[2]; // functionID
-      queue[freeIndex][6] = false; // hasBeenResolve -> false
-      queue[freeIndex][7] = task[3]; // StatusSignal
-
-      return task[0];
-    },
+        return taskID;
+      },
 
     /**
      * awaits: returns the same Promise that was created in `add`.
      * If the task was never added or has already been cleaned up,
      * it rejects (or you can choose to return a resolved Promise).
      */
-    awaits: (id: TaskID) => {
-      const info = promisesMap.get(id)!;
-
-      return info.promise.then((x) => {
+    awaits: (id: TaskID) =>
+      promisesMap.get(id)![0].then((x) => {
         promisesMap.delete(id);
         return x;
-      });
-    },
+      }),
     awaitArray: (ids: TaskID[]) => {
       return Promise.all(
         ids.map((id) =>
-          promisesMap.get(id)!.promise.then((x) => {
+          promisesMap.get(id)![0].then((x) => {
             promisesMap.delete(id);
             return x;
           })
         ),
       );
-    },
-    get: (id: TaskID) => {
-      const idx = queue.findIndex((item) => item[2] === id);
-      if (idx === -1) return null;
-      return queue[idx][1] ? queue[idx][5] : null;
     },
 
     sendNextToWorker: () => {
@@ -151,32 +154,35 @@ export const multi = (
         (item) => item[0] === false && item[1] === false,
       );
       if (idx === -1) {
-        return; // No such slot
+        throw "xd somethin whent wrong in sendNextToWorker";
       }
       writer(queue[idx]);
       signalBox.setFunctionSignal(queue[idx][4]);
       signalBox.setSignal(queue[idx][7]);
-      // Immediately free the slot
-      queue[idx][0] = true;
     },
     solve: () => {
-      const id = signalBox.getCurrentID();
-      const idx = queue.findIndex((item) => item[2] === id);
+      const idx = queue.findIndex((item) =>
+        item[2] === signalBox.getCurrentID()
+      );
 
       if (idx === -1) {
-        throw "solve couldn't find " + id;
+        throw "solve couldn't find " + signalBox.getCurrentID();
       }
 
-      const res = reader();
       // Mark the task as solved
       queue[idx][1] = true; // solved
-      queue[idx][5] = res; // store the response
+      queue[idx][5] = reader(); // store the response
       queue[idx][6] = true; // hasBeenResolve = true
+      // Immediately free the slot
+      queue[idx][0] = true;
+      freeSlotOp[idx] = true; // free -> in use
 
       // Fulfill the promise we created in add
-      const info = promisesMap.get(id);
+      const info = promisesMap.get(queue[idx][2]);
       if (info) {
-        info.resolve(res);
+        info[1](queue[idx][5]);
+      } else {
+        throw signalBox.getCurrentID() + "was not found";
       }
     },
   };
