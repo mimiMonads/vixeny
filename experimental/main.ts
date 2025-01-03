@@ -149,14 +149,14 @@ boxplot(async () => {
           context3.adds(null),
         ]);
       });
-    });
 
-    bench(" main * 3", async () => {
-      await Promise.all([
-        f(),
-        f(),
-        f(),
-      ]);
+      bench(" main * 3", async () => {
+        await Promise.all([
+          f(),
+          f(),
+          f(),
+        ]);
+      });
     });
   });
 });
