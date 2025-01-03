@@ -1,6 +1,6 @@
 // main.ts
 import { Worker } from "node:worker_threads";
-import { bench, boxplot, group, run } from "mitata";
+import { bench, boxplot, group, run, summary } from "mitata";
 import { multi, type MultiQueue, type PromiseMap } from "./mainQueue.ts";
 import { genTaskID, readMessageToUint, sendUintMessage } from "./helpers.ts";
 
@@ -109,40 +109,46 @@ const context5 = createContext({ promisesMap });
 
 boxplot(async () => {
   group("1", () => {
-    bench(" 1 thread ", async () => {
-      await context1.awaitArray([
-        context1.adds(null),
-      ]);
-    });
+    summary(() => {
+      bench(" 1 thread ", async () => {
+        await context1.awaitArray([
+          context1.adds(null),
+        ]);
+      });
 
-    bench(" main * 1", async () => {
-      await f();
+      bench(" main * 1", async () => {
+        await f();
+      });
     });
   });
 
   group("2", () => {
-    bench(" 2 thread ", async () => {
-      await context1.awaitArray([
-        context1.adds(null),
-        context2.adds(null),
-      ]);
-    });
+    summary(() => {
+      bench(" 2 thread ", async () => {
+        await context1.awaitArray([
+          context1.adds(null),
+          context2.adds(null),
+        ]);
+      });
 
-    bench(" main * 2", async () => {
-      await Promise.all([
-        f(),
-        f(),
-      ]);
+      bench(" main * 2", async () => {
+        await Promise.all([
+          f(),
+          f(),
+        ]);
+      });
     });
   });
 
   group("3", () => {
-    bench(" 3 thread ", async () => {
-      await context1.awaitArray([
-        context1.adds(null),
-        context2.adds(null),
-        context3.adds(null),
-      ]);
+    summary(() => {
+      bench(" 3 thread ", async () => {
+        await context1.awaitArray([
+          context1.adds(null),
+          context2.adds(null),
+          context3.adds(null),
+        ]);
+      });
     });
 
     bench(" main * 3", async () => {
@@ -153,8 +159,10 @@ boxplot(async () => {
       ]);
     });
   });
+});
 
-  group("4", () => {
+group("4", () => {
+  summary(() => {
     bench(" 4 thread ", async () => {
       await context1.awaitArray([
         context1.adds(null),
@@ -173,8 +181,10 @@ boxplot(async () => {
       ]);
     });
   });
+});
 
-  group("5", () => {
+group("5", () => {
+  summary(() => {
     bench(" 5 thread ", async () => {
       await context1.awaitArray([
         context1.adds(null),
