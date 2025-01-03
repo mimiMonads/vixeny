@@ -15,7 +15,7 @@ const listOfFunctions = [
     let sum = 0;
 
     // Increase or decrease the loop count for more or less work
-    const iterations = 1000;
+    const iterations = 10000;
 
     for (let i = 0; i < iterations; i++) {
       sum += performance.now();
@@ -55,7 +55,9 @@ while (true) {
 
       if (queue.allDone()) {
         workerSig.finishedAllTasks();
+        continue;
       }
+      workerSig.messageWasRead();
       break;
     }
     case 224:

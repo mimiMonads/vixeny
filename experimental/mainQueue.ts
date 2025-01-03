@@ -37,6 +37,11 @@ export type PartialQueueList = [
   StatusSignal,
 ];
 
+export type PromiseMap = Map<
+  TaskID,
+  [Promise<WorkerResponse>, (val: WorkerResponse) => void]
+>;
+
 export type QueueList = [
   Free,
   Locked,
@@ -55,10 +60,12 @@ type MultipleQueueSingle = {
   reader: () => Uint8Array;
   signalBox: MainSignal;
   genTaskID: () => number;
+  promisesMap: PromiseMap;
   max?: number;
 };
 export const multi = (
-  { writer, signalBox, max, reader, genTaskID }: MultipleQueueSingle,
+  { writer, signalBox, max, reader, genTaskID, promisesMap }:
+    MultipleQueueSingle,
 ) => {
   const queue = Array.from(
     { length: max ?? 10 },
@@ -69,15 +76,6 @@ export const multi = (
     { length: max ?? 10 },
     () => true,
   );
-  /**
-   * Instead of just storing (result) => void in a Map,
-   * we’ll store both the Promise and the resolve function,
-   * so `awaits(...)` can return the same Promise we created in `add`.
-   */
-  const promisesMap = new Map<
-    TaskID,
-    [Promise<WorkerResponse>, (val: WorkerResponse) => void]
-  >();
 
   return {
     isBusy: () => freeSlotOp.indexOf(true) === -1,
@@ -154,6 +152,7 @@ export const multi = (
         (item) => item[0] === false && item[1] === false,
       );
       if (idx === -1) {
+        console.log(queue);
         throw "xd somethin whent wrong in sendNextToWorker";
       }
       writer(queue[idx]);

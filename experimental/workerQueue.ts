@@ -40,7 +40,7 @@ export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
         ]);
       }
 
-      status[0] = 1;
+      status[0] = 127;
     },
 
     // Write completed tasks to the writer.
