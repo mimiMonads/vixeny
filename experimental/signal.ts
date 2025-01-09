@@ -1,7 +1,7 @@
 export type SignalArguments = ReturnType<typeof signalsForWorker>;
 export type MainSignal = ReturnType<typeof mainSignal>;
 
-type StatusSignalForVoid = 224;
+type StatusSignalForVoid = 224 | 192;
 export type StatusSignal = StatusSignalForVoid;
 
 type Sab = {
@@ -11,13 +11,14 @@ type Sab = {
 export const signalsForWorker = (args?: Sab) => {
   const sab = args?.sharedSab
     ? args.sharedSab
-    : new SharedArrayBuffer(args?.size ?? 1024);
+    : new SharedArrayBuffer(args?.size ?? 4096);
 
   return {
     sab,
     status: new Uint8Array(sab, 0, 2),
     id: new Int32Array(sab, 4, 1),
-    payload: new Uint8Array(sab, 8),
+    payloadLenght: new Int32Array(sab, 8, 1),
+    payload: new Uint8Array(sab, 12),
   };
 };
 
@@ -29,7 +30,7 @@ export const mainSignal = ({ status, id }: SignalArguments) => {
     updateLastSignal: () => (lastSignal = status[0]),
     send: (): 192 => (status[0] = lastSignal = 192),
     setSignal: (signal: StatusSignal) => (status[0] = signal),
-    setFunctionSignal: (signal: number) => (status[0] = signal),
+    setFunctionSignal: (signal: number) => (status[1] = signal),
     readyToRead: (): 127 => (status[0] = lastSignal = 127),
     voidMessage: (): 224 => (status[0] = lastSignal = 224),
     hasNoMoreMessages: (): 255 => (status[0] = lastSignal = 255),

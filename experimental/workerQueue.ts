@@ -10,7 +10,17 @@ type ArgumetnsForMulti = {
 export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
   const queue = Array.from(
     { length: max ?? 10 },
-    () => [false, false, false, 0, null, 0, new Uint8Array(), 224] as QueueList,
+    () =>
+      [
+        false,
+        false,
+        false,
+        0,
+        new Uint8Array(),
+        0,
+        new Uint8Array(),
+        224,
+      ] as QueueList,
   );
 
   return {
@@ -20,7 +30,6 @@ export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
     // Add a task to the queue.
     add: (element: PartialQueueList) => {
       const freeSlot = queue.findIndex((task) => !task[0]);
-
       if (freeSlot !== -1) {
         queue[freeSlot][0] = true;
         queue[freeSlot][3] = element[0];
@@ -71,9 +80,11 @@ export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
       if (taskIndex !== -1) {
         queue[taskIndex][1] = true; // Lock the task
         try {
-          queue[taskIndex][6] = await jobs[queue[taskIndex][5]](
-            queue[taskIndex][4],
-          ); // Execute the job
+          queue[taskIndex][6] = queue[taskIndex][7] === 224
+            ? await jobs[queue[taskIndex][5]]()
+            : await jobs[queue[taskIndex][5]](
+              queue[taskIndex][4],
+            );
           queue[taskIndex][2] = true; // Mark as solved
         } finally {
           queue[taskIndex][1] = false; // Unlock the task

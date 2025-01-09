@@ -6,9 +6,9 @@ import { type MainSignal } from "./signal.ts";
 // Task ID is a unique number representing a task.
 type TaskID = number;
 // RawArguments are optional arguments in the form of a Uint8Array.
-type RawArguments = Uint8Array | null;
+type RawArguments = Uint8Array;
 // WorkerResponse is the result of a task, represented as a Uint8Array.
-type WorkerResponse = Uint8Array | null;
+type WorkerResponse = Uint8Array;
 // FunctionID represents a unique identifier for a function to execute.
 type FunctionID = number;
 // Boolean flags for task state.
@@ -69,7 +69,17 @@ export const multi = (
 ) => {
   const queue = Array.from(
     { length: max ?? 10 },
-    () => [true, false, 0, null, 0, new Uint8Array(), true, 224] as MainList,
+    () =>
+      [
+        true,
+        false,
+        0,
+        new Uint8Array(),
+        0,
+        new Uint8Array(),
+        true,
+        224,
+      ] as MainList,
   );
 
   const freeSlotOp = Array.from(
@@ -99,6 +109,7 @@ export const multi = (
       (rawArguments: RawArguments) => {
         const freeIndex = freeSlotOp.indexOf(true);
         const taskID = genTaskID();
+
         if (freeIndex === -1) {
           throw "No free slots! isBusyFailed uwu";
         }
@@ -155,7 +166,9 @@ export const multi = (
         console.log(queue);
         throw "xd somethin whent wrong in sendNextToWorker";
       }
+
       writer(queue[idx]);
+
       signalBox.setFunctionSignal(queue[idx][4]);
       signalBox.setSignal(queue[idx][7]);
     },
