@@ -5,7 +5,7 @@ export const aaa = fixedPoint({
   f: async (arr) => {
     // Simulate an expensive operation
 
-    let time = 100000;
+    let time = 100;
 
     while (time !== 0) {
       performance.now();

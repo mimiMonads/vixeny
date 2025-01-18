@@ -3,14 +3,14 @@ import { compose } from "./fixpoint.ts";
 import { aaa, bbb, ccc } from "./functions.ts";
 
 const { termminate, resolver } = compose({
-  threads: 2,
+  threads: 1,
 })({
   ccc,
   aaa,
   bbb,
 });
 
-await Promise.all([
+const a = await Promise.all([
   resolver.aaa(new Uint8Array([1])),
   resolver.aaa(new Uint8Array([1])),
   resolver.aaa(new Uint8Array([1])),
@@ -20,6 +20,21 @@ await Promise.all([
   resolver.ccc(new Uint8Array([1])),
   resolver.ccc(new Uint8Array([1])),
   resolver.ccc(new Uint8Array([1])),
-]).then(console.log);
+]);
+
+const b = await Promise.all([
+  resolver.aaa(new Uint8Array([1])),
+  resolver.aaa(new Uint8Array([1])),
+  resolver.aaa(new Uint8Array([1])),
+  resolver.bbb(new Uint8Array([1])),
+  resolver.bbb(new Uint8Array([1])),
+  resolver.bbb(new Uint8Array([1])),
+  resolver.ccc(new Uint8Array([1])),
+  resolver.ccc(new Uint8Array([1])),
+  resolver.ccc(new Uint8Array([1])),
+]);
+
+console.log(a);
+console.log(b);
 
 termminate();

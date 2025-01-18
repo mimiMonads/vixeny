@@ -64,12 +64,11 @@ export const createContext = ({
     const { queue, fnNumber, statusSignal } = args;
 
     const adds = queue.add(statusSignal)(fnNumber);
-    return async (args: Uint8Array) => (
-      isActive(),
-        queue.awaits(
-          adds(args),
-        )
-    );
+    return async (args: Uint8Array) => {
+      const r = adds(args);
+      isActive();
+      return queue.awaits(r);
+    };
   };
 
   return {

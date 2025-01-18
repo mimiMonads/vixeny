@@ -95,14 +95,9 @@ export const multi = (
     isEverythingSolve: () =>
       queue.every((item) => item[6] === true && item[0] === true),
 
-    // count: () =>
-    //   queue.reduce((count, item) => (item[0] === false ? count + 1 : count), 0),
+    count: () =>
+      queue.reduce((count, item) => (item[0] === false ? count + 1 : count), 0),
 
-    /**
-     * add: insert a new task and create a Promise.
-     * We'll store that Promise (and its resolver) in promisesMap
-     * keyed by the taskID.
-     */
     add:
       (statusSignal: StatusSignal) =>
       (functionID: FunctionID) =>

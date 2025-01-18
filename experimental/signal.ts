@@ -15,7 +15,7 @@ export const signalsForWorker = (args?: Sab) => {
 
   return {
     sab,
-    status: new Uint8Array(sab, 0, 2),
+    status: new Uint8Array(sab, 0, 4),
     id: new Int32Array(sab, 4, 1),
     payloadLenght: new Int32Array(sab, 8, 1),
     payload: new Uint8Array(sab, 12),

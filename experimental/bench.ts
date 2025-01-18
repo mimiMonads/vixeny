@@ -20,13 +20,13 @@ boxplot(async () => {
       });
 
       bench(" 5 thread ", async () => {
-        await resolver.aaa(EMPTYUI8), await resolver.aaa(EMPTYUI8);
+        await Promise.all([
+          resolver.aaa(EMPTYUI8),
+        ]);
       });
     });
   });
 });
 await run();
-
-await resolver.aaa(new Uint8Array([5, 3, 2, 1, 0])).then(console.log);
 
 termminate();

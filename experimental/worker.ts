@@ -39,34 +39,41 @@ const mainLoop = async () => {
 
   while (true) {
     switch (workerSig.curretSignal()) {
+      case 0:
+      case 1:
+      case 2:
+      case 128: {
+        continue;
+      }
+
       case 127: {
+        await queue.nextJob();
+
         if (queue.someHasFinished()) {
           queue.write();
-          break;
+          continue;
         }
-
         if (queue.allDone()) {
           workerSig.finishedAllTasks();
-          break;
+          continue;
         }
+
         workerSig.messageWasRead();
-        break;
+        continue;
       }
+
       case 224:
         {
           queue.add([id[0], null, status[1], 224]);
         }
-        break;
+        continue;
       case 192:
         {
           queue.add([id[0], readMsg(), status[1], 192]);
         }
 
-        break;
+        continue;
     }
-
-    // Process the next job
-    await queue.nextJob();
   }
 };
 
