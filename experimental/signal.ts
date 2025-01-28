@@ -1,5 +1,6 @@
 export type SignalArguments = ReturnType<typeof signalsForWorker>;
 export type MainSignal = ReturnType<typeof mainSignal>;
+export type WorkerSignal = ReturnType<typeof workerSignal>;
 
 type StatusSignalForVoid = 224 | 192;
 export type StatusSignal = StatusSignalForVoid;
@@ -39,9 +40,10 @@ export const mainSignal = ({ status, id }: SignalArguments) => {
 };
 
 // Worker thread signal management.
-export const workerSignal = ({ status }: SignalArguments) => ({
+export const workerSignal = ({ status, id }: SignalArguments) => ({
   curretSignal: () => status[0],
   messageReady: (): 0 => (status[0] = 0),
   messageWasRead: (): 1 => (status[0] = 1),
   finishedAllTasks: (): 2 => (status[0] = 2),
+  getCurrentID: () => id[0],
 });

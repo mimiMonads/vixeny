@@ -19,7 +19,7 @@ const mainLoop = async () => {
     .then(
       (objs) =>
         objs.map(
-          (obj) => obj.f,
+          (obj) => [obj.f, obj.statusSignal],
         ),
     );
 

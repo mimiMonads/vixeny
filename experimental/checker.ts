@@ -8,29 +8,7 @@ export const checker = ({
   queue: MultiQueue;
   signalBox: MainSignal;
 }) => {
-  // Create a single MessageChannel for scheduling. We’ll use it repeatedly.
-  const channel = new MessageChannel();
-
-  const scheduleCheck = () => {
-    check();
-  };
-
-  const openChannels = () => {
-    channel.port1.onmessage = scheduleCheck;
-    channel.port2.start();
-    channel.port1.start();
-  };
-
-  const closeChannels = () => {
-    channel.port1.close();
-    channel.port1.onmessage = null;
-    channel.port2.close();
-  };
-
-  // Helper to schedule the next iteration on the macrotask queue
-  const scheduleNext = channel.port2;
-
-  const check = () => {
+  function check() {
     switch (signalBox.updateLastSignal()) {
       case 0:
         queue.solve();
@@ -39,53 +17,95 @@ export const checker = ({
         } else {
           signalBox.readyToRead();
         }
-        queueMicrotask(check);
+        queueMicrotask(boundCheck);
         return;
 
       case 1:
         signalBox.readyToRead();
-        queueMicrotask(check);
+        queueMicrotask(boundCheck);
         return;
 
       case 2:
         if (queue.canWrite()) {
           queue.sendNextToWorker();
-          queueMicrotask(check);
+          queueMicrotask(boundCheck);
         } else {
           signalBox.hasNoMoreMessages();
-          closeChannels();
+          this.channelHandler.close();
         }
         return;
 
       case 127: {
-        openChannels();
-        scheduleNext.postMessage(null);
+        this.channelHandler.open(boundCheck);
+        this.channelHandler.channel.port2.postMessage(null);
         return;
       }
       case 192:
       case 224:
-        queueMicrotask(check);
+        queueMicrotask(boundCheck);
         return;
 
       case 254:
+        console.log("hi");
         queue.sendNextToWorker();
-        queueMicrotask(check);
+        queueMicrotask(boundCheck);
         return;
 
       case 255:
         if (queue.canWrite()) {
           queue.sendNextToWorker();
-          queueMicrotask(check);
+          queueMicrotask(boundCheck);
         } else {
           console.log("Finish by 255");
         }
-
         return;
     }
 
     console.log(signalBox.updateLastSignal());
-    throw new Error("unrechable");
-  };
+    throw new Error("unreachable");
+  }
 
-  return check;
+  const boundCheck = check.bind({
+    channelHandler: new ChannelHandler(),
+  });
+
+  return boundCheck;
 };
+
+class ChannelHandler {
+  channel: MessageChannel;
+  isOpen: boolean;
+
+  constructor() {
+    this.channel = new MessageChannel();
+
+    this.isOpen = false;
+  }
+
+  scheduleCheck(f: Function) {
+    f();
+  }
+
+  open(f: Function) {
+    if (this.isOpen) {
+      return;
+    }
+
+    //@ts-ignore
+    this.channel.port1.onmessage = f;
+    this.channel.port2.start();
+    this.channel.port1.start();
+    this.isOpen = true;
+  }
+
+  close() {
+    if (!this.isOpen) {
+      return;
+    }
+
+    this.channel.port1.close();
+    this.channel.port1.onmessage = null;
+    this.channel.port2.close();
+    this.isOpen = false;
+  }
+}

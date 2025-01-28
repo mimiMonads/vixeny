@@ -1,9 +1,11 @@
 import type { PartialQueueList, QueueList } from "./mainQueue.ts";
+import type { StatusSignal, WorkerSignal } from "./signal.ts";
 
 type ArgumetnsForMulti = {
-  jobs: Function[];
+  jobs: [Function, StatusSignal][];
   max?: number;
   writer: (job: QueueList) => void;
+  signal: WorkerSignal;
   status: Uint8Array;
 };
 // Create and manage a working queue.
@@ -56,15 +58,6 @@ export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
     write: () => {
       const finishedTaskIndex = queue.findIndex((task) => task[2]);
       if (finishedTaskIndex !== -1) {
-        // console.log(" 4 .- worker sends :");
-        // console.log(
-        //   [
-        //     queue[finishedTaskIndex][3],
-        //     queue[finishedTaskIndex][4],
-        //     queue[finishedTaskIndex][5],
-        //     queue[finishedTaskIndex][7],
-        //   ],
-        // );
         writer(queue[finishedTaskIndex]); // Writes on playload
         status[0] = 0; // The main can read it now;
         queue[finishedTaskIndex][0] = false; // Reset OnUse
@@ -81,8 +74,8 @@ export const multi = ({ jobs, max, writer, status }: ArgumetnsForMulti) => {
         queue[taskIndex][1] = true; // Lock the task
         try {
           queue[taskIndex][6] = queue[taskIndex][7] === 224
-            ? await jobs[queue[taskIndex][5]]()
-            : await jobs[queue[taskIndex][5]](
+            ? await jobs[queue[taskIndex][5]][0]()
+            : await jobs[queue[taskIndex][5]][0](
               queue[taskIndex][4],
             );
           queue[taskIndex][2] = true; // Mark as solved
