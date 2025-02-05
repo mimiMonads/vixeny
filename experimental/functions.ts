@@ -2,7 +2,7 @@ import { fixedPoint } from "./fixpoint.ts";
 
 export const aaa = fixedPoint({
   args: "uint8",
-  f: async (arr) => {
+  f: async (arr: Uint8Array) => {
     // Simulate an expensive operation
 
     let time = 100;
@@ -12,7 +12,9 @@ export const aaa = fixedPoint({
       time--;
     }
 
-    return Array.from(arr).map((num) => num * 2);
+    return Uint8Array.from(
+      Array.from(arr).map((num) => num * 2),
+    );
   },
 });
 

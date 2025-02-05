@@ -37,6 +37,7 @@ export const createContext = ({
   });
 
   const worker = new Worker(workerUrl, {
+    //@ts-ignore
     type: "module",
     workerData: {
       sab: signals.sab,
@@ -74,6 +75,7 @@ export const createContext = ({
   return {
     queue,
     resolver,
+    isActive,
     awaitArray: queue.awaitArray,
     kills: () => worker.terminate(),
   };

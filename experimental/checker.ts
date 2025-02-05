@@ -31,12 +31,15 @@ export const checker = ({
           queueMicrotask(boundCheck);
         } else {
           signalBox.hasNoMoreMessages();
+          //@ts-ignore
           this.channelHandler.close();
         }
         return;
 
       case 127: {
+        //@ts-ignore
         this.channelHandler.open(boundCheck);
+        //@ts-ignore
         this.channelHandler.channel.port2.postMessage(null);
         return;
       }
@@ -46,7 +49,6 @@ export const checker = ({
         return;
 
       case 254:
-        console.log("hi");
         queue.sendNextToWorker();
         queueMicrotask(boundCheck);
         return;

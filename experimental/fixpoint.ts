@@ -2,7 +2,9 @@ import { getCallerFile } from "./helpers.ts";
 import { genTaskID } from "./helpers.ts";
 import { createContext } from "./main.ts";
 import type { PromiseMap } from "./mainQueue.ts";
+import { isMainThread } from "node:worker_threads";
 
+export const isMain = isMainThread;
 type Args = "void" | "uint8";
 const symbol = Symbol.for("FIXEDPOINT");
 
@@ -22,7 +24,7 @@ type SecondPart = {
 
 type Composed = {
   args: Args;
-  f: Function;
+  f: (...ags: any) => any;
 } & SecondPart;
 
 type ReturnFixed<A extends Args> = FixPoint<A> & SecondPart;
@@ -45,6 +47,19 @@ type FunctionMapType<T extends Record<string, Composed>> = {
   [K in keyof T]: T[K]["f"];
 };
 
+type FunctionMapTypeID<T extends Record<string, Composed>> = {
+  [K in keyof T]: T[K]["f"] extends (args: infer A) => any ? {
+      (arg: A): number;
+    }
+    : never;
+};
+
+type FunctionMapAwaits<T extends Record<string, Composed>> = {
+  [K in keyof T]: (n: number[]) => ReturnType<
+    T[K]["f"]
+  >[];
+};
+
 export type GetFunctions = ReturnType<typeof getFunctions>;
 
 export const getFunctions = async ({ list, ids }: {
@@ -57,7 +72,8 @@ export const getFunctions = async ({ list, ids }: {
       const module = await import(imports);
       return Object.entries(module) // Use `Object.entries` to include names
         .filter(
-          ([_, value]): value is ReturnFixed<any> =>
+          ([_, value]): //@ts-ignore trust me bro
+          value is ReturnFixed<any> =>
             typeof value === "object" &&
             value !== null &&
             !Array.isArray(value) &&
@@ -132,6 +148,8 @@ export const compose = ({
   }))
     .sort((a, b) => a.name.localeCompare(b.name));
 
+  console.log(listOfFunctions);
+
   const workers = Array.from({
     length: threads ?? 1,
   })
@@ -142,6 +160,49 @@ export const compose = ({
         ids,
       })
     );
+
+  const addsWrap =
+    (isActive: (n: void) => void) =>
+    (adds: (n: Uint8Array) => number) =>
+    (
+      args: Uint8Array,
+    ) => {
+      const r = adds(args);
+      isActive();
+      return r;
+    };
+
+  const adds = workers.map(
+    (worker) => {
+      return listOfFunctions
+        .map((list, index) => ({ ...list, index }))
+        .reduce((acc, v) => {
+          {
+            acc.set(
+              v.name,
+              addsWrap(worker.isActive)(
+                worker.queue.add(v.statusSignal)(v.index),
+              ),
+            );
+          }
+          return acc;
+        }, new Map<string, ReturnType<ReturnType<typeof addsWrap>>>());
+    },
+  )
+    .reduce((acc, map) => {
+      map.forEach(
+        (v, k) => {
+          const fun = acc.get(k);
+          if (fun) {
+            acc.set(k, [...fun, v]);
+          } else {
+            acc.set(k, [v]);
+          }
+        },
+      );
+
+      return acc;
+    }, new Map<string, Function[]>());
 
   const map = workers.map(
     (worker) => {
@@ -178,12 +239,26 @@ export const compose = ({
     }, new Map<string, Function[]>());
 
   const resolve = new Map<string, (args: any) => Promise<any>>();
+  const add = new Map<string, (args: any) => Promise<any>>();
+  const awaits = new Map<string, (args: any) => Promise<any>>();
+
+  // Resolving maps before
   map.forEach((v, k) => {
     resolve.set(k, loopingBetweenThreads(v)(v.length));
+  });
+
+  adds.forEach((v, k) => {
+    add.set(k, loopingBetweenThreads(v)(v.length));
+  });
+
+  map.forEach((v, k) => {
+    awaits.set(k, workers[0].awaitArray);
   });
 
   return {
     termminate: () => workers.forEach((worker) => worker.kills()),
     resolver: Object.fromEntries(resolve) as unknown as FunctionMapType<T>,
+    add: Object.fromEntries(add) as unknown as FunctionMapTypeID<T>,
+    awaits: Object.fromEntries(awaits) as unknown as FunctionMapAwaits<T>,
   };
 };

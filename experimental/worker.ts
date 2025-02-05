@@ -32,6 +32,7 @@ const mainLoop = async () => {
   const writeMsg = writeUintMessage(signals);
 
   const queue = multi({
+    //@ts-ignore
     jobs: listOfFunctions,
     writer: writeMsg,
     status,
@@ -64,6 +65,7 @@ const mainLoop = async () => {
 
       case 224:
         {
+          //@ts-ignore
           queue.add([id[0], null, status[1], 224]);
         }
         continue;
